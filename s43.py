@@ -3200,6 +3200,34 @@ async def _arzplus_market_snapshot(self) -> dict:
         except Exception:
             pass
 
+        # PHASE4_ORDER_GATE_MAIN
+        if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+            try:
+                _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+                if hasattr(_gate_log, "warning"):
+                    _gate_log.warning(
+                        "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+                        symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+                    )
+            except Exception:
+                pass
+            return {}
+
+        if (
+            not bool(getattr(self, "_ai_live_trading_armed", False))
+            and bool(getattr(getattr(self, "_cfg", getattr(self, "cfg", None)), "autonomous_ai", False))
+        ):
+            try:
+                _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+                if hasattr(_gate_log, "warning"):
+                    _gate_log.warning(
+                        "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+                        symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+                    )
+            except Exception:
+                pass
+            return {}
+
         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
         try:
             sym = _canon_pair(symbol, default_quote=q)
