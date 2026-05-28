@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .patchwork/
 backups/s43_before_phase3B_wallet_aut_*.py
+backups/s43_before_phase4A_autonomous_true_fix_*.py

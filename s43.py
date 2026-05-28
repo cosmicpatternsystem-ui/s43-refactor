@@ -9344,7 +9344,7 @@ class _DzhBanIntegrityBase:
         top8_row: Optional[dict],
         mids: Optional[List[float]] = None,
     ) -> Tuple[bool, str]:
-        if not bool(getattr(wallet.cfg, "autonomous_ai", True)):
+        if not bool(getattr(wallet.cfg, "autonomous_ai", False)):
             return False, "AUTONOMOUS_AI_OFF"
         try:
             gate_mode = str(getattr(wallet.cfg, "phoenix_gate_mode", "soft") or "soft").strip().lower()
@@ -18871,7 +18871,7 @@ class TradingBotOps:
             except Exception:
                 pass
             try:
-                if getattr(self, "_ai_trader", None) is not None and bool(getattr(w.cfg, "autonomous_ai", True)) and bool(_env_bool("OPENAI_TRADE_ENABLE", False)) and bool(_env_bool("OPENAI_TRADE_ALLOW_ND", False)):
+                if getattr(self, "_ai_trader", None) is not None and bool(getattr(w.cfg, "autonomous_ai", False)) and bool(_env_bool("OPENAI_TRADE_ENABLE", False)) and bool(_env_bool("OPENAI_TRADE_ALLOW_ND", False)):
                     ai = getattr(self, "_ai_trader", None)
                     if ai is not None and bool(getattr(ai, "enabled", lambda: False)()):
                         payload = {
