@@ -12206,7 +12206,7 @@ class TradingBotBase:
             w_max_frac = _env_float(f"WALLET_{slot}_MAX_NOTIONAL_FRAC", float(getattr(cfg, "max_notional_frac", 0.0) or 0.0))
             w_min_profit = _env_float(f"WALLET_{slot}_MIN_NET_PROFIT_IRT", float(getattr(cfg, "min_net_profit_irt", 0.0) or 0.0))
             w_ci = _env_bool(f"WALLET_{slot}_COLLECTIVE_INTELLIGENCE", bool(getattr(cfg, "collective_intelligence", False)))
-            w_aut = _env_bool(f"WALLET_{slot}_AUTONOMOUS_AI", bool(getattr(cfg, "autonomous_ai", True)))
+            w_aut = _env_bool(f"WALLET_{slot}_AUTONOMOUS_AI", bool(getattr(cfg, "autonomous_ai", False)))
             w_idem_ttl = _env_float(f"WALLET_{slot}_IDEMPOTENCY_TTL_SEC", float(getattr(cfg, "idempotency_ttl_sec", 0.0) or 0.0))
             wcfg = __import__("dataclasses").replace(
                 cfg,
@@ -26166,7 +26166,7 @@ class WallStreetDashboardManager(DashboardManager):
                 rss = 0.0
             rec = bool(getattr(self.bot, "recorder", None))
             db = str(getattr(cfg, "record_db_path", "") or "")
-            autonomous = bool(getattr(cfg, "autonomous_ai", True))
+            autonomous = bool(getattr(cfg, "autonomous_ai", False))
             jitter = bool(getattr(cfg, "jitter_proxy", False))
             ladder = bool(getattr(cfg, "laddering", False))
             steps = int(getattr(cfg, "ladder_steps", 1) or 1)
