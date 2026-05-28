@@ -1,0 +1,71 @@
+===== S43 PHASE2 PART5B: REMOVE ORCH22_FMT_FIELDS DUPLICATE DEFINITION =====
+TS=20260527_102211
+
+[STEP 1] BACKUP s43.py
+BACKUP_CREATED=s43_before_phase2_part5b_remove_orch22_fmt_fields_20260527_102211.py
+-rw-rw----. 1 root everybody 2568689 May 27 10:20 s43_before_phase2_part5b_remove_orch22_fmt_fields_20260527_102211.py
+
+[STEP 2] REMOVE _orch22_fmt_fields DEFINITION FROM s43.py
+REMOVED_DEFINITION=_orch22_fmt_fields
+REMOVED_LINES=27751-27765
+
+[STEP 3] VERIFY REMOVAL AND IMPORTS
+-- import line --
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down, _orch22_fmt_fields
+
+-- def _orch22_fmt_fields in s43.py (should be absent) --
+
+-- def _orch22_fmt_fields in helpers.py (should exist) --
+111:def _orch22_fmt_fields(fields: Dict[str, Any]) -> str:
+
+[STEP 4] COMPILE CHECKS
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[STEP 5] HELP CHECK
+HELP_RC=0
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+  --token-bot           Run Telegram token bot (independent).
+  --wallet-concurrency WALLET_CONCURRENCY
+                        Concurrent wallet cycles in one process (async
+                        gather). 0=env/default.
+
+[STEP 6] RUNTIME IMPORT SMOKE
+S43_IMPORT_OK
+_orch22_fmt_fields exists: True
+_orch22_fmt_fields callable: True
+_orch22_fmt_fields module: s43_core.helpers
+
+[STEP 7] FINAL ASSERTIONS
+s43_import_has_orch22_fmt_fields=1
+s43_def_orch22_fmt_fields_removed=1
+helpers_def_orch22_fmt_fields_exists=1
