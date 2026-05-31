@@ -17,6 +17,7 @@ SAFE_TEST_MODULES = [
     "test_status_observability_summary",
     "test_status_observability_wallet_error",
     "test_status_observability_obs_format",
+    "test_status_observability_failure_consistency",
 ]
 
 
