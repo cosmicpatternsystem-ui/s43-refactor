@@ -18,6 +18,8 @@ SAFE_TEST_MODULES = [
     "test_status_observability_wallet_error",
     "test_status_observability_obs_format",
     "test_status_observability_failure_consistency",
+    "test_phase7a_status_smoke",
+    "test_phase7b_signal_anchor_smoke",
 ]
 
 
