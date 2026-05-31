@@ -9,6 +9,125 @@ from __future__ import annotations
 if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
     print("### S43_RUNTIME_PROBE_ACTIVE ###")
 
+
+# === S43 PATCH: missing wallet balance parser v2 ===
+def _parse_wallet_balance_response_v2(resp, quote="IRT"):
+    """
+    Defensive wallet/balance response parser.
+
+    Expected return by existing call-sites:
+        cash_free, cash_total, assets_free, assets_total, ok
+    """
+    from decimal import Decimal
+
+    def _dec(x):
+        try:
+            if x is None or isinstance(x, bool):
+                return Decimal("0")
+            s = str(x).strip().replace(",", "")
+            if not s:
+                return Decimal("0")
+            return Decimal(s)
+        except Exception:
+            return Decimal("0")
+
+    def _first(d, keys):
+        if not isinstance(d, dict):
+            return None
+        for k in keys:
+            if k in d and d.get(k) is not None:
+                return d.get(k)
+        return None
+
+    def _sym(x):
+        return str(x or "").strip().upper()
+
+    quote = _sym(quote or "IRT")
+
+    cash_free = Decimal("0")
+    cash_total = Decimal("0")
+    assets_free = Decimal("0")
+    assets_total = Decimal("0")
+    ok = False
+
+    try:
+        data = resp
+
+        # unwrap common API containers
+        if isinstance(data, dict):
+            for k in ("data", "result", "results", "balances", "balance", "wallet", "wallets"):
+                v = data.get(k)
+                if isinstance(v, (dict, list)):
+                    data = v
+                    break
+
+        items = []
+
+        if isinstance(data, list):
+            items = data
+
+        elif isinstance(data, dict):
+            # Shape: {"IRT": {"free": ...}, "BTC": {...}}
+            if any(isinstance(v, dict) for v in data.values()):
+                for k, v in data.items():
+                    if isinstance(v, dict):
+                        item = dict(v)
+                        item.setdefault("currency", k)
+                        items.append(item)
+            else:
+                # Shape: {"currency": "IRT", "free": ..., "total": ...}
+                items = [data]
+
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+
+            currency = _sym(_first(item, (
+                "currency", "asset", "symbol", "coin", "code", "ticker", "name"
+            )))
+
+            free = _dec(_first(item, (
+                "free", "available", "available_balance", "balance_available",
+                "amount_available", "usable", "remain", "cash_free"
+            )))
+
+            total = _dec(_first(item, (
+                "total", "balance", "amount", "wallet_balance",
+                "real", "value", "cash_total"
+            )))
+
+            locked = _dec(_first(item, (
+                "locked", "freeze", "frozen", "blocked", "reserved", "in_order"
+            )))
+
+            if total == 0 and (free != 0 or locked != 0):
+                total = free + locked
+
+            # If no currency field exists, treat as quote/cash-like direct object.
+            if not currency:
+                cash_free += free
+                cash_total += total
+                if free != 0 or total != 0:
+                    ok = True
+                continue
+
+            if currency == quote:
+                cash_free += free
+                cash_total += total
+            else:
+                assets_free += free
+                assets_total += total
+
+            ok = True
+
+        return cash_free, cash_total, assets_free, assets_total, bool(ok)
+
+    except Exception:
+        # Fail closed: never crash runtime because of unknown balance shape.
+        return Decimal("0"), Decimal("0"), Decimal("0"), Decimal("0"), False
+
+# === END S43 PATCH ===
+
 class TemporaryPause(Exception):
     def __init__(self, message="", pause_sec=None):
         super().__init__(message)
@@ -50,6 +169,7 @@ import math
 import random
 import asyncio
 import logging
+from contextlib import contextmanager
 
 # S43_DEBUG_PRINTS_GATE_V1
 def _s43_debug_print_enabled() -> bool:
@@ -368,7 +488,7 @@ class _DashRingHandler(logging.Handler):
 
 
 # === S43_INTERNAL_NAMEERROR_FALLBACKS ===
-S43_FALLBACK_MODE = True
+S43_FALLBACK_MODE = False
 try:
     TradingHalt
 except NameError:
@@ -381,11 +501,144 @@ except NameError:
     class TemporaryPause(RuntimeError):
         pass
 
+def _parisa_embedded_code_bytes() -> bytes:
+    import base64 as _base64
+    import zlib as _zlib
+    return _zlib.decompress(_base64.b64decode(PARISA_B64_ZLIB))
+def _extract_parisa_to_file(out_path: str) -> str:
+    try:
+        try:
+            try:
+                from pathlib import Path
+            except:
+                pass
+        except:
+            pass
+    except Exception as e:
+        raise SystemExit(f"pathlib missing: {e}")
+    data = _parisa_embedded_code_bytes()
+    p = Path(out_path).expanduser()
+    try:
+        p = p.resolve()
+    except Exception:
+        p = Path(os.path.abspath(str(p)))
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    try:
+        p.write_bytes(data)
+    except Exception as e:
+        raise SystemExit(f"Failed to write embedded Parisa to {p}: {e}")
+    return str(p)
+def _load_parisa_module():
+    import types as _types
+    import sys as _sys
+    import hashlib as _hashlib
+    """
+    Load the embedded Parisa module **purely in-memory**.
+
+    Rationale:
+      - No monkey-patching / no "patchy" runtime file extraction.
+      - No hidden imports from disk.
+      - Single, deterministic source of truth: the embedded bytecode payload.
+    """
+    name = "parisa_embed"
+    mod_existing = _sys.modules.get(name)
+    if isinstance(mod_existing, _types.ModuleType):
+        return mod_existing
+    code_bytes = _parisa_embedded_code_bytes()
+    virtual_file = "<parisa_embed>"
+    mod = _types.ModuleType(name)
+    mod.__file__ = virtual_file
+    mod.__package__ = ""
+    try:
+        mod.__dict__["__payload_sha256__"] = _hashlib.sha256(code_bytes).hexdigest()
+        mod.__dict__["__payload_size__"] = int(len(code_bytes))
+    except Exception:
+        pass
+    _sys.modules[name] = mod
+    exec(compile(code_bytes, virtual_file, "exec"), mod.__dict__)
+    return mod
+
+
+def _parisa_preflight(mod) -> None:
+    import os as _os
+    import json as _json
+    keys = ("ARZPLUS_WALLET_1_TOKEN", "ARZPLUS_WALLET_2_TOKEN", "ARZPLUS_WALLET_3_TOKEN")
+    prev_env = {k: os.environ.get(k) for k in keys}
+    try:
+        _export_wallet_tokens_for_all_modules()
+    except Exception:
+        pass
+    try:
+        for slot in (1, 2, 3):
+            tok = get_arzplus_token(slot)
+            if tok and (not _looks_placeholder_token(tok)):
+                setattr(mod, f"ARZPLUS_WALLET_{slot}_TOKEN", tok)
+    except Exception:
+        pass
+    for fn in ("_pp_apply_manual_tokens", "_maybe_set_env_from_walletstore", "_pp110_child_hb_init"):
+        if hasattr(mod, fn):
+            try:
+                getattr(mod, fn)()
+            except Exception as e:
+                _boot_logger().exception("event=PARISA_PREFLIGHT_FAIL fn=%s err=%s", fn, e)
+                raise
+    try:
+        for k, v in prev_env.items():
+            if v and (not _looks_placeholder_token(v)):
+                cur = os.environ.get(k, "")
+                if _looks_placeholder_token(cur):
+                    os.environ[k] = v
+    except Exception:
+        pass
+    try:
+        if _env_bool("ARZPLUS_AUTH_DEBUG", False):
+            lg = _boot_logger()
+            for _slot in (1, 2, 3):
+                _tok = get_arzplus_token(_slot)
+                _src = _ARZPLUS_TOKEN_SOURCE.get(int(_slot), "unknown")
+                _val = _strip_token_value(_tok)
+                lg.info(
+                    "ARZPLUS_AUTH slot=%s source=%s scheme=Token token_len=%s fp=%s",
+                    _slot, _src, (len(_val) if _val else 0), _token_fingerprint(_tok),
+                )
+                try:
+                    try:
+                        try:
+                            import sys as _sys
+                        except:
+                            pass
+                    except:
+                        pass
+                    _sys.stderr.write(
+                        f"ARZPLUS_AUTH slot={_slot} source={_src} scheme=Token token_len={(len(_val) if _val else 0)} fp={_token_fingerprint(_tok)}\n"
+                    )
+                    _sys.stderr.flush()
+                except Exception:
+                    pass
+    except Exception:
+        pass
+class _NoopLock:
+    __slots__ = ()
+    def acquire(self, *args, **kwargs):
+        return True
+    def release(self):
+        return None
+    def locked(self):
+        return False
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc, tb):
+        return False
 try:
-    _load_parisa_module
-except NameError:
-    def _load_parisa_module():
-        raise RuntimeError("PARISA_MODULE_UNAVAILABLE")
+    _st = globals().get("_V167_STATE", None)
+    if not isinstance(_st, dict):
+        globals()["_V167_STATE"] = {}
+except Exception:
+    globals()["_V167_STATE"] = {}
+
 
 try:
     get_best_snapshot
@@ -551,6 +804,27 @@ except NameError:
                 s = "🛑 " + s
             fixed.append(s)
         return fixed if fixed else ["(no events)"]
+
+
+
+@contextmanager
+def _temporary_argv(argv: list[str]):
+    """Temporarily replace sys.argv (restored on exit)."""
+    old = sys.argv[:]
+    try:
+        sys.argv = list(argv)
+        yield
+    finally:
+        sys.argv = old
+try:
+    try:
+        import time
+    except:
+        pass
+except:
+    pass
+_TERMUX_BOOT_TS = time.time()
+_TERMUX_LAST_ORDER_TS = _TERMUX_BOOT_TS
 
 def _ensure_dir(path):
     """Ensure parent directory for a file path exists."""
@@ -2417,305 +2691,14 @@ class ExchangeClient:
         if last_err:
             raise last_err
         return {}
-async def _arzplus_last_trade_price(self, symbol: str) -> float:
-    'Best-effort: last traded price via /market/trades.'
-    s = _canon_symbol(symbol)
-    if not s:
-        return 0.0
-    quote = str(getattr(self.cfg, "quote", "IRT") or "IRT").upper()
-    if quote and (not s.endswith(quote)):
-        s = f"{_canon_asset(s)}{quote}"
-    last_exc: Optional[Exception] = None
-    for ep in (f"/market/trades/?symbol={s}&limit=1", f"/market/trades/?symbol={s}"):
-        try:
-            data = await self.request("GET", ep, auth=False)
-            if isinstance(data, dict):
-                res = data.get("results") or data.get("data") or data.get("result") or data.get("items") or []
-                if isinstance(res, dict):
-                    res = res.get("results") or res.get("data") or []
-                if isinstance(res, list) and res:
-                    t0 = res[0]
-                    if isinstance(t0, dict):
-                        px = _safe_float(t0.get("price") or t0.get("p") or t0.get("rate") or t0.get("last"), 0.0) or 0.0
-                        if px > 0.0:
-                            return float(px)
-            elif isinstance(data, list) and data:
-                t0 = data[0]
-                if isinstance(t0, dict):
-                    px = _safe_float(t0.get("price") or t0.get("p") or t0.get("rate") or t0.get("last"), 0.0) or 0.0
-                    if px > 0.0:
-                        return float(px)
-        except Exception as e:
-            last_exc = e
-            continue
-    _ = last_exc
-    return 0.0
-    async def _arzplus_refresh_universe(self, quote: str) -> List[str]:
-        now = time.time()
-        if self._arz_universe and (now - float(self._arz_universe_ts or 0.0)) < float(self._arz_universe_refresh_sec):
-            return list(self._arz_universe)
-        try:
-            rows = await self._arzplus_symbols_meta()
-        except Exception:
-            rows = []
-        q = str(quote).upper()
-        syms: List[str] = []
-        for r in rows or []:
-            try:
-                name = _canon_symbol(r.get("name") or r.get("symbol") or r.get("market") or "")
-                if not name:
-                    continue
-                if r.get("enable") is False or r.get("enabled") is False:
-                    continue
-                qf = (r.get("quote_asset") or r.get("quoteAsset") or r.get("quote") or r.get("secondary_asset") or r.get("secondaryAsset") or "")
-                bf = (r.get("base_asset") or r.get("baseAsset") or r.get("base") or r.get("primary_asset") or r.get("primaryAsset") or "")
-                qf = str(qf or "").upper()
-                bf = str(bf or "").upper()
-                if qf:
-                    if qf != q:
-                        continue
-                else:
-                    if not name.endswith(q):
-                        continue
-                if any(x in name for x in (":", "PERP", "FUT", "SWAP")):
-                    continue
-                syms.append(name)
-            except Exception:
-                continue
-        if not syms:
-            try:
-                cfg_syms = list(getattr(self.cfg, "symbols", []) or [])
-            except Exception:
-                cfg_syms = []
-            for s in cfg_syms:
-                cs = _canon_symbol(s)
-                if not cs:
-                    continue
-                if q and (not cs.endswith(q)):
-                    continue
-                if cs not in syms:
-                    syms.append(cs)
-        majors = [f"BTC{q}", f"ETH{q}", f"USDT{q}", f"PAXG{q}", f"BNB{q}", f"SOL{q}", f"XRP{q}", f"TON{q}"]
-        for m in majors:
-            if m not in syms:
-                syms.append(m)
-        out: List[str] = []
-        for m in majors:
-            if m in syms and m not in out:
-                out.append(m)
-        for s in syms:
-            if s not in out:
-                out.append(s)
-        self._arz_universe = list(out)
-        self._arz_universe_ts = float(now)
-        return list(out)
-    async def _arzplus_hydrate(self, symbols: List[str]) -> None:
-        'Hydrate ArzPlus stats cache with priced rows.'
-        if not symbols:
-            return
-        now = time.time()
-        async def _one(sym: str) -> None:
-            s = _canon_symbol(sym)
-            if not s:
-                return
-            try:
-                try:
-                    row = await self._arzplus_symbol_stats(s)
-                except Exception:
-                    row = {}
-                if not isinstance(row, dict):
-                    row = {}
-                price = _safe_float(row.get("price") or row.get("last") or row.get("last_price") or row.get("close") or row.get("c"), 0.0) or 0.0
-                bid = _safe_float(row.get("bid") or row.get("bestBid") or row.get("best_bid") or row.get("b"), 0.0) or 0.0
-                ask = _safe_float(row.get("ask") or row.get("bestAsk") or row.get("best_ask") or row.get("a"), 0.0) or 0.0
-                mid = _safe_float(row.get("mid") or row.get("mark") or row.get("markPrice"), 0.0) or 0.0
-                depth = None
-                if (price <= 0.0) or (not math.isfinite(price)) or ((mid <= 0.0) and (bid <= 0.0) and (ask <= 0.0)):
-                    try:
-                        depth = await self.get_depth(s)
-                    except Exception:
-                        depth = None
-                    if isinstance(depth, dict):
-                        if isinstance(depth.get("data"), dict):
-                            depth = depth["data"]
-                        elif isinstance(depth.get("result"), dict):
-                            depth = depth["result"]
-                        lt = depth.get("last_trade") or depth.get("lastTrade") or depth.get("last") or depth.get("trade") or {}
-                        px2 = 0.0
-                        if isinstance(lt, dict):
-                            px2 = _safe_float(lt.get("price") or lt.get("p") or lt.get("rate") or lt.get("last"), 0.0) or 0.0
-                        try:
-                            bids = depth.get("bids") or depth.get("buy") or []
-                            asks = depth.get("asks") or depth.get("sell") or []
-                            if bids:
-                                b0 = bids[0]
-                                if isinstance(b0, dict):
-                                    bid = _safe_float(b0.get("price") or b0.get("p"), 0.0) or bid
-                                elif isinstance(b0, (list, tuple)) and len(b0) >= 1:
-                                    bid = _safe_float(b0[0], 0.0) or bid
-                            if asks:
-                                a0 = asks[0]
-                                if isinstance(a0, dict):
-                                    ask = _safe_float(a0.get("price") or a0.get("p"), 0.0) or ask
-                                elif isinstance(a0, (list, tuple)) and len(a0) >= 1:
-                                    ask = _safe_float(a0[0], 0.0) or ask
-                            if bid > 0.0 and ask > 0.0:
-                                mid = (float(bid) + float(ask)) / 2.0
-                        except Exception:
-                            pass
-                        if price <= 0.0:
-                            if mid > 0.0:
-                                price = mid
-                            elif px2 > 0.0:
-                                price = px2
-                if (price <= 0.0) or (not math.isfinite(price)):
-                    try:
-                        px3 = await self._arzplus_last_trade_price(s)
-                        if px3 > 0.0:
-                            price = float(px3)
-                    except Exception:
-                        pass
-                chg = _safe_float(row.get("change"), 0.0) or 0.0
-                chg_pct = _safe_float(
-                    row.get("change_percent")
-                    or row.get("changePercent")
-                    or row.get("priceChangePercent"),
-                    0.0,
-                ) or 0.0
-                if (chg_pct == 0.0) and (price > 0.0) and (chg != 0.0):
-                    try:
-                        chg_pct = float(chg) / float(price) * 100.0
-                    except Exception:
-                        pass
-                high = _safe_float(row.get("high"), 0.0) or 0.0
-                low = _safe_float(row.get("low"), 0.0) or 0.0
-                vol = _safe_float(row.get("volume"), 0.0) or 0.0
-                base_vol = _safe_float(row.get("base_volume"), 0.0) or 0.0
-                row2 = dict(row)
-                row2["symbol"] = s
-                row2["name"] = row2.get("name") or s
-                if bid > 0.0:
-                    row2["bid"] = float(bid)
-                    row2["bestBid"] = row2.get("bestBid") or float(bid)
-                if ask > 0.0:
-                    row2["ask"] = float(ask)
-                    row2["bestAsk"] = row2.get("bestAsk") or float(ask)
-                if mid > 0.0:
-                    row2["mid"] = float(mid)
-                    row2["mark"] = row2.get("mark") or float(mid)
-                if price > 0.0:
-                    row2["price"] = float(price)
-                    row2["last"] = row2.get("last") or float(price)
-                    row2["close"] = row2.get("close") or float(price)
-                row2["change"] = float(chg)
-                row2["change_percent"] = float(chg_pct)
-                row2["priceChangePercent"] = row2.get("priceChangePercent") or float(chg_pct)
-                row2["high"] = float(high)
-                row2["low"] = float(low)
-                row2["volume"] = float(vol)
-                row2["base_volume"] = float(base_vol)
-                row2["_ts"] = float(now)
-                self._arz_stats_cache[s] = (float(now), row2)
-            except Exception:
-                return
-        sem = asyncio.Semaphore(1)  #
-        async def _wrap(sym: str):
-            async with sem:
-                await _one(sym)
-        tasks = [asyncio.create_task(_wrap(s)) for s in symbols]
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
-async def _arzplus_market_snapshot(self) -> dict:
-    'Build a lightweight market/ticker snapshot for ArzPlus.'
-    now = time.time()
-    quote = str(getattr(self.cfg, "quote", "IRT") or "IRT").upper()
-    try:
-        ttl = float(self._arz_stats_ttl_sec or 45.0)
-    except Exception:
-        ttl = 45.0
-    universe = await self._arzplus_refresh_universe(quote)
-    req_syms: List[str] = []
-    try:
-        owner = getattr(self, "_owner", None)
-        wants = getattr(owner, "supported_symbols", None)
-        if isinstance(wants, dict):
-            wants_iter = list(wants.keys())
-        elif isinstance(wants, (list, tuple, set)):
-            wants_iter = list(wants)
-        else:
-            wants_iter = []
-        for x in wants_iter:
-            s0 = _canon_symbol(str(x))
-            if not s0:
-                continue
-            if quote and (not s0.endswith(quote)):
-                s0 = f"{_canon_asset(s0)}{quote}"
-            if s0 and (s0 not in req_syms):
-                req_syms.append(s0)
-    except Exception:
-        req_syms = []
-    try:
-        base_need = int(self._arz_hydrate_batch or 12)
-    except Exception:
-        base_need = 12
-    need = max(12, base_need, len(req_syms))
-    need = min(30, need)
-    pick: List[str] = []
-    for s in req_syms:
-        if s and (s not in pick):
-            pick.append(s)
-    majors = [f"BTC{quote}", f"ETH{quote}", f"USDT{quote}", f"BNB{quote}", f"SOL{quote}", f"XRP{quote}"]
-    for s in majors:
-        if s and (s not in pick):
-            pick.append(s)
-    stale_before = float(now) - float(ttl)
-    cur = int(self._arz_scan_cursor or 0)
-    if universe:
-        for k in range(len(universe)):
-            s = universe[(cur + k) % len(universe)]
-            if s in pick:
-                continue
-            ts = self._arz_stats_cache.get(s, (0.0, {}))[0]
-            try:
-                if float(ts or 0.0) <= stale_before:
-                    pick.append(s)
-            except Exception:
-                pick.append(s)
-            if len(pick) >= need:
-                break
-        self._arz_scan_cursor = (cur + max(1, need)) % len(universe)
-    if universe and len(pick) < need:
-        for s in universe:
-            if s in pick:
-                continue
-            pick.append(s)
-            if len(pick) >= need:
-                break
-    await self._arzplus_hydrate(pick)
-    by_symbol: Dict[str, dict] = {}
-    tickers: List[dict] = []
-    cache_stale_cut = float(ttl) * 2.5
-    for s, (ts, row) in list(self._arz_stats_cache.items()):
-        try:
-            if (now - float(ts or 0.0)) > cache_stale_cut:
-                continue
-            if not isinstance(row, dict):
-                continue
-            by_symbol[s] = row
-            tickers.append(row)
-        except Exception:
-            continue
-    snap = {"server_time": float(now), "tickers": tickers, "by_symbol": by_symbol}
-    self._last_market_stats_snapshot = snap
-    self.last_update_time = float(now)
-    try:
-        ms = int(now * 1000.0)
-        self.last_market_ts_ms = ms
-        self.last_exchange_ts_ms = ms
-        self.last_tick_ts_ms = ms
-    except Exception:
-        pass
-    return snap
+
+    ################################################################################################
+    # REPAIR CANDIDATE INSERTION - REVIEW BEFORE APPLYING
+    # These methods were extracted from accidental nested/top-level blocks.
+    # Generated by s43_repair_candidate.py. Do not trust blindly.
+    ################################################################################################
+
+    # ---- repaired candidate method: get_market_snapshot from lines 2719-2852 ----
     async def get_market_snapshot(self) -> dict:
         now = time.time()
         last_err: Optional[Exception] = None
@@ -2850,6 +2833,8 @@ async def _arzplus_market_snapshot(self) -> dict:
             except Exception:
                 pass
         return {}
+
+    # ---- repaired candidate method: get_last_update_age from lines 2853-2900 ----
     def get_last_update_age(self, now: float = None) -> float:
         """Return seconds since last successful public API update.
 
@@ -2898,6 +2883,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         except Exception:
             pass
         return float("inf")
+
+    # ---- repaired candidate method: get_all_market_stats from lines 2901-2992 ----
     async def get_all_market_stats(self) -> dict:
         if self._is_arzplus():
             try:
@@ -2990,6 +2977,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_exc:
             raise last_exc
         return {}
+
+    # ---- repaired candidate method: get_trades from lines 2993-3011 ----
     async def get_trades(self, symbol: str) -> dict:
         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
         try:
@@ -3009,7 +2998,20 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_exc:
             raise last_exc
         return {}
+
+    # ---- repaired candidate method: get_balance from lines 3012-3065 ----
     async def get_balance(self) -> dict:
+        try:
+            _cls = type(self)
+            _wdu = float(getattr(_cls, "_balance_disabled_until_global", 0.0) or 0.0)
+        except Exception:
+            _wdu = 0.0
+        if _wdu > time.time():
+            try:
+                print(f"ISOCHK_GLOBAL_COOLDOWN phase=get_balance until={int(_wdu)} fail_count={int(getattr(type(self), '_balance_fail_count_global', 0) or 0)} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
         try:
             _s43_debug_print(f"[AUTHDBG_GETBAL] token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} cache_valid={self._balance_cache_valid() if hasattr(self, '_balance_cache_valid') else 'NA'}")
             last_exc: Optional[Exception] = None
@@ -3059,10 +3061,39 @@ async def _arzplus_market_snapshot(self) -> dict:
                     continue
             if last_exc:
                 raise last_exc
-            raise TradingHalt("BALANCE_FETCH_FAILED: EMPTY_RESPONSE")
+            try:
+                _fc = int(getattr(type(self), "_balance_fail_count_global", 0) or 0) + 1
+            except Exception:
+                _fc = 1
+            try:
+                _du_new = time.time() + 120.0
+                setattr(type(self), "_balance_fail_count_global", _fc)
+                setattr(type(self), "_balance_disabled_until_global", _du_new)
+            except Exception:
+                pass
+            try:
+                print(f"ISOCHK_GLOBAL_EMPTY phase=get_balance fail_count={_fc} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
         except Exception as e:
-            print(f"GETBALDBG EXC {type(e).__name__}: {e}")
-            raise
+            try:
+                _fc = int(getattr(type(self), "_balance_fail_count_global", 0) or 0) + 1
+            except Exception:
+                _fc = 1
+            try:
+                _du_new = time.time() + 120.0
+                setattr(type(self), "_balance_fail_count_global", _fc)
+                setattr(type(self), "_balance_disabled_until_global", _du_new)
+            except Exception:
+                pass
+            try:
+                print(f"ISOCHK_GLOBAL phase=get_balance err={type(e).__name__}:{e} fail_count={_fc} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
+
+    # ---- repaired candidate method: conn_check from lines 3066-3183 ----
     async def conn_check(self, *, timeout_sec: Optional[float] = None) -> Tuple[bool, float, int]:
         """Lightweight connectivity check with DNS/path double-verify (Termux / mobile networks).
 
@@ -3181,6 +3212,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         except Exception:
             pass
         return False, 0.0, int(last_code or 0)
+
+    # ---- repaired candidate method: place_order from lines 3184-3335 ----
     async def place_order(
         self,
         symbol: str,
@@ -3333,6 +3366,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_exc:
             raise last_exc
         return {}
+
+    # ---- repaired candidate method: place_limit from lines 3336-3365 ----
     async def place_limit(
         self,
         symbol: str,
@@ -3364,6 +3399,7 @@ async def _arzplus_market_snapshot(self) -> dict:
             **extra,
         )
 
+    # ---- repaired candidate method: place_market from lines 3367-3395 ----
     async def place_market(
         self,
         symbol: str,
@@ -3393,6 +3429,8 @@ async def _arzplus_market_snapshot(self) -> dict:
             leverage=leverage,
             **extra,
         )
+
+    # ---- repaired candidate method: cancel_all_orders from lines 3396-3459 ----
     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
         payload: Dict[str, Any] = {}
         try:
@@ -3457,6 +3495,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_exc:
             raise last_exc
         return {"ok": False}
+
+    # ---- repaired candidate method: list_orders from lines 3460-3512 ----
     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
         base_params: Dict[str, Any] = {}
         is_arz = _is_arzplus_client(self)
@@ -3510,6 +3550,8 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_err:
             raise last_err
         return {}
+
+    # ---- repaired candidate method: cancel_order from lines 3513-3557 ----
     async def cancel_order(self, order_id) -> dict:
         oid = order_id
         try:
@@ -3555,6 +3597,958 @@ async def _arzplus_market_snapshot(self) -> dict:
         if last_err:
             raise last_err
         return {}
+
+    ################################################################################################
+    # END REPAIR CANDIDATE INSERTION
+    ################################################################################################
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: get_market_snapshot original lines 2719-2852, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def get_market_snapshot(self) -> dict:
+#         now = time.time()
+#         last_err: Optional[Exception] = None
+#         if self._is_arzplus():
+#             try:
+#                 snap = await self._arzplus_market_snapshot()
+#                 by = snap.get("by_symbol") if isinstance(snap, dict) else None
+#                 if not isinstance(by, dict):
+#                     by = snap if isinstance(snap, dict) else {}
+#                 if isinstance(by, dict):
+#                     try:
+#                         self.last_update_time = now
+#                     except Exception:
+#                         pass
+#                     try:
+#                         self._last_market_stats_snapshot = by
+#                     except Exception:
+#                         pass
+#                     return by
+#             except Exception as e:
+#                 last_err = e
+#         endpoints = ("/market/stats", "/market/stats/")
+#         for ep in endpoints:
+#             try:
+#                 tmo = float(_env_float("TICKERS_REQ_TIMEOUT", _env_float("BATCH_TICKERS_TIMEOUT_SEC", 6.5)) or 5.0)
+#                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False, params=None), timeout=tmo)
+#                 stats: Optional[dict] = None
+#                 rows_list: Optional[List[dict]] = None
+#                 if isinstance(payload, list):
+#                     rows_list = [x for x in payload if isinstance(x, dict)]
+#                 elif isinstance(payload, dict):
+#                     for kk in ("data", "result", "results", "items", "rows", "tickers", "markets", "pairs", "symbols"):
+#                         vv = payload.get(kk)
+#                         if isinstance(vv, list):
+#                             rows_list = [x for x in vv if isinstance(x, dict)]
+#                             break
+#                         if isinstance(vv, dict):
+#                             for kk2 in ("data", "items", "rows", "tickers", "markets", "pairs", "symbols"):
+#                                 vv2 = vv.get(kk2)
+#                                 if isinstance(vv2, list):
+#                                     rows_list = [x for x in vv2 if isinstance(x, dict)]
+#                                     break
+#                             if rows_list is not None:
+#                                 break
+#                 if rows_list:
+#                     stats = {}
+#                     for r in rows_list:
+#                         sym1 = r.get("symbol") or r.get("name") or r.get("market") or r.get("pair") or r.get("sym") or r.get("s")
+#                         if not sym1:
+#                             continue
+#                         cs = _canon_symbol(sym1)
+#                         if not cs:
+#                             continue
+#                         rr = dict(r)
+#                         rr.setdefault("symbol", cs)
+#                         stats[cs] = rr
+#                 if isinstance(payload, dict):
+#                     if isinstance(payload.get("stats"), dict):
+#                         stats = payload.get("stats")
+#                     elif isinstance(payload.get("data"), dict) and isinstance(payload["data"].get("stats"), dict):
+#                         stats = payload["data"]["stats"]
+#                     elif isinstance(payload.get("result"), dict) and isinstance(payload["result"].get("stats"), dict):
+#                         stats = payload["result"]["stats"]
+#                     elif all(isinstance(v, dict) for v in payload.values()) and len(payload) >= 10:
+#                         stats = payload
+#                 if isinstance(stats, dict) and stats:
+#                     norm: Dict[str, dict] = {}
+#                     try:
+#                         for k0, v0 in stats.items():
+#                             if isinstance(v0, dict):
+#                                 cs = _canon_symbol(v0.get("symbol", k0))
+#                                 if not cs:
+#                                     continue
+#                                 vv = dict(v0)
+#                                 vv.setdefault("symbol", cs)
+#                                 norm[cs] = vv
+#                             else:
+#                                 cs = _canon_symbol(k0)
+#                                 if not cs:
+#                                     continue
+#                                 norm[cs] = {"symbol": cs, "value": v0}
+#                     except Exception:
+#                         norm = {}
+#                         for k0, v0 in (stats or {}).items():
+#                             cs = _canon_symbol(k0)
+#                             if not cs:
+#                                 continue
+#                             norm[cs] = dict(v0) if isinstance(v0, dict) else {"symbol": cs, "value": v0}
+#                             if isinstance(norm[cs], dict):
+#                                 norm[cs].setdefault("symbol", cs)
+#                     try:
+#                         self.last_update_time = now
+#                     except Exception:
+#                         pass
+#                     try:
+#                         self._last_market_stats_snapshot = norm
+#                     except Exception:
+#                         pass
+#                     return norm
+#             except Exception as e:
+#                 last_err = e
+#         try:
+#             m = await self.get_all_market_stats()
+#             if isinstance(m, dict) and m:
+#                 try:
+#                     self.last_update_time = now
+#                 except Exception:
+#                     pass
+#                 try:
+#                     self._last_market_stats_snapshot = m
+#                 except Exception:
+#                     pass
+#                 out: Dict[str, dict] = {}
+#                 for k, v in m.items():
+#                     kk = _canon_symbol(k)
+#                     if isinstance(v, dict) and isinstance(v.get("raw"), dict):
+#                         out[kk] = v["raw"]
+#                     elif isinstance(v, dict):
+#                         out[kk] = dict(v)
+#                     else:
+#                         out[kk] = {"value": v}
+#                 try:
+#                     self._last_market_stats_snapshot = out
+#                 except Exception:
+#                     pass
+#                 return out
+#         except Exception:
+#             pass
+#         if last_err:
+#             try:
+#                 self._logger.debug("event=MARKET_STATS_FAIL err=%s", last_err)
+#             except Exception:
+#                 pass
+#         return {}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: get_last_update_age original lines 2853-2900, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     def get_last_update_age(self, now: float = None) -> float:
+#         """Return seconds since last successful public API update.
+#
+#         """
+#         try:
+#             now_epoch = float(_epoch_to_sec(time.time() if now is None else now))
+#         except Exception:
+#             now_epoch = float(time.time())
+#         try:
+#             now_mono = float(time.monotonic())
+#         except Exception:
+#             now_mono = 0.0
+#         try:
+#             ts_raw = getattr(self, "last_update_time", 0.0) or 0.0
+#         except Exception:
+#             ts_raw = 0.0
+#         try:
+#             ts_raw_f = float(ts_raw or 0.0)
+#         except Exception:
+#             ts_raw_f = 0.0
+#         try:
+#             ts_epoch = float(_epoch_to_sec(ts_raw_f))
+#         except Exception:
+#             ts_epoch = 0.0
+#         if ts_epoch >= 946684800.0:
+#             try:
+#                 if now_epoch > 0.0 and ts_epoch > (now_epoch + 300.0):
+#                     return float("inf")
+#             except Exception:
+#                 pass
+#             try:
+#                 return max(0.0, float(now_epoch - ts_epoch))
+#             except Exception:
+#                 return float("inf")
+#         ts_mono = ts_raw_f
+#         try:
+#             if ts_mono > 1e11:
+#                 ts_mono = ts_mono / 1000.0
+#             elif ts_mono > 1e8:
+#                 ts_mono = ts_mono / 1000.0
+#         except Exception:
+#             pass
+#         try:
+#             if ts_mono > 0.0 and now_mono > 0.0 and ts_mono <= (now_mono + 300.0):
+#                 return max(0.0, float(now_mono - ts_mono))
+#         except Exception:
+#             pass
+#         return float("inf")
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: get_all_market_stats original lines 2901-2992, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def get_all_market_stats(self) -> dict:
+#         if self._is_arzplus():
+#             try:
+#                 snap = await self._arzplus_market_snapshot()
+#                 by = snap.get("by_symbol") if isinstance(snap, dict) else None
+#                 if not isinstance(by, dict):
+#                     by = snap if isinstance(snap, dict) else {}
+#                 if isinstance(by, dict):
+#                     return by
+#             except Exception:
+#                 pass
+#         last_exc: Optional[Exception] = None
+#         try:
+#             tmo = float(_env_float("MARKET_STATS_REQ_TIMEOUT", _env_float("MARKET_STATS_TIMEOUT_SEC", 5.0)) or 5.0)
+#         except Exception:
+#             tmo = 5.0
+#         tmo = float(max(1.5, min(20.0, tmo)))
+#         def _extract_map(payload: Any) -> Dict[str, dict]:
+#             out: Dict[str, dict] = {}
+#             if payload is None:
+#                 return out
+#             if isinstance(payload, dict):
+#                 for k in ("stats", "symbols", "markets", "data", "result"):
+#                     v = payload.get(k)
+#                     if isinstance(v, dict) and v:
+#                         payload = v
+#                         break
+#                     if isinstance(v, list) and v:
+#                         payload = v
+#                         break
+#                 if isinstance(payload, dict):
+#                     if len(payload) >= 5 and all(isinstance(v, dict) for v in payload.values()):
+#                         for sym, row in payload.items():
+#                             if not isinstance(sym, str) or not isinstance(row, dict):
+#                                 continue
+#                             cs = _canon_symbol(sym)
+#                             rr = dict(row)
+#                             rr.setdefault("symbol", cs)
+#                             out[cs] = rr
+#                         return out
+#             rows: List[dict] = []
+#             if isinstance(payload, list):
+#                 rows = [x for x in payload if isinstance(x, dict)]
+#             elif isinstance(payload, dict):
+#                 for k in ("rows", "items", "tickers", "symbols", "markets", "pairs"):
+#                     v = payload.get(k)
+#                     if isinstance(v, list):
+#                         rows = [x for x in v if isinstance(x, dict)]
+#                         break
+#             for r in rows:
+#                 try:
+#                     sym = r.get("symbol") or r.get("name") or r.get("market") or r.get("pair") or r.get("sym") or r.get("s")
+#                     if not sym:
+#                         continue
+#                     cs = _canon_symbol(sym)
+#                     rr = dict(r)
+#                     rr["symbol"] = cs
+#                     out[cs] = rr
+#                 except Exception:
+#                     continue
+#             return out
+#         for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/symbols/", "/market/symbols"):
+#             try:
+#                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False), timeout=tmo)
+#                 m = _extract_map(payload)
+#                 if m:
+#                     try:
+#                         self.last_update_time = time.time()
+#                     except Exception:
+#                         pass
+#                     return m
+#             except Exception as e:
+#                 last_exc = e
+#         try:
+#             snap = await asyncio.wait_for(self.get_all_tickers(), timeout=tmo)
+#             if isinstance(snap, dict):
+#                 by = snap.get("by_symbol")
+#                 if isinstance(by, dict) and by:
+#                     out: Dict[str, dict] = {}
+#                     for k, v in by.items():
+#                         cs = _canon_symbol(k)
+#                         if isinstance(v, dict):
+#                             rr = dict(v)
+#                             rr.setdefault("symbol", cs)
+#                             out[cs] = rr
+#                     if out:
+#                         return out
+#         except Exception as e:
+#             last_exc = last_exc or e
+#         if last_exc:
+#             raise last_exc
+#         return {}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: get_trades original lines 2993-3011, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def get_trades(self, symbol: str) -> dict:
+#         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+#         try:
+#             sym = _canon_pair(symbol, default_quote=q)
+#         except Exception:
+#             try:
+#                 sym = _canon_symbol(symbol)
+#             except Exception:
+#                 sym = str(symbol or "")
+#         last_exc: Optional[Exception] = None
+#         for ep in ("/market/trades/", "/market/trades"):
+#             try:
+#                 return await self.request("GET", ep, params={"symbol": sym}, auth=False)
+#             except Exception as e:
+#                 last_exc = e
+#                 continue
+#         if last_exc:
+#             raise last_exc
+#         return {}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: get_balance original lines 3012-3065, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def get_balance(self) -> dict:
+#         try:
+#             _s43_debug_print(f"[AUTHDBG_GETBAL] token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} cache_valid={self._balance_cache_valid() if hasattr(self, '_balance_cache_valid') else 'NA'}")
+#             last_exc: Optional[Exception] = None
+#             for ep in ("/wallet/balance/", "/wallet/balance"):
+#                 try:
+#                     try:
+#                         def _s43_mask_authdbg(v):
+#                             v = str(v or "")
+#                             if len(v) <= 0:
+#                                 return "<EMPTY>"
+#                             if len(v) <= 12:
+#                                 return v[:2] + "...len=" + str(len(v))
+#                             return v[:6] + "..." + v[-4:] + ":len=" + str(len(v))
+#                         _hp = getattr(self, "_headers_private", None) or {}
+#                         _authv = ""
+#                         try:
+#                             _authv = _hp.get("Authorization", "") if hasattr(_hp, "get") else ""
+#                         except Exception:
+#                             _authv = ""
+#                         _tok = getattr(self, "_token", "")
+#                         _scheme = getattr(self, "_auth_scheme", None)
+#                         _w = (
+#                             getattr(self, "wallet_name", None)
+#                             or getattr(self, "_wallet_name", None)
+#                             or getattr(self, "name", None)
+#                             or getattr(self, "_name", None)
+#                             or getattr(self, "label", None)
+#                             or getattr(self, "_label", None)
+#                             or "UNKNOWN"
+#                         )
+#                         _base = getattr(self, "base_url", None) or getattr(self, "_base_url", None) or ""
+#                         _s43_debug_print(
+#                             f"AUTHDBG_BALANCE_V1 wallet={_w} ep={ep} "
+#                             f"scheme={_scheme} "
+#                             f"token={_s43_mask_authdbg(_tok)} "
+#                             f"auth={_s43_mask_authdbg(_authv)} "
+#                             f"token_len={len(str(_tok or ''))} "
+#                             f"auth_len={len(str(_authv or ''))} "
+#                             f"base={_base}",
+#                             flush=True,
+#                         )
+#                     except Exception as _authdbg_e:
+#                         _s43_debug_print(f"AUTHDBG_BALANCE_V1_FAIL err={type(_authdbg_e).__name__}:{_authdbg_e}", flush=True)
+#                     return await self.request("GET", ep, auth=True)
+#                 except Exception as e:
+#                     last_exc = e
+#                     continue
+#             if last_exc:
+#                 raise last_exc
+#             raise TradingHalt("BALANCE_FETCH_FAILED: EMPTY_RESPONSE")
+#         except Exception as e:
+#             print(f"GETBALDBG EXC {type(e).__name__}: {e}")
+#             raise
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: conn_check original lines 3066-3183, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def conn_check(self, *, timeout_sec: Optional[float] = None) -> Tuple[bool, float, int]:
+#         """Lightweight connectivity check with DNS/path double-verify (Termux / mobile networks).
+#
+#         Returns: (ok, rtt_ms, http_status_code)
+#         Sets: self._conn_last_diag in {"OK","DNS_OR_PATH","TOTAL_DOWN","CONN_CHECK_FAIL"}
+#         """
+#         try:
+#             now = float(time.time())
+#         except Exception:
+#             now = float(time.time())
+#         try:
+#             ttl = float(_env_float("CONN_CHECK_TTL_SEC", 5.0) or 5.0)
+#         except Exception:
+#             ttl = 5.0
+#         try:
+#             last_ok = float(getattr(self, "_conn_last_ok_ts", 0.0) or 0.0)
+#         except Exception:
+#             last_ok = 0.0
+#         if last_ok > 0.0 and float(ttl) > 0.0 and (now - last_ok) <= float(ttl):
+#             try:
+#                 setattr(self, "_conn_last_diag", "OK")
+#             except Exception:
+#                 pass
+#             try:
+#                 return True, float(getattr(self, "_conn_last_rtt_ms", 0.0) or 0.0), int(getattr(self, "_conn_last_code", 200) or 200)
+#             except Exception:
+#                 return True, 0.0, 200
+#         try:
+#             tmo = float(timeout_sec if timeout_sec is not None else float(_env_float("CONN_CHECK_TIMEOUT_SEC", 2.5) or 2.5))
+#         except Exception:
+#             tmo = 2.5
+#         tmo = float(max(0.8, min(12.0, tmo)))
+#         endpoints = ("/market/symbols/", "/market/symbols", "/market/tickers/", "/market/tickers")
+#         last_code = 0
+#         last_err = ""
+#         dns_like = False
+#         def _dnsish(err: BaseException) -> bool:
+#             try:
+#                 s = (str(err) or "").lower()
+#             except Exception:
+#                 s = ""
+#             pats = (
+#                 "name or service not known",
+#                 "temporary failure in name resolution",
+#                 "nodename nor servname provided",
+#                 "gaierror",
+#                 "dns",
+#                 "cannot connect to host",
+#                 "no address associated",
+#                 "connection reset",
+#                 "network is unreachable",
+#                 "connect call failed",
+#             )
+#             return any(p in s for p in pats)
+#         async def _tcp_probe_1111(timeout: float) -> bool:
+#             try:
+#                 timeout = float(max(0.4, min(4.0, timeout)))
+#             except Exception:
+#                 timeout = 1.2
+#             try:
+#                 r, w = await asyncio.wait_for(asyncio.open_connection("1.1.1.1", 443), timeout=timeout)
+#                 try:
+#                     w.close()
+#                     if hasattr(w, "wait_closed"):
+#                         await w.wait_closed()
+#                 except Exception:
+#                     pass
+#                 return True
+#             except Exception:
+#                 return False
+#         for ep in endpoints:
+#             url = self._build_url(ep)
+#             try:
+#                 sess = await self._get_session()
+#                 headers = self._build_headers(False)
+#                 t0 = time.time()
+#                 async with sess.request("GET", url, headers=headers, timeout=aiohttp.ClientTimeout(total=tmo)) as resp:
+#                     last_code = int(getattr(resp, "status", 0) or 0)
+#                     _ = await resp.text()
+#                 rtt_ms = (time.time() - float(t0)) * 1000.0
+#                 if last_code:
+#                     try:
+#                         setattr(self, "_conn_last_ok_ts", float(now))
+#                         setattr(self, "_conn_last_rtt_ms", float(rtt_ms))
+#                         setattr(self, "_conn_last_code", int(last_code))
+#                         setattr(self, "_conn_last_diag", "OK")
+#                     except Exception:
+#                         pass
+#                     if 200 <= int(last_code) < 500:
+#                         return True, float(rtt_ms), int(last_code)
+#             except Exception as e:
+#                 last_err = str(e)
+#                 try:
+#                     if _dnsish(e):
+#                         dns_like = True
+#                 except Exception:
+#                     pass
+#                 continue
+#         diag = "CONN_CHECK_FAIL"
+#         try:
+#             if dns_like or _dnsish(Exception(last_err)):
+#                 ok_probe = await _tcp_probe_1111(timeout=min(1.6, max(0.8, tmo * 0.6)))
+#                 diag = "DNS_OR_PATH" if ok_probe else "TOTAL_DOWN"
+#             else:
+#                 ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+#                 if not ok_probe:
+#                     diag = "TOTAL_DOWN"
+#         except Exception:
+#             diag = "CONN_CHECK_FAIL"
+#         try:
+#             setattr(self, "_conn_last_diag", str(diag))
+#         except Exception:
+#             pass
+#         try:
+#             self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+#         except Exception:
+#             pass
+#         return False, 0.0, int(last_code or 0)
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def place_order(
+#         self,
+#         symbol: str,
+#         side: str,
+#         amount: float,
+#         price: float,
+#         cid: Optional[str] = None,
+#         *,
+#         fill_type: str = "limit",
+#         market: str = "spot",
+#         reduce_only: Optional[bool] = None,
+#         **kwargs: Any,
+#     ) -> dict:
+#         try:
+#             if _termux_env_bool("TERMUX_MODE", False):
+#                 _termux_mark_order_activity()
+#         except Exception:
+#             pass
+#
+#         # PHASE4_ORDER_GATE_MAIN
+#         if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+#             try:
+#                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+#                 if hasattr(_gate_log, "warning"):
+#                     _gate_log.warning(
+#                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+#                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+#                     )
+#             except Exception:
+#                 pass
+#             return {}
+#
+#         if (
+#             not bool(getattr(self, "_ai_live_trading_armed", False))
+#             and bool(getattr(getattr(self, "_cfg", getattr(self, "cfg", None)), "autonomous_ai", False))
+#         ):
+#             try:
+#                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+#                 if hasattr(_gate_log, "warning"):
+#                     _gate_log.warning(
+#                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+#                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+#                     )
+#             except Exception:
+#                 pass
+#             return {}
+#
+#         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+#         try:
+#             sym = _canon_pair(symbol, default_quote=q)
+#         except Exception:
+#             try:
+#                 sym = _canon_symbol(symbol)
+#             except Exception:
+#                 sym = str(symbol or "")
+#
+#         market_raw = market
+#         market_norm = str(market or "spot").lower().strip()
+#         market_aliases = {
+#             "spot": "spot",
+#             "cash": "spot",
+#             "future": "futures",
+#             "futures": "futures",
+#             "perp": "futures",
+#             "perpetual": "futures",
+#             "swap": "futures",
+#         }
+#         market_norm = market_aliases.get(market_norm, market_norm)
+#         if market_norm not in ("spot", "futures"):
+#             self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
+#             raise ValueError(f"Unsupported market type: {market_raw}")
+#
+#         fill_norm = str(fill_type or "limit").lower().strip()
+#         fill_aliases = {
+#             "limit": "limit",
+#             "lmt": "limit",
+#             "market": "market",
+#             "mkt": "market",
+#         }
+#         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+#         if fill_norm not in ("limit", "market"):
+#             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+#             raise ValueError(f"Unsupported fill_type: {fill_type}")
+#
+#         if fill_norm == "limit" and price is None:
+#             raise ValueError("Price must be specified for LIMIT orders.")
+#
+#         payload: Dict[str, Any] = {
+#             "symbol": sym,
+#             "amount": self._as_payload_number(amount),
+#             "side": self._norm_side(side),
+#             "fill_type": fill_norm,
+#             "market": market_norm,
+#         }
+#
+#         if price is not None:
+#             payload["price"] = self._as_payload_number(price)
+#         else:
+#             payload["price"] = None
+#
+#         if cid:
+#             payload["client_id"] = str(cid)
+#
+#         extra: Dict[str, Any] = dict(kwargs or {})
+#
+#         if reduce_only is not None:
+#             extra["reduce_only"] = bool(reduce_only)
+#
+#         if market_norm == "futures":
+#             extra["reduce_only"] = bool(extra.get("reduce_only", False))
+#             if "leverage" in extra and extra.get("leverage") is not None:
+#                 try:
+#                     extra["leverage"] = float(extra.get("leverage"))
+#                 except (TypeError, ValueError):
+#                     self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+#                     extra.pop("leverage", None)
+#         else:
+#             if bool(extra.get("reduce_only", False)):
+#                 self._logger.warning("reduce_only=True ignored for spot order.")
+#             extra.pop("reduce_only", None)
+#
+#         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+#             extra.pop(protected_key, None)
+#
+#         payload.update(extra)
+#
+#         try:
+#             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+#                 ok, rtt_ms, code = await self.conn_check()
+#                 if not ok:
+#                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+#                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+#                         diag = "CONN_CHECK_FAIL"
+#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+#         except TemporaryPause:
+#             raise
+#         except Exception as e:
+#             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+#
+#         last_exc: Optional[Exception] = None
+#         for ep in ("/market/orders/", "/market/orders"):
+#             try:
+#                 return await self.request("POST", ep, payload=payload, auth=True)
+#             except Exception as e:
+#                 last_exc = e
+#                 continue
+#
+#         if last_exc:
+#             raise last_exc
+#         return {}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: place_limit original lines 3336-3365, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def place_limit(
+#         self,
+#         symbol: str,
+#         side: str,
+#         qty: float,
+#         price: float,
+#         cid: Optional[str] = None,
+#         *,
+#         notional_irt: Optional[float] = None,
+#         market: str = "spot",
+#         reduce_only: Optional[bool] = None,
+#         leverage: Optional[Union[int, float]] = None,
+#         **kwargs: Any,
+#     ) -> dict:
+#         extra: Dict[str, Any] = dict(kwargs or {})
+#         if notional_irt is not None and "notional_irt" not in extra:
+#             extra["notional_irt"] = notional_irt
+#
+#         return await self.place_order(
+#             symbol=symbol,
+#             side=side,
+#             amount=qty,
+#             price=price,
+#             cid=cid,
+#             fill_type="limit",
+#             market=market,
+#             reduce_only=reduce_only,
+#             leverage=leverage,
+#             **extra,
+#         )
+#===================================================================================================
+
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: place_market original lines 3367-3395, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def place_market(
+#         self,
+#         symbol: str,
+#         side: str,
+#         qty: float,
+#         cid: Optional[str] = None,
+#         *,
+#         notional_irt: Optional[float] = None,
+#         market: str = "spot",
+#         reduce_only: Optional[bool] = None,
+#         leverage: Optional[Union[int, float]] = None,
+#         **kwargs: Any,
+#     ) -> dict:
+#         extra: Dict[str, Any] = dict(kwargs or {})
+#         if notional_irt is not None and "notional_irt" not in extra:
+#             extra["notional_irt"] = notional_irt
+#
+#         return await self.place_order(
+#             symbol=symbol,
+#             side=side,
+#             amount=qty,
+#             price=0.0,
+#             cid=cid,
+#             fill_type="market",
+#             market=market,
+#             reduce_only=reduce_only,
+#             leverage=leverage,
+#             **extra,
+#         )
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: cancel_all_orders original lines 3396-3459, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+#         payload: Dict[str, Any] = {}
+#         try:
+#             if _termux_env_bool("TERMUX_MODE", False):
+#                 _termux_mark_order_activity()
+#         except Exception:
+#             pass
+#         if symbol:
+#             try:
+#                 payload["symbol"] = _canon_symbol(symbol)
+#             except Exception:
+#                 payload["symbol"] = str(symbol or "")
+#         try:
+#             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+#                 ok, rtt_ms, code = await self.conn_check()
+#                 if not ok:
+#                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+#                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+#                         diag = "CONN_CHECK_FAIL"
+#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+#         except TemporaryPause:
+#             raise
+#         except Exception as e:
+#             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+#         last_exc: Optional[Exception] = None
+#         for ep in (
+#             "/market/orders/cancel_all/",
+#             "/market/orders/cancel_all",
+#             "/market/orders/cancel-all/",
+#             "/market/orders/cancel-all",
+#         ):
+#             try:
+#                 return await self.request("POST", ep, payload=payload or None, auth=True)
+#             except Exception as e:
+#                 last_exc = e
+#                 continue
+#         try:
+#             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+#             items = []
+#             if isinstance(r, dict):
+#                 v = r.get("data") or r.get("orders") or r.get("items") or r.get("result") or r.get("list") or []
+#                 if isinstance(v, list):
+#                     items = [o for o in v if isinstance(o, dict)]
+#             max_n = int(_env_int("CANCEL_ALL_FALLBACK_MAX", 40) or 40)
+#             max_n = max(5, min(200, max_n))
+#             canceled = 0
+#             for o in (items or [])[:max_n]:
+#                 oid = o.get("id") or o.get("order_id") or o.get("orderId")
+#                 if oid is None:
+#                     continue
+#                 try:
+#                     await self.cancel_order(oid)
+#                     canceled += 1
+#                 except Exception as e:
+#                     last_exc = e
+#                     continue
+#             return {"ok": True, "canceled": int(canceled), "fallback": True}
+#         except Exception as e:
+#             last_exc = e
+#         if last_exc:
+#             raise last_exc
+#         return {"ok": False}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: list_orders original lines 3460-3512, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+#         base_params: Dict[str, Any] = {}
+#         is_arz = _is_arzplus_client(self)
+#         if symbol:
+#             try:
+#                 q = str(getattr(self.cfg, "quote", "") or "").upper().strip(); base_params["symbol"] = _canon_pair(symbol, default_quote=q)
+#             except Exception:
+#                 base_params["symbol"] = str(symbol)
+#         if not is_arz:
+#             try:
+#                 base_params["limit"] = int(limit) if limit is not None else 50
+#             except Exception:
+#                 base_params["limit"] = 50
+#             try:
+#                 base_params["offset"] = int(offset) if offset is not None else 0
+#             except Exception:
+#                 base_params["offset"] = 0
+#         st = None
+#         try:
+#             st = str(status).strip().lower() if status is not None else None
+#         except Exception:
+#             st = None
+#         if self._is_arzplus() and st in ("open", "opened", "active", "pending"):
+#             st = "new"
+#         eps: List[str] = ["/market/orders/", "/market/orders"]
+#         if st in ("open", "opened", "active", "pending"):
+#             eps.extend([
+#                 "/market/orders/open/",
+#                 "/market/orders/open",
+#                 "/market/open_orders/",
+#                 "/market/open_orders",
+#             ])
+#         param_variants: List[Dict[str, Any]] = []
+#         if st:
+#             param_variants.append({"status": st})
+#             param_variants.append({"state": st})
+#         else:
+#             param_variants.append({})
+#         last_err = None
+#         for ep in eps:
+#             for pv in param_variants:
+#                 params = dict(base_params)
+#                 try:
+#                     params.update(pv or {})
+#                 except Exception:
+#                     pass
+#                 try:
+#                     return await self.request("GET", ep, auth=True, params=(params or None))
+#                 except Exception as e:
+#                     last_err = e
+#         if last_err:
+#             raise last_err
+#         return {}
+#===================================================================================================
+
+
+#===================================================================================================
+# QUARANTINED BROKEN NESTED BLOCK: cancel_order original lines 3513-3557, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+# This block was not removed in the candidate output.
+# It is commented out to avoid duplicate/nested accidental definitions.
+# Review manually before applying any final repair.
+#===================================================================================================
+#     async def cancel_order(self, order_id) -> dict:
+#         oid = order_id
+#         try:
+#             oid = int(order_id)
+#         except Exception:
+#             oid = str(order_id)
+#         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+#         try:
+#             if _termux_env_bool("TERMUX_MODE", False):
+#                 _termux_mark_order_activity()
+#         except Exception:
+#             pass
+#         try:
+#             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+#                 ok, rtt_ms, code = await self.conn_check()
+#                 if not ok:
+#                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+#                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+#                         diag = "CONN_CHECK_FAIL"
+#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+#         except TemporaryPause:
+#             raise
+#         except Exception as e:
+#             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+#         last_err = None
+#         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+#             try:
+#                 return await self.request("POST", ep, payload=None, auth=True)
+#             except Exception as e:
+#                 last_err = e
+#         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+#             try:
+#                 return await self.request("DELETE", ep, payload=None, auth=True)
+#             except Exception as e:
+#                 last_err = e
+#         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+#             try:
+#                 return await self.request("POST", ep, payload=payload, auth=True)
+#             except Exception as e:
+#                 last_err = e
+#         if last_err:
+#             raise last_err
+#         return {}
+#===================================================================================================
+
 def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
     for k in keys:
         if k in d and d.get(k) is not None and str(d.get(k)).strip() != "":
@@ -3567,83 +4561,7 @@ def _quantize_down(x: float, step: float) -> float:
     if step <= 0:
         return float(x)
     return float(math.floor(float(x) / float(step)) * float(step))
-    async def get_all_market_stats(self) -> dict:
-        for ep in ("/market/symbols/", "/market/symbols"):
-            try:
-                return await self.request("GET", ep, auth=False)
-            except Exception:
-                continue
-        return {}
-    async def get_trades(self, symbol: str) -> dict:
-        try:
-            sym = _canon_symbol(symbol)
-        except Exception:
-            sym = str(symbol or "")
-        for ep in ("/market/trades/", "/market/trades"):
-            try:
-                return await self.request("GET", ep, params={"symbol": sym}, auth=False)
-            except Exception:
-                continue
-        return {}
-    async def get_market_snapshot(self) -> dict:
-        if self._is_arzplus():
-            return await self._arzplus_market_snapshot()
-        now = float(time.time())
-        last_err = None
-        for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/tickers/", "/market/tickers"):
-            try:
-                payload = await self.request("GET", ep, auth=False)
-                stats = None
-                if isinstance(payload, dict):
-                    if isinstance(payload.get("stats"), dict):
-                        stats = payload.get("stats")
-                    elif isinstance(payload.get("data"), dict) and isinstance(payload["data"].get("stats"), dict):
-                        stats = payload["data"]["stats"]
-                    elif isinstance(payload.get("result"), dict) and isinstance(payload["result"].get("stats"), dict):
-                        stats = payload["result"]["stats"]
-                    elif all(isinstance(v, dict) for v in payload.values()) and len(payload) >= 10:
-                        stats = payload
-                if isinstance(stats, dict) and stats:
-                    try:
-                        self.last_update_time = now
-                    except Exception:
-                        pass
-                    try:
-                        self._last_market_stats_snapshot = stats
-                    except Exception:
-                        pass
-                    return stats
-            except Exception as e:
-                last_err = e
-        try:
-            m = await self.get_all_market_stats()
-            if isinstance(m, dict) and m:
-                try:
-                    self.last_update_time = now
-                except Exception:
-                    pass
-                try:
-                    self._last_market_stats_snapshot = m
-                except Exception:
-                    pass
-                out = {}
-                for k, v in m.items():
-                    kk = _canon_symbol(k)
-                    if isinstance(v, dict) and isinstance(v.get("raw"), dict):
-                        out[kk] = v["raw"]
-                    elif isinstance(v, dict):
-                        out[kk] = dict(v)
-                    else:
-                        out[kk] = {"value": v}
-                return out
-        except Exception as e:
-            last_err = last_err or e
-        if last_err:
-            try:
-                getattr(self, "_logger", None) and self._logger.debug("event=MARKET_STATS_FAIL err=%s", last_err)
-            except Exception:
-                pass
-        return {}
+
 class MarketSpecsCache:
     def __init__(self, ex_public: ExchangeClient, logger: logging.Logger):
         self._ex = ex_public
@@ -8474,10 +9392,29 @@ class RazTraderEnhanced:
         }
     async def _get_portfolio_data(self) -> Dict[str, Any]:
         try:
+            _wdu = float(getattr(self, "_balance_disabled_until", 0.0) or 0.0)
+        except Exception:
+            _wdu = 0.0
+        if _wdu > time.time():
+            try:
+                print(f"ISOCHK_COOLDOWN phase=portfolio_data until={int(_wdu)} fail_count={int(getattr(self, '_balance_fail_count', 0) or 0)}", flush=True)
+            except Exception:
+                pass
+            return {
+                "capital": 0.0,
+                "exposure": 0.0,
+                "positions": []
+            }
+        try:
             balance_data = await self.api_client.request(
                 "GET",
                 "/wallet/balance/"
             )
+            try:
+                setattr(self, "_balance_fail_count", 0)
+                setattr(self, "_balance_disabled_until", 0.0)
+            except Exception:
+                pass
             cash = float(balance_data.get("IRT", {}).get("available", 0))
             return {
                 "capital": cash,
@@ -8485,7 +9422,25 @@ class RazTraderEnhanced:
                 "positions": []
             }
         except Exception as e:
-            raise TradingHalt("BALANCE_FETCH_FAILED: DASH_PORTFOLIO_BALANCE") from e
+            try:
+                _fc = int(getattr(self, "_balance_fail_count", 0) or 0) + 1
+                setattr(self, "_balance_fail_count", _fc)
+                setattr(self, "_balance_disabled_until", time.time() + 120.0)
+                print(f"ISOCHK phase=portfolio_data err={type(e).__name__}:{e} fail_count={_fc}", flush=True)
+            except Exception:
+                pass
+            try:
+                logging.warning(
+                    "ISOCHK_GLOBAL phase=portfolio_data err=%s",
+                    f"{type(e).__name__}: {e}",
+                )
+            except Exception:
+                pass
+            return {
+                "capital": 0.0,
+                "exposure": 0.0,
+                "positions": []
+            }
     async def _execute_trade(
         self,
         signal: FilteredSignal,
@@ -10587,6 +11542,22 @@ class ExecutionEngine:
                     order_kwargs.setdefault("fill_type", "limit")
                     order_kwargs.setdefault("market", "spot")
                     order_kwargs.setdefault("reduce_only", str(side or "").lower().startswith("sell"))
+                    try:
+                        self._logger.info(
+                            "event=PRE_ORDER_TRACE wallet=%s sym=%s side=%s qty=%.12f px=%.12f notional=%.2f dry_run=%s reduce_only=%s attempt=%s cid=%s",
+                            self._wallet,
+                            sym,
+                            str(side).lower(),
+                            float(qty2),
+                            float(px2),
+                            float(notional_irt),
+                            bool(getattr(self.cfg, "dry_run", False)),
+                            order_kwargs.get("reduce_only"),
+                            attempt,
+                            cid,
+                        )
+                    except Exception:
+                        pass
                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
                 if resp is None:
                     raise ApiError("Order submission returned None")
@@ -10806,7 +11777,32 @@ class ExecutionEngine:
         cash_free = cash_total = 0.0
         assets_free: Dict[str, float] = {}
         assets_total: Dict[str, float] = {}
-        bal = await self._ex.get_balance()
+        try:
+            _wdu = float(getattr(self, "_balance_disabled_until", 0.0) or 0.0)
+        except Exception:
+            _wdu = 0.0
+        if _wdu > time.time():
+            try:
+                print(f"ISOCHK_COOLDOWN phase=deep_prune until={int(_wdu)} fail_count={int(getattr(self, '_balance_fail_count', 0) or 0)}", flush=True)
+            except Exception:
+                pass
+            raise TradingHalt("BALANCE_COOLDOWN")
+        try:
+            bal = await self._ex.get_balance()
+            try:
+                setattr(self, "_balance_fail_count", 0)
+                setattr(self, "_balance_disabled_until", 0.0)
+            except Exception:
+                pass
+        except Exception as e:
+            try:
+                _fc = int(getattr(self, "_balance_fail_count", 0) or 0) + 1
+                setattr(self, "_balance_fail_count", _fc)
+                setattr(self, "_balance_disabled_until", time.time() + 120.0)
+                print(f"ISOCHK phase=deep_prune err={type(e).__name__}:{e} fail_count={_fc}", flush=True)
+            except Exception:
+                pass
+            raise
         q = str(getattr(self.cfg, "quote", "IRT") or "IRT")
         cash_free, cash_total, assets_free, assets_total, _ok = _parse_wallet_balance_response_v2(bal, quote=q)
         if not _ok: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
@@ -13098,12 +14094,39 @@ class TradingBotBase:
                 self.risk.halt_new_trades("STATE_SAVE_FAIL")
     async def _refresh_balance_if_needed(self, w: WalletRuntime) -> float:
         now = time.time()
+        def _balance_refresh_degraded(reason: str) -> float:
+            try:
+                w.last_balance_ok = False
+            except Exception:
+                pass
+            try:
+                w.last_balance_ts = now
+            except Exception:
+                pass
+            try:
+                w.last_balance_err = str(reason)[:300]
+            except Exception:
+                pass
+            try:
+                self._log.warning("event=BALANCE_REFRESH_DEGRADED wallet=%s reason=%s", getattr(w, "name", None), str(reason)[:300])
+            except Exception:
+                pass
+            return float(getattr(w, "cash_irt", 0.0) or 0.0)
         if (now - w.last_balance_ts) < self.cfg.balance_refresh_sec and w.cash_irt > 0:
             return w.cash_irt
         if self.cfg.dry_run and (not _env_bool("FETCH_BALANCE_IN_DRY_RUN", True)):
             w.cash_irt = float(_env_float("DRY_RUN_CASH_IRT", 100_000_000.0))
             try:
                 w.cash_total_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
+            except Exception:
+                pass
+            try:
+                self.logger.info(
+                    "event=BALANCE_REFRESH_OK wallet=%s cash_irt=%.2f last_balance_ok=%s",
+                    getattr(w, "name", None),
+                    float(getattr(w, "cash_irt", 0.0) or 0.0),
+                    True,
+                )
             except Exception:
                 pass
             w.last_balance_ok = True
@@ -13234,11 +14257,20 @@ class TradingBotBase:
                 f"{type(e).__name__}: {e}",
             )
             w.last_balance_ts = now
-            raise TradingHalt(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}") from e
+            return _balance_refresh_degraded(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}")
         except ApiHttpError as e:
             # Precise ArzPlus 403 diagnostics (fail-closed but keep engine alive)
             msg = str(e)
             try:
+                try:
+                    self.logger.warning(
+                        "event=BALANCE_REFRESH_ERR wallet=%s err=%s last_balance_ok=%s",
+                        getattr(w, "name", None),
+                        str(msg),
+                        False,
+                    )
+                except Exception:
+                    pass
                 w.last_balance_err = msg
             except Exception:
                 pass
@@ -13272,7 +14304,7 @@ class TradingBotBase:
             except Exception:
                 pass
             w.last_balance_ts = now
-            raise TradingHalt(f"BALANCE_FETCH_FAILED: HTTP_FAIL: {type(e).__name__}:{e}") from e
+            return _balance_refresh_degraded(f"BALANCE_FETCH_FAILED: HTTP_FAIL: {type(e).__name__}:{e}")
         except ApiError as e:
             msg = str(e)
             try:
@@ -13294,7 +14326,7 @@ class TradingBotBase:
                     msg[:200],
                 )
                 w.last_balance_ts = now
-                raise TradingHalt(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}") from e
+                return _balance_refresh_degraded(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}")
             if (not self.cfg.dry_run) and (("HTTP 401" in msg) or ("HTTP 403" in msg)):
                 if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
                     print(f"BALAUTHDBG API_FAIL wallet={w.name} msg={msg[:200]}")
@@ -13305,7 +14337,7 @@ class TradingBotBase:
                 msg[:200],
             )
             w.last_balance_ts = now
-            raise TradingHalt(f"BALANCE_FETCH_FAILED: API_FAIL: {type(e).__name__}:{e}") from e
+            return _balance_refresh_degraded(f"BALANCE_FETCH_FAILED: API_FAIL: {type(e).__name__}:{e}")
         except Exception as e:
             try:
                 msg = f"{type(e).__name__}: {e}"
@@ -13326,7 +14358,7 @@ class TradingBotBase:
                 exc_info=True,
             )
             w.last_balance_ts = now
-            raise TradingHalt("BALANCE_FETCH_FAILED: EXC") from e
+            return _balance_refresh_degraded("BALANCE_FETCH_FAILED: EXC")
         cash_free_irt, cash_total_irt, assets_free, assets_total, ok = _parse_wallet_balance_response_v2(
             bal, quote=str(getattr(self.cfg, "quote", "IRT") or "IRT")
         )
@@ -13338,7 +14370,7 @@ class TradingBotBase:
                 if ok2:
                     cash_free_irt, cash_total_irt, assets_free, assets_total, ok = cf2, ct2, af2, at2, ok2
         except Exception as e:
-            raise TradingHalt("BALANCE_FETCH_FAILED: ARZPLUS_FAST_PARSE_FAIL") from e
+            return _balance_refresh_degraded("BALANCE_FETCH_FAILED: ARZPLUS_FAST_PARSE_FAIL")
         if ok:
             w.cash_irt = float(max(0.0, cash_free_irt))
             try:
@@ -13404,7 +14436,7 @@ class TradingBotBase:
                 w.last_assets_ts = now
             except Exception:
                 pass
-        else: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
+        else: return _balance_refresh_degraded("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
         try:
             if float(getattr(w, "cash_total_irt", 0.0) or 0.0) <= 0.0:
                 w.cash_total_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
@@ -13956,64 +14988,75 @@ class _MockExchangeForStress:
 # s43 recovery: fallback get_arzplus_token
 def get_arzplus_token(slot=None, default=""):
     """
-    Fail-safe token resolver for ArzPlus accounts.
-    Reads token from environment variables and returns default/empty string if missing.
+    Strict resolver for ArzPlus wallet tokens.
+
+    If slot is provided, only slot-specific variables are checked.
+    No cross-slot fallback.
+    No slot+1 fallback.
+    No generic fallback for numbered slots.
+
+    Expected behavior:
+      slot=1 -> only slot 1 variables
+      slot=2 -> only slot 2 variables; empty if none exists
+      slot=3 -> only slot 3 variables
     """
     import os
 
-    candidates = []
+    def _clean(v):
+        if v is None:
+            return ""
+        try:
+            return str(v).strip()
+        except Exception:
+            return ""
 
+    def _valid(v):
+        v = _clean(v)
+        if not v:
+            return ""
+
+        try:
+            if _looks_placeholder_token(v):
+                return ""
+        except Exception:
+            pass
+
+        if v.lower() in ("token", "bearer"):
+            return ""
+
+        return v
+
+    s = None
     try:
-        s = str(int(slot)).strip() if slot is not None else ""
+        if slot is not None and str(slot).strip() != "":
+            s = int(slot)
     except Exception:
-        s = str(slot).strip() if slot is not None else ""
+        s = None
 
-    if s:
-        candidates.extend([
+    if s in (1, 2, 3):
+        for key in (
+            f"ARZPLUS_WALLET_{s}_TOKEN",
             f"ARZPLUS_TOKEN_{s}",
-            f"ARZPLUS_TOKEN{s}",
-            f"ARZ_PLUS_TOKEN_{s}",
-            f"ARZ_PLUS_TOKEN{s}",
-            f"ARZ_TOKEN_{s}",
-            f"ARZ_TOKEN{s}",
             f"TOKEN_{s}",
-            f"TOKEN{s}",
-        ])
-
-        # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
-        try:
-            n = int(s)
-            candidates.extend([
-                f"ARZPLUS_TOKEN_{n+1}",
-                f"ARZPLUS_TOKEN{n+1}",
-                f"ARZ_PLUS_TOKEN_{n+1}",
-                f"ARZ_PLUS_TOKEN{n+1}",
-                f"ARZ_TOKEN_{n+1}",
-                f"ARZ_TOKEN{n+1}",
-                f"TOKEN_{n+1}",
-                f"TOKEN{n+1}",
-            ])
-        except Exception:
-            pass
-
-    candidates.extend([
-        "ARZPLUS_TOKEN",
-        "ARZ_PLUS_TOKEN",
-        "ARZ_TOKEN",
-        "TOKEN",
-        "API_TOKEN",
-        "ACCESS_TOKEN",
-    ])
-
-    for key in candidates:
-        try:
-            val = os.getenv(key)
+            f"ACCESS_TOKEN_{s}",
+            f"API_TOKEN_{s}",
+        ):
+            val = _valid(os.getenv(key))
             if val:
-                return str(val).strip()
-        except Exception:
-            pass
+                return val
+        return _clean(default)
 
-    return default or ""
+    for key in (
+        "ARZPLUS_TOKEN",
+        "TOKEN",
+        "ACCESS_TOKEN",
+        "API_TOKEN",
+    ):
+        val = _valid(os.getenv(key))
+        if val:
+            return val
+
+    return _clean(default)
 
 
 async def _stress_idempotency(args: argparse.Namespace) -> None:
@@ -19097,6 +20140,17 @@ class TradingBotOps:
                 cash_irt,
                 max_notional_frac=float(getattr(w, "dyn_max_notional_frac", 0.0) or w.cfg.max_notional_frac),
             )
+            try:
+                self.logger.info(
+                    "event=RISK_OPEN_DECISION wallet=%s sym=%s ok_open=%s why=%s confidence=%s",
+                    getattr(w, "name", None),
+                    sym,
+                    ok_open if "ok_open" in locals() else None,
+                    why if "why" in locals() else None,
+                    getattr(sig, "confidence", None),
+                )
+            except Exception:
+                pass
             if not ok_open:
                 try:
                     wu0 = str(why or '').upper()
@@ -19886,10 +20940,33 @@ class TradingBotOps:
                 bid = float(book.bid)
                 px = max(1.0, bid * (1.0 - sl_bps / 10000.0))
                 notion = float(qty) * float(px)
-                await asyncio.wait_for(
-                    w.exec.place_limit(sym, "sell", qty, px, float(notion)),
-                    timeout=3.5,
-                )
+                self._ctx_enter(sym, "SELL")
+                try:
+                    _CTX_SKIP_RUNTIME_RISK_MULT.set(True)
+                    resp = await asyncio.wait_for(
+                        w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+                        timeout=3.5,
+                    )
+                finally:
+                    _CTX_SKIP_RUNTIME_RISK_MULT.set(False)
+                    self._ctx_exit(sym, "SELL")
+                ok_resp = bool(getattr(resp, "ok", False)) or bool(getattr(resp, "data", None)) or self.cfg.dry_run
+                if not ok_resp:
+                    try:
+                        _body = getattr(resp, "error", None) or getattr(resp, "data", None) or repr(resp)
+                        _err = ExchangeClient._safe_body_for_log(_body, limit=120)
+                        try:
+                            self._log.error("event=GLOBAL_EXIT_PLACE_LIMIT_NOT_OK sym=%s qty=%s px=%s err=%s", sym, qty, px, _err)
+                        except Exception:
+                            pass
+                        details.append({"sym": sym, "qty": qty, "px": px, "ok": False, "err": _err})
+                    except Exception:
+                        try:
+                            self._log.error("event=GLOBAL_EXIT_PLACE_LIMIT_NOT_OK sym=%s qty=%s px=%s err=order_not_ok", sym, qty, px)
+                        except Exception:
+                            pass
+                        details.append({"sym": sym, "qty": qty, "px": px, "ok": False, "err": "order_not_ok"})
+                    continue
                 w.last_event = f"GLOBAL_EXIT:{reason}"
                 details.append({"sym": sym, "qty": qty, "px": px, "ok": True})
             except Exception as e:
@@ -19937,7 +21014,60 @@ class TradingBotOps:
         except Exception:
             pass
     async def cycle_wallet(self, w: WalletRuntime) -> None:
-        cash_irt = await self._refresh_balance_if_needed(w)
+        try:
+            _wdu = float(getattr(w, "_balance_disabled_until", 0.0) or 0.0)
+            _now = time.time()
+            if _wdu > _now:
+                try:
+                    self._log.warning(
+                        "event=WALLET_BALANCE_COOLDOWN wallet=%s phase=cycle_wallet retry_in=%.1f fail_count=%s",
+                        getattr(w, "name", "?"),
+                        float(_wdu - _now),
+                        int(getattr(w, "_balance_fail_count", 0) or 0),
+                    )
+                except Exception:
+                    pass
+                return
+            cash_irt = float(await self._refresh_balance_if_needed(w))
+            try:
+                setattr(w, "_balance_fail_count", 0)
+                setattr(w, "_balance_disabled_until", 0.0)
+            except Exception:
+                pass
+        except asyncio.CancelledError:
+            raise
+        except (TradingHalt, Exception) as e:
+            try:
+                _fc = int(getattr(w, "_balance_fail_count", 0) or 0) + 1
+                setattr(w, "_balance_fail_count", _fc)
+                setattr(w, "_balance_disabled_until", time.time() + 120.0)
+            except Exception:
+                _fc = int(getattr(w, "_balance_fail_count", 0) or 0)
+            try:
+                self._log.warning(
+                    "event=WALLET_BAL_REFRESH_FAIL wallet=%s phase=cycle_wallet err=%s",
+                    getattr(w, "name", "?"),
+                    e,
+                )
+            except Exception:
+                pass
+            try:
+                print(
+                    f"ISOCHK phase=cycle_wallet wallet={getattr(w, 'name', '?')} err={type(e).__name__}:{e} fail_count={_fc}",
+                    flush=True,
+                )
+            except Exception:
+                pass
+            try:
+                self._log.warning(
+                    "event=WALLET_ISOLATED wallet=%s phase=cycle_wallet reason=%s fail_count=%s cooldown_sec=120",
+                    getattr(w, "name", "?"),
+                    str(e),
+                    _fc,
+                )
+            except Exception:
+                pass
+            return
         w.cash_irt = cash_irt
         try:
             if getattr(self, 'risk', None) is not None:
@@ -22185,12 +23315,41 @@ class TradingBotOps:
                     if stop_ev.is_set() or bool(getattr(self, "_global_exit_fired", False)):
                         break
                     try:
-                        await self._refresh_balance_if_needed(w)
+                        _wdu = float(getattr(w, "_balance_disabled_until", 0.0) or 0.0)
+                        _now = time.time()
+                        if _wdu > _now:
+                            try:
+                                self._log.warning(
+                                    "event=WALLET_BALANCE_COOLDOWN wallet=%s phase=cold_boot retry_in=%.1f fail_count=%s",
+                                    getattr(w, "name", "?"),
+                                    float(_wdu - _now),
+                                    int(getattr(w, "_balance_fail_count", 0) or 0),
+                                )
+                            except Exception:
+                                pass
+                        else:
+                            await self._refresh_balance_if_needed(w)
+                            try:
+                                setattr(w, "_balance_fail_count", 0)
+                                setattr(w, "_balance_disabled_until", 0.0)
+                            except Exception:
+                                pass
                     except Exception as e:
                         try:
-                            raise TradingHalt("BALANCE_FETCH_FAILED: COLD_BOOT_BALANCE_REFRESH") from e
-                        except Exception as e:
-                            pass # AI Auto-Fix
+                            _fc = int(getattr(w, "_balance_fail_count", 0) or 0) + 1
+                            setattr(w, "_balance_fail_count", _fc)
+                            setattr(w, "_balance_disabled_until", time.time() + 120.0)
+                        except Exception:
+                            _fc = int(getattr(w, "_balance_fail_count", 0) or 0)
+                        try:
+                            self._log.warning(
+                                "event=WALLET_ISOLATED wallet=%s phase=cold_boot_balance reason=%s fail_count=%s cooldown_sec=120",
+                                getattr(w, "name", "?"),
+                                str(e),
+                                _fc,
+                            )
+                        except Exception:
+                            pass
                     try:
                         await self._refresh_orders_if_needed(w)
                     except Exception:
@@ -22581,16 +23740,48 @@ class TradingBot(TradingBotBase, TradingBotOps):
             pass
         cash_irt = 0.0
         try:
+            _wdu = float(getattr(w, "_balance_disabled_until", 0.0) or 0.0)
+            _now = time.time()
+            if _wdu > _now:
+                try:
+                    self._log.warning(
+                        "event=WALLET_BALANCE_COOLDOWN wallet=%s retry_in=%.1f fail_count=%s",
+                        getattr(w, "name", "?"),
+                        float(_wdu - _now),
+                        int(getattr(w, "_balance_fail_count", 0) or 0),
+                    )
+                except Exception:
+                    pass
+                return
             cash_irt = float(await self._refresh_balance_if_needed(w))
+            try:
+                setattr(w, "_balance_fail_count", 0)
+                setattr(w, "_balance_disabled_until", 0.0)
+            except Exception:
+                pass
         except asyncio.CancelledError:
             raise
-        except TradingHalt: raise
-        except Exception as e:
+        except (TradingHalt, Exception) as e:
+            try:
+                _fc = int(getattr(w, "_balance_fail_count", 0) or 0) + 1
+                setattr(w, "_balance_fail_count", _fc)
+                setattr(w, "_balance_disabled_until", time.time() + 120.0)
+            except Exception:
+                _fc = int(getattr(w, "_balance_fail_count", 0) or 0)
             try:
                 self._log.warning("event=WALLET_BAL_REFRESH_FAIL wallet=%s err=%s", getattr(w, "name", "?"), e)
             except Exception:
                 pass
-            raise TradingHalt("BALANCE_FETCH_FAILED: REFRESH_FAIL") from e
+            try:
+                self._log.warning(
+                    "event=WALLET_ISOLATED wallet=%s phase=runtime_balance reason=%s fail_count=%s cooldown_sec=120",
+                    getattr(w, "name", "?"),
+                    str(e),
+                    _fc,
+                )
+            except Exception:
+                pass
+            return
         try:
             try:
                 setattr(w, "steps_open", int(await self._refresh_orders_if_needed(w)))
@@ -22940,12 +24131,19 @@ def run(argv: list[str] | None = None) -> None:
         try:
             mod = _load_parisa_module()
             _parisa_preflight(mod)
+            cmd0 = argv[0] if argv else ""
+            if cmd0 == "doctor" and hasattr(mod, "_pp5_doctor"):
+                mod._pp5_doctor()
+                return
+            if cmd0 == "selftest" and hasattr(mod, "_pp5_selftest"):
+                mod._pp5_selftest()
+                return
             with _temporary_argv(["parisa_embed"] + list(argv)):
                 getattr(mod, "_pp5_main")()
             return
-        except Exception as e:
-            print(f"[SAFE-NO-TRADE] Offline command unavailable: {cmd}: {e}")
-            raise SystemExit(0)
+        except Exception as exc:
+            print(f"[s43] parisa command '{cmd}' failed: {exc}")
+            return 2
     if cmd == "stress":
         _run_coro_sync(_stress_idempotency(args))
         return
@@ -28091,6 +29289,31 @@ class Orch22WalletEngine(_Orch22AsyncComponent):
         for _omega_guard in range(150000):
             t0 = time.time()
             try:
+                try:
+                    _wdu = float(getattr(self, "_balance_disabled_until", 0.0) or 0.0)
+                except Exception:
+                    _wdu = 0.0
+                if _wdu > time.time():
+                    try:
+                        self.state.last_ok = False
+                        self.state.last_err = "BALANCE_COOLDOWN"
+                        self.state.last_ts = float(t0)
+                        self.state.reason = "BALANCE_COOLDOWN"
+                    except Exception:
+                        pass
+                    try:
+                        print(
+                            f"ISOCHK_COOLDOWN phase=orch22_wallet wallet={getattr(self, 'name', '?')} until={int(_wdu)} fail_count={int(getattr(self, '_balance_fail_count', 0) or 0)}",
+                            flush=True,
+                        )
+                    except Exception:
+                        pass
+                    try:
+                        await asyncio.wait_for(self._stop.wait(), timeout=min(10.0, max(0.25, _wdu - time.time())))
+                    except asyncio.TimeoutError:
+                        pass
+                    continue
+
                 bal = await self.client.get_balance()
                 cash_free, cash_total, assets_free, assets_total, ok = _parse_wallet_balance_response_v2(
                     bal, quote=str(getattr(self.cfg, "quote", "IRT") or "IRT")
@@ -28115,14 +29338,46 @@ class Orch22WalletEngine(_Orch22AsyncComponent):
                 backoff = 0.5
             except asyncio.CancelledError:
                 raise
-            except TradingHalt: raise
-            except Exception as e:
+            except (TradingHalt, Exception) as e:
+                try:
+                    _fc = int(getattr(self, "_balance_fail_count", 0) or 0) + 1
+                    setattr(self, "_balance_fail_count", _fc)
+                    setattr(self, "_balance_disabled_until", time.time() + 120.0)
+                except Exception:
+                    _fc = int(getattr(self, "_balance_fail_count", 0) or 0)
+
                 self.state.last_ok = False
                 self.state.last_err = str(e)[:200]
                 self.state.last_ts = float(t0)
                 self.state.reason = "API_FAIL"
-                _orch22_log(self._log, logging.WARNING, "WALLET_FAIL", wallet=self.name, err=str(e)[:200])
-                backoff = min(10.0, backoff * 1.6)
+
+                try:
+                    print(
+                        f"ISOCHK phase=orch22_wallet wallet={getattr(self, 'name', '?')} err={type(e).__name__}:{e} fail_count={_fc}",
+                        flush=True,
+                    )
+                except Exception:
+                    pass
+
+                try:
+                    _orch22_log(
+                        self._log,
+                        logging.WARNING,
+                        "WALLET_ISOLATED",
+                        wallet=self.name,
+                        err=str(e)[:200],
+                        fail_count=_fc,
+                        cooldown_sec=120,
+                    )
+                except Exception:
+                    pass
+
+                try:
+                    _orch22_log(self._log, logging.WARNING, "WALLET_FAIL", wallet=self.name, err=str(e)[:200])
+                except Exception:
+                    pass
+
+                backoff = min(120.0, max(10.0, backoff * 1.6))
             dt = time.time() - t0
             base = max(0.10, float(self.balance_refresh_sec) - dt)
             if backoff > 0.5:
@@ -28173,143 +29428,143 @@ class Orch22Orchestrator:
         self.radar.stop()
         for w in self.wallets.values():
             w.stop()
-async def _watchdog_loop(self) -> None:
-    stage = 0
-    stale_start: Optional[float] = None
-    for _omega_guard in range(150000):
-        try:
-            await asyncio.wait_for(self._stop.wait(), timeout=max(1.0, float(self.heartbeat_sec)))
-            break
-        except asyncio.TimeoutError:
-            pass
-        except asyncio.CancelledError:
-            raise
-        except Exception:
-            continue
-        try:
-            radar_age = float(self.radar.age())
-        except Exception:
-            radar_age = 0.0
-        worst_wallet_age = 0.0
-        try:
-            for w in (self.wallets or {}).values():
-                try:
-                    worst_wallet_age = max(worst_wallet_age, float(w.age()))
-                except Exception:
-                    continue
-        except Exception:
-            worst_wallet_age = worst_wallet_age
-        worst = max(float(radar_age), float(worst_wallet_age))
-        warn = float(self.stale_warn_sec)
-        crit = float(self.stale_crit_sec)
-        if worst < warn:
-            stale_start = None
-            stage = 0
-            continue
-        if stale_start is None:
-            stale_start = float(time.time())
-        elapsed = float(time.time() - stale_start)
-        if stage < 1 and elapsed >= warn:
+    async def _watchdog_loop(self) -> None:
+        stage = 0
+        stale_start: Optional[float] = None
+        for _omega_guard in range(150000):
             try:
-                _orch22_log(self._log, logging.WARNING, "WD_TASK_RESET", worst_age=worst, elapsed=elapsed)
-            except Exception:
+                await asyncio.wait_for(self._stop.wait(), timeout=max(1.0, float(self.heartbeat_sec)))
+                break
+            except asyncio.TimeoutError:
                 pass
-            try:
-                await self._task_reset()
+            except asyncio.CancelledError:
+                raise
             except Exception:
-                pass
-            stage = 1
-            continue
-        if stage < 2 and elapsed >= crit:
-            try:
-                _orch22_log(self._log, logging.ERROR, "WD_HARD_RESET", worst_age=worst, elapsed=elapsed)
-            except Exception:
-                pass
-            try:
-                await self._hard_reset()
-            except Exception:
-                pass
-            stage = 2
-            continue
-        if stage >= 2 and elapsed >= (crit + max(30.0, warn)):
-            try:
-                _orch22_log(self._log, logging.CRITICAL, "WD_EXECV", worst_age=worst, elapsed=elapsed)
-            except Exception:
-                pass
-            try:
-                os.execv(sys.executable, [sys.executable] + list(sys.argv))
-            except Exception:
-                pass
-async def _task_reset(self) -> None:
-    try:
-        if float(self.radar.age()) >= float(self.stale_warn_sec):
-            old = self.radar
-            try:
-                old.stop()
-            except Exception:
-                pass
-            try:
-                t = getattr(old, "_task", None)
-                if isinstance(t, asyncio.Task) and (not t.done()):
-                    t.cancel()
-                    with contextlib.suppress(Exception):
-                        await t
-            except Exception:
-                pass
-            self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
-            await self.radar.start()
-    except Exception:
-        pass
-    for wname, w in list((self.wallets or {}).items()):
-        try:
-            if float(w.age()) < float(self.stale_warn_sec):
                 continue
-        except Exception:
-            continue
+            try:
+                radar_age = float(self.radar.age())
+            except Exception:
+                radar_age = 0.0
+            worst_wallet_age = 0.0
+            try:
+                for w in (self.wallets or {}).values():
+                    try:
+                        worst_wallet_age = max(worst_wallet_age, float(w.age()))
+                    except Exception:
+                        continue
+            except Exception:
+                worst_wallet_age = worst_wallet_age
+            worst = max(float(radar_age), float(worst_wallet_age))
+            warn = float(self.stale_warn_sec)
+            crit = float(self.stale_crit_sec)
+            if worst < warn:
+                stale_start = None
+                stage = 0
+                continue
+            if stale_start is None:
+                stale_start = float(time.time())
+            elapsed = float(time.time() - stale_start)
+            if stage < 1 and elapsed >= warn:
+                try:
+                    _orch22_log(self._log, logging.WARNING, "WD_TASK_RESET", worst_age=worst, elapsed=elapsed)
+                except Exception:
+                    pass
+                try:
+                    await self._task_reset()
+                except Exception:
+                    pass
+                stage = 1
+                continue
+            if stage < 2 and elapsed >= crit:
+                try:
+                    _orch22_log(self._log, logging.ERROR, "WD_HARD_RESET", worst_age=worst, elapsed=elapsed)
+                except Exception:
+                    pass
+                try:
+                    await self._hard_reset()
+                except Exception:
+                    pass
+                stage = 2
+                continue
+            if stage >= 2 and elapsed >= (crit + max(30.0, warn)):
+                try:
+                    _orch22_log(self._log, logging.CRITICAL, "WD_EXECV", worst_age=worst, elapsed=elapsed)
+                except Exception:
+                    pass
+                try:
+                    os.execv(sys.executable, [sys.executable] + list(sys.argv))
+                except Exception:
+                    pass
+    async def _task_reset(self) -> None:
         try:
-            old = w
-            try:
-                old.stop()
-            except Exception:
-                pass
-            try:
-                t = getattr(old, "_task", None)
-                if isinstance(t, asyncio.Task) and (not t.done()):
-                    t.cancel()
-                    with contextlib.suppress(Exception):
-                        await t
-            except Exception:
-                pass
-            self.wallets[wname] = Orch22WalletEngine(name=wname, client=old.client, cfg=self.cfg, log=self._log)
-            await self.wallets[wname].start()
+            if float(self.radar.age()) >= float(self.stale_warn_sec):
+                old = self.radar
+                try:
+                    old.stop()
+                except Exception:
+                    pass
+                try:
+                    t = getattr(old, "_task", None)
+                    if isinstance(t, asyncio.Task) and (not t.done()):
+                        t.cancel()
+                        with contextlib.suppress(Exception):
+                            await t
+                except Exception:
+                    pass
+                self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
+                await self.radar.start()
         except Exception:
-            continue
-async def _hard_reset(self) -> None:
-    with contextlib.suppress(Exception):
-        await self._cancel_all_fail_safe()
-    with contextlib.suppress(Exception):
-        self.radar.stop()
-    for w in (self.wallets or {}).values():
+            pass
+        for wname, w in list((self.wallets or {}).items()):
+            try:
+                if float(w.age()) < float(self.stale_warn_sec):
+                    continue
+            except Exception:
+                continue
+            try:
+                old = w
+                try:
+                    old.stop()
+                except Exception:
+                    pass
+                try:
+                    t = getattr(old, "_task", None)
+                    if isinstance(t, asyncio.Task) and (not t.done()):
+                        t.cancel()
+                        with contextlib.suppress(Exception):
+                            await t
+                except Exception:
+                    pass
+                self.wallets[wname] = Orch22WalletEngine(name=wname, client=old.client, cfg=self.cfg, log=self._log)
+                await self.wallets[wname].start()
+            except Exception:
+                continue
+    async def _hard_reset(self) -> None:
         with contextlib.suppress(Exception):
-            w.stop()
-    limiter = SharedAsyncRateLimiter(self.cfg.rate_limit_per_min)
-    breaker = CircuitBreaker(self.cfg.circuit_breaker_errors, self.cfg.circuit_breaker_cooldown_sec, self._log)
-    self.public = ExchangeClient(self.cfg, token="", limiter=limiter, logger=self._log, breaker=breaker)
-    self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
-    slots = list(getattr(self, "_wallet_slots", []) or [])
-    if not slots:
-        slots = [1]
-    self.wallets = {}
-    for slot in slots:
-        tok = get_arzplus_token(int(slot))
-        wname = f"W{int(slot)}"
-        cli = ExchangeClient(self.cfg, token=(tok or ""), limiter=limiter, logger=self._log, breaker=breaker)
-        self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=self.cfg, log=self._log)
-    with contextlib.suppress(Exception):
-        await self.radar.start()
-    for w in (self.wallets or {}).values():
+            await self._cancel_all_fail_safe()
         with contextlib.suppress(Exception):
-            await w.start()
+            self.radar.stop()
+        for w in (self.wallets or {}).values():
+            with contextlib.suppress(Exception):
+                w.stop()
+        limiter = SharedAsyncRateLimiter(self.cfg.rate_limit_per_min)
+        breaker = CircuitBreaker(self.cfg.circuit_breaker_errors, self.cfg.circuit_breaker_cooldown_sec, self._log)
+        self.public = ExchangeClient(self.cfg, token="", limiter=limiter, logger=self._log, breaker=breaker)
+        self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
+        slots = list(getattr(self, "_wallet_slots", []) or [])
+        if not slots:
+            slots = [1]
+        self.wallets = {}
+        for slot in slots:
+            tok = get_arzplus_token(int(slot))
+            wname = f"W{int(slot)}"
+            cli = ExchangeClient(self.cfg, token=(tok or ""), limiter=limiter, logger=self._log, breaker=breaker)
+            self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=self.cfg, log=self._log)
+        with contextlib.suppress(Exception):
+            await self.radar.start()
+        for w in (self.wallets or {}).values():
+            with contextlib.suppress(Exception):
+                await w.start()
     async def _cancel_all_fail_safe(self) -> None:
         if not self.cancel_all_on_stale:
             return
@@ -28671,3 +29926,62 @@ if __name__ == "__main__":
         _phoenix_selftests()
     else:
         main()
+def _rt_now():
+    return time.monotonic()
+
+def _atomic_write_json(path, data, *, indent=2, ensure_ascii=False):
+    _ensure_dir(path)
+    directory = os.path.dirname(os.path.abspath(path)) or "."
+    base = os.path.basename(path)
+    tmp_path = os.path.join(
+        directory,
+        f".{base}.tmp.{os.getpid()}.{int(time.time() * 1000000)}"
+    )
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=indent, ensure_ascii=ensure_ascii)
+            f.write("\n")
+            try:
+                f.flush()
+                os.fsync(f.fileno())
+            except Exception:
+                pass
+        os.replace(tmp_path, path)
+    finally:
+        try:
+            if os.path.exists(tmp_path):
+                os.unlink(tmp_path)
+        except Exception:
+            pass
+
+def _rt_stop_requested(stop_event):
+    if stop_event is None:
+        return False
+    try:
+        if callable(stop_event):
+            return bool(stop_event())
+    except Exception:
+        return False
+    try:
+        is_set = getattr(stop_event, "is_set", None)
+        if callable(is_set):
+            return bool(is_set())
+    except Exception:
+        return False
+    return False
+
+def _sleep_or_stop(seconds, stop_event=None, *, interval=0.25):
+    try:
+        seconds = float(seconds)
+    except Exception:
+        seconds = 0.0
+    if seconds <= 0:
+        return not _rt_stop_requested(stop_event)
+    end_at = _rt_now() + seconds
+    while True:
+        if _rt_stop_requested(stop_event):
+            return False
+        remaining = end_at - _rt_now()
+        if remaining <= 0:
+            return True
+        time.sleep(min(float(interval), remaining))
