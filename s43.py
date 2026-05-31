@@ -14596,6 +14596,18 @@ def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
     logger = Logger(cfg)
     bot = TradingBot(cfg, logger)
     if bool(getattr(args, "status", False)):
+        def _s43_observability_emit(event_name: str, **fields):
+            try:
+                obs_parts = [f"event={event_name}"]
+                for k, v in fields.items():
+                    try:
+                        obs_parts.append(f"{k}={v}")
+                    except Exception:
+                        obs_parts.append(f"{k}=<unrepr>")
+                print("OBS " + " ".join(obs_parts))
+            except Exception:
+                pass
+
         def _s43_status_root_exc(e):
             cur = e
             seen = set()
@@ -14730,11 +14742,26 @@ def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
                 if n_orders is not None:
                     parts.append(f"open_orders={n_orders}")
 
+                if (not disabled) and (not balance_ok):
+                    _s43_observability_emit(
+                        "wallet_balance_error",
+                        wallet=wn,
+                        error_type=balance_error_type or "",
+                        error_class=balance_error_class or "",
+                        disabled=disabled,
+                    )
                 print(" ".join(parts))
 
             print(
                 f"summary wallets={total} disabled={disabled_count} "
                 f"balance_ok={balance_ok_count} balance_failed={balance_failed_count}"
+            )
+            _s43_observability_emit(
+                "wallet_reporting_summary",
+                wallets=total,
+                disabled=disabled_count,
+                balance_ok=balance_ok_count,
+                balance_failed=balance_failed_count,
             )
 
         _run_coro_sync(_status_once())
