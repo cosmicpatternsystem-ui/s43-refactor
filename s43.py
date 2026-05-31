@@ -14670,19 +14670,36 @@ def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
                 balance_error_type = ""
                 balance_error_class = ""
 
-                try:
-                    cash = float(await bot._refresh_balance_if_needed(w))
-                    balance_ok = True
-                    balance_ok_count += 1
-                except Exception as e:
-                    balance_failed_count += 1
-                    root = _s43_status_root_exc(e)
+                if not disabled:
                     try:
-                        balance_error_type = type(root).__name__
-                    except Exception:
-                        balance_error_type = "Exception"
-                    balance_error = _s43_status_format_exc(root)
-                    balance_error_class = _s43_status_classify_exc(root)
+                        cash = float(await bot._refresh_balance_if_needed(w))
+                    except Exception as e:
+                        root = _s43_status_root_exc(e)
+                        try:
+                            balance_error_type = type(root).__name__
+                        except Exception:
+                            balance_error_type = "Exception"
+                        balance_error = _s43_status_format_exc(root)
+                        balance_error_class = _s43_status_classify_exc(root)
+                    else:
+                        balance_ok = bool(getattr(w, "last_balance_ok", False))
+
+                    if getattr(w, "last_balance_ok", False):
+                        balance_ok = True
+                        balance_ok_count += 1
+                    else:
+                        balance_ok = False
+                        balance_failed_count += 1
+                        if not balance_error:
+                            balance_error_type = "BalanceStatusError"
+                            balance_error = "last_balance_ok_false"
+                            balance_error_class = "balance_status_failed"
+                else:
+                    balance_ok = False
+                    if not balance_error:
+                        balance_error_type = "WalletDisabled"
+                        balance_error_class = "wallet_disabled"
+                        balance_error = reason or "wallet_disabled"
 
                 try:
                     n_orders = int(await bot._refresh_orders_if_needed(w))
@@ -25178,7 +25195,7 @@ class WallStreetDashboardManager(DashboardManager):
                     risk = getattr(self.bot, "risk", None)
                     if bool(getattr(risk, "safe_mode", False)):
                         gate = "SAFE"
-                    elif not bool(getattr(w, "last_balance_ok", True)):
+                    elif not bool(getattr(w, "last_balance_ok", False)):
                         gate = "STALE"
             except Exception:
                 gate = "OK"
@@ -25236,7 +25253,7 @@ class WallStreetDashboardManager(DashboardManager):
             t.add_row(f"ST {eng_st0} | {_short(eng_rs0, 72)}")
             t.add_row(f"CA {fmt_toman_from_irt(cash_irt)}   AV {av}   POS {pos_n}   ORD {ord_open_exch}")
             try:
-                if not bool(getattr(w, "last_balance_ok", True)):
+                if not bool(getattr(w, "last_balance_ok", False)):
                     berr = str(getattr(w, "last_balance_err", "") or "").strip()
                     if berr:
                         t.add_row(f"BAL ! {_short(berr, 72)}")
@@ -25326,7 +25343,7 @@ class WallStreetDashboardManager(DashboardManager):
             except Exception:
                 pass
             try:
-                if not bool(getattr(w, "last_balance_ok", True)):
+                if not bool(getattr(w, "last_balance_ok", False)):
                     blockers.append("BAL_STALE")
             except Exception:
                 pass
