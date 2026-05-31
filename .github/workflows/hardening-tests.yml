@@ -1,0 +1,27 @@
+name: Hardening Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  hardening-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Compile production and runner files
+        run: |
+          python3 -m py_compile s43.py run_hardening_tests.py
+
+      - name: Run allowlisted hardening tests
+        run: |
+          python3 run_hardening_tests.py
