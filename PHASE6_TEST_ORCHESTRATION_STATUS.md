@@ -100,3 +100,43 @@ backup/phase6-test-orchestration-runner
 The Phase 6 allowlisted runner has been created, compiled, executed, committed, tagged, and backed up.
 
 The next safe step after this document is to decide whether to add a minimal CI wrapper or keep Phase 6 local-only for now.
+
+## CI Wrapper
+
+A minimal GitHub Actions workflow has been added:
+
+.github/workflows/hardening-tests.yml
+
+The workflow intentionally runs only the deterministic Phase 6 hardening commands:
+
+python3 -m py_compile s43.py run_hardening_tests.py
+python3 run_hardening_tests.py
+
+It does not run broad unittest discovery.
+
+It does not install additional dependencies.
+
+It does not modify production code.
+
+## CI Wrapper Reference
+
+CI wrapper commit:
+
+6787c21 Add minimal hardening tests GitHub Actions workflow
+
+CI wrapper tag:
+
+phase6-test-orchestration-ci-wrapper-20260531
+
+CI wrapper backup branch:
+
+backup/phase6-test-orchestration-ci-wrapper
+
+## Final Phase 6 Status
+
+Phase 6 now includes both:
+
+- local deterministic hardening test orchestration
+- minimal GitHub Actions CI wrapper
+
+The Phase 6 contract remains allowlist-only and does not modify s43.py.
