@@ -168,6 +168,15 @@ async def collect_summary(wallets, bot):
     }
 
 
+def format_summary(result):
+    return (
+        f"summary wallets={result['total']} "
+        f"disabled={result['disabled_count']} "
+        f"balance_ok={result['balance_ok_count']} "
+        f"balance_failed={result['balance_failed_count']}"
+    )
+
+
 def test_disabled_wallet_not_counted_as_failed():
     wallets = [
         DummyWallet(
@@ -293,6 +302,26 @@ def test_mixed_summary_matches_expected_counts():
     assert result["balance_failed_count"] == 1
 
 
+def test_summary_string_matches_expected_contract():
+    wallets = [
+        DummyWallet("w_ok", disabled=False, last_balance_ok=True),
+        DummyWallet("w_false", disabled=False, last_balance_ok=False),
+        DummyWallet("w_disabled", disabled=True, reason="403_forbidden", last_balance_ok=False),
+    ]
+    bot = DummyBot(
+        {
+            "w_ok": 5000,
+            "w_false": 4000,
+            "w_disabled": 3000,
+        }
+    )
+
+    result = asyncio.run(collect_summary(wallets, bot))
+    summary = format_summary(result)
+
+    assert summary == "summary wallets=3 disabled=1 balance_ok=1 balance_failed=1"
+
+
 def main():
     tests = [
         test_disabled_wallet_not_counted_as_failed,
@@ -300,6 +329,7 @@ def main():
         test_last_balance_ok_true_counts_as_ok,
         test_refresh_exception_counts_as_failed,
         test_mixed_summary_matches_expected_counts,
+        test_summary_string_matches_expected_contract,
     ]
 
     for t in tests:
