@@ -9,9 +9,9 @@ Purpose:
 - Provide a stable local/CI entrypoint.
 """
 
+import subprocess
 import sys
 import unittest
-
 
 SAFE_TEST_MODULES = [
     "test_status_observability_summary",
@@ -23,8 +23,11 @@ SAFE_TEST_MODULES = [
     "test_phase7c_veto_behavior",
 ]
 
+SAFE_SCRIPT_TESTS = [
+    "test_reporting_summary_regression.py",
+]
 
-def main() -> int:
+def run_unittest_modules() -> bool:
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
 
@@ -33,9 +36,21 @@ def main() -> int:
 
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
+    return result.wasSuccessful()
 
-    return 0 if result.wasSuccessful() else 1
+def run_script_tests() -> bool:
+    ok = True
+    for script in SAFE_SCRIPT_TESTS:
+        print(f"\n=== running script test: {script} ===", flush=True)
+        completed = subprocess.run([sys.executable, script])
+        if completed.returncode != 0:
+            ok = False
+    return ok
 
+def main() -> int:
+    unittest_ok = run_unittest_modules()
+    script_ok = run_script_tests()
+    return 0 if (unittest_ok and script_ok) else 1
 
 if __name__ == "__main__":
     raise SystemExit(main())
