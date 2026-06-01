@@ -82,3 +82,14 @@ s43_execution_path_audit.txt
 s43_patch_plan*
 s43_runtime_path_snippets.txt
 s43_structural_map.txt
+
+# Additional local patch/release leftovers
+*.patch
+*.diff
+*.bak
+final_release_*/
+phase*_instrument_report_*.txt
+phase*_context_extract_*.txt
+phase*_auto_audit_report_*.txt
+phase*_patch_termux.sh
+quarantine_check.txt
