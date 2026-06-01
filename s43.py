@@ -14534,6 +14534,24 @@ def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
     p = build_parser()
     args = p.parse_args(list(argv or []))
 
+    # Phase 10 post-freeze/local-review hardening:
+    # deny live activation from CLI/env unless an explicit local override is set.
+    try:
+        live_requested = bool(getattr(args, "live", False))
+        env_live_requested = str(os.getenv("LIVE_TRADING", "0")).strip().lower() in {"1", "true", "yes", "on"}
+        local_live_override = str(os.getenv("S43_LOCAL_LIVE_OVERRIDE", "0")).strip().lower() in {"1", "true", "yes", "on"}
+        if (live_requested or env_live_requested) and not local_live_override:
+            print("[SAFE-NO-TRADE] Live activation blocked in post-freeze local edit mode. "
+                  "Set S43_LOCAL_LIVE_OVERRIDE=1 only for an explicitly authorized local test.")
+            os.environ["LIVE_TRADING"] = "0"
+            os.environ["DRY_RUN"] = "1"
+            try:
+                args.live = False
+            except Exception:
+                pass
+    except Exception:
+        pass
+
     try:
         offline_override = str(os.environ.get("OFFLINE_REVIEW_OVERRIDE", "0")).strip() == "1"
     except Exception:
