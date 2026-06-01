@@ -97,3 +97,7 @@ quarantine_check.txt
 # Final local leftovers
 *.literal_n_bak
 ❌
+
+# Local audit scratch files
+audit_targets.txt
+critical_only.txt
