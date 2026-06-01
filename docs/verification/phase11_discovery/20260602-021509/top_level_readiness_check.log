@@ -1,0 +1,81 @@
+=== Top-Level Readiness Check ===
+
+[1/7] Git repo
+OK: Inside git repository
+
+[2/7] Working tree
+FAIL: Working tree is not clean
+?? phase11_discovery_artifacts_20260602-021509/
+
+[3/7] Required documents
+OK: docs/roadmap/PHASE8_PROGRESS.md exists
+OK: docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md exists
+OK: docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md exists
+OK: docs/roadmap/TOP_LEVEL_READINESS_GATE.md exists
+
+[4/7] Syntax
+OK: s43.py syntax OK
+OK: run_hardening_tests.py syntax OK
+
+[5/7] Hardening tests
+test_status_emits_wallet_reporting_summary_observability_event (test_status_observability_summary.StatusObservabilitySummaryTest.test_status_emits_wallet_reporting_summary_observability_event) ... ok
+test_failed_non_disabled_wallet_emits_wallet_balance_error_event (test_status_observability_wallet_error.StatusObservabilityWalletErrorTest.test_failed_non_disabled_wallet_emits_wallet_balance_error_event) ... ok
+test_status_obs_lines_have_known_shape (test_status_observability_obs_format.StatusObservabilityObsFormatTest.test_status_obs_lines_have_known_shape) ... ok
+test_failed_non_disabled_wallets_have_matching_obs_error_events (test_status_observability_failure_consistency.StatusObservabilityFailureConsistencyTest.test_failed_non_disabled_wallets_have_matching_obs_error_events) ... ok
+test_has_refresh_balance_anchor (test_phase7a_status_smoke.TestPhase7AStatusSmoke.test_has_refresh_balance_anchor) ... ok
+test_has_status_once_anchor (test_phase7a_status_smoke.TestPhase7AStatusSmoke.test_has_status_once_anchor) ... ok
+test_status_related_tokens_exist (test_phase7a_status_smoke.TestPhase7AStatusSmoke.test_status_related_tokens_exist) ... ok
+test_has_risk_and_phoenix_anchors (test_phase7b_signal_anchor_smoke.TestPhase7BSignalAnchorSmoke.test_has_risk_and_phoenix_anchors) ... ok
+test_has_signal_class_anchor (test_phase7b_signal_anchor_smoke.TestPhase7BSignalAnchorSmoke.test_has_signal_class_anchor) ... ok
+test_has_signal_evaluate_anchor (test_phase7b_signal_anchor_smoke.TestPhase7BSignalAnchorSmoke.test_has_signal_evaluate_anchor) ... ok
+test_has_veto_anchor (test_phase7b_signal_anchor_smoke.TestPhase7BSignalAnchorSmoke.test_has_veto_anchor) ... ok
+test_positive_delta_still_uses_boost_path_sanity_check (test_phase7c_veto_behavior.TestPhase7CVetoBehavior.test_positive_delta_still_uses_boost_path_sanity_check) ... ok
+test_veto_triggers_when_delta_below_threshold (test_phase7c_veto_behavior.TestPhase7CVetoBehavior.test_veto_triggers_when_delta_below_threshold) ... ok
+test_veto_triggers_when_delta_equals_threshold (test_phase7c_veto_behavior.TestPhase7CVetoBehavior.test_veto_triggers_when_delta_equals_threshold) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.514s
+
+OK
+
+=== running script test: test_reporting_summary_regression.py ===
+PASS test_disabled_wallet_not_counted_as_failed
+PASS test_last_balance_ok_false_counts_as_failed
+PASS test_last_balance_ok_true_counts_as_ok
+PASS test_refresh_exception_counts_as_failed
+PASS test_mixed_summary_matches_expected_counts
+PASS test_summary_string_matches_expected_contract
+ALL TESTS PASSED
+OK: hardening tests passed
+
+[6/7] Safety scan
+OK: SAFE-NO-TRADE reference found
+
+[7/7] Report
+OK: Report written to /data/data/com.termux/files/usr/tmp/top_level_readiness_report.txt
+Top-Level Readiness Report
+Generated at: Tue Jun  2 02:15:43 +0330 2026
+
+Branch:
+planning/phase11-readiness-discovery
+
+Recent commits:
+d5e21bf merge: integrate phase 10 hardening closure
+748db70 docs: close phase 10 hardening verification
+936345c docs: add phase10 post-freeze local hardening handoff
+2c41616 docs: record phase10 post-freeze live guard verification
+438c881 hardening: add post-freeze environment live safety guard
+
+Working tree:
+?? phase11_discovery_artifacts_20260602-021509/
+
+Failures: 1
+Warnings: 0
+
+Result: blocked
+
+Safety recommendation: keep SAFE-NO-TRADE
+Report path: /data/data/com.termux/files/usr/tmp/top_level_readiness_report.txt
+Safety scan path: /data/data/com.termux/files/usr/tmp/top_level_safe_scan.txt
+
+=== RESULT: BLOCKED ===
