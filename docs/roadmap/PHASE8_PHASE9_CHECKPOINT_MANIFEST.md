@@ -142,3 +142,26 @@ Acceptable next steps include:
 The Phase 8 to Phase 9 checkpoint chain is indexed, review-ready, and frozen under `SAFE-NO-TRADE`.
 
 This manifest provides a consolidated reference for review only and must not be interpreted as authorization for runtime activation, recovery activation, live trading, production readiness, or production deployment.
+
+## Post-Checkpoint Guardrails
+
+The Phase 8 to Phase 9 checkpoint chain is now additionally guarded by:
+
+- `docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md`
+
+This guardrails document defines the post-freeze boundaries for future work.
+
+It explicitly preserves the following constraints:
+
+- `SAFE-NO-TRADE` remains active
+- no runtime activation is authorized
+- no recovery activation is authorized
+- no live trading is authorized
+- no deployment approval is implied
+- no operational approval is implied
+- no runtime-readiness claim is implied
+- no production-readiness claim is implied
+
+The guardrails document is documentation-only.
+
+It exists to prevent scope drift after the checkpoint freeze and to make future review expectations explicit.
