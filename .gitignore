@@ -23,3 +23,62 @@ snap_before_patch_*.py
 phase*_reports/
 phase7c_artifacts/
 *_snippets_*/
+
+# Local probes / phase backups
+.phase*_gate_probe.py
+.phase*_backup_*/
+
+# Local patch/fix/helper scripts
+fix_*.py
+patch*.py
+phase*_*.py
+inspect_*_targets.py
+compile_or_restore.sh
+monitor_*.sh
+s43_extract_hotspots.sh
+s43_manager.sh
+s43_probe_runtime.sh
+safe_check.sh
+smoke_execute_trade.py
+
+# Generated audit/status/report documents
+PHASE*.txt
+PATCH*.txt
+*_STATUS.md
+*_PLAN.md
+*_audit.txt
+*_grep.txt
+*_inspect.txt
+*_report.txt
+*_reports.txt
+*_manifest.txt
+*_snippets.txt
+*_context.txt
+*_map.txt
+*_evidence.txt
+*_ledger.txt
+
+# Sensitive/security triage artifacts - do not commit
+*SECRET*
+*TOKEN*
+*REDACTED*
+*CREDENTIAL*
+*KEYWORD*
+*KEY_PATTERNS*
+*ENV_KEY*
+*WALLET_SLOT*
+*WALLET_SLOTS*
+
+# Local repaired/restored/candidate copies of s43
+s43_FINAL_*.py
+s43_before_*.py
+s43_broken_*.py
+s43_final_*.py
+s43_repair_*.py
+s43_restored_*.py
+s43_auth_context.txt
+s43_canonical_core_map.txt
+s43_execution_path_audit.txt
+s43_patch_plan*
+s43_runtime_path_snippets.txt
+s43_structural_map.txt
