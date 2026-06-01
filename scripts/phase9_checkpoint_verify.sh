@@ -95,6 +95,7 @@ require_file "docs/roadmap/PHASE9_VALIDATION_PLAN.md"
 require_file "docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md"
 require_file "docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md"
 require_file "docs/roadmap/PHASE9_CHECKPOINT_STATUS.md"
+require_file "docs/roadmap/PHASE9_REVIEW_INTAKE.md"
 
 echo
 echo "-- Supporting context files --"
@@ -107,7 +108,8 @@ for file in \
   docs/roadmap/PHASE9_VALIDATION_PLAN.md \
   docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md \
   docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md \
-  docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+  docs/roadmap/PHASE9_CHECKPOINT_STATUS.md \
+  docs/roadmap/PHASE9_REVIEW_INTAKE.md
 do
   require_grep "SAFE-NO-TRADE" "$file" "SAFE-NO-TRADE safety posture"
 done
@@ -120,6 +122,11 @@ require_grep "live trading" "docs/roadmap/PHASE9_CHECKPOINT_STATUS.md" "live tra
 require_grep "production-readiness" "docs/roadmap/PHASE9_CHECKPOINT_STATUS.md" "production-readiness boundary"
 require_grep "Blocked Actions" "docs/roadmap/PHASE9_CHECKPOINT_STATUS.md" "blocked actions section"
 
+require_grep "review" "docs/roadmap/PHASE9_REVIEW_INTAKE.md" "review wording"
+require_grep "SAFE-NO-TRADE" "docs/roadmap/PHASE9_REVIEW_INTAKE.md" "SAFE-NO-TRADE boundary"
+warn_grep "non-author" "docs/roadmap/PHASE9_REVIEW_INTAKE.md" "non-authorization wording"
+warn_grep "does not authorize" "docs/roadmap/PHASE9_REVIEW_INTAKE.md" "explicit non-authorization wording"
+
 warn_grep "non-goals" "docs/roadmap/PHASE9_VALIDATION_PLAN.md" "non-goals wording"
 warn_grep "blocked" "docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md" "blocked wording"
 warn_grep "evidence" "docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md" "evidence wording"
@@ -131,21 +138,30 @@ for file in \
   docs/roadmap/PHASE9_VALIDATION_PLAN.md \
   docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md \
   docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md \
-  docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+  docs/roadmap/PHASE9_CHECKPOINT_STATUS.md \
+  docs/roadmap/PHASE9_REVIEW_INTAKE.md
 do
   reject_grep "production ready" "$file" "unqualified production ready claim"
   reject_grep "live trading approved" "$file" "live trading approval claim"
   reject_grep "runtime ready" "$file" "unqualified runtime ready claim"
+  reject_grep "runtime activation approved" "$file" "runtime activation approval claim"
+  reject_grep "recovery activation approved" "$file" "recovery activation approval claim"
 done
 
 echo
 echo "-- Script syntax sanity --"
+SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 if command -v bash >/dev/null 2>&1; then
-  if bash -n "$0"; then
-    echo "PASS: verifier script syntax is valid"
+  if [ -f "$SCRIPT_PATH" ]; then
+    if bash -n "$SCRIPT_PATH"; then
+      echo "PASS: verifier script syntax is valid"
+    else
+      echo "FAIL: verifier script syntax is invalid"
+      FAIL=$((FAIL + 1))
+    fi
   else
-    echo "FAIL: verifier script syntax is invalid"
-    FAIL=$((FAIL + 1))
+    echo "WARN: verifier script path is not a regular file: $SCRIPT_PATH"
+    WARN=$((WARN + 1))
   fi
 else
   echo "WARN: bash command not found for syntax check"
