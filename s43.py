@@ -14533,6 +14533,28 @@ def _run_coro_sync(coro):
 def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
     p = build_parser()
     args = p.parse_args(list(argv or []))
+
+    try:
+        offline_override = str(os.environ.get("OFFLINE_REVIEW_OVERRIDE", "0")).strip() == "1"
+    except Exception:
+        offline_override = False
+
+    try:
+        if bool(getattr(args, "live", False)) and (not offline_override):
+            print("[SAFE-NO-TRADE] --live requested but blocked in offline mode; forcing DRY_RUN=1 and LIVE_TRADING=0.")
+            try:
+                setattr(args, "live", False)
+            except Exception:
+                pass
+            try:
+                setattr(args, "dry_run", True)
+            except Exception:
+                pass
+            os.environ["LIVE_TRADING"] = "0"
+            os.environ["DRY_RUN"] = "1"
+    except Exception:
+        pass
+
     try:
         if bool(getattr(args, "live", False)):
             os.environ["LIVE_TRADING"] = "1"
