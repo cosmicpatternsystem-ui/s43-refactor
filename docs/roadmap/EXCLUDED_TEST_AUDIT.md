@@ -112,3 +112,80 @@ The next safe implementation step after this document is:
 - inspect the two excluded test files directly
 - classify each one against the audit criteria
 - record a promote / keep-excluded recommendation
+
+## Audit Result
+
+### test_arzplus_tokens_strict.py
+
+Observed characteristics:
+
+- imports `s43` directly
+- reads real environment variables via `os.getenv`
+- enforces machine/operator-specific token expectations
+- requires slot 1 = SET, slot 2 = EMPTY, slot 3 = SET
+- rejects generic fallback token variables
+- validates live local resolver behavior against current shell environment
+
+Assessment:
+
+- deterministic: NO
+- offline-safe: YES
+- CI-safe: NO
+- network/exchange dependent: NO
+- environment dependent: YES
+- suitable for allowlisted hardening runner: NO
+
+Decision:
+
+- KEEP EXCLUDED
+
+Reason:
+
+This file behaves as an operator/local-environment strict validation script, not a repository-wide deterministic CI-safe test.
+
+Future option:
+
+- refactor later into either:
+  - an operator utility script, or
+  - a true unit test using controlled environment mocking
+
+### test_reporting_summary_regression.py
+
+Observed characteristics:
+
+- uses local dummy wallet/bot test doubles
+- performs no real network activity
+- requires no secrets or operator environment state
+- checks deterministic summary-count behavior
+- checks disabled-wallet accounting contract
+- checks summary-string regression contract
+- includes local fallback helpers if `s43` helper functions are absent
+
+Assessment:
+
+- deterministic: YES
+- offline-safe: YES
+- CI-safe: YES
+- network/exchange dependent: NO
+- environment dependent: NO
+- suitable for allowlisted hardening runner: YES
+
+Decision:
+
+- ELIGIBLE FOR PROMOTION
+
+Reason:
+
+This test is deterministic, local-only, and meaningfully protects reporting summary behavior without introducing exchange/runtime risk.
+
+## Recommended Next Action
+
+If promotion is implemented, promote only:
+
+- test_reporting_summary_regression.py
+
+Do not promote:
+
+- test_arzplus_tokens_strict.py
+
+No production runtime change is required for this decision.
