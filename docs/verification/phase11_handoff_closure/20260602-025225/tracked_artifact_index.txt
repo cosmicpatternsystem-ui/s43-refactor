@@ -1,0 +1,35 @@
+Phase 11 Tracked Artifact Index
+Generated at: Tue Jun  2 02:52:25 +0330 2026
+
+Handoff documents:
+docs/handoff/phase11_readiness_discovery.md
+docs/handoff/phase11_roadmap_reconciliation.md
+docs/handoff/phase11_scope_definition.md
+
+Verification artifacts:
+docs/verification/phase11_discovery/20260602-021509/git_baseline.txt
+docs/verification/phase11_discovery/20260602-021509/key_docs_extract.txt
+docs/verification/phase11_discovery/20260602-021509/phase9_checkpoint_verify.log
+docs/verification/phase11_discovery/20260602-021509/run_hardening_tests.log
+docs/verification/phase11_discovery/20260602-021509/top_level_readiness_check.log
+docs/verification/phase11_roadmap_reconciliation/20260602-024614/git_context.txt
+docs/verification/phase11_roadmap_reconciliation/20260602-024614/roadmap_safety_inventory.txt
+
+Roadmap documents:
+docs/roadmap/EXCLUDED_TEST_AUDIT.md
+docs/roadmap/PHASE7_HARDENING_INDEX.md
+docs/roadmap/PHASE8_HANDOFF_NOTE.md
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md
+docs/roadmap/PHASE8_PROGRESS.md
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md
+docs/roadmap/PHASE8_ROADMAP.md
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md
+docs/roadmap/PHASE9_REVIEW_INTAKE.md
+docs/roadmap/PHASE9_REVIEW_VERDICT.md
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md
+docs/roadmap/PHASE9_VALIDATION_PLAN.md
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md
