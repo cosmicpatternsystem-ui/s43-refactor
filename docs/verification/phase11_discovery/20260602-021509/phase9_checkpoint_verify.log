@@ -1,0 +1,75 @@
+== Phase 9 Checkpoint Verification ==
+Mode: read-only verification
+
+-- Git status --
+FAIL: working tree is not clean
+?? phase11_discovery_artifacts_20260602-021509/
+
+-- Required Phase 9 files --
+PASS: required file exists: docs/roadmap/PHASE9_VALIDATION_PLAN.md
+PASS: required file exists: docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md
+PASS: required file exists: docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md
+PASS: required file exists: docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: required file exists: docs/roadmap/PHASE9_REVIEW_INTAKE.md
+
+-- Supporting context files --
+PASS: required file exists: docs/roadmap/PHASE8_HANDOFF_NOTE.md
+PASS: required file exists: docs/roadmap/TOP_LEVEL_READINESS_GATE.md
+
+-- Safety posture checks --
+PASS: SAFE-NO-TRADE safety posture found in docs/roadmap/PHASE9_VALIDATION_PLAN.md
+PASS: SAFE-NO-TRADE safety posture found in docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md
+PASS: SAFE-NO-TRADE safety posture found in docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md
+PASS: SAFE-NO-TRADE safety posture found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: SAFE-NO-TRADE safety posture found in docs/roadmap/PHASE9_REVIEW_INTAKE.md
+
+-- Non-authorization / blocked-action checks --
+PASS: runtime activation boundary found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: recovery activation boundary found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: live trading boundary found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: production-readiness boundary found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: blocked actions section found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+PASS: review wording found in docs/roadmap/PHASE9_REVIEW_INTAKE.md
+PASS: SAFE-NO-TRADE boundary found in docs/roadmap/PHASE9_REVIEW_INTAKE.md
+PASS: non-authorization wording found in docs/roadmap/PHASE9_REVIEW_INTAKE.md
+PASS: explicit non-authorization wording found in docs/roadmap/PHASE9_REVIEW_INTAKE.md
+PASS: non-goals wording found in docs/roadmap/PHASE9_VALIDATION_PLAN.md
+PASS: blocked wording found in docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md
+PASS: evidence wording found in docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md
+PASS: review wording found in docs/roadmap/PHASE9_CHECKPOINT_STATUS.md
+
+-- False readiness claim checks --
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_PLAN.md: unqualified production ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_PLAN.md: live trading approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_PLAN.md: unqualified runtime ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_PLAN.md: runtime activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_PLAN.md: recovery activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md: unqualified production ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md: live trading approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md: unqualified runtime ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md: runtime activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md: recovery activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md: unqualified production ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md: live trading approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md: unqualified runtime ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md: runtime activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md: recovery activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_CHECKPOINT_STATUS.md: unqualified production ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_CHECKPOINT_STATUS.md: live trading approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_CHECKPOINT_STATUS.md: unqualified runtime ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_CHECKPOINT_STATUS.md: runtime activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_CHECKPOINT_STATUS.md: recovery activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_REVIEW_INTAKE.md: unqualified production ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_REVIEW_INTAKE.md: live trading approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_REVIEW_INTAKE.md: unqualified runtime ready claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_REVIEW_INTAKE.md: runtime activation approval claim
+PASS: prohibited wording absent from docs/roadmap/PHASE9_REVIEW_INTAKE.md: recovery activation approval claim
+
+-- Script syntax sanity --
+PASS: verifier script syntax is valid
+
+== Summary ==
+Failures: 1
+Warnings: 0
+RESULT: FAIL
+Phase 9 checkpoint requires review before freeze.
