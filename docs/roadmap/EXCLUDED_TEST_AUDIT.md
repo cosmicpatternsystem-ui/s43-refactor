@@ -189,3 +189,19 @@ Do not promote:
 - test_arzplus_tokens_strict.py
 
 No production runtime change is required for this decision.
+
+## Promotion Implementation Note
+
+`test_reporting_summary_regression.py` was not discoverable through the
+existing `unittest.TestLoader().loadTestsFromName(...)` path
+(`countTestCases() == 0`).
+
+To preserve the explicit allowlist safety model without modifying production
+code or rewriting the test module, promotion was implemented in
+`run_hardening_tests.py` via a separate script-style allowlist path.
+
+This preserves:
+- explicit allowlisting
+- no broad test discovery
+- no `s43.py` runtime change
+- continued exclusion of `test_arzplus_tokens_strict.py`
