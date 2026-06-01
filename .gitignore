@@ -93,3 +93,7 @@ phase*_context_extract_*.txt
 phase*_auto_audit_report_*.txt
 phase*_patch_termux.sh
 quarantine_check.txt
+
+# Final local leftovers
+*.literal_n_bak
+❌
