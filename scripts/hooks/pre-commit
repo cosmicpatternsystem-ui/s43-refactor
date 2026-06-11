@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+echo "CP003-B pre-commit governance guard"
+
+if command -v pwsh >/dev/null 2>&1; then
+  pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/cp003_b_governance_guard.ps1
+elif command -v powershell.exe >/dev/null 2>&1; then
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/cp003_b_governance_guard.ps1
+else
+  echo "ERROR: neither pwsh nor powershell.exe was found"
+  exit 1
+fi
