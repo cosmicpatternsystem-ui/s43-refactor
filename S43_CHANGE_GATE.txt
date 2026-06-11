@@ -1,0 +1,34 @@
+﻿S43 CHANGE GATE
+
+STATUS:
+LOCKED
+
+MARKER:
+S43_LOCKED_AFTER_CHANGE_PLAN_002
+
+LOCKED_AFTER:
+S43_CHANGE_PLAN_002
+
+CURRENT_PROJECT_STATE:
+ROADMAP_CONFORMANT_AUDIT_READY
+
+LOCKED_TARGET:
+s43_instrumented_LATEST.py
+
+LOCKED_SHA256:
+20FB50643AA6A17D950DAAB821072E48132F15FBF6B82646B8BA1390FA237E0F
+
+POLICY:
+DO_NOT_PATCH_WITHOUT_NEW_PLAN
+
+NEXT_MUTATION_GATE:
+S43_CHANGE_PLAN_003
+
+REQUIRED_BEFORE_ANY_FUTURE_CHANGE:
+1. Open S43_CHANGE_PLAN_003.
+2. Record purpose, scope, expected files, rollback path, and validation plan.
+3. Verify current locked SHA256 before mutation.
+4. Apply only after explicit unlock acknowledgement for the new plan.
+5. Produce new closure attestation and receipt after completion.
+
+S43_LOCKED_AFTER_CHANGE_PLAN_002

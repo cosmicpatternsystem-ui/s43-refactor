@@ -1,0 +1,196 @@
+class BotConfig:
+    base_url: str = "https://api.arzplus.net/api/v1"
+    user_agent: str = "RazTraderPlus/1.0"
+    request_timeout_sec: float = field(default_factory=lambda: _env_float("REQ_TIMEOUT_SEC", 15.0))
+    dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+    loop_interval_sec: float = field(default_factory=lambda: (_env_float("LOOP_INTERVAL_SEC", 8.0) if _env_bool("TERMUX_MODE", False) else _env_float("LOOP_INTERVAL_SEC", 2.0)))
+    quote: str = field(default_factory=lambda: _env_str("QUOTE", "IRT").upper())
+    symbols: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("PP_SYMBOLS", "PAXGIRT,USDTIRT,BTCIRT,ETHIRT").split(",") if str(s).strip()
+    ])
+    symbol_timeout_sec: float = field(default_factory=lambda: _env_float("SYMBOL_TIMEOUT_SEC", 3.2))
+    cycle_budget_sec: float = field(default_factory=lambda: _env_float("CYCLE_BUDGET_SEC", 25.0))
+    low_priority_timeout_sec: float = field(default_factory=lambda: _env_float("LOW_PRIORITY_TIMEOUT_SEC", 1.2))
+    symbol_priority: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("SYMBOL_PRIORITY", "").split(",") if str(s).strip()
+    ])
+    collective_intelligence: bool = field(default_factory=lambda: _env_bool("COLLECTIVE_INTELLIGENCE", True))
+    collective_multiplier: float = field(default_factory=lambda: _env_float("COLLECTIVE_MULTIPLIER", 2.0))
+    collective_min_raz_conf: float = field(default_factory=lambda: _env_float("COLLECTIVE_MIN_RAZ_CONF", 0.78))
+    parisa_vote_thr: float = field(default_factory=lambda: _env_float("PARISA_VOTE_THR", 0.22))
+    parisa_veto_thr: float = field(default_factory=lambda: _env_float("PARISA_VETO_THR", -0.35))
+    collective_max_notional_frac: float = field(default_factory=lambda: _env_float("COLLECTIVE_MAX_NOTIONAL_FRAC", 0.25))
+    autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", False))
+    jitter_proxy: bool = field(default_factory=lambda: _env_bool("JITTER_PROXY", False))
+    jitter_ttl_mult: float = field(default_factory=lambda: _env_float("JITTER_TTL_MULT", 2.0))
+    jitter_samples: int = field(default_factory=lambda: max(1, _env_int("JITTER_SAMPLES", 5)))
+    laddering: bool = field(default_factory=lambda: _env_bool("LADDERING", False))
+    ladder_steps: int = field(default_factory=lambda: max(1, _env_int("LADDER_STEPS", 3)))
+    ladder_bps: float = field(default_factory=lambda: max(0.0, _env_float("LADDER_BPS", 2.0)))
+    ladder_pause_ms: int = field(default_factory=lambda: max(0, _env_int("LADDER_PAUSE_MS", 150)))
+    top8_enabled: bool = field(default_factory=lambda: _env_bool("TOP8", True))
+    top8_use_for_selection: bool = field(default_factory=lambda: _env_bool("TOP8_USE_FOR_SELECTION", True))
+    top8_refresh_sec: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_REFRESH_SEC", 12.0)))
+    top8_trades_lookback_sec: float = field(default_factory=lambda: max(10.0, _env_float("TOP8_TRADES_LOOKBACK_SEC", 300.0)))
+    top8_depth_bps: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_DEPTH_BPS", 10.0)))
+    batch_tickers_enabled: bool = field(default_factory=lambda: _env_bool("BATCH_TICKERS", True))
+    batch_tickers_min_interval_sec: float = field(default_factory=lambda: max(0.25, _env_float("BATCH_TICKERS_MIN_INTERVAL_SEC", 1.0)))
+    market_age_skip_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SKIP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+    market_age_sleep_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SLEEP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+    dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES", False))
+
+    # Future-proof runtime / AI controls
+    ai_mode: str = field(default_factory=lambda: str(os.getenv("AI_MODE", "off")).strip().lower())
+    runtime_profile: str = field(default_factory=lambda: str(os.getenv("RUNTIME_PROFILE", ("termux" if _env_bool("TERMUX_MODE", False) else "server"))).strip().lower())
+    live_trading_armed: bool = field(default_factory=lambda: _env_bool("LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+    ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("AI_LIVE_TRADING_ARMED", False))
+    dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("AI_LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+    dzh_auto_tune: bool = field(default_factory=lambda: _env_bool("DZH_AUTO_TUNE", True))
+    dzh_dyn_tune: bool = field(default_factory=lambda: _env_bool("DZH_DYN_TUNE", True))
+    dzh_safety_entry: bool = field(default_factory=lambda: _env_bool("DZH_SAFETY_ENTRY", True))
+    dzh_veto_htf: bool = field(default_factory=lambda: _env_bool("DZH_VETO_HTF", True))
+    dzh_net_alpha: bool = field(default_factory=lambda: _env_bool("DZH_NET_ALPHA", True))
+    dzh_net_alpha_span: int = field(default_factory=lambda: max(10, _env_int("DZH_NET_ALPHA_SPAN", 50)))
+    dzh_liquidity_min_irt: float = field(default_factory=lambda: max(0.0, _env_float("DZH_LIQ_MIN_IRT", 25_000_000.0)))
+    dzh_spread_max_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_SPREAD_MAX_BPS", 35.0)))
+    dzh_fake_breakout_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_FAKE_BREAKOUT_BPS", 8.0)))
+    dzh_htf_reject_thr: float = field(default_factory=lambda: float(_env_float("DZH_HTF_REJECT_THR", 0.42)))
+    dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MIN", 0.35), 0.05, 1.0))
+    dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MAX", 1.0), 0.05, 2.0))
+    flash_crash_enabled: bool = field(default_factory=lambda: _env_bool("FLASH_CRASH_EXIT", True))
+    flash_crash_pct: float = field(default_factory=lambda: abs(_env_float("FLASH_CRASH_PCT", 0.05)))
+    flash_crash_window_sec: float = field(default_factory=lambda: _env_float("FLASH_CRASH_WINDOW_SEC", 30.0))
+    flash_ref_symbols: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("FLASH_REF_SYMBOLS", "").split(",") if str(s).strip()
+    ])
+    flash_min_confirmations: int = field(default_factory=lambda: _env_int("FLASH_MIN_CONFIRMATIONS", 1))
+    global_exit_slippage_bps: float = field(default_factory=lambda: abs(_env_float("GLOBAL_EXIT_SLIPPAGE_BPS", 80.0)))
+    global_exit_armed: bool = field(default_factory=lambda: _env_bool("GLOBAL_EXIT_ARMED", False))
+    wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+    min_notional_irt: float = field(default_factory=lambda: _env_float("MIN_NOTIONAL_IRT", 200_000.0))
+    max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("MAX_NOTIONAL_FRAC", 0.90), 0.05, 0.95))
+    max_open_positions: int = field(default_factory=lambda: _env_int("MAX_OPEN_POSITIONS", 4))
+    buy_threshold: float = field(default_factory=lambda: abs(_env_float("BUY_THRESHOLD", 0.20)))
+    sell_threshold: float = field(default_factory=lambda: abs(_env_float("SELL_THRESHOLD", 0.20)))
+    min_hold_sec: float = field(default_factory=lambda: _env_float("MIN_HOLD_SEC", 8.0))
+    stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("STOP_LOSS_PCT", 0.02)))
+    take_profit_pct: float = field(default_factory=lambda: abs(_env_float("TAKE_PROFIT_PCT", 0.03)))
+    max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("MAX_DAILY_LOSS_PCT", 0.05)))
+    rate_limit_per_min: int = field(default_factory=lambda: _env_int("RATE_LIMIT_PER_MIN", 100))
+    circuit_breaker_errors: int = field(default_factory=lambda: _env_int("CB_ERRORS", 12))
+    circuit_breaker_cooldown_sec: float = field(default_factory=lambda: _env_float("CB_COOLDOWN_SEC", 45.0))
+    balance_refresh_sec: float = field(default_factory=lambda: _env_float("BALANCE_REFRESH_SEC", 8.0))
+    orders_refresh_sec: float = field(default_factory=lambda: _env_float("ORDERS_REFRESH_SEC", 3.0))
+    orders_reconcile_interval_sec: float = field(default_factory=lambda: _env_float("ORDERS_RECONCILE_INTERVAL_SEC", 30.0))
+    depth_cache_ttl_sec: float = field(default_factory=lambda: _env_float("DEPTH_CACHE_TTL_SEC", 1.2))
+    price_cache_path: str = field(default_factory=lambda: _env_str("PRICE_CACHE_PATH", "raz_price_cache.json"))
+    price_cache_on_timeout: bool = field(default_factory=lambda: _env_bool("PRICE_CACHE_ON_TIMEOUT", True))
+    state_path: str = field(default_factory=lambda: _env_str("STATE_PATH", "raz_state.json"))
+    state_save_sec: float = field(default_factory=lambda: _env_float("STATE_SAVE_SEC", 30.0))
+    risk_journal_path: str = field(default_factory=lambda: _env_str("RISK_JOURNAL_PATH", "raz_risk_journal.json"))
+    risk_journal_fsync: bool = field(default_factory=lambda: _env_bool("RISK_JOURNAL_FSYNC", True))
+    risk_journal_throttle_sec: float = field(default_factory=lambda: _env_float("RISK_JOURNAL_THROTTLE_SEC", 1.0))
+    orders_journal_path: str = field(default_factory=lambda: _env_str("ORDERS_JOURNAL_PATH", "raz_orders_journal.json"))
+    orders_journal_fsync: bool = field(default_factory=lambda: _env_bool("ORDERS_JOURNAL_FSYNC", True))
+    orders_journal_throttle_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_THROTTLE_SEC", 0.25))
+    orders_journal_pending_ttl_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_PENDING_TTL_SEC", 180.0))
+    record_ticks: bool = field(default_factory=lambda: _env_bool("RECORD_TICKS", False))
+    record_db_path: str = field(default_factory=lambda: _env_str("RECORD_DB_PATH", "raz_ticks.sqlite"))
+    sqlite_timeout_sec: float = field(default_factory=lambda: _env_float("SQLITE_TIMEOUT_SEC", 30.0))
+    fee_bps: float = field(default_factory=lambda: _env_float("FEE_BPS", 12.0))
+    slippage_bps: float = field(default_factory=lambda: _env_float("SLIPPAGE_BPS", 5.0))
+    order_safety_bps: float = field(default_factory=lambda: _env_float("ORDER_SAFETY_BPS", 10.0))
+    min_net_profit_irt: float = field(default_factory=lambda: _env_float("MIN_NET_PROFIT_IRT", 0.0))
+    idempotency_ttl_sec: float = field(default_factory=lambda: _env_float("IDEMPOTENCY_TTL_SEC", 20.0))
+    dash_enabled: bool = field(default_factory=lambda: _env_bool("DASH", True))
+    dash_refresh_sec: float = field(default_factory=lambda: _env_float("DASH_REFRESH_SEC", 1.5))
+    dash_screen: bool = field(default_factory=lambda: _env_bool("DASH_SCREEN", False))
+    watchdog_enabled: bool = field(default_factory=lambda: _env_bool("WATCHDOG", False))
+    watchdog_heartbeat_file: str = field(default_factory=lambda: _env_str("WATCHDOG_HEARTBEAT_FILE", os.path.join("logs", "trading_bot.log")))
+    watchdog_hb_touch_sec: float = field(default_factory=lambda: _env_float("WATCHDOG_HB_TOUCH_SEC", 20.0))
+    watchdog_hb_max_age_sec: float = field(default_factory=lambda: _env_float("WATCHDOG_HB_MAX_AGE_SEC", 120.0))
+    watchdog_mem_soft_mb: float = field(default_factory=lambda: _env_float("WATCHDOG_MEM_SOFT_MB", 900.0))
+    watchdog_mem_hard_mb: float = field(default_factory=lambda: _env_float("WATCHDOG_MEM_HARD_MB", 1100.0))
+    watchdog_restart_delay_sec: float = field(default_factory=lambda: _env_float("WATCHDOG_RESTART_DELAY_SEC", 2.0))
+    watchdog_term_grace_sec: float = field(default_factory=lambda: _env_float("WATCHDOG_TERM_GRACE_SEC", 8.0))
+    sanity_enabled: bool = field(default_factory=lambda: _env_bool("SANITY_ENABLED", True))
+    sanity_depth_spot_thr: float = field(default_factory=lambda: _env_float("SANITY_DEPTH_SPOT_THR", 0.004))
+    sanity_max_dev_pct: float = field(default_factory=lambda: _env_float("SANITY_MAX_DEV_PCT", 0.030))
+    sanity_latency_ms: float = field(default_factory=lambda: _env_float("SANITY_LATENCY_MS", 3200.0))
+    sanity_liq_drop_ratio: float = field(default_factory=lambda: _env_float("SANITY_LIQ_DROP_RATIO", 0.35))
+    sanity_liq_cv_thr: float = field(default_factory=lambda: _env_float("SANITY_LIQ_CV_THR", 0.90))
+    sanity_spread_bps_thr: float = field(default_factory=lambda: _env_float("SANITY_SPREAD_BPS_THR", 40.0))
+    sanity_divergence_rsi_thr: float = field(default_factory=lambda: _env_float("SANITY_RSI_THR", 70.0))
+    sanity_divergence_shadow_thr: float = field(default_factory=lambda: _env_float("SANITY_SHADOW_THR", 0.40))
+    sanity_hold_sec: float = field(default_factory=lambda: _env_float("SANITY_HOLD_SEC", 15.0))
+    sanity_soft_mid_hold_sec: float = field(default_factory=lambda: _env_float("SANITY_SOFT_MID_HOLD_SEC", 6.0))
+    sanity_clear_ok: int = field(default_factory=lambda: int(_env_int("SANITY_CLEAR_OK", 6)))
+    sanity_debounce_hits: int = field(default_factory=lambda: int(_env_int("SANITY_DEBOUNCE_HITS", 2)))
+    sanity_debounce_window_sec: float = field(default_factory=lambda: _env_float("SANITY_DEBOUNCE_WINDOW_SEC", 2.0))
+    sanity_severe_mult: float = field(default_factory=lambda: _env_float("SANITY_SEVERE_MULT", 2.0))
+    phoenix_enabled: bool = field(default_factory=lambda: _env_bool("PHOENIX_ENABLED", True))
+    phoenix_rsi_period: int = field(default_factory=lambda: int(_env_int("PHOENIX_RSI_PERIOD", 14)))
+    phoenix_shadow_window: int = field(default_factory=lambda: int(_env_int("PHOENIX_SHADOW_WIN", 20)))
+    phoenix_shadow_exit_thr: float = field(default_factory=lambda: float(_env_float("PHOENIX_SHADOW_EXIT_THR", 0.72)))
+    phoenix_entry_thr: float = field(default_factory=lambda: _env_float("PHOENIX_ENTRY_THR", 0.20))
+    phoenix_min_conf: float = field(default_factory=lambda: _env_float("PHOENIX_MIN_CONF", 0.20))
+    phoenix_gate_mode: str = field(default_factory=lambda: str(_env_str("PHOENIX_GATE_MODE", "soft") or "soft").strip().lower())
+    phoenix_action_override: bool = field(default_factory=lambda: _env_bool("PHOENIX_ACTION_OVERRIDE", True))
+    phoenix_warmup_size_mult: float = field(default_factory=lambda: float(_env_float("PHOENIX_WARMUP_SIZE_MULT", 0.65)))
+    phoenix_fallback_raz_conf: float = field(default_factory=lambda: float(_env_float("PHOENIX_FALLBACK_RAZ_CONF", 0.60)))
+    phoenix_fallback_raz_score: float = field(default_factory=lambda: float(_env_float("PHOENIX_FALLBACK_RAZ_SCORE", 0.22)))
+    phoenix_w_sig: float = field(default_factory=lambda: _env_float("PHOENIX_W_SIG", 0.45))
+    phoenix_w_rsi: float = field(default_factory=lambda: _env_float("PHOENIX_W_RSI", 0.35))
+    phoenix_w_shadow: float = field(default_factory=lambda: _env_float("PHOENIX_W_SHADOW", 0.20))
+    advanced_analytics_enabled: bool = True
+    multi_timeframe_enabled: bool = True
+    mtf_weights: str = field(default_factory=lambda: _env_str("MTF_WEIGHTS", "1m:0.2,5m:0.3,15m:0.25,30m:0.15,1h:0.1"))
+    mtf_min_confidence: float = field(default_factory=lambda: _env_float("MTF_MIN_CONFIDENCE", 0.65))
+    pattern_detection_enabled: bool = True
+    pattern_min_confidence: float = field(default_factory=lambda: _env_float("PATTERN_MIN_CONFIDENCE", 0.6))
+    pattern_lookback_bars: int = field(default_factory=lambda: _env_int("PATTERN_LOOKBACK", 50))
+    order_book_analysis_enabled: bool = True
+    oba_cluster_granularity: float = field(default_factory=lambda: _env_float("OBA_CLUSTER_GRANULARITY", 50.0))
+    oba_wall_threshold_irt: float = field(default_factory=lambda: _env_float("OBA_WALL_THRESHOLD_IRT", 50_000_000.0))
+    sentiment_analysis_enabled: bool = True
+    sentiment_weights: str = field(default_factory=lambda: _env_str("SENTIMENT_WEIGHTS", "RSI:0.25,VOLUME:0.2,DIVERGENCE:0.3,VOLATILITY:0.25"))
+    sentiment_volume_spike_threshold: float = field(default_factory=lambda: _env_float("SENTIMENT_VOLUME_SPIKE_THRESHOLD", 1.8))
+    ml_predictor_enabled: bool = field(default_factory=lambda: _env_bool("ML_PREDICTOR_ENABLED", True))
+    analytics_signal_boost: float = field(default_factory=lambda: clamp(_env_float("ANALYTICS_SIGNAL_BOOST", 1.25), 1.0, 2.0))
+    analytics_confidence_boost: float = field(default_factory=lambda: clamp(_env_float("ANALYTICS_CONFIDENCE_BOOST", 1.15), 1.0, 2.0))
+    price_history_bars: int = field(default_factory=lambda: max(50, _env_int("PRICE_HISTORY_BARS", 200)))
+    history_refresh_interval: float = field(default_factory=lambda: _env_float("HISTORY_REFRESH_SEC", 2.0))
+    def __post_init__(self) -> None:
+        'Normalize symbol lists so the rest of the bot always sees proper market pairs.'
+        try:
+            dq = str(getattr(self, "quote", "IRT") or "IRT").upper()
+        except Exception:
+            dq = "IRT"
+        def _norm_list(lst):
+            out = []
+            seen = set()
+            for s in (lst or []):
+                try:
+                    cs = _canon_pair(s, dq)
+                except Exception:
+                    cs = str(s or "").strip().upper()
+                if not cs:
+                    continue
+                if cs == dq:
+                    continue
+                if cs not in seen:
+                    seen.add(cs)
+                    out.append(cs)
+            return out
+        try:
+            object.__setattr__(self, "symbols", _norm_list(getattr(self, "symbols", None)))
+        except Exception:
+            pass
+        try:
+            object.__setattr__(self, "symbol_priority", _norm_list(getattr(self, "symbol_priority", None)))
+        except Exception:
+            pass
+        try:
+            object.__setattr__(self, "flash_ref_symbols", _norm_list(getattr(self, "flash_ref_symbols", None)))
+        except Exception:
+            pass

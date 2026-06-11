@@ -1,0 +1,4 @@
+00012: class TemporaryPause(Exception):
+00013:     def __init__(self, message="", pause_sec=None):
+00014:         super().__init__(message)
+00015:         self.pause_sec = pause_sec

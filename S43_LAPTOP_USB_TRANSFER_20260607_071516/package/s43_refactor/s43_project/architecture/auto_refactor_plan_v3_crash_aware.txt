@@ -1,0 +1,518 @@
+S43 AUTO REFACTOR PLAN V3 - CRASH AWARE
+====================================================================================================
+Architecture + crash readiness + safety gap analysis + guard injection suggestions
+
+Top Refactor Candidates
+----------------------------------------------------------------------------------------------------
+TradingBotOps                  score= 5317.1 size=8287 methods= 88 deps= 28 big=21 spread=10 target=safety     conf=0.15 crash_ready= 98.0
+WallStreetDashboardManager     score= 2744.9 size=3993 methods= 58 deps= 18 big= 6 spread=10 target=safety     conf=0.16 crash_ready= 98.0
+ExchangeClient                 score= 2333.7 size=2586 methods= 67 deps= 21 big=12 spread=10 target=safety     conf=0.16 crash_ready= 98.0
+TradingBotBase                 score= 1346.8 size=1375 methods= 17 deps= 45 big= 4 spread=10 target=safety     conf=0.15 crash_ready= 98.0
+_DataFeedBase                  score=  883.1 size= 858 methods= 20 deps= 11 big= 3 spread=10 target=safety     conf=0.15 crash_ready= 98.0
+RiskManager                    score=  767.1 size= 618 methods= 25 deps= 12 big= 0 spread=10 target=safety     conf=0.23 crash_ready= 98.0
+ExecutionEngine                score=  689.0 size= 609 methods= 10 deps= 15 big= 2 spread=10 target=safety     conf=0.16 crash_ready= 98.0
+TradingBot                     score=  591.4 size= 452 methods= 10 deps= 14 big= 1 spread=10 target=runtime    conf=0.14 crash_ready= 98.0
+RazTraderEnhanced              score=  568.0 size= 349 methods= 14 deps= 15 big= 0 spread=10 target=panel      conf=0.18 crash_ready= 98.0
+AlphaModel                     score=  536.6 size= 317 methods= 13 deps= 11 big= 1 spread=10 target=strategy   conf=0.14 crash_ready= 98.0
+Orch22Orchestrator             score=  510.2 size= 296 methods= 11 deps= 14 big= 0 spread=10 target=safety     conf=0.18 crash_ready= 98.0
+HybridSignalFilter             score=  483.7 size= 286 methods= 11 deps=  8 big= 1 spread=10 target=strategy   conf=0.29 crash_ready= 89.9
+DynamicPositionSizer           score=  476.8 size= 275 methods= 13 deps=  8 big= 0 spread=10 target=safety     conf=0.24 crash_ready= 73.6
+AdvancedAnalyticsEngine        score=  474.4 size= 252 methods= 10 deps= 13 big= 0 spread=10 target=safety     conf=0.15 crash_ready= 98.0
+SanityHaltController           score=  457.5 size= 321 methods=  4 deps= 11 big= 1 spread=10 target=safety     conf=0.17 crash_ready= 98.0
+SoftSymbolBlacklist            score=  446.2 size= 116 methods= 23 deps=  1 big= 0 spread=10 target=safety     conf=0.19 crash_ready= 32.5
+MarketSnapshotStore            score=  416.9 size= 213 methods= 11 deps=  6 big= 0 spread=10 target=market     conf=0.19 crash_ready= 81.8
+_S43VetoRegistry               score=  399.9 size=  93 methods= 19 deps=  1 big= 0 spread=10 target=market     conf=0.15 crash_ready= 27.0
+NetHealthMonitor               score=  391.1 size=  89 methods= 19 deps=  0 big= 0 spread=10 target=telemetry  conf=0.20 crash_ready= 29.9
+Orch22WalletEngine             score=  386.1 size= 158 methods=  5 deps= 10 big= 1 spread=10 target=account    conf=0.15 crash_ready= 89.9
+
+Crash Readiness Summary
+----------------------------------------------------------------------------------------------------
+circuit_breaker        signals=2767
+stale_data             signals=5894
+slippage               signals=2772
+spread                 signals=2881
+liquidity              signals=2250
+account_consistency    signals=5135
+execution_failsafe     signals=4067
+volatility_crash       signals=2700
+
+Detailed Recommendations
+----------------------------------------------------------------------------------------------------
+
+[TradingBotOps]
+file: s43_project/core/trading_bot_ops.py
+size=8287 lines | methods=88 | deps=28 | big_methods=21 | spread=10 | score=5317.1
+recommended package: safety  (confidence=0.15)
+crash readiness score: 98.0/100
+dominant concerns: safety:4379, market:2881, strategy:2746, infra:2564, runtime:2233, state:2173, panel:1721, account:1570
+safety signals: stale_data:1380, spread:731, execution_failsafe:999, circuit_breaker:585, liquidity:504, volatility_crash:585, slippage:621, account_consistency:1193
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - ExecutionCoordinator: order placement / amend / cancel / fill flow
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - _process_symbol_heartbeat      2757 lines -> market     conf=0.50 line=2904 [market:11, infra:3, safety:2] | guards: no immediate guard suggestion
+  - run                            1626 lines -> runtime    conf=1.00 line=6679 [runtime:20] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - _refresh_market_snapshot_if_needed  946 lines -> market     conf=1.00 line=271 [market:20] | guards: inject liquidity guard
+  - _health_watchdog_loop           734 lines -> telemetry  conf=0.50 line=7378 [telemetry:10, runtime:10] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - _apply_snapshot_result          671 lines -> market     conf=0.71 line=524 [market:10, infra:2, state:1] | guards: inject liquidity guard
+  - _refresh_orders_if_needed       634 lines -> execution  conf=0.48 line=1813 [execution:10, infra:3, safety:2] | guards: no immediate guard suggestion
+  - _refresh_top8_if_needed         391 lines -> core       conf=0.00 line=2447 [] | guards: inject liquidity guard
+  - _apply_resolved_fills           279 lines -> execution  conf=1.00 line=3040 [execution:10] | guards: inject slippage guard; inject spread guard; inject execution failsafe (idempotency/retry/verify); inject post-trade reconciliation
+  - _update_market_snapshot_confidence  277 lines -> market     conf=1.00 line=1217 [market:21] | guards: inject liquidity guard
+  - cycle_wallet                    271 lines -> state      conf=0.35 line=5841 [state:11, account:11, infra:3] | guards: inject spread guard; inject spread anomaly check
+  - refresh_market_focus            220 lines -> market     conf=1.00 line=19 [market:10] | guards: inject liquidity guard
+  - _apply_one                      205 lines -> core       conf=0.00 line=3086 [] | guards: no immediate guard suggestion
+signal strings:
+  - _sniper_only
+  - BTCIRT
+  - ETHIRT
+  - USDTIRT
+  - PAXGIRT
+  - BNBIRT
+
+[WallStreetDashboardManager]
+file: s43_project/core/wall_street_dashboard_manager.py
+size=3993 lines | methods=58 | deps=18 | big_methods=6 | spread=10 | score=2744.9
+recommended package: safety  (confidence=0.16)
+crash readiness score: 98.0/100
+dominant concerns: safety:4544, infra:2510, strategy:2355, runtime:2228, state:2199, panel:1987, market:1983, parser:1840
+safety signals: slippage:655, execution_failsafe:947, volatility_crash:802, stale_data:1431, circuit_breaker:775, spread:499, account_consistency:1302, liquidity:474
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+  - PayloadParser: normalize / parse / transform / adapt payloads
+safety gaps:
+critical method guard suggestions:
+  - _run                           3931 lines -> runtime    conf=1.00 line=43 [runtime:20] | guards: inject circuit breaker hook
+  - phoenix_panel                   923 lines -> strategy   conf=0.48 line=1102 [strategy:10, panel:10, market:1] | guards: inject stale-data/freshness validation; inject liquidity guard; inject spread anomaly check
+  - render                          772 lines -> ui         conf=1.00 line=3174 [ui:10] | guards: inject liquidity guard
+  - dzh_panel                       599 lines -> panel      conf=1.00 line=2025 [panel:10] | guards: inject liquidity guard; inject spread anomaly check; inject circuit breaker hook; inject market mode / crash detector hook
+  - wallet_overview_panel           319 lines -> state      conf=0.26 line=783 [state:11, account:11, ui:10] | guards: inject stale-data/freshness validation; inject liquidity guard; inject spread anomaly check; inject account consistency / reconcile check; inject state freshness check
+  - wallet_full_panel               214 lines -> state      conf=0.27 line=567 [state:11, account:11, panel:11] | guards: no immediate guard suggestion
+  - _run_assets_detail               78 lines -> runtime    conf=0.41 line=447 [runtime:21, account:21, infra:3] | guards: inject liquidity guard
+  - multi_core_asset_panel           78 lines -> account    conf=0.40 line=2926 [account:21, core:10, strategy:10] | guards: no immediate guard suggestion
+  - _pick_best_focus                 67 lines -> infra      conf=1.00 line=1390 [infra:1] | guards: inject liquidity guard; inject spread anomaly check
+  - _overview_assets_detail          65 lines -> account    conf=0.51 line=807 [account:21, ui:11, infra:3] | guards: inject liquidity guard
+  - net_resilience_panel             64 lines -> panel      conf=0.83 line=2862 [panel:10, state:1, account:1] | guards: no immediate guard suggestion
+  - _net_metrics                     62 lines -> telemetry  conf=0.91 line=2747 [telemetry:20, state:1, account:1] | guards: no immediate guard suggestion
+signal strings:
+  - \bevent=([A-Za-z0-9_\-]+)
+  - DASH_LAST_EVENTS_MAX_LINES
+  - 12
+  - 12
+  - HEALTH_SYS_
+  - HEALTH_WD_
+
+[ExchangeClient]
+file: s43_project/core/exchange_client.py
+size=2586 lines | methods=67 | deps=21 | big_methods=12 | spread=10 | score=2333.7
+recommended package: safety  (confidence=0.16)
+crash readiness score: 98.0/100
+dominant concerns: safety:2042, infra:1425, market:1343, strategy:1074, state:1052, runtime:958, parser:830, panel:809
+safety signals: execution_failsafe:398, account_consistency:587, circuit_breaker:351, stale_data:702, spread:433, slippage:306, volatility_crash:317, liquidity:284
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - place_order                     152 lines -> execution  conf=0.73 line=2216 [execution:30, market:11] | guards: inject slippage guard
+  - get_depth                       151 lines -> market     conf=0.52 line=383 [market:11, panel:10] | guards: inject spread anomaly check
+  - get_market_snapshot             134 lines -> market     conf=0.67 line=1701 [market:20, panel:10] | guards: inject liquidity guard
+  - get_all_tickers_optimized       128 lines -> market     conf=0.33 line=1356 [market:20, panel:10, state:10] | guards: inject liquidity guard; inject spread anomaly check; inject circuit breaker hook; inject market mode / crash detector hook
+  - _discover_depth_endpoint        125 lines -> market     conf=0.52 line=233 [market:11, infra:10] | guards: inject stale-data/freshness validation; inject spread anomaly check
+  - get_all_tickers                 125 lines -> market     conf=0.33 line=1231 [market:20, panel:10, state:10] | guards: inject liquidity guard; inject circuit breaker hook; inject market mode / crash detector hook
+  - conn_check                      118 lines -> core       conf=0.00 line=2096 [] | guards: no immediate guard suggestion
+  - __init__                         95 lines -> telemetry  conf=0.40 line=43 [telemetry:2, safety:2, risk:1] | guards: no immediate guard suggestion
+  - _ensure_ready                    95 lines -> core       conf=0.00 line=138 [] | guards: inject stale-data/freshness validation; inject spread anomaly check
+  - get_all_market_stats             92 lines -> panel      conf=0.20 line=1887 [panel:10, state:10, account:10] | guards: inject stale-data/freshness validation; inject liquidity guard
+  - get_balance                      92 lines -> panel      conf=0.33 line=2002 [panel:10, state:10, account:10] | guards: no immediate guard suggestion
+  - _arzplus_market_snapshot         91 lines -> market     conf=1.00 line=1533 [market:20] | guards: inject liquidity guard
+signal strings:
+  - ^(token|bearer|jwt)\s+(.+)$
+  - (\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|)
+  - تا\s*(\d+(?:\.\d+)?)
+  - ۰۱۲۳۴۵۶۷۸۹
+  - 0123456789
+  - 
+
+[TradingBotBase]
+file: s43_project/core/trading_bot_base.py
+size=1375 lines | methods=17 | deps=45 | big_methods=4 | spread=10 | score=1346.8
+recommended package: safety  (confidence=0.15)
+crash readiness score: 98.0/100
+dominant concerns: safety:914, state:718, infra:562, strategy:509, market:483, runtime:405, core:398, account:371
+safety signals: stale_data:396, execution_failsafe:226, circuit_breaker:163, spread:146, liquidity:148, account_consistency:401, slippage:177, volatility_crash:143
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - snapshot                        399 lines -> market     conf=1.00 line=374 [market:10] | guards: inject post-trade reconciliation; inject account consistency / reconcile check
+  - _refresh_balance_if_needed      357 lines -> state      conf=0.35 line=1005 [state:11, account:11, infra:3] | guards: no immediate guard suggestion
+  - __init__                        216 lines -> telemetry  conf=1.00 line=38 [telemetry:2] | guards: no immediate guard suggestion
+  - _load_state                     145 lines -> state      conf=1.00 line=797 [state:20] | guards: inject state freshness check; inject circuit breaker hook; inject market mode / crash detector hook
+  - _load_bot_state                  63 lines -> state      conf=0.67 line=311 [state:20, core:10] | guards: inject state freshness check
+  - _save_state_if_needed            63 lines -> state      conf=1.00 line=942 [state:20] | guards: no immediate guard suggestion
+  - _save_bot_state                  33 lines -> state      conf=0.67 line=278 [state:20, core:10] | guards: inject liquidity guard; inject spread anomaly check
+  - _bot_state_snapshot              24 lines -> state      conf=0.33 line=254 [core:10, state:10, market:10] | guards: inject liquidity guard; inject spread anomaly check
+  - _state_obj                       24 lines -> state      conf=1.00 line=773 [state:10] | guards: no immediate guard suggestion
+  - _balance_refresh_degraded        18 lines -> state      conf=0.50 line=1007 [state:10, account:10] | guards: no immediate guard suggestion
+  - calculate_opportunity_score      15 lines -> strategy   conf=0.50 line=1397 [core:10, strategy:10] | guards: no immediate guard suggestion
+  - _idem_forget                     10 lines -> state      conf=0.33 line=1371 [state:1, account:1, market:1] | guards: no immediate guard suggestion
+signal strings:
+  - Hold
+  - Wait_X
+  - _V167_STATE
+  - BOT
+  - IRT
+  - Only IRT quote is supported in this build.
+
+[_DataFeedBase]
+file: s43_project/core/__data_feed_base.py
+size=858 lines | methods=20 | deps=11 | big_methods=3 | spread=10 | score=883.1
+recommended package: safety  (confidence=0.15)
+crash readiness score: 98.0/100
+dominant concerns: safety:492, market:480, panel:358, infra:313, state:258, strategy:229, runtime:216, parser:181
+safety signals: slippage:135, spread:147, circuit_breaker:72, liquidity:139, stale_data:182, execution_failsafe:141, account_consistency:128, volatility_crash:88
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - fetch_depth                     270 lines -> market     conf=0.39 line=332 [market:11, safety:5, execution:3] | guards: no immediate guard suggestion
+  - _parse_depth                    175 lines -> market     conf=0.52 line=65 [market:11, parser:10] | guards: inject stale-data/freshness validation; inject spread anomaly check
+  - fetch_spot                      159 lines -> market     conf=1.00 line=602 [market:1] | guards: inject liquidity guard; inject spread anomaly check
+  - peek_mid                         63 lines -> market     conf=1.00 line=802 [market:11] | guards: no immediate guard suggestion
+  - _normalize_levels                51 lines -> parser     conf=1.00 line=95 [parser:10] | guards: no immediate guard suggestion
+  - fetch_depths                     41 lines -> market     conf=0.39 line=761 [market:11, safety:5, execution:3] | guards: inject stale-data/freshness validation; inject spread anomaly check
+  - _blacklist_symbol                32 lines -> market     conf=1.00 line=268 [market:11] | guards: no immediate guard suggestion
+  - _load_price_cache                30 lines -> state      conf=1.00 line=27 [state:20] | guards: inject account consistency / reconcile check
+  - _px_from_row                     30 lines -> core       conf=0.00 line=616 [] | guards: no immediate guard suggestion
+  - is_ignored                       20 lines -> safety     conf=0.37 line=248 [safety:30, state:20, strategy:10] | guards: no immediate guard suggestion
+  - _try_snapshots                   20 lines -> strategy   conf=0.33 line=646 [strategy:10, infra:10, market:10] | guards: inject stale-data/freshness validation; inject liquidity guard; inject spread anomaly check
+  - __init__                         19 lines -> strategy   conf=0.18 line=8 [strategy:2, execution:2, telemetry:2] | guards: inject stale-data/freshness validation; inject account consistency / reconcile check; inject state freshness check
+signal strings:
+  - raz_price_cache.json
+  - JITTER_PROXY
+  - JITTER_TTL_MULT
+  - JITTER_SAMPLES
+  - r
+  - utf-8
+
+[RiskManager]
+file: s43_project/core/risk_manager.py
+size=618 lines | methods=25 | deps=12 | big_methods=0 | spread=10 | score=767.1
+recommended package: safety  (confidence=0.23)
+crash readiness score: 98.0/100
+dominant concerns: safety:797, state:302, strategy:267, runtime:258, risk:255, market:249, infra:238, account:184
+safety signals: circuit_breaker:98, stale_data:204, liquidity:77, account_consistency:156, execution_failsafe:173, slippage:89, spread:103, volatility_crash:94
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - safe_level                       66 lines -> safety     conf=1.00 line=169 [safety:20] | guards: no immediate guard suggestion
+  - can_open_explain                 66 lines -> market     conf=0.52 line=408 [market:11, execution:10] | guards: no immediate guard suggestion
+  - _load_risk_journal               47 lines -> state      conf=0.40 line=304 [state:20, safety:20, risk:10] | guards: inject account consistency / reconcile check
+  - should_exit                      45 lines -> strategy   conf=0.42 line=520 [strategy:11, safety:10, market:2] | guards: no immediate guard suggestion
+  - update_wallet_balance_snapshot   41 lines -> state      conf=0.38 line=53 [state:21, account:21, market:12] | guards: inject spread anomaly check; inject market mode / crash detector hook
+  - can_open                         34 lines -> market     conf=0.52 line=374 [market:11, execution:10] | guards: no immediate guard suggestion
+  - global_cash_total_irt            32 lines -> core       conf=0.00 line=94 [] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - _safe_log_throttle               32 lines -> safety     conf=0.39 line=126 [safety:20, telemetry:20, runtime:11] | guards: no immediate guard suggestion
+  - set_safe                         32 lines -> safety     conf=0.44 line=596 [safety:24, account:20, execution:3] | guards: inject slippage guard; inject spread guard; inject post-trade reconciliation; inject account consistency / reconcile check
+  - __init__                         30 lines -> telemetry  conf=1.00 line=11 [telemetry:2] | guards: inject market mode / crash detector hook
+  - hard_blocks_all_orders           30 lines -> execution  conf=0.36 line=235 [execution:13, state:10, account:10] | guards: inject slippage guard; inject spread guard; inject execution failsafe (idempotency/retry/verify); inject post-trade reconciliation
+  - register_close                   28 lines -> account    conf=0.67 line=492 [account:2, market:1] | guards: inject spread guard; inject post-trade reconciliation; inject account consistency / reconcile check
+signal strings:
+  - 
+  - %Y-%m-%d
+  - risk_journal_path
+  - 
+  - _load_risk_journal
+  - event=RISK_JOURNAL_LOAD ok=0 reason=missing_method action=skip
+
+[ExecutionEngine]
+file: s43_project/core/execution_engine.py
+size=609 lines | methods=10 | deps=15 | big_methods=2 | spread=10 | score=689.0
+recommended package: safety  (confidence=0.16)
+crash readiness score: 98.0/100
+dominant concerns: safety:713, infra:417, market:408, state:378, strategy:358, runtime:317, panel:274, execution:271
+safety signals: circuit_breaker:85, account_consistency:178, execution_failsafe:167, slippage:74, liquidity:101, stale_data:147, spread:137, volatility_crash:68
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - ExecutionCoordinator: order placement / amend / cancel / fill flow
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+safety gaps:
+critical method guard suggestions:
+  - deep_prune_ghost_orders         321 lines -> runtime    conf=0.48 line=300 [runtime:10, execution:10, state:1] | guards: inject slippage guard; inject market mode / crash detector hook
+  - place_limit                     190 lines -> execution  conf=0.65 line=63 [execution:20, runtime:10, market:1] | guards: inject market mode / crash detector hook
+  - place_ladder                     47 lines -> execution  conf=0.95 line=253 [execution:20, market:1] | guards: no immediate guard suggestion
+  - _regime_multiplier               36 lines -> market     conf=1.00 line=27 [market:1] | guards: no immediate guard suggestion
+  - _mid                             20 lines -> market     conf=1.00 line=430 [market:11] | guards: inject stale-data/freshness validation
+  - __init__                         14 lines -> execution  conf=0.25 line=13 [execution:4, strategy:2, telemetry:2] | guards: inject spread guard; inject market mode / crash detector hook
+  - _is_bot_cid                      14 lines -> safety     conf=0.33 line=450 [safety:30, state:20, strategy:10] | guards: inject state freshness check
+  - _side                            10 lines -> safety     conf=0.13 line=464 [safety:8, strategy:6, state:6] | guards: no immediate guard suggestion
+  - _qty                              8 lines -> safety     conf=0.13 line=474 [safety:8, strategy:6, state:6] | guards: no immediate guard suggestion
+  - _px                               8 lines -> safety     conf=0.13 line=482 [safety:8, strategy:6, state:6] | guards: no immediate guard suggestion
+signal strings:
+  - OrderJournal
+  - W1
+  - ORDER_MAX_RETRIES
+  - ORDER_BACKOFF_SEC
+  - state
+  - 
+
+[TradingBot]
+file: s43_project/core/trading_bot.py
+size=452 lines | methods=10 | deps=14 | big_methods=1 | spread=10 | score=591.4
+recommended package: runtime  (confidence=0.14)
+crash readiness score: 98.0/100
+dominant concerns: runtime:201, safety:165, infra:160, market:124, state:123, strategy:106, account:103, core:95
+safety signals: stale_data:98, account_consistency:64, execution_failsafe:60, slippage:37, liquidity:21, circuit_breaker:20, spread:21, volatility_crash:24
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+  - AccountService: balance / equity / margin / pnl concerns
+safety gaps:
+critical method guard suggestions:
+  - cycle_wallet_execution          238 lines -> state      conf=0.27 line=184 [state:11, account:11, execution:10] | guards: inject slippage guard; inject spread guard
+  - _janitor_sweep_locked_wallets    69 lines -> account    conf=0.67 line=115 [account:20, state:10] | guards: inject spread guard; inject post-trade reconciliation; inject liquidity guard; inject spread anomaly check; inject account consistency / reconcile check
+  - __init__                         47 lines -> telemetry  conf=1.00 line=10 [telemetry:2] | guards: inject liquidity guard; inject spread anomaly check
+  - _janitor_loop                    36 lines -> runtime    conf=0.92 line=79 [runtime:11, risk:1] | guards: inject spread guard; inject circuit breaker hook; inject market mode / crash detector hook
+  - _ensure_internal_services_started   22 lines -> core       conf=0.83 line=57 [core:10, risk:1, runtime:1] | guards: inject stale-data/freshness validation; inject liquidity guard; inject spread anomaly check; inject circuit breaker hook; inject market mode / crash detector hook
+  - _warn_breakdown                  21 lines -> core       conf=0.00 line=427 [] | guards: no immediate guard suggestion
+  - _log_throttled                   13 lines -> telemetry  conf=0.62 line=448 [telemetry:20, runtime:11, ui:1] | guards: no immediate guard suggestion
+  - _add_sym                          9 lines -> market     conf=0.56 line=266 [market:10, strategy:3, execution:2] | guards: no immediate guard suggestion
+  - _run_one                          9 lines -> runtime    conf=0.95 line=386 [runtime:20, market:1] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - _bump_warn_event                  5 lines -> runtime    conf=1.00 line=422 [runtime:11] | guards: no immediate guard suggestion
+signal strings:
+  - collections
+  - WARN_EVENTS_MAX
+  - collections
+  - last_known_prices_path
+  - 
+  - 
+
+[RazTraderEnhanced]
+file: s43_project/core/raz_trader_enhanced.py
+size=349 lines | methods=14 | deps=15 | big_methods=0 | spread=10 | score=568.0
+recommended package: panel  (confidence=0.18)
+crash readiness score: 98.0/100
+dominant concerns: panel:207, market:125, state:107, runtime:105, telemetry:101, infra:92, strategy:83, safety:79
+safety signals: stale_data:40, account_consistency:58, execution_failsafe:30, circuit_breaker:11, spread:25, liquidity:16, volatility_crash:11, slippage:12
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - ExecutionCoordinator: order placement / amend / cancel / fill flow
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - _get_raw_signal                  70 lines -> panel      conf=0.31 line=177 [panel:10, risk:10, strategy:10] | guards: no immediate guard suggestion
+  - _get_portfolio_data              51 lines -> panel      conf=0.50 line=247 [panel:10, state:10] | guards: no immediate guard suggestion
+  - _process_symbol_enhanced         42 lines -> market     conf=1.00 line=108 [market:11] | guards: inject slippage guard; inject circuit breaker hook
+  - __init__                         30 lines -> core       conf=0.00 line=16 [] | guards: inject liquidity guard; inject spread anomaly check; inject circuit breaker hook; inject market mode / crash detector hook
+  - _get_market_data                 27 lines -> market     conf=0.52 line=150 [market:11, panel:10] | guards: no immediate guard suggestion
+  - _execute_trade                   25 lines -> execution  conf=0.62 line=298 [execution:20, market:10, strategy:1] | guards: inject slippage guard; inject spread guard; inject post-trade reconciliation
+  - _enhanced_trading_loop           23 lines -> runtime    conf=1.00 line=67 [runtime:10] | guards: inject slippage guard; inject spread guard; inject post-trade reconciliation; inject market mode / crash detector hook
+  - _calculate_rsi                   20 lines -> state      conf=1.00 line=344 [state:20] | guards: no immediate guard suggestion
+  - _prioritize_symbols              16 lines -> market     conf=0.85 line=92 [market:11, telemetry:2] | guards: no immediate guard suggestion
+  - _update_dashboard                13 lines -> panel      conf=1.00 line=323 [panel:10] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - start                            12 lines -> core       conf=0.00 line=46 [] | guards: inject liquidity guard; inject spread anomaly check; inject market mode / crash detector hook
+  - stop                              9 lines -> risk       conf=1.00 line=58 [risk:10] | guards: inject slippage guard; inject spread guard; inject liquidity guard; inject spread anomaly check; inject circuit breaker hook
+signal strings:
+  - max_latency_ms
+  - health_monitor
+  - position_sizing
+  - signal_filtering
+  - requests_per_minute
+  - burst_size
+
+[AlphaModel]
+file: s43_project/core/alpha_model.py
+size=317 lines | methods=13 | deps=11 | big_methods=1 | spread=10 | score=536.6
+recommended package: strategy  (confidence=0.14)
+crash readiness score: 98.0/100
+dominant concerns: strategy:84, market:63, infra:61, ui:61, runtime:60, state:57, safety:49, core:29
+safety signals: account_consistency:18, execution_failsafe:31, stale_data:37, slippage:28, spread:34, volatility_crash:19, liquidity:10, circuit_breaker:11
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+  - AccountService: balance / equity / margin / pnl concerns
+safety gaps:
+critical method guard suggestions:
+  - evaluate                        130 lines -> market     conf=1.00 line=196 [market:3] | guards: inject liquidity guard
+  - _calc_atr_adx                    45 lines -> infra      conf=1.00 line=115 [infra:1] | guards: no immediate guard suggestion
+  - _update_history                  39 lines -> market     conf=1.00 line=69 [market:3] | guards: inject liquidity guard
+  - _calc_vfi                        26 lines -> infra      conf=1.00 line=160 [infra:1] | guards: no immediate guard suggestion
+  - _estimate_volume                 22 lines -> market     conf=1.00 line=47 [market:2] | guards: no immediate guard suggestion
+  - __init__                         14 lines -> core       conf=0.00 line=12 [] | guards: inject liquidity guard
+  - _qty                             12 lines -> core       conf=0.00 line=50 [] | guards: no immediate guard suggestion
+  - wilder_smooth                    10 lines -> core       conf=0.00 line=130 [] | guards: no immediate guard suggestion
+  - _detect_regime                   10 lines -> market     conf=1.00 line=186 [market:1] | guards: no immediate guard suggestion
+  - get_regime                        8 lines -> panel      conf=0.91 line=27 [panel:10, market:1] | guards: no immediate guard suggestion
+  - _ema                              7 lines -> parser     conf=0.53 line=39 [parser:10, strategy:4, execution:2] | guards: no immediate guard suggestion
+  - _calc_rsi_pair                    7 lines -> state      conf=1.00 line=108 [state:20] | guards: no immediate guard suggestion
+signal strings:
+  - alpha_bar_sec
+  - alpha_rsi_period
+  - alpha_adx_period
+  - alpha_vfi_period
+  - alpha_min_confirm_trending
+  - alpha_min_confirm_ranging
+
+[Orch22Orchestrator]
+file: s43_project/core/orch22_orchestrator.py
+size=296 lines | methods=11 | deps=14 | big_methods=0 | spread=10 | score=510.2
+recommended package: safety  (confidence=0.18)
+crash readiness score: 98.0/100
+dominant concerns: safety:189, state:132, runtime:101, market:84, infra:81, telemetry:81, account:74, panel:73
+safety signals: spread:18, account_consistency:53, execution_failsafe:66, stale_data:64, circuit_breaker:32, volatility_crash:11, slippage:40, liquidity:24
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - ExecutionCoordinator: order placement / amend / cancel / fill flow
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+critical method guard suggestions:
+  - _watchdog_loop                   67 lines -> runtime    conf=1.00 line=54 [runtime:10] | guards: inject spread guard; inject post-trade reconciliation; inject liquidity guard; inject spread anomaly check; inject account consistency / reconcile check
+  - _dashboard_loop                  56 lines -> panel      conf=0.50 line=218 [panel:10, runtime:10] | guards: inject circuit breaker hook; inject market mode / crash detector hook
+  - _task_reset                      44 lines -> market     conf=1.00 line=121 [market:10] | guards: inject post-trade reconciliation; inject liquidity guard; inject account consistency / reconcile check
+  - run                              34 lines -> runtime    conf=1.00 line=274 [runtime:20] | guards: inject slippage guard; inject spread guard; inject liquidity guard; inject spread anomaly check
+  - __init__                         29 lines -> telemetry  conf=1.00 line=20 [telemetry:2] | guards: inject slippage guard; inject liquidity guard
+  - _hard_reset                      26 lines -> core       conf=0.00 line=165 [] | guards: inject slippage guard; inject post-trade reconciliation; inject account consistency / reconcile check; inject state freshness check
+  - _cancel_all_fail_safe            18 lines -> safety     conf=0.57 line=191 [safety:40, execution:10, state:10] | guards: inject spread guard
+  - _compute_system_state             9 lines -> state      conf=1.00 line=209 [state:10] | guards: no immediate guard suggestion
+  - stop                              5 lines -> risk       conf=1.00 line=49 [risk:10] | guards: inject account consistency / reconcile check; inject state freshness check
+  - shared_market_state               2 lines -> market     conf=0.50 line=15 [market:10, state:10] | guards: inject state freshness check
+  - update_market_state               2 lines -> state      conf=0.43 line=18 [state:15, market:10, strategy:2] | guards: no immediate guard suggestion
+signal strings:
+  - BotConfig
+  - ORCH22_STALE_WARN_SEC
+  - ORCH22_STALE_CRIT_SEC
+  - ORCH22_CANCEL_ALL_ON_STALE
+  - ORCH22_HEARTBEAT_SEC
+  - 
+
+[HybridSignalFilter]
+file: s43_project/core/hybrid_signal_filter.py
+size=286 lines | methods=11 | deps=8 | big_methods=1 | spread=10 | score=483.7
+recommended package: strategy  (confidence=0.29)
+crash readiness score: 89.9/100
+dominant concerns: strategy:156, panel:102, state:40, market:38, safety:37, telemetry:36, runtime:31, core:30
+safety signals: volatility_crash:17, spread:20, stale_data:21, execution_failsafe:23, liquidity:3, account_consistency:9, slippage:7
+split recommendation:
+  - SafetyCoordinator: crash/panic protection, guards, kill-switch escalation
+  - StrategyCoordinator: signal / model / decision routing
+  - RiskCoordinator: risk checks / halt / breaker / emergency rules
+  - MarketContext: market snapshot / orderbook / symbol context
+  - TradingStateManager: wallet / positions / cache / save-load
+  - ExchangeGateway: API transport / retry / endpoint wrappers
+  - TradingBotRuntime: event loop / async scheduling / timing
+safety gaps:
+  - missing: circuit_breaker
+critical method guard suggestions:
+  - filter_signal                    89 lines -> strategy   conf=0.81 line=39 [strategy:21, telemetry:2, risk:1] | guards: no immediate guard suggestion
+  - __init__                         30 lines -> core       conf=0.00 line=9 [] | guards: no immediate guard suggestion
+  - _apply_trend_filter              29 lines -> strategy   conf=0.91 line=128 [strategy:10, market:1] | guards: no immediate guard suggestion
+  - _calculate_expected_metrics      26 lines -> telemetry  conf=0.83 line=268 [telemetry:20, market:2, strategy:2] | guards: no immediate guard suggestion
+  - _determine_market_regime         22 lines -> market     conf=0.79 line=246 [market:11, telemetry:2, safety:1] | guards: no immediate guard suggestion
+  - _apply_volatility_filter         18 lines -> safety     conf=0.48 line=188 [safety:11, strategy:10, telemetry:2] | guards: no immediate guard suggestion
+  - _apply_market_structure_filter   17 lines -> market     conf=0.52 line=206 [market:11, strategy:10] | guards: no immediate guard suggestion
+  - _apply_volume_filter             16 lines -> strategy   conf=0.91 line=172 [strategy:10, market:1] | guards: no immediate guard suggestion
+  - _apply_momentum_filter           15 lines -> strategy   conf=0.91 line=157 [strategy:10, market:1] | guards: no immediate guard suggestion
+  - _apply_time_filter               12 lines -> runtime    conf=0.32 line=223 [runtime:10, infra:10, strategy:10] | guards: no immediate guard suggestion
+  - _score_to_confidence             11 lines -> core       conf=0.38 line=235 [core:31, state:20, strategy:11] | guards: no immediate guard suggestion
+signal strings:
+  - trend_filter
+  - volume_filter
+  - volatility_filter
+  - time_filter
+  - price_action_filter
+  - market_structure_filter
+
+Bloodbath Refactor Priorities
+----------------------------------------------------------------------------------------------------
+1) Harden execution paths first: place/cancel/amend/replace/verify/reconcile.
+2) Add stale-data and freshness validation to all market/state critical paths.
+3) Enforce account consistency before any new exposure increase.
+4) Integrate circuit breaker hooks into runtime loop and strategy dispatch.
+5) Add market mode classification: NORMAL / FAST_DROP / PANIC / ILLIQUID / DISLOCATED / API_UNSTABLE.
+6) Separate safety logic from risk logic; create safety/ package.
+7) Extract parser/normalizer code from transport and execution flows.
+8) Move rendering/panel/telemetry out of orchestration hot paths.
+
+Suggested Safety Package Layout
+----------------------------------------------------------------------------------------------------
+safety/
+  market_mode_classifier.py
+  crash_detector.py
+  circuit_breaker.py
+  stale_data_guard.py
+  spread_guard.py
+  liquidity_guard.py
+  slippage_guard.py
+  account_consistency_guard.py
+  execution_failsafe.py
+  position_derisker.py
+  kill_switch.py
+
+Refactor Rules
+----------------------------------------------------------------------------------------------------
+1) Split any class > 800 lines or > 25 methods.
+2) Extract any method > 80 lines into helper/service objects.
+3) Reduce classes with > 12 dependencies via façade/coordinator.
+4) Move API/network/retry logic into infra gateways.
+5) Keep strategy/model/signal code pure and IO-free.
+6) Isolate state mutation from decision logic.
+7) Add guard hooks to every critical execution and state-refresh path.
+8) No new exposure when data is stale or account consistency is uncertain.
+9) In panic/illiquid modes, switch to reduce-only or exit-only behavior.
+10) Keep survival logic in safety/, not inside monolithic orchestrators.

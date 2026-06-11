@@ -1,0 +1,154 @@
+### entry_multiplier context
+12136-        if self._legacy is None:
+12137-            return 0.0, []
+12138-        sym = _canon_symbol(symbol)
+12139-        st = self._sym_state.setdefault(sym, {})
+12140-        try:
+12141-            delta, contrib = self._legacy.evaluate(sym, st, float(book.bid), float(book.ask), float(book.mid), depth_data)
+12142-            try:
+12143-                delta = float(delta)
+12144-            except Exception:
+12145-                delta = 0.0
+12146-            if not isinstance(contrib, list):
+12147-                contrib = []
+12148-            return delta, contrib
+12149-        except Exception:
+12150-            return 0.0, []
+12151:    def entry_multiplier(self, symbol: str, raz_signal: Signal, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, Dict[str, Any]]:
+12152-        meta: Dict[str, Any] = {"enabled": bool(self.cfg.collective_intelligence)}
+12153-        if not bool(self.cfg.collective_intelligence):
+12154-            return 1.0, meta
+12155-        if str(raz_signal.action).upper() != "BUY":
+12156-            return 1.0, meta
+12157-        if float(getattr(raz_signal, "confidence", 0.0) or 0.0) < float(self.cfg.collective_min_raz_conf):
+12158-            meta["raz_conf"] = float(getattr(raz_signal, "confidence", 0.0) or 0.0)
+12159-            return 1.0, meta
+12160-        delta, contrib = self.parisa_delta(symbol, book, depth_data=depth_data)
+12161-        meta["parisa_delta"] = float(delta)
+12162-        meta["parisa_vote_thr"] = float(self.cfg.parisa_vote_thr)
+12163-        veto_thr = float(getattr(self.cfg, "parisa_veto_thr", -0.35) or -0.35)
+12164-        meta["parisa_veto_thr"] = float(veto_thr)
+12165-        if float(delta) <= float(veto_thr):
+12166-            meta["veto"] = True
+--
+20047-                        setattr(w, "dzh_last_reason", str(getattr(sig, "dzh_reason", "") or "DZH_SOFT"))
+20048-                    except Exception:
+20049-                        pass
+20050-                    try:
+20051-                        self._log.info(
+20052-                            "event=DZH_SOFT_SIZE wallet=%s sym=%s mult=%.2f notional_before=%.0f notional_after=%.0f why=%s",
+20053-                            w.name, sym, float(dzh_mult), float(before), float(notional), str(getattr(sig, "dzh_reason", "") or "")
+20054-                        )
+20055-                    except Exception:
+20056-                        pass
+20057-                except Exception:
+20058-                    pass
+20059-            mult = 1.0
+20060-            ci_meta = {}
+20061-            try:
+20062:                mult, ci_meta = w.cortex.entry_multiplier(sym, sig, book, depth_data=None)
+20063-            except Exception:
+20064-                mult, ci_meta = 1.0, {}
+20065-            if isinstance(ci_meta, dict) and ci_meta.get("veto"):
+20066-                self._log.warning(
+20067-                    "event=PARISA_VETO wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f veto_thr=%.3f",
+20068-                    w.name,
+20069-                    sym,
+20070-                    float(getattr(sig, "confidence", 0.0) or 0.0),
+20071-                    float(ci_meta.get("parisa_delta", 0.0) or 0.0),
+20072-                    float(ci_meta.get("parisa_veto_thr", -0.35) or -0.35),
+20073-                )
+20074-                _set_engine('Hold', 'PARISA_VETO', reject=True, meta={'sym': sym, **(ci_meta or {})})
+20075-                return
+20076-            if float(mult) > 1.0:
+20077-                before = float(notional)
+
+### ci_meta context
+20045-                    try:
+20046-                        setattr(w, "dzh_size_mult", float(dzh_mult))
+20047-                        setattr(w, "dzh_last_reason", str(getattr(sig, "dzh_reason", "") or "DZH_SOFT"))
+20048-                    except Exception:
+20049-                        pass
+20050-                    try:
+20051-                        self._log.info(
+20052-                            "event=DZH_SOFT_SIZE wallet=%s sym=%s mult=%.2f notional_before=%.0f notional_after=%.0f why=%s",
+20053-                            w.name, sym, float(dzh_mult), float(before), float(notional), str(getattr(sig, "dzh_reason", "") or "")
+20054-                        )
+20055-                    except Exception:
+20056-                        pass
+20057-                except Exception:
+20058-                    pass
+20059-            mult = 1.0
+20060:            ci_meta = {}
+20061-            try:
+20062:                mult, ci_meta = w.cortex.entry_multiplier(sym, sig, book, depth_data=None)
+20063-            except Exception:
+20064:                mult, ci_meta = 1.0, {}
+20065:            if isinstance(ci_meta, dict) and ci_meta.get("veto"):
+20066-                self._log.warning(
+20067-                    "event=PARISA_VETO wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f veto_thr=%.3f",
+20068-                    w.name,
+20069-                    sym,
+20070-                    float(getattr(sig, "confidence", 0.0) or 0.0),
+20071:                    float(ci_meta.get("parisa_delta", 0.0) or 0.0),
+20072:                    float(ci_meta.get("parisa_veto_thr", -0.35) or -0.35),
+20073-                )
+20074:                _set_engine('Hold', 'PARISA_VETO', reject=True, meta={'sym': sym, **(ci_meta or {})})
+20075-                return
+20076-            if float(mult) > 1.0:
+20077-                before = float(notional)
+20078-                notional = float(notional) * float(mult)
+20079-                hard_cap = float(cash_irt) * float(w.cfg.collective_max_notional_frac)
+20080-                if notional > hard_cap:
+20081-                    notional = float(hard_cap)
+20082-                self._log.info(
+20083-                    "event=COLLECTIVE_BOOST wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f mult=%.2f notional_before=%.0f notional_after=%.0f",
+20084:                    w.name, sym, float(sig.confidence), float(ci_meta.get("parisa_delta", 0.0) or 0.0), float(mult), float(before), float(notional)
+20085-                )
+20086-            risk_level = "OFF"
+20087-            try:
+20088-                risk_level = self.risk.safe_level() if hasattr(self.risk, "safe_level") else ("SOFT" if bool(self.risk.safe_mode) else "OFF")
+20089-            except Exception:
+20090-                risk_level = "SOFT" if bool(getattr(self.risk, "safe_mode", False)) else "OFF"
+20091-            net_safe = False
+20092-            net_sym_safe = False
+20093-            net_reason = ""
+20094-            try:
+20095-                net_safe = bool(self.net.is_safe_mode()) if hasattr(self.net, "is_safe_mode") else False
+20096-                if not net_safe:
+20097-                    if hasattr(self.net, "should_block_symbol") and callable(getattr(self.net, "should_block_symbol")):
+20098-                        net_sym_safe = bool(self.net.should_block_symbol(sym))
+20099-                    elif hasattr(self.net, "symbol_pause_remaining") and callable(getattr(self.net, "symbol_pause_remaining")):
+
+### ci_meta veto context
+20050-                    try:
+20051-                        self._log.info(
+20052-                            "event=DZH_SOFT_SIZE wallet=%s sym=%s mult=%.2f notional_before=%.0f notional_after=%.0f why=%s",
+20053-                            w.name, sym, float(dzh_mult), float(before), float(notional), str(getattr(sig, "dzh_reason", "") or "")
+20054-                        )
+20055-                    except Exception:
+20056-                        pass
+20057-                except Exception:
+20058-                    pass
+20059-            mult = 1.0
+20060-            ci_meta = {}
+20061-            try:
+20062-                mult, ci_meta = w.cortex.entry_multiplier(sym, sig, book, depth_data=None)
+20063-            except Exception:
+20064-                mult, ci_meta = 1.0, {}
+20065:            if isinstance(ci_meta, dict) and ci_meta.get("veto"):
+20066-                self._log.warning(
+20067-                    "event=PARISA_VETO wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f veto_thr=%.3f",
+20068-                    w.name,
+20069-                    sym,
+20070-                    float(getattr(sig, "confidence", 0.0) or 0.0),
+20071-                    float(ci_meta.get("parisa_delta", 0.0) or 0.0),
+20072-                    float(ci_meta.get("parisa_veto_thr", -0.35) or -0.35),
+20073-                )
+20074-                _set_engine('Hold', 'PARISA_VETO', reject=True, meta={'sym': sym, **(ci_meta or {})})
+20075-                return
+20076-            if float(mult) > 1.0:
+20077-                before = float(notional)
+20078-                notional = float(notional) * float(mult)
+20079-                hard_cap = float(cash_irt) * float(w.cfg.collective_max_notional_frac)
+20080-                if notional > hard_cap:

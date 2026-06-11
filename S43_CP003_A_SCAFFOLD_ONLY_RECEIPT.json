@@ -1,0 +1,38 @@
+﻿{
+    "document":  "S43_CP003_A_SCAFFOLD_ONLY_RECEIPT.json",
+    "status":  "CP003_A_SCAFFOLD_ONLY_COMPLETE",
+    "created_at":  "2026-06-12T00:37:45.2871948+03:30",
+    "autonomy_mode":  "OBSERVATION_ONLY",
+    "approval_mode":  "DENY_BY_DEFAULT",
+    "code_mutation_scope":  "ADDITIVE_SCAFFOLD_ONLY",
+    "live_trading_authorized":  false,
+    "runtime_wiring_added":  false,
+    "env_activation_added":  false,
+    "baseline_files_touched":  false,
+    "integration_authorized":  false,
+    "scaffold_files":  [
+                           {
+                               "path":  "cp003_scaffold\\__init__.py",
+                               "sha256":  "90B88A646E53437C73712D7F1ED9AC6B484F544E161C11646FCF202843992ED2"
+                           },
+                           {
+                               "path":  "cp003_scaffold\\contracts.py",
+                               "sha256":  "118E74AC87BEAFC8DB6413C7112AA44D4176B76EED0635E60F78AC57ED32A9F1"
+                           },
+                           {
+                               "path":  "cp003_scaffold\\safety_law_engine.py",
+                               "sha256":  "1EE29AD8AED09DAF61C9B3AC5F48EB57785E44E0691E1302EA422FC480404F8C"
+                           },
+                           {
+                               "path":  "cp003_scaffold\\portfolio_brain.py",
+                               "sha256":  "C3C4DC8BD89C5903DF138BEB4B57B520C47156216D04408535B274A9D10C9891"
+                           },
+                           {
+                               "path":  "cp003_scaffold\\audit_receipt_engine.py",
+                               "sha256":  "9DE399B08AC4468F54D400B695F4C566F18A9B60A9DD043763A2C7369746D284"
+                           }
+                       ],
+    "baseline_import_scan_pattern":  "cp003_scaffold",
+    "baseline_import_scan_matches":  0,
+    "final_ruling":  "CP003-A scaffold-only completed; runtime integration remains unauthorized."
+}

@@ -1,0 +1,420 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$ROOT_DIR"
+
+GUARD="$ROOT_DIR/s43_wallet_guard.sh"
+DEFAULT_APP="$ROOT_DIR/s43.py"
+REPORT_DIR="$ROOT_DIR/reports"
+
+mkdir -p "$REPORT_DIR"
+chmod 700 "$REPORT_DIR" 2>/dev/null || true
+
+usage() {
+  cat <<USAGE
+USAGE:
+  $0 <wallet_id> [command...]
+
+EXAMPLES:
+  $0 1
+  $0 2 python3 s43.py
+  $0 3 python3 s43.py --dry-run
+  $0 1 bash -lc 'echo \$S43_ACTIVE_WALLET_LABEL && python3 s43.py'
+
+NOTES:
+  - wallet_id must be 1, 2, or 3.
+  - If no command is provided, default command is: python3 s43.py
+  - This script never prints the raw token.
+USAGE
+}
+
+die() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
+
+warn() {
+  echo "WARNING: $*" >&2
+}
+
+info() {
+  echo "INFO: $*"
+}
+
+days_left_py() {
+  python3 - "$1" <<'PY'
+import sys
+from datetime import datetime, date
+
+s = sys.argv[1].strip()
+if not s:
+    print("")
+    raise SystemExit(0)
+
+try:
+    d = datetime.strptime(s, "%Y-%m-%d").date()
+    print((d - date.today()).days)
+except Exception:
+    print("INVALID")
+PY
+}
+
+expiry_state() {
+  local expires_at="${1:-}"
+  local warn_days="${2:-7}"
+  local dl
+
+  if [ -z "$expires_at" ]; then
+    printf '%s' 'UNKNOWN'
+    return
+  fi
+
+  dl="$(days_left_py "$expires_at")"
+
+  if [ "$dl" = "INVALID" ]; then
+    printf '%s' 'INVALID_DATE'
+    return
+  fi
+
+  if [ "$dl" -le 0 ]; then
+    printf '%s' 'EXPIRED'
+    return
+  fi
+
+  if [ "$dl" -le "$warn_days" ]; then
+    printf '%s' 'WARNING'
+    return
+  fi
+
+  printf '%s' 'OK'
+}
+
+wallet_id="${1:-}"
+
+if [ -z "$wallet_id" ]; then
+  usage
+  exit 1
+fi
+
+case "$wallet_id" in
+  1|2|3) ;;
+  -h|--help|help)
+    usage
+    exit 0
+    ;;
+  *)
+    die "invalid wallet_id=$wallet_id ; expected 1, 2, or 3"
+    ;;
+esac
+
+shift || true
+
+[ -x "$GUARD" ] || die "guard script not found or not executable: $GUARD"
+
+info "preflight guard check for wallet_id=$wallet_id"
+
+guard_output="$("$GUARD" use "$wallet_id")"
+
+runtime_env="$(printf '%s\n' "$guard_output" | awk -F= '/^RUNTIME_ENV=/{print $2}' | tail -n 1)"
+
+[ -n "$runtime_env" ] || {
+  echo "$guard_output"
+  die "failed to extract RUNTIME_ENV from guard output"
+}
+
+[ -f "$runtime_env" ] || die "runtime env file not found: $runtime_env"
+
+chmod 600 "$runtime_env" 2>/dev/null || true
+
+# shellcheck disable=SC1090
+source "$runtime_env"
+
+[ -n "${ARZPLUS_TOKEN:-}" ] || die "ARZPLUS_TOKEN is empty after sourcing runtime env"
+[ -n "${S43_ACTIVE_WALLET:-}" ] || die "S43_ACTIVE_WALLET is empty after sourcing runtime env"
+
+expires_at="${S43_ACTIVE_TOKEN_EXPIRES_AT:-}"
+warn_days="${S43_ACTIVE_TOKEN_WARN_DAYS:-7}"
+dl="$(days_left_py "$expires_at")"
+state="$(expiry_state "$expires_at" "$warn_days")"
+
+echo "== S43 WALLET RUNTIME =="
+echo "wallet_id=${S43_ACTIVE_WALLET}"
+echo "label=${S43_ACTIVE_WALLET_LABEL:-}"
+echo "role=${S43_ACTIVE_WALLET_ROLE:-}"
+echo "token_present=YES"
+echo "token_expires_at=${expires_at}"
+echo "warn_days=${warn_days}"
+echo "days_left=${dl}"
+echo "expiry_state=${state}"
+echo "runtime_env=${runtime_env}"
+echo
+
+case "$state" in
+  EXPIRED)
+    die "token expired for wallet_id=$wallet_id ; execution blocked"
+    ;;
+  INVALID_DATE)
+    die "invalid token expiry date for wallet_id=$wallet_id ; execution blocked"
+    ;;
+  WARNING)
+    warn "token for wallet_id=$wallet_id is close to expiry; continuing with risk warning"
+    export S43_TOKEN_EXPIRY_STATE="WARNING"
+    export S43_TOKEN_DAYS_LEFT="$dl"
+    ;;
+  UNKNOWN)
+    warn "token expiry is unknown; continuing but marked as UNKNOWN"
+    export S43_TOKEN_EXPIRY_STATE="UNKNOWN"
+    export S43_TOKEN_DAYS_LEFT="$dl"
+    ;;
+  OK)
+    export S43_TOKEN_EXPIRY_STATE="OK"
+    export S43_TOKEN_DAYS_LEFT="$dl"
+    ;;
+  *)
+    warn "unrecognized expiry state: $state"
+    export S43_TOKEN_EXPIRY_STATE="$state"
+    export S43_TOKEN_DAYS_LEFT="$dl"
+    ;;
+esac
+
+if [ "$#" -gt 0 ]; then
+  info "executing custom command: $*"
+  exec "$@"
+fi
+
+[ -f "$DEFAULT_APP" ] || die "default app not found: $DEFAULT_APP"
+
+info "executing default app: python3 $DEFAULT_APP"
+
+# >>> B4 WALLET TOKEN ENV GUARD START >>>
+s43_wallet_token_env_guard() {
+  local _s43_root="${ROOT_DIR:-$(pwd)}"
+  local _s43_log_dir="${_s43_root}/logs"
+  local _s43_log_file="${_s43_log_dir}/trading_bot.log"
+  local _s43_env_file="${HOME}/.s43_wallet_token_metadata.env"
+
+  mkdir -p "$_s43_log_dir" 2>/dev/null || true
+
+  if [ -f "$_s43_env_file" ]; then
+    # shellcheck disable=SC1090
+    . "$_s43_env_file" 2>/dev/null || true
+  fi
+
+  local B4_OK=0
+  local B4_MISSING=0
+  local B4_INVALID=0
+
+  s43_b4_validate_datetime() {
+    python3 - "$1" <<'PYCHECK'
+import sys
+from datetime import datetime
+
+v = sys.argv[1].strip()
+if not v:
+    raise SystemExit(1)
+
+# Accept unix timestamps
+try:
+    float(v)
+    raise SystemExit(0)
+except Exception:
+    pass
+
+# Accept ISO-8601 strings, including trailing Z
+try:
+    datetime.fromisoformat(v.replace("Z", "+00:00"))
+    raise SystemExit(0)
+except Exception:
+    raise SystemExit(1)
+PYCHECK
+  }
+
+  for slot in 1 2 3; do
+    local wallet_label="W${slot}"
+
+    local token_var="S43_WALLET_${slot}_TOKEN"
+    local reg_var="S43_WALLET_${slot}_REGISTERED_AT"
+    local exp_var="S43_WALLET_${slot}_EXPIRES_AT"
+    local warn_var="S43_WALLET_${slot}_WARN_DAYS"
+
+    local token="${!token_var:-}"
+    local reg="${!reg_var:-}"
+    local exp="${!exp_var:-}"
+    local warn="${!warn_var:-}"
+
+    local status="OK"
+    local reason=""
+
+    if [ -z "$reg" ]; then
+      status="MISSING"
+      reason="REGISTERED_AT_MISSING"
+    elif [ -z "$exp" ]; then
+      status="MISSING"
+      reason="EXPIRES_AT_MISSING"
+    elif ! s43_b4_validate_datetime "$reg" >/dev/null 2>&1; then
+      status="INVALID"
+      reason="REGISTERED_AT_PARSE_FAILED"
+    elif ! s43_b4_validate_datetime "$exp" >/dev/null 2>&1; then
+      status="INVALID"
+      reason="EXPIRES_AT_PARSE_FAILED"
+    elif [ -n "$warn" ] && ! python3 -c 'import sys; float(sys.argv[1])' "$warn" >/dev/null 2>&1; then
+      status="INVALID"
+      reason="WARN_DAYS_PARSE_FAILED"
+    fi
+
+    local token_present="no"
+    [ -n "$token" ] && token_present="yes"
+
+    printf '%s\n' "event=WALLET_TOKEN_ENV_GUARD wallet=${wallet_label} slot=${slot} status=${status} reason=${reason} token_present=${token_present}" >> "$_s43_log_file"
+
+    case "$status" in
+      OK) B4_OK=$((B4_OK+1)) ;;
+      MISSING) B4_MISSING=$((B4_MISSING+1)) ;;
+      INVALID) B4_INVALID=$((B4_INVALID+1)) ;;
+    esac
+  done
+
+  local summary_status="PASS"
+  if [ "$B4_MISSING" -gt 0 ] || [ "$B4_INVALID" -gt 0 ]; then
+    summary_status="WARN"
+  fi
+
+  printf '%s\n' "event=WALLET_TOKEN_ENV_GUARD_SUMMARY total=3 ok=${B4_OK} missing=${B4_MISSING} invalid=${B4_INVALID} status=${summary_status}" >> "$_s43_log_file"
+}
+s43_wallet_token_env_guard
+# <<< B4 WALLET TOKEN ENV GUARD END <<<
+
+# S43 PATCH B3 WALLET TOKEN PREFLIGHT BEGIN
+s43_wallet_token_preflight() {
+  # Best-effort wallet token preflight.
+  # It only logs health status. It does NOT disable wallets and does NOT change runtime behavior.
+
+  local _s43_root="${ROOT_DIR:-$(pwd)}"
+  local _s43_log_dir="${_s43_root}/logs"
+  local _s43_log_file="${_s43_log_dir}/trading_bot.log"
+
+  mkdir -p "$_s43_log_dir" 2>/dev/null || true
+
+  python3 - "$_s43_log_file" <<'S43_B3_PY' 2>/dev/null || true
+import os
+import sys
+from datetime import datetime, timezone
+
+log_file = sys.argv[1] if len(sys.argv) > 1 else None
+
+def now_utc():
+    return datetime.now(timezone.utc)
+
+def parse_ts(value):
+    if not value:
+        return None
+    value = str(value).strip()
+    if not value:
+        return None
+    try:
+        # Support UNIX timestamp.
+        return datetime.fromtimestamp(float(value), tz=timezone.utc)
+    except Exception:
+        pass
+    try:
+        # Support ISO format with Z suffix.
+        v = value.replace("Z", "+00:00")
+        dt = datetime.fromisoformat(v)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        return None
+
+def emit(line):
+    try:
+        print(line)
+    except Exception:
+        pass
+    if log_file:
+        try:
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(line + "\n")
+        except Exception:
+            pass
+
+now = now_utc()
+total = 0
+ok = 0
+warning = 0
+expired = 0
+missing = 0
+disabled = 0
+
+for slot in (1, 2, 3):
+    total += 1
+    wallet = f"W{slot}"
+    reg_raw = os.environ.get(f"S43_WALLET_{slot}_REGISTERED_AT", "")
+    exp_raw = os.environ.get(f"S43_WALLET_{slot}_EXPIRES_AT", "")
+    warn_raw = os.environ.get(f"S43_WALLET_{slot}_WARN_DAYS", "3")
+
+    try:
+        warn_days = float(warn_raw)
+    except Exception:
+        warn_days = 3.0
+
+    reg_dt = parse_ts(reg_raw)
+    exp_dt = parse_ts(exp_raw)
+
+    reason = ""
+    is_disabled = False
+
+    if exp_dt is None:
+        status = "MISSING"
+        days_left = None
+        missing += 1
+        reason = "TOKEN_EXPIRY_MISSING_OR_INVALID"
+    else:
+        days_left = (exp_dt - now).total_seconds() / 86400.0
+        if days_left < 0:
+            status = "EXPIRED"
+            expired += 1
+            disabled += 1
+            is_disabled = True
+            reason = "TOKEN_EXPIRED"
+        elif days_left <= warn_days:
+            status = "WARNING"
+            warning += 1
+        else:
+            status = "OK"
+            ok += 1
+
+    days_text = "nan" if days_left is None else f"{days_left:.2f}"
+    reg_text = reg_dt.isoformat() if reg_dt else ""
+    exp_text = exp_dt.isoformat() if exp_dt else ""
+
+    emit(
+        "event=
+
+WALLET_TOKEN_PREFLIGHT_WALLET "
+        f"wallet={wallet} slot={slot} status={status} "
+        f"registered_ts={reg_text} expiry_ts={exp_text} "
+        f"warn_days={warn_days} days_left={days_text} "
+        f"disabled={is_disabled} reason={reason}"
+    )
+
+if expired > 0:
+    summary_status = "DEGRADED"
+elif warning > 0 or missing > 0:
+    summary_status = "WARN"
+else:
+    summary_status = "PASS"
+
+emit(
+    "event=WALLET_TOKEN_PREFLIGHT_SUMMARY "
+    f"status={summary_status} total={total} ok={ok} "
+    f"warning={warning} expired={expired} missing={missing} disabled={disabled}"
+)
+S43_B3_PY
+}
+
+s43_wallet_token_preflight
+# S43 PATCH B3 WALLET TOKEN PREFLIGHT END
+
+exec python3 "$DEFAULT_APP"

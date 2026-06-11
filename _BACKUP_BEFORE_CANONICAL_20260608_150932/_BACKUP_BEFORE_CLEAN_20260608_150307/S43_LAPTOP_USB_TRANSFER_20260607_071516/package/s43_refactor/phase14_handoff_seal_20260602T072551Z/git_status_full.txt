@@ -1,0 +1,17 @@
+On branch planning/phase11-readiness-discovery
+Your branch is up to date with 'origin/planning/phase11-readiness-discovery'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   s43.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	FINAL_SESSION_STATUS.txt
+	merge_review_evidence_20260602T072024Z/
+	phase13_human_audit_package_20260602T072359Z.tar.gz
+	phase13_human_audit_package_20260602T072359Z/
+	phase14_handoff_seal_20260602T072551Z/
+
+no changes added to commit (use "git add" and/or "git commit -a")

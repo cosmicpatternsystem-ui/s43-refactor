@@ -1,0 +1,47 @@
+S43_WALLET_GUARD_REPORT
+timestamp=20260605_140729
+project_dir=/data/data/com.termux/files/home/s43_refactor
+registry=/data/data/com.termux/files/home/s43_refactor/config/s43_wallet_registry.env
+security_mode=strict
+language_policy=english_only
+
+== WALLET_1 ==
+wallet=1
+enabled=1
+label=core_alpha
+role=primary_high_efficiency
+priority=100
+token_present=NO
+token_expires_at=
+days_left=
+notes=Highest efficiency, best quality assets, strict risk control
+
+== WALLET_2 ==
+wallet=2
+enabled=1
+label=capital_shield
+role=defensive_capital_preservation
+priority=70
+token_present=NO
+token_expires_at=
+days_left=
+notes=Capital protection, reserve mode, lower risk allocation
+
+== WALLET_3 ==
+wallet=3
+enabled=1
+label=strategic_lab
+role=experimental_team_future
+priority=40
+token_present=NO
+token_expires_at=
+days_left=
+notes=Controlled experiments, team growth, future enterprise expansion
+
+warn_days=7
+default_wallet=1
+
+== EXPIRY_WARNINGS ==
+
+== VERDICT ==
+WALLET_GUARD_RESULT=CHECK_COMPLETE

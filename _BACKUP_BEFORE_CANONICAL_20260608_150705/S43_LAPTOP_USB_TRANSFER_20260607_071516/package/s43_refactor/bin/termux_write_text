@@ -1,0 +1,11 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+if [ "$#" -ne 1 ]; then
+  echo "usage: termux_write_text <target-file>" >&2
+  exit 2
+fi
+
+TARGET="$1"
+python3 "${HOME}/s43_refactor/bin/termux_write_file.py" "$TARGET"
+chmod 600 "$TARGET" 2>/dev/null || true

@@ -1,0 +1,9 @@
+PHASE13_4_OPENED_AT=2026-05-30T16:44:44+03:30
+
+Data pipeline processes:
+29382 python -u -m s43_core.data_phase8f_watchdog --source-csv data/latest_features/demoex_BTCUSDT_1h.csv --serving-dir data/model_registry/demoex/BTCUSDT/1h/serving --out-dir data/live_runs/demoex/BTCUSDT/1h --poll-seconds 5 --watchdog-poll-seconds 10 --min-restart-interval-seconds 20
+29384 python -u -m s43_core.data_phase8b_trigger --source-csv data/latest_features/demoex_BTCUSDT_1h.csv --serving-dir data/model_registry/demoex/BTCUSDT/1h/serving --out-dir data/live_runs/demoex/BTCUSDT/1h --poll-seconds 5
+
+Trading bot processes:
+
+Patch/auto-patcher processes:

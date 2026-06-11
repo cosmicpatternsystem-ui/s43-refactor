@@ -1,0 +1,32 @@
+MANIFEST ALL - 2026-06-06
+
+Session status: CLOSED / VERIFIED / EXPORTED
+
+Artifacts:
+- ~/s43_tooling_freeze_20260606_090427.tar.gz
+- ~/s43_tooling_freeze_20260606_090427.tar.gz.sha256
+- ~/s43_tooling_freeze_20260606_090427.tar.gz.manifest.txt
+- ~/s43_refactor/PATCHING_SOP.md
+- ~/s43_refactor/PATCHING_SOP.md.sha256
+- ~/storage/downloads/PATCHING_SOP.md
+- ~/storage/downloads/PATCHING_SOP.md.sha256
+- ~/s43_refactor/MILESTONE_20260606_TOOLING_AND_SOP.md
+- ~/s43_refactor/MILESTONE_20260606_TOOLING_AND_SOP.md.sha256
+- ~/storage/downloads/MILESTONE_20260606_TOOLING_AND_SOP.md
+- ~/storage/downloads/MILESTONE_20260606_TOOLING_AND_SOP.md.sha256
+- ~/s43_refactor/RELEASE_NOTE_20260606.txt
+- ~/s43_refactor/RELEASE_NOTE_20260606.txt.sha256
+- ~/storage/downloads/RELEASE_NOTE_20260606.txt
+- ~/storage/downloads/RELEASE_NOTE_20260606.txt.sha256
+- ~/s43_refactor/ARTIFACT_INDEX_20260606.md
+- ~/s43_refactor/ARTIFACT_INDEX_20260606.md.sha256
+- ~/storage/downloads/ARTIFACT_INDEX_20260606.md
+- ~/storage/downloads/ARTIFACT_INDEX_20260606.md.sha256
+
+Final state:
+- TOOLING: LOCKED / VERIFIED / SNAPSHOTTED
+- SOP: LOCKED / VERIFIED / EXPORTED
+- MILESTONE: LOCKED / VERIFIED / EXPORTED
+- RELEASE NOTE: LOCKED / VERIFIED / EXPORTED
+- ARTIFACT INDEX: LOCKED / VERIFIED / EXPORTED
+- MANIFEST: CREATED / READY FOR CHECKSUM / READY FOR EXPORT

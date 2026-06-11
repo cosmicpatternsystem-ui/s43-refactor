@@ -1,0 +1,8 @@
+backup=s43_before_phase54_instrument_1780080703.py
+helper inserted after line 150
+place_order: definition not found
+_place: definition not found
+_execute_trade: definition not found
+raise TemporaryPause instrumentation count=17
+raise TradingHalt instrumentation count=19
+instrumentation written to s43.py

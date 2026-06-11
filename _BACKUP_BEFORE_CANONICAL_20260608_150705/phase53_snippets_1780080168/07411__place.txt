@@ -1,0 +1,28 @@
+07411:     async def _place(self, side: str, price: float, qty: float, cid: str = "") -> None:
+07412:         fn = getattr(self.exec, "place_order", None)
+07413:         if not fn or not callable(fn):
+07414:             raise RuntimeError("order_executor has no place_order()")
+07415:         try:
+07416:             try:
+07417:                 try:
+07418:                     import inspect
+07419:                 except:
+07420:                     pass
+07421:             except:
+07422:                 pass
+07423:             sig = inspect.signature(fn)
+07424:             n = len(sig.parameters)
+07425:         except Exception:
+07426:             n = 4
+07427:         try:
+07428:             if n <= 2:
+07429:                 await fn(float(price), float(qty))
+07430:             elif n == 3:
+07431:                 await fn(str(side), float(price), float(qty))
+07432:             else:
+07433:                 await fn(str(side), float(price), float(qty), str(cid))
+07434:         except TypeError:
+07435:             try:
+07436:                 await fn(float(price), float(qty))
+07437:             except Exception:
+07438:                 await fn(str(side), float(price), float(qty), str(cid))

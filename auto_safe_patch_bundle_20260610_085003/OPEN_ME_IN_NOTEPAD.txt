@@ -1,0 +1,9 @@
+﻿OPEN THIS FOLDER REVIEW ORDER
+
+1) PATCH_PROPOSAL.md
+2) PATCH_HIT_SUMMARY.csv
+3) PATCH_HITS.csv
+4) FILES_MANIFEST_SHA256.csv
+5) FINAL_PATCH_PROPOSAL.diff
+
+This package did NOT modify any python file.

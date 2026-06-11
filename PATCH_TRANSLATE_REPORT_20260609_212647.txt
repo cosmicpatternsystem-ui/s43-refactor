@@ -1,0 +1,4 @@
+﻿PATCH_APPLIED
+Target: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+Backup: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py.bak_translate_20260609_212647
+Timestamp: 20260609_212647

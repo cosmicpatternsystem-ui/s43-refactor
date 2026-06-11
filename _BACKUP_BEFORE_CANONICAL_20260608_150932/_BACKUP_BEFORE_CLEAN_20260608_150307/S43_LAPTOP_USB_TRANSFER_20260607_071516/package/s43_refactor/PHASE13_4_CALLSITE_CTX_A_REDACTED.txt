@@ -1,0 +1,36 @@
+===== context around 457 =====
+449:    keys = ("[STR]", "[STR]", "[STR]")
+450:    prev_env = {k: os.environ.get(k) for k in keys}
+451:    try:
+452:        [REDACTED]()
+453:    except Exception:
+454:        pass
+455:    try:
+456:        for slot in (1, 2, 3):
+457:            tok = get_arzplus_token(slot)
+458:            if tok and (not [REDACTED](tok)):
+459:                setattr(mod, f"[STR]", tok)
+460:    except Exception:
+461:        pass
+462:    for fn in ("[STR]", "[STR]", "[STR]"):
+463:        if hasattr(mod, fn):
+464:            try:
+465:                getattr(mod, fn)()
+===== context around 481 =====
+473:                if [REDACTED](cur):
+474:                    os.environ[k] = v
+475:    except Exception:
+476:        pass
+477:    try:
+478:        if _env_bool("[STR]", False):
+479:            lg = _boot_logger()
+480:            for _slot in (1, 2, 3):
+481:                _tok = get_arzplus_token(_slot)
+482:                _src = _ARZPLUS_TOKEN_SOURCE.get(int(_slot), "[STR]")
+483:                _val = _strip_token_value(_tok)
+484:                lg.info(
+485:                    "[STR]",
+486:                    _slot, _src, (len(_val) if _val else 0), _token_fingerprint(_tok),
+487:                )
+488:                try:
+489:                    try:

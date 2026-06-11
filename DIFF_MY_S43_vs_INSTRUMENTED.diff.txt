@@ -1,0 +1,37 @@
+﻿Structured diff report
+Generated: 2026-06-08 17:08:02
+Base: .\MY_S43_LATEST.py
+Candidate: .\s43_instrumented_LATEST.py
+Base line count: 30085
+Candidate line count: 30106
+Lines only in base: 0
+Lines only in candidate: 21
+Total diff entries: 21
+
+Legend:
+<= exists only in MY_S43_LATEST.py
+=> exists only in s43_instrumented_LATEST.py
+
+Diff entries:
+
+=> # === S43 TERMUX INSTRUMENTATION START ===
+=>     import os as _s43_os
+=>     import sys as _s43_sys
+=>     from datetime import datetime as _s43_dt
+=>     def _s43_trace(msg):
+=>             with open("/sdcard/Download/s43_termux_trace.log", "a", encoding="utf-8") as _f:
+=>                 _f.write("[{}] {}\n".format(_s43_dt.now().isoformat(), msg))
+=>     _s43_trace("module import started")
+=>     _s43_trace("argv={!r}".format(_s43_sys.argv))
+=>     _s43_trace("cwd={!r}".format(_s43_os.getcwd()))
+=> # === S43 TERMUX INSTRUMENTATION END ===
+=> except Exception:
+=>     pass
+=> try:
+=> 
+=> 
+=>         try:
+=>         except Exception:
+=>             pass
+=> 
+=> 

@@ -1,0 +1,7 @@
+﻿Timestamp: 20260610_121219
+Canonical: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+OutputDir: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219
+SHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+GuardMatches: 9
+PyCompileExitCode: 0
+Status: VERIFIED

@@ -1,0 +1,59 @@
+s43 repair manifest
+created_at=Fri May 29 13:54:54 +0330 2026
+base_dir=/data/data/com.termux/files/home/s43_refactor
+
+main_file=/data/data/com.termux/files/home/s43_refactor/s43.py
+editable_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+locked_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+manager=/data/data/com.termux/files/home/s43_refactor/s43_manager.sh
+backup_dir=/data/data/com.termux/files/home/s43_refactor/backups
+log_dir=/data/data/com.termux/files/home/s43_refactor/logs
+
+status:
+- syntax: OK
+- doctor: OK
+- selftest: OK
+- parisa loader: HOT-ACTIVE
+- public API: OK
+- private API: token invalid / 403, requires valid token
+
+commands:
+- backup|save
+- check
+- restore [source.py]
+- restore-latest
+- lock
+- unlock
+- run <args...>
+- diff
+- doctor-log
+- selftest-log
+- logs
+- manifest
+- status
+
+aliases:
+- s43
+- s43-save
+- s43-check
+- s43-restore
+- s43-lock
+- s43-unlock
+- s43-status
+- s43-manifest
+
+checksums:
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+8a051c36822e50831f3ef6bfb9d2fc92f684681917606429e68a3266079562bb  /data/data/com.termux/files/home/s43_refactor/s43_manager.sh
+
+latest_backups:
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_135247.py
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_131853.py
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_131521.py
+
+latest_logs:
+/data/data/com.termux/files/home/s43_refactor/logs/selftest_20260529_135359.log
+/data/data/com.termux/files/home/s43_refactor/logs/trading_bot.log
+/data/data/com.termux/files/home/s43_refactor/logs/doctor_20260529_135301.log

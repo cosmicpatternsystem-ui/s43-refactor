@@ -1,0 +1,6 @@
+14088:                                _wn = str(getattr(w, "name", "") or "").strip()
+14089:                            except Exception:
+14090:                                _wn = ""
+14091:                            _env_key = "S43_" + _wn.upper() + "_TOKEN" if _wn else ""
+14092:                            _env_tok = _s43_os.environ.get(_env_key, "") if _env_key else ""
+14093:                            _old_tok = getattr(_req_self, "_token", "") if _req_self is not None else ""

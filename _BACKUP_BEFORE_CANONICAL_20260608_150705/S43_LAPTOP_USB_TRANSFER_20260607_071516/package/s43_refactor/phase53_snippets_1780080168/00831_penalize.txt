@@ -1,0 +1,10 @@
+00831:     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+00832:         pause = float(max(0.0, pause_sec or 0.0))
+00833:         if pause <= 0.0 and not hard:
+00834:             return
+00835:         async with self._lock:
+00836:             now = time.time()
+00837:             if pause > 0.0:
+00838:                 self._hold_until = max(self._hold_until, now + pause)
+00839:             bump = 1.25 if hard else 1.12
+00840:             self._min_interval = min(12.0, max(self._min_interval, self._min_interval * bump, 1.05))

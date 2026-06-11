@@ -1,0 +1,28 @@
+﻿SAFE PATCH NOTES
+================
+
+Generated: 06/10/2026 08:37:00
+Root: E:\اخباری\ssl\s43_refactor
+Output: E:\اخباری\ssl\s43_refactor\safe_patch_proposal_full_fixed_20260610_083629
+
+This run did NOT modify source files.
+
+Backups:
+E:\اخباری\ssl\s43_refactor\safe_patch_proposal_full_fixed_20260610_083629\backup_main3
+
+Main review targets:
+- _ai_trader
+- AITrader
+- AI_TRADER_ENABLE
+- OPENAI_TRADE_ENABLE
+- OPENAI_TRADE_ALLOW_ND
+- autonomous_ai
+- risk and safety gates
+
+Recommended base for any future manual patch:
+- s43_instrumented_LATEST.py
+
+Important:
+- 11029.py should remain reference-only unless explicitly decided otherwise
+- Review PATCH_HITS.csv line-by-line before making any patch
+- Keep the ZIP and SHA256 for audit traceability

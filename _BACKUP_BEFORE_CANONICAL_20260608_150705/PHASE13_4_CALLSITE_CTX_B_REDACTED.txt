@@ -1,0 +1,44 @@
+===== context around 13073 =====
+13063:                slots.add(int(_s))
+13064:            except Exception:
+13065:                continue
+13066:        for _k, _v in (HARDCODED_WALLET_TOKENS or {}).items():
+13067:            try:
+13068:                if str(_v).strip():
+13069:                    slots.add(int(_k))
+13070:            except Exception:
+13071:                continue
+13072:        for slot in sorted(slots or {1}):
+13073:            token = get_arzplus_token(slot)
+13074:            wname = f"[STR]"
+13075:            if token:
+13076:                self._log.info("[STR]", wname, len(str(token)))
+13077:            else:
+13078:                self._log.warning("[STR]", wname)
+13079:            token_expiry_ts = 0
+13080:            try:
+13081:                token_expiry_ts = int([REDACTED](slot) or 0)
+13082:            except Exception:
+13083:                token_expiry_ts = 0
+===== context around 14959 =====
+14949:        if not bool(getattr(args, "[STR]", False)):
+14950:            raise SystemExit("[STR]")
+14951:        _ensure_live_gating(True)
+14952:        wallet_name = str(getattr(args, "[STR]", "[STR]")).strip().upper()
+14953:        slot = 1
+14954:        try:
+14955:            if wallet_name.startswith("[STR]"):
+14956:                slot = int(wallet_name[1:])
+14957:        except Exception:
+14958:            slot = 1
+14959:        token = get_arzplus_token(slot)
+14960:        if not str(token or "[STR]").strip():
+14961:            raise SystemExit(f"[STR]")
+14962:        limiter = SharedAsyncRateLimiter(cfg.rate_limit_per_min)
+14963:        real_ex = ExchangeClient(cfg, token, limiter, logger.log)
+14964:# AUTOPATCH_STAGE1_MARKER
+14965:def _s43_autopatch_probe():
+14966:    "[STR]""
+14967:    Auto-patch probe helper for Termux.
+14968:    Harmless and callable from future diagnostics.
+14969:    "[STR]""

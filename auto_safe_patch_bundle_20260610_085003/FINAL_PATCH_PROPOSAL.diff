@@ -1,0 +1,8 @@
+﻿--- a/s43_instrumented_LATEST.py
++++ b/s43_instrumented_LATEST.py
+@@ SAFE-PATCH-PROPOSAL @@
++ # Proposed only: enforce fail-closed AI gate
++ # Proposed only: require AUTONOMOUS_AI explicit opt-in
++ # Proposed only: require OPENAI_TRADE_ENABLE and OPENAI_TRADE_ALLOW_ND
++ # Proposed only: deny execution on drawdown / kill-switch / daily-weekly risk breach
++ # No source modification performed by this bundle

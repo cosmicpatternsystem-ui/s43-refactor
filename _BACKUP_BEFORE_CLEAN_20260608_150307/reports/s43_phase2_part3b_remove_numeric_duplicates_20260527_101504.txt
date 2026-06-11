@@ -1,0 +1,63 @@
+===== S43 PHASE2 PART3B: REMOVE NUMERIC DUPLICATE DEFINITIONS =====
+TS=20260527_101504
+
+[STEP 1] BACKUP s43.py
+-rw-rw----. 1 root everybody 2572418 May 27 10:11 s43_before_phase2_part3b_remove_numeric_dupes_20260527_101504.py
+
+[STEP 2] REMOVE ONLY _first_num AND _quantize_down FROM s43.py
+FOUND_RANGES= [('_first_num', 3513, 3520), ('_quantize_down', 3521, 3601)]
+REMOVED_COUNT= 2
+TARGETS= ['_first_num', '_quantize_down']
+
+[STEP 3] VERIFY REMOVAL / IMPORTS
+-- import line --
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down
+
+-- defs in s43.py (should be absent) --
+
+-- defs in helpers.py (should exist) --
+96:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+105:def _quantize_down(x: float, step: float) -> float:
+
+[STEP 4] COMPILE CHECKS
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[STEP 5] HELP CHECK
+HELP_RC=0
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+
+[STEP 6] RUNTIME IMPORT SMOKE
+S43_IMPORT_OK
+_first_num source module: s43_core.helpers
+_quantize_down source module: s43_core.helpers
+
+[STEP 7] FINAL ASSERTIONS
+import_has_first_num=1
+import_has_quantize_down=1
+def_first_num_removed=1
+def_quantize_down_removed=1

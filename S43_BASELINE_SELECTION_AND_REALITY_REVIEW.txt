@@ -1,0 +1,321 @@
+﻿S43 BASELINE SELECTION AND REALITY REVIEW
+
+DOCUMENT STATUS:
+BASELINE_SELECTION_AND_REALITY_REVIEW_REGISTERED
+
+CODE_MUTATION_AUTHORIZED:
+FALSE
+
+LIVE_TRADING_AUTHORIZED:
+FALSE
+
+CREATED_AT:
+2026-06-11T23:49:22.3675223+03:30
+
+RELATED LOCKED STATE:
+S43_CHANGE_PLAN_002 LOCKED
+S43_CHANGE_PLAN_003 DRAFT REGISTERED
+DIAMOND_READY / ROADMAP_LOCKED
+HYPERCAR VALUE + AUTONOMY REGISTERED
+COMPETITIVE_EDGE_AND_MARKET_POSITIONING_REGISTERED
+
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
+
+This document records the official baseline decision for S43 before any S43_CHANGE_PLAN_003 implementation.
+
+The purpose is to prevent unnecessary rewrites, uncontrolled refactors, duplicate code paths, and emotional technical decisions.
+
+S43 must advance from a verified baseline, not from chaos.
+
+------------------------------------------------------------
+2. OFFICIAL BASELINE DECISION
+------------------------------------------------------------
+
+The official baseline for future S43 development is:
+
+The locked post-S43_CHANGE_PLAN_002 version of the project.
+
+This baseline is selected because it has:
+
+- a locked state
+- a verified safety marker
+- a registered roadmap state
+- a passed verifier result
+- a passed Python compile check
+- an archive package
+- recorded hashes
+- audit-ready status
+- documented strategic direction
+- no unauthorized live trading permission
+
+The selected baseline state is:
+
+PROJECT_STATE:
+ROADMAP_CONFORMANT_AUDIT_READY
+
+LOCK_MARKER:
+S43_LOCKED_AFTER_CHANGE_PLAN_002
+
+NEXT_MUTATION_GATE:
+S43_CHANGE_PLAN_003
+
+------------------------------------------------------------
+3. WHY THIS BASELINE IS SELECTED
+------------------------------------------------------------
+
+This baseline is selected because it is the safest known point.
+
+It is not selected because it is perfect.
+
+It is selected because it is:
+
+- traceable
+- recoverable
+- auditable
+- already verified
+- already locked
+- aligned with the current roadmap
+- safer than beginning from an unverified rewrite
+
+A verified imperfect baseline is better than an unverified clean rewrite.
+
+------------------------------------------------------------
+4. ROLE OF EXISTING CODE SOURCES
+------------------------------------------------------------
+
+The current locked S43 code is the canonical baseline.
+
+Other code versions, older files, experiments, previous scripts, partial refactors, and alternative implementations must not become independent competing baselines.
+
+Their allowed roles are:
+
+- archive material
+- reference material
+- donor code
+- comparison material
+- idea source
+- test reference
+- migration source if explicitly approved
+
+Their forbidden roles are:
+
+- independent production baseline
+- uncontrolled replacement
+- silent fork
+- unofficial fourth codebase
+- live trading candidate
+- mutation target without change-plan approval
+
+------------------------------------------------------------
+5. NO FOURTH CODEBASE RULE
+------------------------------------------------------------
+
+S43 must not create a fourth codebase at this stage.
+
+A fourth codebase would increase:
+
+- confusion
+- audit risk
+- duplicated logic
+- hidden bugs
+- inconsistent safety rules
+- unclear ownership
+- unclear baseline identity
+- mutation risk
+
+A new codebase may only be considered if a future formal review proves that the selected baseline is technically unsalvageable.
+
+That condition is not currently proven.
+
+Therefore:
+
+FOURTH_CODEBASE_AUTHORIZED:
+FALSE
+
+FULL_REWRITE_AUTHORIZED:
+FALSE
+
+------------------------------------------------------------
+6. NO FULL REWRITE RULE
+------------------------------------------------------------
+
+S43 must not be rewritten from zero at this stage.
+
+A full rewrite may feel cleaner, but it would destroy or weaken:
+
+- audit continuity
+- known verifier state
+- existing lock trail
+- change-plan traceability
+- operational memory
+- known safety status
+- previous project receipts
+
+The correct method is staged modular evolution.
+
+S43 must evolve through controlled scaffolding, extraction, wrapping, adapters, interfaces, receipts, and tests.
+
+------------------------------------------------------------
+7. REALITY REVIEW
+------------------------------------------------------------
+
+The S43 vision is ambitious.
+
+It includes:
+
+- multi-exchange capability
+- multi-wallet capability
+- portfolio intelligence
+- capital preservation
+- global market ranking
+- diamond hidden-signal intelligence
+- AI supervision
+- explainable decision receipts
+- audit-grade operation
+- commercial editions
+- limited premium positioning
+- autonomous but safety-governed operation
+
+This vision is not impossible if built in stages.
+
+This vision becomes unrealistic only if S43 tries to jump directly from roadmap to fully autonomous profitable global product.
+
+The correct path is:
+
+Claim
+Prototype
+Backtest
+Walk-forward test
+Paper trading
+Small-capital controlled live testing
+Audited track record
+Private deployment
+Commercial edition
+
+------------------------------------------------------------
+8. STRATEGIC REALITY RULES
+------------------------------------------------------------
+
+S43 must obey these reality rules:
+
+- No guaranteed-profit claims.
+- No uncontrolled live trading.
+- No AI override of hard safety laws.
+- No exchange write access without explicit future authorization.
+- No wallet withdrawal automation without explicit future authorization.
+- No claim of institutional quality without audit evidence.
+- No product sale based only on roadmap language.
+- No benchmark claim without benchmark data.
+- No mutation outside approved change-plan scope.
+
+------------------------------------------------------------
+9. CP-003 IMPLEMENTATION IMPLICATION
+------------------------------------------------------------
+
+S43_CHANGE_PLAN_003 must be an architecture scaffold, not a random feature patch.
+
+CP-003 should prepare structure for:
+
+- SafetyLawEngine
+- AutonomyModeManager
+- AISupervisorBridge
+- PortfolioBrain
+- MarketRegimeEngine
+- HiddenSignalEngine
+- InvisibleRiskEngine
+- AsymmetricOpportunityScorer
+- NoiseRejectionLayer
+- DiamondDecisionReceipt
+- AuditReceiptEngine
+- OwnerOverrideController
+- ExecutionApprovalPolicy
+- AdapterLayer
+- ProductEditionManager
+- CustomerProfileEngine
+
+CP-003 must not activate live trading.
+
+CP-003 must not connect uncontrolled AI actions.
+
+CP-003 must not grant exchange write access.
+
+CP-003 must not perform wallet withdrawal operations.
+
+CP-003 must not replace the baseline with an unverified rewrite.
+
+------------------------------------------------------------
+10. BASELINE PROTECTION RULE
+------------------------------------------------------------
+
+Before CP-003 implementation, the selected baseline must remain protected.
+
+Allowed activities before CP-003 apply:
+
+- documentation
+- planning
+- scope review
+- module design
+- interface design
+- audit planning
+- verifier planning
+- test planning
+- archive indexing
+- receipt generation
+
+Forbidden activities before CP-003 apply:
+
+- modifying production code
+- changing trading logic
+- enabling live trading
+- changing exchange credentials behavior
+- changing wallet behavior
+- deleting locked files
+- replacing canonical baseline
+- creating a fourth implementation
+
+------------------------------------------------------------
+11. DECISION SUMMARY
+------------------------------------------------------------
+
+OFFICIAL_BASELINE:
+LOCKED_POST_S43_CHANGE_PLAN_002_PROJECT_STATE
+
+BASELINE_REASON:
+VERIFIED_LOCKED_AUDIT_READY_ROADMAP_CONFORMANT_STATE
+
+USE_OLD_CODE_AS:
+REFERENCE_OR_DONOR_ONLY
+
+USE_REFACTOR_CODE_AS:
+CANONICAL_BASELINE_ONLY_IF_IT_IS_THE_LOCKED_CP002_VERIFIED_STATE
+
+USE_THIRD_CODE_AS:
+REFERENCE_OR_DONOR_ONLY_UNLESS_FORMALLY_PROMOTED_BY_FUTURE_REVIEW
+
+CREATE_FOURTH_CODEBASE:
+FALSE
+
+FULL_REWRITE_NOW:
+FALSE
+
+NEXT_MEANINGFUL_PATCH:
+S43_CHANGE_PLAN_003
+
+CP003_PATCH_TYPE:
+MODULAR_AUTONOMY_AI_SAFETY_ARCHITECTURE_SCAFFOLD
+
+------------------------------------------------------------
+12. FINAL RULING
+------------------------------------------------------------
+
+S43 will not restart from zero.
+
+S43 will not create a fourth codebase.
+
+S43 will advance from the verified locked post-CP002 baseline.
+
+S43_CHANGE_PLAN_003 must build a modular, safety-first, AI-supervised, audit-ready architecture scaffold while preserving baseline traceability.
+
+This is the official baseline and reality review decision.

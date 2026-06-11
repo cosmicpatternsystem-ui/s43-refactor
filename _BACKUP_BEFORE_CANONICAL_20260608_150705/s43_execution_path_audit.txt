@@ -1,0 +1,387 @@
+==============================================================================================================
+S43 EXECUTION PATH AUDIT
+==============================================================================================================
+FILE: /data/data/com.termux/files/home/s43_refactor/s43.py
+LINES: 29441
+
+[FOCUS CLASS RANGES]
+   895-3442   class ExchangeClient
+                2863-2881   async def get_trades()
+                3060-3211   async def place_order()
+                3214-3243   async def place_limit()
+                3246-3274   async def place_market()
+                3277-3340   async def cancel_all_orders()
+                3343-3395   async def list_orders()
+                3398-3442   async def cancel_order()
+ 10581-11198  class RiskManager
+               10729-10739  sync def halt_new_trades()
+               10806-10835  sync def hard_blocks_all_orders()
+               10838-10846  sync def set_runtime_risk()
+               10847-10862  sync def get_runtime_risk()
+               10863-10874  sync def _risk_journal_obj()
+               10875-10921  sync def _load_risk_journal()
+               10922-10944  sync def _save_risk_journal()
+               10945-10978  sync def can_open()
+               10979-11044  sync def can_open_explain()
+               11045-11062  sync def size_notional()
+               11091-11135  sync def should_exit()
+ 11199-11766  class ExecutionEngine
+               11250-11423  async def place_limit()
+               11471-11766  async def deep_prune_ghost_orders()
+  9004-9315   class RazTraderEnhanced
+                9035-9046   async def start()
+                9056-9078   async def _enhanced_trading_loop()
+                9250-9274   async def _execute_trade()
+  7393-7498   class SovereignCore
+                7439-7498   async def execute_sovereign_strategy()
+  9316-9764   class PhoenixEngine
+                9376-9381   sync def get_last_decision()
+  6788-7039   class AdvancedAnalyticsEngine
+  8212-8497   class HybridSignalFilter
+  7897-8171   class DynamicPositionSizer
+ 11767-11846  class DashboardManager
+               11806-11814  sync def start()
+               11826-11827  async def _run()
+               11828-11846  async def _run_fallback()
+ 23143-23562  class TradingBot
+               23191-23212  sync def _ensure_internal_services_started()
+               23213-23248  async def _janitor_loop()
+
+[TOP LEVEL FUNCTIONS]
+ 14251-14261  sync def _run_coro_sync()
+ 14262-14454  sync def _run_raz_entry()
+ 23563-23642  sync def _recorder_child_main()
+ 23657-23779  sync def run()
+ 29198-29231  async def _run_orchestrator22_monitor()
+ 29306-29315  sync def main()
+ 29422-29429  sync def _ai_runtime_enabled()
+
+[CRITICAL CALL HITS]
+  3232: call place_order()  OWNER: async def place_limit <- class ExchangeClient
+  3263: call place_order()  OWNER: async def place_market <- class ExchangeClient
+  3316: call list_orders()  OWNER: async def cancel_all_orders <- class ExchangeClient
+  3330: call cancel_order()  OWNER: async def cancel_all_orders <- class ExchangeClient
+  9042: call start()  OWNER: async def start <- class RazTraderEnhanced
+  9044: call _enhanced_trading_loop()  OWNER: async def start <- class RazTraderEnhanced
+  9133: call _execute_trade()  OWNER: async def _process_symbol_enhanced <- class RazTraderEnhanced
+ 10578: call place_limit()  OWNER: async def maybe_ai_rescue <- class DzhBanIntegrity
+ 11088: call halt_new_trades()  OWNER: def register_close <- class RiskManager
+ 11174: call halt_new_trades()  OWNER: def set_safe <- class RiskManager
+ 11351: call place_order()  OWNER: async def place_limit <- class ExecutionEngine
+ 11428: call place_limit()  OWNER: async def place_ladder <- class ExecutionEngine
+ 11440: call place_limit()  OWNER: async def place_ladder <- class ExecutionEngine
+ 11530: call list_orders()  OWNER: async def deep_prune_ghost_orders <- class ExecutionEngine
+ 11537: call list_orders()  OWNER: async def deep_prune_ghost_orders <- class ExecutionEngine
+ 11728: call cancel_order()  OWNER: async def deep_prune_ghost_orders <- class ExecutionEngine
+ 13859: call halt_new_trades()  OWNER: def _save_state_if_needed <- class TradingBotBase
+ 14019: call halt_new_trades()  OWNER: async def _refresh_balance_if_needed <- class TradingBotBase
+ 14021: call halt_new_trades()  OWNER: async def _refresh_balance_if_needed <- class TradingBotBase
+ 14062: call halt_new_trades()  OWNER: async def _refresh_balance_if_needed <- class TradingBotBase
+ 14257: call run()  OWNER: def _run_coro_sync
+ 14454: call run()  OWNER: def _run_raz_entry
+ 14598: call cancel_all_orders()  OWNER: async def _cancel_stale_orders <- class Janitor
+ 14605: call list_orders()  OWNER: async def _cancel_stale_orders <- class Janitor
+ 14639: call cancel_order()  OWNER: async def _cancel_stale_orders <- class Janitor
+ 14703: call place_order()  OWNER: async def place_order <- class _MockExchangeForStress
+ 14844: call place_order()  OWNER: async def _bg_send <- async def _place_order_impl <- class _FaultInjectExchange
+ 14862: call place_order()  OWNER: async def _place_order_impl <- class _FaultInjectExchange
+ 14903: call list_orders()  OWNER: async def list_orders <- class _FaultInjectExchange
+ 15147: call list_orders()  OWNER: async def _soft_exit_removed_symbols <- class TradingBotOps
+ 15161: call cancel_order()  OWNER: async def _soft_exit_removed_symbols <- class TradingBotOps
+ 16814: call halt_new_trades()  OWNER: async def _refresh_orders_if_needed <- class TradingBotOps
+ 17061: call cancel_order()  OWNER: async def _refresh_orders_if_needed <- class TradingBotOps
+ 17308: call cancel_order()  OWNER: async def _refresh_orders_if_needed <- class TradingBotOps
+ 19641: call size_notional()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 19855: call can_open_explain()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20055: call place_limit()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20224: call should_exit()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20300: call list_orders()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20328: call cancel_order()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20333: call cancel_all_orders()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20336: call cancel_all_orders()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20417: call place_limit()  OWNER: async def _process_symbol_heartbeat <- class TradingBotOps
+ 20597: call list_orders()  OWNER: async def _cancel_open_orders <- class TradingBotOps
+ 20614: call cancel_order()  OWNER: async def _cancel_open_orders <- class TradingBotOps
+ 20651: call place_limit()  OWNER: async def _liquidate_positions <- class TradingBotOps
+ 20680: call halt_new_trades()  OWNER: async def _execute_global_exit <- class TradingBotOps
+ 20737: call halt_new_trades()  OWNER: async def cycle_wallet <- class TradingBotOps
+ 20745: call halt_new_trades()  OWNER: async def cycle_wallet <- class TradingBotOps
+ 20836: call place_limit()  OWNER: async def cycle_wallet <- class TradingBotOps
+ 21332: call place_limit()  OWNER: async def cycle_wallet_cleanup <- class TradingBotOps
+ 21471: call place_limit()  OWNER: async def execute_order_v121 <- class TradingBotOps
+ 21477: call place_limit()  OWNER: async def execute_order_v121 <- class TradingBotOps
+ 21558: call start()  OWNER: async def run <- class TradingBotOps
+ 23013: call start()  OWNER: async def run <- class TradingBotOps
+ 28867: call list_orders()  OWNER: async def _run <- class Orch22WalletEngine
+ 29028: call start()  OWNER: async def _task_reset <- class Orch22Orchestrator
+ 29052: call start()  OWNER: async def _task_reset <- class Orch22Orchestrator
+ 29077: call start()  OWNER: async def _hard_reset <- class Orch22Orchestrator
+ 29080: call start()  OWNER: async def _hard_reset <- class Orch22Orchestrator
+ 29086: call cancel_all_orders()  OWNER: async def _cancel_all_fail_safe <- class Orch22Orchestrator
+ 29165: call start()  OWNER: async def run <- class Orch22Orchestrator
+ 29167: call start()  OWNER: async def run <- class Orch22Orchestrator
+ 29229: call run()  OWNER: async def _run_orchestrator22_monitor
+ 29309: call run()  OWNER: def main
+ 29441: call main()  OWNER: 
+
+[FOCUS CLASS REFERENCES]
+   895: ExchangeClient           class ExchangeClient:
+   910: ExchangeClient                   m = ExchangeClient._RE_AUTH_SCHEME.match(t)
+  2395: ExchangeClient                           s = s.translate(getattr(ExchangeClient, "_PERSIAN_DIGITS"))
+  4409: ExchangeClient               def __init__(self, ex_public: ExchangeClient, logger: logging.Logger):
+  4700: ExchangeClient               def __init__(self, ex: ExchangeClient, logger: logging.Logger, ttl_sec: float = 1.2, price_cache_path: str = "raz_price_cache.json"):
+  6788: AdvancedAnalyticsEngine  class AdvancedAnalyticsEngine:
+  6801: AdvancedAnalyticsEngine              "AdvancedAnalyticsEngine layers=%d",
+  7393: SovereignCore            class SovereignCore:
+  7897: DynamicPositionSizer     class DynamicPositionSizer:
+  8212: HybridSignalFilter       class HybridSignalFilter:
+  9004: RazTraderEnhanced        class RazTraderEnhanced:
+  9013: DynamicPositionSizer             self.position_sizer = DynamicPositionSizer(
+  9016: HybridSignalFilter               self.signal_filter = HybridSignalFilter(
+  9316: PhoenixEngine            class PhoenixEngine:
+  9331: PhoenixEngine                    self._st: Dict[str, PhoenixEngine._State] = {}
+  9369: PhoenixEngine                def _state(self, sym: str) -> "PhoenixEngine._State":
+  9373: PhoenixEngine                        st = PhoenixEngine._State(mids=__import__("collections").deque(maxlen=self._maxlen))
+  9382: PhoenixEngine                def _state_to_dict(self, st: "PhoenixEngine._State") -> dict:
+  9397: PhoenixEngine                def _dict_to_state(self, data: dict) -> "PhoenixEngine._State":
+  9398: PhoenixEngine                    st = PhoenixEngine._State(mids=__import__("collections").deque(maxlen=self._maxlen))
+  9462: PhoenixEngine                def _update_rsi(self, st: "PhoenixEngine._State", price: float) -> Optional[float]:
+ 10373: TradingBot                   async def update_wallet_metrics(self, bot: "TradingBot", wallet: "WalletRuntime") -> None:
+ 10564: TradingBot                   async def maybe_ai_rescue(self, bot: "TradingBot", w: "WalletRuntime", sym: str, book: Any) -> None:
+ 10581: RiskManager              class RiskManager:
+ 11199: ExecutionEngine          class ExecutionEngine:
+ 11200: ExchangeClient               def __init__(self, cfg: BotConfig, ex: ExchangeClient, normalizer: OrderNormalizer, logger: logging.Logger,
+ 11767: DashboardManager         class DashboardManager:
+ 11770: TradingBot                       bot: "TradingBot",
+ 12099: ExchangeClient               ex: ExchangeClient
+ 12100: ExecutionEngine              exec: ExecutionEngine
+ 12910: ExchangeClient                   self.public = ExchangeClient(cfg, token="", limiter=self._limiter, logger=self._log, breaker=self._breaker)
+ 12917: RiskManager                      self.risk = RiskManager(cfg, self._log)
+ 12918: PhoenixEngine                    self.phoenix = PhoenixEngine(cfg, self._log)
+ 13011: ExchangeClient                       ex = ExchangeClient(wcfg, token=token or "DUMMY", limiter=self._limiter, logger=self._log, breaker=self._breaker)
+ 13014: ExecutionEngine                      exec_engine = ExecutionEngine(
+ 13089: AdvancedAnalyticsEngine          self.advanced_analytics: Optional[AdvancedAnalyticsEngine] = None
+ 13092: AdvancedAnalyticsEngine                  self.advanced_analytics = AdvancedAnalyticsEngine(self.cfg, self._log, self.feed)
+ 14326: TradingBot                   bot = TradingBot(cfg, logger)
+ 14456: TradingBot                   def __init__(self, bot: "TradingBot"):
+ 14811: ExchangeClient                   real_ex = ExchangeClient(cfg, token, limiter, logger.log)
+ 14821: ExchangeClient               def __init__(self, ex: ExchangeClient, offline_sec: float, log: logging.Logger):
+ 20173: RiskManager                          # reversal domain so RiskManager.should_exit can act deterministically.
+ 20657: ExchangeClient                           details.append({"sym": sym, "qty": qty, "ok": False, "err": ExchangeClient._safe_body_for_log(f"{type(e).__name__}: {str(e) or repr(e)}", limit=120)})
+ 21485: TradingBot                   async def run(self: "TradingBot") -> None:
+ 21553: DashboardManager                         dash = DashboardManager(
+ 23143: TradingBot               class TradingBot(TradingBotBase, TradingBotOps):
+ 23881: DashboardManager         class WallStreetDashboardManager(DashboardManager):
+ 28567: DashboardManager             DashboardManager = WallStreetDashboardManager
+ 28675: ExchangeClient               def __init__(self, *, public: "ExchangeClient", cfg: "BotConfig", log: logging.Logger) -> None:
+ 28802: ExchangeClient               def __init__(self, *, name: str, client: "ExchangeClient", cfg: "BotConfig", log: logging.Logger) -> None:
+ 28922: ExchangeClient                   self.public = ExchangeClient(cfg, token="", limiter=limiter, logger=log, breaker=breaker)
+ 28932: ExchangeClient                       cli = ExchangeClient(cfg, token=(tok or ""), limiter=limiter, logger=log, breaker=breaker)
+ 29065: ExchangeClient                   self.public = ExchangeClient(self.cfg, token="", limiter=limiter, logger=self._log, breaker=breaker)
+ 29074: ExchangeClient                       cli = ExchangeClient(self.cfg, token=(tok or ""), limiter=limiter, logger=self._log, breaker=breaker)
+ 29297: PhoenixEngine                ph = PhoenixEngine(_CfgMini(), logger=logging.getLogger("selftest"))
+
+[MAIN FUNCTION SNIPPET]
+ 29301:     assert (d0.reason == "NO_DEPTH_PRICE") or (d0.shadow_label == "DEPTH_REQUIRED"), f"Scenario5a expected depth block: {d0}"
+ 29302:     os.environ["PHOENIX_ALLOW_SPOT_READY"] = "1"
+ 29303:     d1 = ph.update("BTCIRT", sig, book=None, spot=100.0, spot_ts=now)
+ 29304:     assert d1.reason != "NO_DEPTH_PRICE", f"Scenario5b expected not depth-blocked: {d1}"
+ 29305:     print("PHOENIX_SELFTEST: OK")
+ 29306: def main(argv: list[str] | None = None) -> None:
+ 29307:     """Entry point with crash reporting (no sys.excepthook monkey-patch)."""
+ 29308:     try:
+ 29309:         run(argv)
+ 29310:     except BaseException as e:
+ 29311:         try:
+ 29312:             _pp200_report(e, tag="FATAL", ctx={"argv": (argv if argv is not None else sys.argv[1:])})
+ 29313:         except Exception:
+ 29314:             pass
+ 29315:         raise
+ 29316: 
+ 29317: 
+ 29318: 
+ 29319: def _env_bool(name: str, default=False):
+ 29320:     try:
+
+[MODULE END SNIPPET]
+ 29261:     class _DummyBot:
+ 29262:         def __init__(self):
+ 29263:             self.feed = _DummyFeed()
+ 29264:             self._market_snapshot = {}
+ 29265:             self._market_snapshot_local_ts = None
+ 29266:             self._top8_snapshot = []
+ 29267:             self._phoenix_px_hist = {}
+ 29268:     now = time.time()
+ 29269:     b = _DummyBot()
+ 29270:     b.feed._cache["BTCIRT"] = (now, _DummyOB(mid=100.0, bid=99.5, ask=100.5, spr_bps=100.0, ts=now))
+ 29271:     s1 = get_best_snapshot("BTC-IRT", bot=b, now=now, stale_after_sec=90.0)
+ 29272:     assert s1["mid"] == 100.0 and (s1.get("stale_reason") in ("", None) or "STALE" not in str(s1.get("stale_reason"))), f"Scenario1 stale={s1}"
+ 29273:     b2 = _DummyBot()
+ 29274:     b2._market_snapshot_local_ts = now
+ 29275:     b2._market_snapshot["BTCIRT"] = {"last_price": 200.0, "pct": "1.25", "ts": now}
+ 29276:     s2 = get_best_snapshot("BTCIRT", bot=b2, now=now, stale_after_sec=90.0)
+ 29277:     assert abs(float(s2["dp_pct"]) - 1.25) < 1e-9, f"Scenario2 dp wrong: {s2}"
+ 29278:     b3 = _DummyBot()
+ 29279:     dq = collections.deque(maxlen=64)
+ 29280:     dq.append((now - 10.0, 100.0))
+ 29281:     dq.append((now, 110.0))
+ 29282:     b3._phoenix_px_hist["BTCIRT"] = dq
+ 29283:     b3.feed._spot_cache["BTCIRT"] = (now, 110.0)
+ 29284:     s3 = get_best_snapshot("BTCIRT", bot=b3, now=now, stale_after_sec=90.0)
+ 29285:     assert s3["dp_pct"] is not None and abs(float(s3["dp_pct"]) - 10.0) < 1e-6, f"Scenario3 dp wrong: {s3}"
+ 29286:     b4 = _DummyBot()
+ 29287:     s4 = get_best_snapshot("BTCIRT", bot=b4, now=now, stale_after_sec=90.0)
+ 29288:     assert s4["mid"] is None and s4["stale_reason"] == "NO_DATA", f"Scenario4 wrong: {s4}"
+ 29289:     class _CfgMini:
+ 29290:         phoenix_allow_spot_ready = False
+ 29291:         phoenix_shadow_window = 14
+ 29292:         phoenix_rsi_period = 14
+ 29293:         phoenix_w_sig = 1.0
+ 29294:         phoenix_w_rsi = 1.0
+ 29295:         phoenix_w_shadow = 1.0
+ 29296:         phoenix_entry_thr = 0.5
+ 29297:     ph = PhoenixEngine(_CfgMini(), logger=logging.getLogger("selftest"))
+ 29298:     sig = Signal(action="ENTRY", symbol="BTCIRT", score=1.0, confidence=0.99, price=100.0, reason="TEST", meta={"selftest": True})
+ 29299:     os.environ.pop("PHOENIX_ALLOW_SPOT_READY", None)
+ 29300:     d0 = ph.update("BTCIRT", sig, book=None, spot=100.0, spot_ts=now)
+ 29301:     assert (d0.reason == "NO_DEPTH_PRICE") or (d0.shadow_label == "DEPTH_REQUIRED"), f"Scenario5a expected depth block: {d0}"
+ 29302:     os.environ["PHOENIX_ALLOW_SPOT_READY"] = "1"
+ 29303:     d1 = ph.update("BTCIRT", sig, book=None, spot=100.0, spot_ts=now)
+ 29304:     assert d1.reason != "NO_DEPTH_PRICE", f"Scenario5b expected not depth-blocked: {d1}"
+ 29305:     print("PHOENIX_SELFTEST: OK")
+ 29306: def main(argv: list[str] | None = None) -> None:
+ 29307:     """Entry point with crash reporting (no sys.excepthook monkey-patch)."""
+ 29308:     try:
+ 29309:         run(argv)
+ 29310:     except BaseException as e:
+ 29311:         try:
+ 29312:             _pp200_report(e, tag="FATAL", ctx={"argv": (argv if argv is not None else sys.argv[1:])})
+ 29313:         except Exception:
+ 29314:             pass
+ 29315:         raise
+ 29316: 
+ 29317: 
+ 29318: 
+ 29319: def _env_bool(name: str, default=False):
+ 29320:     try:
+ 29321:         v = os.getenv(name)
+ 29322:     except Exception:
+ 29323:         return bool(default)
+ 29324:     if v is None:
+ 29325:         return bool(default)
+ 29326:     s = str(v).strip().lower()
+ 29327:     if s in ("1", "true", "yes", "y", "on"):
+ 29328:         return True
+ 29329:     if s in ("0", "false", "no", "n", "off", ""):
+ 29330:         return False
+ 29331:     return bool(default)
+ 29332: 
+ 29333: 
+ 29334: def _env_float(name: str, default: float = 0.0) -> float:
+ 29335:     """Read float from environment safely."""
+ 29336:     try:
+ 29337:         v = os.getenv(name)
+ 29338:     except Exception:
+ 29339:         return float(default)
+ 29340:     if v is None:
+ 29341:         return float(default)
+ 29342:     try:
+ 29343:         s = str(v).strip()
+ 29344:         if s == "":
+ 29345:             return float(default)
+ 29346:         return float(s)
+ 29347:     except Exception:
+ 29348:         return float(default)
+ 29349: 
+ 29350: 
+ 29351: 
+ 29352: def _env_str(name: str, default: str | None = None) -> str:
+ 29353:     """Read string from environment safely."""
+ 29354:     try:
+ 29355:         v = os.getenv(name)
+ 29356:     except Exception:
+ 29357:         return "" if default is None else str(default)
+ 29358:     if v is None:
+ 29359:         return "" if default is None else str(default)
+ 29360:     try:
+ 29361:         return str(v)
+ 29362:     except Exception:
+ 29363:         return "" if default is None else str(default)
+ 29364: 
+ 29365: 
+ 29366: 
+ 29367: def _canon_symbol(sym: str) -> str:
+ 29368:     """Normalize trading symbol safely."""
+ 29369:     try:
+ 29370:         s = str(sym or "").strip().upper()
+ 29371:     except Exception:
+ 29372:         return ""
+ 29373:     if not s:
+ 29374:         return ""
+ 29375:     s = s.replace("/", "").replace("-", "").replace("_", "").replace(" ", "")
+ 29376:     return s
+ 29377: 
+ 29378: 
+ 29379: 
+ 29380: def _env_int(name: str, default: int = 0) -> int:
+ 29381:     """Read integer from environment safely."""
+ 29382:     try:
+ 29383:         v = os.getenv(name)
+ 29384:     except Exception:
+ 29385:         return int(default)
+ 29386:     if v is None:
+ 29387:         return int(default)
+ 29388:     try:
+ 29389:         s = str(v).strip()
+ 29390:         if s == "":
+ 29391:             return int(default)
+ 29392:         return int(float(s))
+ 29393:     except Exception:
+ 29394:         return int(default)
+ 29395: 
+ 29396: 
+ 29397: 
+ 29398: def clamp(x, lo, hi):
+ 29399:     """Clamp x into [lo, hi] safely."""
+ 29400:     try:
+ 29401:         x = float(x)
+ 29402:         lo = float(lo)
+ 29403:         hi = float(hi)
+ 29404:     except Exception:
+ 29405:         try:
+ 29406:             return lo
+ 29407:         except Exception:
+ 29408:             return x
+ 29409:     if lo > hi:
+ 29410:         lo, hi = hi, lo
+ 29411:     if x < lo:
+ 29412:         return lo
+ 29413:     if x > hi:
+ 29414:         return hi
+ 29415:     return x
+ 29416: 
+ 29417: 
+ 29418: 
+ 29419: HARDCODED_WALLET_TOKENS = {}
+ 29420: 
+ 29421: 
+ 29422: def _ai_runtime_enabled(cfg) -> bool:
+ 29423:     try:
+ 29424:         ai_mode = str(getattr(cfg, "ai_mode", os.getenv("AI_MODE", "off")) or "off").strip().lower()
+ 29425:     except Exception:
+ 29426:         ai_mode = "off"
+ 29427:     if ai_mode in ("", "0", "false", "none", "off", "disabled"):
+ 29428:         return False
+ 29429:     return bool(getattr(cfg, "autonomous_ai", _env_bool("AUTONOMOUS_AI", False)))
+ 29430: 
+ 29431: def _live_trading_armed(cfg) -> bool:
+ 29432:     return bool(getattr(cfg, "live_trading_armed", _env_bool("LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+ 29433: 
+ 29434: def _ai_live_trading_armed(cfg) -> bool:
+ 29435:     return bool(getattr(cfg, "ai_live_trading_armed", _env_bool("AI_LIVE_TRADING_ARMED", False)))
+ 29436: 
+ 29437: if __name__ == "__main__":
+ 29438:     if bool(_env_bool("PHOENIX_SELFTEST", False)):
+ 29439:         _phoenix_selftests()
+ 29440:     else:
+ 29441:         main()

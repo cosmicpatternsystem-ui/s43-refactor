@@ -1,0 +1,764 @@
+====================================================================================================
+S43 STRUCTURAL MAP
+====================================================================================================
+FILE: /data/data/com.termux/files/home/s43_refactor/s43.py
+LINES: 29441
+
+[MAIN]
+  8822:     def start(self):
+  9035:     async def start(self):
+ 11806:     def start(self) -> None:
+ 12703:     def start(self, *args, **kwargs):
+ 14462:     async def start(self) -> None:
+ 21485:     async def run(self: "TradingBot") -> None:
+ 23657: def run(argv: list[str] | None = None) -> None:
+ 28604:     async def start(self) -> None:
+ 29164:     async def run(self) -> None:
+ 29306: def main(argv: list[str] | None = None) -> None:
+
+[LOOP]
+    82:             for hdlr in list(getattr(c, "handlers", [])):
+   340:             for s in (lst or []):
+   456:         for slot in (1, 2, 3):
+   462:     for fn in ("_pp_apply_manual_tokens", "_maybe_set_env_from_walletstore", "_pp110_child_hb_init"):
+   470:         for k, v in prev_env.items():
+   480:             for _slot in (1, 2, 3):
+   560:         for d in candidates:
+   561:             for k in keys:
+   609:             for (lvl, ts, m) in recent:
+   616:             for (lvl, ts, m) in recent:
+   651:         for ts, m in reversed(filtered):
+   659:         for ts, msg in (uniq or []):
+   825:                 for _omega_guard in range(150000):
+  1153:         for ep in candidates:
+  1187:                     for x in payload[:2]:
+  1194:         for ep in uniq:
+  1195:             for a in (aliases[: max(1, min(3, len(aliases)))]):
+  1196:                 for url, params in _call_specs(ep, a):
+  1272:             for ep2 in (f"/market/depth/{sym}", f"/market/depth/{sym}/"):
+  1277:             for ep2 in ("/market/depth", "/market/depth/"):
+  1508:         for code in ("HTTP 429", "HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504"):
+  1567:             for k, v in resp_headers.items():
+  2016:         for k, v in list(headers.items()):
+  2044:         for attempt in range(1, max_tries + 1):
+  2136:                 for k in ("server_time", "serverTime", "time", "timestamp", "ts", "t"):
+  2141:                 for k in ("meta", "metadata", "result", "data"):
+  2152:             for k in ("tickers", "data", "result", "results", "items", "rows", "symbols", "markets", "pairs"):
+  2163:                             for _sym, _row in vv.items():
+  2174:                     for sym, row in payload.items():
+  2183:         for ep in endpoints:
+  2190:                 for r in rows:
+  2216:             for r in rows:
+  2274:                 for _k, _v in (by or {}).items():
+  2310:                 for k, v in mkt.items():
+  2319:                     for kk, vv in src.items():
+  2429:         for ep in endpoints:
+  2437:                 for k in ("data", "result"):
+  2450:                     for v in payload.values():
+  2457:                         for k, v in payload.items():
+  2465:                 for r in rows:
+  2472:                 for s, info in list(by_symbol.items()):
+  2533:             for params in variants:
+  2548:             for k in ("results", "data", "items", "rows", "symbols", "markets"):
+  2558:         for ep in (f"/market/symbols/{sym}", f"/market/symbols/{sym}/"):
+  2605:         for ep in endpoints:
+  2614:                     for kk in ("data", "result", "results", "items", "rows", "tickers", "markets", "pairs", "symbols"):
+  2620:                             for kk2 in ("data", "items", "rows", "tickers", "markets", "pairs", "symbols"):
+  2629:                     for r in rows_list:
+  2651:                         for k0, v0 in stats.items():
+  2666:                         for k0, v0 in (stats or {}).items():
+  2696:                 for k, v in m.items():
+  2791:                 for k in ("stats", "symbols", "markets", "data", "result"):
+  2801:                         for sym, row in payload.items():
+  2813:                 for k in ("rows", "items", "tickers", "symbols", "markets", "pairs"):
+  2818:             for r in rows:
+  2830:         for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/symbols/", "/market/symbols"):
+  2848:                     for k, v in by.items():
+  2873:         for ep in ("/market/trades/", "/market/trades"):
+  2888:             for ep in ("/wallet/balance/", "/wallet/balance"):
+  3010:         for ep in endpoints:
+  3181:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+  3202:         for ep in ("/market/orders/", "/market/orders"):
+  3325:             for o in (items or [])[:max_n]:
+  3382:         for ep in eps:
+  3383:             for pv in param_variants:
+  3425:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+  3430:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+  3435:         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+  4396:     for k in keys:
+  4423:                 for k in ("data", "results", "symbols", "markets", "items"):
+  4432:             for it in rows:
+  4438:                 for a in _symbol_aliases(nm):
+  4447:         for a in _symbol_aliases(sym):
+  4541:         for _omega_guard in range(150000):
+  4734:                 for k, v in obj.items():
+  4744:                 for k in stale_keys:
+  4761:             for k in ("data", "result", "results", "orderbook", "orderBook", "order_book", "book"):
+  4774:                 for kk in ("orderBook", "orderbook", "order_book", "book"):
+  4780:             for x in data[:2]:
+  4797:                                 for kk in ("price", "p", "rate", "r", "px", "0"):
+      ... truncated ...
+
+[ORDER]
+   251:     orders_refresh_sec: float = field(default_factory=lambda: _env_float("ORDERS_REFRESH_SEC", 3.0))
+   252:     orders_reconcile_interval_sec: float = field(default_factory=lambda: _env_float("ORDERS_RECONCILE_INTERVAL_SEC", 30.0))
+   261:     orders_journal_path: str = field(default_factory=lambda: _env_str("ORDERS_JOURNAL_PATH", "raz_orders_journal.json"))
+   262:     orders_journal_fsync: bool = field(default_factory=lambda: _env_bool("ORDERS_JOURNAL_FSYNC", True))
+   263:     orders_journal_throttle_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_THROTTLE_SEC", 0.25))
+   264:     orders_journal_pending_ttl_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_PENDING_TTL_SEC", 180.0))
+   270:     order_safety_bps: float = field(default_factory=lambda: _env_float("ORDER_SAFETY_BPS", 10.0))
+   320:     order_book_analysis_enabled: bool = True
+   597:             "ORDER", "BUY", "SELL", "FILLED", "REAL TRADING", "DAILY LOSS",
+   682:             elif any(k in u for k in ("BUY", "SELL", "FILLED", "ORDER")) and not s.lstrip().startswith(("✅", "🟢", "🔴")):
+   708: _TERMUX_LAST_ORDER_TS = _TERMUX_BOOT_TS
+  1138:             "/market/orderbook/{sym}",
+  1139:             "/market/orderbook?symbol={sym}",
+  1140:             "/market/orderbook",
+  1141:             "/market/order-book/{sym}",
+  1142:             "/market/order-book",
+  1148:             "/api/v1/orderbook/{sym}",
+  1149:             "/api/v1/orderbook",
+  1184:                         or ("orderbook" in payload) or ("orderBook" in payload) or ("order_book" in payload)
+  3059:     # ---- repaired candidate method: place_order from lines 3184-3335 ----
+  3060:     async def place_order(
+  3075:                 _termux_mark_order_activity()
+  3079:         # PHASE4_ORDER_GATE_MAIN
+  3085:                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+  3100:                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+  3145:             raise ValueError("Price must be specified for LIMIT orders.")
+  3178:                 self._logger.warning("reduce_only=True ignored for spot order.")
+  3187:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3202:         for ep in ("/market/orders/", "/market/orders"):
+  3232:         return await self.place_order(
+  3263:         return await self.place_order(
+  3276:     # ---- repaired candidate method: cancel_all_orders from lines 3396-3459 ----
+  3277:     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+  3281:                 _termux_mark_order_activity()
+  3290:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3305:             "/market/orders/cancel_all/",
+  3306:             "/market/orders/cancel_all",
+  3307:             "/market/orders/cancel-all/",
+  3308:             "/market/orders/cancel-all",
+  3316:             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+  3319:                 v = r.get("data") or r.get("orders") or r.get("items") or r.get("result") or r.get("list") or []
+  3326:                 oid = o.get("id") or o.get("order_id") or o.get("orderId")
+  3330:                     await self.cancel_order(oid)
+  3342:     # ---- repaired candidate method: list_orders from lines 3460-3512 ----
+  3343:     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+  3367:         eps: List[str] = ["/market/orders/", "/market/orders"]
+  3370:                 "/market/orders/open/",
+  3371:                 "/market/orders/open",
+  3372:                 "/market/open_orders/",
+  3373:                 "/market/open_orders",
+  3397:     # ---- repaired candidate method: cancel_order from lines 3513-3557 ----
+  3398:     async def cancel_order(self, order_id) -> dict:
+  3399:         oid = order_id
+  3401:             oid = int(order_id)
+  3403:             oid = str(order_id)
+  3404:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+  3407:                 _termux_mark_order_activity()
+  3411:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3425:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+  3430:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+  3435:         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+  3969: # QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+  3974: #     async def place_order(
+  3989: #                 _termux_mark_order_activity()
+  3993: #         # PHASE4_ORDER_GATE_MAIN
+  3999: #                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+  4014: #                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+  4059: #             raise ValueError("Price must be specified for LIMIT orders.")
+  4092: #                 self._logger.warning("reduce_only=True ignored for spot order.")
+  4101: #             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  4116: #         for ep in ("/market/orders/", "/market/orders"):
+  4153: #         return await self.place_order(
+  4192: #         return await self.place_order(
+  4208: # QUARANTINED BROKEN NESTED BLOCK: cancel_all_orders original lines 3396-3459, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+  4213: #     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+  4217: #                 _termux_mark_order_activity()
+  4226: #             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  4241: #             "/market/orders/cancel_all/",
+  4242: #             "/market/orders/cancel_all",
+  4243: #             "/market/orders/cancel-all/",
+      ... truncated ...
+
+[RISK]
+   226:     dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MIN", 0.35), 0.05, 1.0))
+   227:     dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MAX", 1.0), 0.05, 2.0))
+   244:     stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("STOP_LOSS_PCT", 0.02)))
+   245:     take_profit_pct: float = field(default_factory=lambda: abs(_env_float("TAKE_PROFIT_PCT", 0.03)))
+   258:     risk_journal_path: str = field(default_factory=lambda: _env_str("RISK_JOURNAL_PATH", "raz_risk_journal.json"))
+   259:     risk_journal_fsync: bool = field(default_factory=lambda: _env_bool("RISK_JOURNAL_FSYNC", True))
+   260:     risk_journal_throttle_sec: float = field(default_factory=lambda: _env_float("RISK_JOURNAL_THROTTLE_SEC", 1.0))
+  4690:     risk_level: str = "normal"
+  5636: class RiskDecision:
+  5644: class RiskEscalationLayer:
+  5656:                 "health": float(_env_float("RISK_W_HEALTH", 1.20)),
+  5657:                 "soft_blacklist": float(_env_float("RISK_W_SOFT_BLACKLIST", 1.80)),
+  5658:                 "net_pause": float(_env_float("RISK_W_NET_PAUSE", 2.20)),
+  5659:                 "snapshot": float(_env_float("RISK_W_SNAPSHOT", 0.90)),
+  5664:                 float(_env_float("RISK_T_L0", 0.12)),
+  5665:                 float(_env_float("RISK_T_L1", 0.25)),
+  5666:                 float(_env_float("RISK_T_L2", 0.45)),
+  5667:                 float(_env_float("RISK_T_L3", 0.65)),
+  5668:                 float(_env_float("RISK_T_L4", 0.85)),
+  5681:     def assess(self, wallet: str, sym: str, component_scores: Dict[str, float], now: Optional[float] = None) -> RiskDecision:
+  5736:         return RiskDecision(
+  7105:     def __init__(self, *, max_dd: float = 0.04, win_rate: float = 0.58, risk_reward: float = 1.6,
+  7108:         self.risk = self.RiskSentinel(max_dd=max_dd, win_rate=win_rate, risk_reward=risk_reward)
+  7116:     class RiskSentinel:
+  7117:         def __init__(self, *, max_dd: float = 0.04, win_rate: float = 0.60, risk_reward: float = 1.5):
+  7121:             self.risk_reward = float(risk_reward)
+  7126:             b = self.risk_reward
+  7137:             risk_reward = float(self.risk_reward)
+  7139:             kelly_f = (risk_reward * win_rate - q) / risk_reward
+  7395:                  win_rate: float = 0.58, risk_reward: float = 1.6, max_lag_sec: float = 25.0):
+  7396:         self.engine = SovereignEngine(max_dd=max_dd, win_rate=win_rate, risk_reward=risk_reward, max_lag_sec=max_lag_sec)
+  7473:         if not self.engine.risk.is_safe(balance):
+  7475:             raise SystemExit("ALERT [KILL-SWITCH] Risk Threshold Exceeded.")
+  7476:         self.engine.risk.arm_panic_if_flash_crash(self._px_hist)
+  7477:         if self.engine.risk.panic_sniper_active():
+  7479:                 orders = self.engine.risk.build_panic_sniper_orders(px, balance, profit_target=0.07)
+  7486:             qty_total = float(self.engine.risk.calculate_kelly_size(balance, price=px))
+  7900:         self.base_position_size = config.get("base_position_size", 0.1)
+  7901:         self.max_position_size = config.get("max_position_size", 0.25)
+  7902:         self.min_position_size = config.get("min_position_size", 0.01)
+  7906:         self.target_risk_reward = config.get("target_risk_reward", 2.0)
+  7911:     def calculate_position_size(
+  7921:             base_size = self.base_position_size * capital
+  7939:                 self.min_position_size * capital,
+  7940:                 min(final_size, self.max_position_size * capital)
+  7944:                 volatility_metrics.atr_percent * self.target_risk_reward
+  7948:             final_size = self._round_position_size(final_size, symbol)
+  7950:                 "position_size": final_size,
+  7960:                 "risk_reward_ratio": self.target_risk_reward
+  8021:     def _round_position_size(self, size: float, symbol: str) -> float:
+  8193:     expected_risk_reward: float
+  8194:     position_size_pct: float
+  8308:             expected_win_rate, expected_risk_reward = self._calculate_expected_metrics(
+  8325:                 expected_risk_reward=expected_risk_reward,
+  8326:                 position_size_pct=0.0,
+  8782: class RiskMetrics:
+  8793:     max_drawdown: float = 0.0
+  8794:     current_drawdown: float = 0.0
+  8810:         self.metrics_history: Deque[RiskMetrics] = __import__("collections").deque(maxlen=1000)
+  8849:     def update_metrics(self, metrics: RiskMetrics):
+  8863:             print(f"{self.colors['bold']}=== Risk Dashboard ==={self.colors['reset']}")
+  8865:             print(f"Risk Score: {current.risk_score:.1f}/100")
+  8866:             print(f"Max Drawdown: {current.max_drawdown:.2%}")
+  8867:             risk_color = "green" if current.risk_score < 30 else "yellow" if current.risk_score < 70 else "red"
+  8868:             print(f"Status: {self.colors[risk_color]}{current.status}{self.colors['reset']}")
+  8879: class RiskMetricsCalculator:
+  8889:     ) -> RiskMetrics:
+  8890:         metrics = RiskMetrics()
+  8905:         metrics.max_drawdown = self._calculate_max_drawdown()
+  8906:         metrics.current_drawdown = self._calculate_current_drawdown()
+  8966:     def _calculate_max_drawdown(self) -> float:
+  8977:     def _calculate_current_drawdown(self) -> float:
+  8981:         drawdown = (self.max_equity - current_equity) / self.max_equity
+  8982:         return drawdown * 100
+  9013:         self.position_sizer = DynamicPositionSizer(
+  9029:         self.metrics_calculator = RiskMetricsCalculator()
+  9108:             volatility_metrics = self.position_sizer.update_volatility_metrics(
+  9122:             position_size = self.position_sizer.calculate_position_size(
+  9130:             filtered_signal.position_size_pct = position_size["position_pct"]
+  9133:                 self._execute_trade(filtered_signal, position_size),
+      ... truncated ...
+
+[AI]
+    34:     Fail-safe fallback for _parse_hard_veto_sources_env.
+   130:     import aiohttp
+   132:     aiohttp = None
+   191:     autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", False))
+   208:     dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES", False))
+   210:     # Future-proof runtime / AI controls
+   211:     ai_mode: str = field(default_factory=lambda: str(os.getenv("AI_MODE", "off")).strip().lower())
+   214:     ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("AI_LIVE_TRADING_ARMED", False))
+   215:     dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("AI_LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+   246:     max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("MAX_DAILY_LOSS_PCT", 0.05)))
+   327:     analytics_signal_boost: float = field(default_factory=lambda: clamp(_env_float("ANALYTICS_SIGNAL_BOOST", 1.25), 1.0, 2.0))
+   332:         'Normalize symbol lists so the rest of the bot always sees proper market pairs.'
+   342:                     cs = _canon_pair(s, dq)
+   399:         raise SystemExit(f"pathlib missing: {e}")
+   413:         raise SystemExit(f"Failed to write embedded Parisa to {p}: {e}")
+   467:                 _boot_logger().exception("event=PARISA_PREFLIGHT_FAIL fn=%s err=%s", fn, e)
+   468:                 raise
+   592:         sticky_sec = float(_env_float("RECLAIM_STICKY_SEC", 30.0) or 30.0)
+   597:             "ORDER", "BUY", "SELL", "FILLED", "REAL TRADING", "DAILY LOSS",
+   599:             "[RECLAIM]", "[VOLTAGE]", "Radar set", "[JACKPOT]",
+   610:                 if "[RECLAIM]" in str(m) and (now - float(ts)) <= sticky_sec:
+   623:         def _plain_ev(s: str) -> str:
+   640:             s = _plain_ev(s)
+   648:         filtered = [(ts, m) for (ts, m) in (stream or []) if m and (not any(nz in _plain_ev(m) for nz in noise))]
+   678:             if "[RECLAIM]" in u and not s.lstrip().startswith(("♻️", "🔁", "↩️")):
+   785:     def remaining_sec(self) -> float:
+   792:     def record_failure(self, exc: Exception) -> None:
+   807:         self._hold_remain = 0.0
+   809:     async def wait(self) -> None:
+   819:                 await asyncio.sleep(sleep_for)
+   828:                 self._hold_remain = max(0.0, float(self._hold_until) - now2)
+   850:                 "hold_remain": float(getattr(self, "_hold_remain", 0.0) or 0.0),
+   861:     Fail-safe async semaphore compatible with basic PrioritySemaphore usage.
+   874:         await self._sem.acquire()
+   887:         await self.acquire()
+   989:         self._session: Optional[aiohttp.ClientSession] = None
+  1173:                 (ep, {"pair": a}),
+  1204:                         res = await asyncio.wait_for(
+  1231:                                 self._logger.debug("event=DEPTH_DISCOVER_FAIL sym=%s ep=%s err=%s dt_ms=%.0f", sym0, ep, last_err[:160], (time.time() - t0) * 1000.0)
+  1236:             self._logger.warning("event=DEPTH_EP_DISCOVER_FAIL sym=%s last_err=%s", sym0, str(last_err)[:160])
+  1267:         sym = _canon_pair(symbol, default_quote=q)
+  1274:                     return await self.request("GET", ep2, auth=False, params=None, priority=bool(priority))
+  1279:                     return await self.request("GET", ep2, auth=False, params={"symbol": sym}, priority=bool(priority))
+  1283:                 raise last_err
+  1301:                 ep = await self._discover_depth_endpoint(sym)
+  1311:                         ep = await self._discover_depth_endpoint(sym)
+  1349:             out = await asyncio.wait_for(
+  1378:                         ep2 = await self._discover_depth_endpoint(sym)
+  1381:                             ep2 = await self._discover_depth_endpoint(sym)
+  1392:                     out = await asyncio.wait_for(
+  1412:                 self._logger.warning("event=DEPTH_FETCH_FAIL sym=%s ep=%s err=%s", sym, str(ep), msg[:180])
+  1415:             raise
+  1416:     async def _get_session(self) -> aiohttp.ClientSession:
+  1418:             timeout = aiohttp.ClientTimeout(total=float(self.cfg.request_timeout_sec))
+  1429:                     resolver = aiohttp.AsyncResolver(nameservers=ns)
+  1431:                     resolver = aiohttp.AsyncResolver()
+  1434:                     resolver = aiohttp.DefaultResolver()
+  1452:                 connector = aiohttp.TCPConnector(limit=0, ttl_dns_cache=int(ttl), use_dns_cache=True, resolver=resolver, family=fam if fam else 0)
+  1454:                 connector = aiohttp.TCPConnector(limit=0, ttl_dns_cache=int(ttl), use_dns_cache=True, resolver=resolver)
+  1455:             self._session = aiohttp.ClientSession(headers=headers, timeout=timeout, connector=connector)
+  1464:                 await sess.close()
+  1486:                     await out
+  1491:         return await self.reset_session()
+  1493:         return await self.reset_session()
+  1497:             if isinstance(exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)):
+  1563:             "x-sucuri-id", "x-sucuri-cache", "x-waf", "x-akamai-transformed",
+  1584:                     from email.utils import parsedate_to_datetime
+  1599:         """Return (server_ts, drift_seconds) using HTTP Date header when available."""
+  1791:                 s2 = obj.get("detail") or obj.get("message") or obj.get("error") or ""
+  1810:     def _raise_if_breaker_open(self) -> None:
+  1813:                 rem = float(self._breaker.remaining_sec())
+  1816:             raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+  1828:             raise ApiError("Missing API token for private endpoint.")
+  1845:                             from email.utils import formatdate
+  1878:         sess: aiohttp.ClientSession,
+  1886:             raw = await resp.text()
+  1915:                     await self._limiter.penalize(pause, hard=True)
+  1918:                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+  1921:                 raise ApiError(f"Transient HTTP {st}: {body}")
+  1933:                     raise TradingHalt(f"ARZPLUS_403_{cause}")
+      ... truncated ...
+
+[DASH]
+    35:     Returns safe default values to prevent dashboard crash.
+  8807: class DashboardRenderer:
+  8826:                 self._render_task = asyncio.create_task(self._render_loop(), name="DashboardRenderer")
+  8844:                 self.render_dashboard()
+  8854:     def render_dashboard(self):
+  8863:             print(f"{self.colors['bold']}=== Risk Dashboard ==={self.colors['reset']}")
+  9030:         self.dashboard = DashboardRenderer(
+  9031:             refresh_interval=original_config.get("dashboard_refresh", 1.0)
+  9042:         self.dashboard.start()
+  9053:         self.dashboard.stop()
+  9069:                 await self._update_dashboard()
+  9275:     async def _update_dashboard(self):
+  9287:         self.dashboard.update_metrics(metrics)
+ 11767: class DashboardManager:
+ 11814:         self._task = loop.create_task(self._run(), name="Dashboard")
+ 12471:     This is meant for dashboards/logs, not for decision making.
+ 14239:     p.add_argument("--dash", action="store_true", help="Enable TUI dashboard (requires rich).")
+ 21341:     async def cycle_wallet_dashboard(self, w: WalletRuntime) -> None:
+ 21553:                 dash = DashboardManager(
+ 21911:         async def _dashboard_loop() -> None:
+ 21921:                             await self.cycle_wallet_dashboard(w)
+ 23019:             asyncio.create_task(_dashboard_loop(), name="rtp_dashboard_loop"),
+ 23785:     Fail-safe veto registry fallback for dashboard/render paths.
+ 23789:     - snapshot returns an empty, dashboard-friendly structure
+ 23835:         # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+ 23881: class WallStreetDashboardManager(DashboardManager):
+ 23883:     def _format_dashboard_events(self, recent_events):
+ 23887:         otherwise the dashboard will show a constant score/age forever.
+ 23950:                     from rich.layout import Layout
+ 23957:                     from rich.panel import Panel
+ 24252:                             m_evt = WallStreetDashboardManager._RE_EVENT_TAG.search(s)
+ 24287:             """Truthful snapshot feed for dashboard.
+ 24648:         def wallet_summary_panel(wname: str, w):
+ 24650:                 return Panel("NO WALLET", title=str(wname), box=box.SIMPLE, padding=(0, 1))
+ 24684:             return Panel(t, title=str(wname), box=box.SIMPLE, padding=(0, 1))
+ 24685:         def wallet_detail_panel(wname: str, w):
+ 24687:                 return Panel("NO WALLET", title=str(wname), box=box.MINIMAL, padding=(0, 1))
+ 24702:             return Panel(t, title=str(wname), box=box.MINIMAL, padding=(0, 1))
+ 24703:         def wallet_full_panel(wname: str, w):
+ 24705:                 return Panel("NO WALLET", title=str(wname), box=box.SQUARE, padding=(0, 1))
+ 24916:             return Panel(t, title=str(wname), box=box.SQUARE, padding=(0, 1))
+ 24917:         def wallet_panel(wname: str, w):
+ 24918:             return wallet_full_panel(wname, w)
+ 24919:         def wallet_overview_panel(wallets_kv, narrow: bool = False):
+ 25154:                 return Panel(t, title="Wallets - Summary", box=box.SQUARE, padding=(0, 1))
+ 25238:             return Panel(t, title="Wallets", box=box.ROUNDED, padding=(0, 1))
+ 25239:         def phoenix_panel(sym: str):
+ 26161:             return Panel(t, title=title, box=box.ROUNDED, padding=(0, 1))
+ 26162:         def dzh_panel():
+ 26760:             return Panel(t, title="SYSTEM", box=box.ROUNDED, padding=(0, 1))
+ 26761:         def top8_panel(symbols):
+ 26940:             return Panel(t, title=f"TOP8  {now}  {mode}  age {age_s}{st_tag}", box=box.ROUNDED, padding=(0, 1))
+ 26941:         def ai_status_panel():
+ 26987:             return Panel(t, title="AI STATUS", box=box.ROUNDED, padding=(0, 1))
+ 26988:         def policy_panel():
+ 27024:             return Panel(t, title="POLICY", box=box.ROUNDED, padding=(0, 1))
+ 27025:         def engine_panel():
+ 27122:             return Panel("\n".join([line1, line2]), title="ENGINE", box=box.SQUARE, padding=(0, 1))
+ 27123:         def top8_compact_panel(symbols):
+ 27264:                 return Panel("N/A", title=f"TOP8 {now_s}  OK {fmt_age_s(age_ok)}", box=box.SQUARE, padding=(0, 1))
+ 27274:             return Panel(g, title=title, box=box.SQUARE, padding=(0, 1))
+ 27275:         def banner_panel():
+ 27283:             return Panel(Text(""), title=f"{now} {mode}", box=box.MINIMAL_DOUBLE_HEAD, padding=(0, 0))
+ 27376:         def raz_core_header_panel(focus: dict, wallets_items) -> Panel:
+ 27428:             return Panel(body, title=title, box=box.DOUBLE, padding=(0, 1))
+ 27429:         def net_resilience_panel(focus: dict, wallets_items) -> Panel:
+ 27492:             return Panel(t, title="📡 NET-RESILIENCE (IR-ADAPTIVE)", box=box.ROUNDED, padding=(0, 1))
+ 27493:         def multi_core_asset_panel(wallets_items) -> Panel:
+ 27566:             footer = f"TOT EQ: {_mid_short(tot_eq)} │ PNL: {fmt_pct(pnl)} │ MAX_DD(limit): {dd_s} │ MODE: {mode}"
+ 27569:             g.add_row(Text(footer, overflow="fold"))
+ 27570:             return Panel(g, title="💳 MULTI-CORE ASSET DEPLOYMENT", box=box.ROUNDED, padding=(0, 1))
+ 27571:         def execution_brain_panel(wallets_items, focus: dict) -> Panel:
+ 27616:             return Panel(Text(body, overflow="fold", no_wrap=False), title="🧠 EXECUTION BRAIN (HEURISTICS)", box=box.ROUNDED, padding=(0, 1))
+ 27617:         def surgical_repairs_panel(wallets_items, focus: dict) -> Panel:
+ 27654:             return Panel(Text(body, overflow="fold", no_wrap=False), title="🛠️ SURGICAL REPAIRS (GROWTH QUEUE)", box=box.ROUNDED, padding=(0, 1))
+ 27655:         def alpha_reclaim_panel(ordered_syms, wallets_items, focus: dict) -> Panel:
+ 27716:             return Panel(cols, title="📊 ALPHA SCANNER   ━   ⚡ RECLAIM & RECOVERY", box=box.ROUNDED, padding=(0, 1))
+ 27717:         def render_raz_core(ordered_syms, wallets_items, logs_panel: Panel, narrow: bool) -> Layout:
+ 27723:             layout = Layout()
+ 27724:             layout.split_column(
+      ... truncated ...
+
+[API]
+    17: class ApiError(Exception):
+    19: class ApiHttpError(ApiError):
+   125:     import requests
+   127:     requests = None
+   170:     base_url: str = "https://api.arzplus.net/api/v1"
+   172:     request_timeout_sec: float = field(default_factory=lambda: _env_float("REQ_TIMEOUT_SEC", 15.0))
+   895: class ExchangeClient:
+   910:         m = ExchangeClient._RE_AUTH_SCHEME.match(t)
+   933:         _s43_debug_print("### EXCHANGECLIENT_INIT_ENTER ###", flush=True)
+   944:         self.api_key = self._token
+   989:         self._session: Optional[aiohttp.ClientSession] = None
+  1030:                 raw = getattr(self, "api_key", "") or ""
+  1091:             if not hasattr(self, "_session"):
+  1092:                 self._session = None
+  1146:             "/api/v1/depth/{sym}",
+  1147:             "/api/v1/depth",
+  1148:             "/api/v1/orderbook/{sym}",
+  1149:             "/api/v1/orderbook",
+  1205:                             self.request("GET", url, auth=False, params=params, priority=bool(priority)),
+  1274:                     return await self.request("GET", ep2, auth=False, params=None, priority=bool(priority))
+  1279:                     return await self.request("GET", ep2, auth=False, params={"symbol": sym}, priority=bool(priority))
+  1350:                 self.request("GET", url, auth=False, params=params, priority=bool(priority)),
+  1393:                         self.request("GET", url2, auth=False, params=params2, priority=bool(priority)),
+  1416:     async def _get_session(self) -> aiohttp.ClientSession:
+  1417:         if self._session is None or self._session.closed:
+  1418:             timeout = aiohttp.ClientTimeout(total=float(self.cfg.request_timeout_sec))
+  1455:             self._session = aiohttp.ClientSession(headers=headers, timeout=timeout, connector=connector)
+  1456:         return self._session
+  1457:     async def reset_session(self) -> bool:
+  1462:             sess = getattr(self, "_session", None)
+  1468:             self._session = None
+  1491:         return await self.reset_session()
+  1493:         return await self.reset_session()
+  1497:             if isinstance(exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)):
+  1560:             "cf-ray", "cf-cache-status", "cf-request-id", "cf-worker",
+  1562:             "x-request-id", "x-correlation-id", "x-amzn-requestid", "x-amz-cf-id",
+  1686:                     "event=ARZPLUS_CLOCK_SKEW_WARN exchange=arzplus endpoint=%s drift_s=%.3f local_ts=%.3f server_ts=%.3f",
+  1766:                     "event=ARZPLUS_HTTP_403 exchange=arzplus endpoint=%s method=%s http_status=%s body=%s headers=%s api_key=%s api_secret=%s auth_fp=%s cause=%s drift_s=%s",
+  1816:             raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+  1828:             raise ApiError("Missing API token for private endpoint.")
+  1839:         # Include Date header for ArzPlus private requests using self-healed signing time offset.
+  1878:         sess: aiohttp.ClientSession,
+  1885:         async with sess.request(method_u, url, json=payload, params=params, headers=headers) as resp:
+  1918:                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+  1921:                 raise ApiError(f"Transient HTTP {st}: {body}")
+  1946:                 raise ApiHttpError(
+  1948:                     exchange=("arzplus" if self._is_arzplus() else ""),
+  1963:                 raise ApiError(f"HTTP {s}: {body}")
+  1971:             raise ApiError(f"Bad JSON: {e}: {body}")
+  1985:     def _harden_request(
+  1998:         This is intentionally in the *base* client so it cannot be bypassed by
+  2003:             raise ApiError(f"Unsupported HTTP method: {method_u}")
+  2006:             raise ApiError("Bad endpoint (CR/LF).")
+  2009:             raise ApiError("Bad url (CR/LF).")
+  2011:             raise ApiError("payload must be a dict (or None).")
+  2013:             raise ApiError("params must be a dict (or None).")
+  2015:             raise ApiError("headers must be a dict.")
+  2021:                 raise ApiError(f"Bad header value (CR/LF) for {str(k)[:32]}.")
+  2023:             raise ApiError("Missing Authorization header for private request.")
+  2028:                 raise ApiError("Refusing to send request outside configured base_url.")
+  2032:     async def _request_impl(
+  2051:             self._harden_request(
+  2061:                 sess = await self._get_session()
+  2079:                 except (aiohttp.ClientError, asyncio.TimeoutError, OSError, ApiError) as e:
+  2081:                     retryable = isinstance(e, (aiohttp.ClientError, asyncio.TimeoutError, OSError)) or ("Transient HTTP" in msg)
+  2088:     async def request(
+  2097:         return await self._request_impl(method, endpoint, payload=payload, auth=auth, params=params, priority=priority)
+  2099:     async def _request(
+  2109:         return await self._request_impl(method, endpoint, payload=payload, auth=auth, params=params, priority=priority)
+  2112:         return await asyncio.wait_for(self.request("GET", "/market/symbols/", auth=False, params=None), timeout=tmo)
+  2186:                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False, params=None), timeout=tmo)
+  2395:                 s = s.translate(getattr(ExchangeClient, "_PERSIAN_DIGITS"))
+  2432:                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False, params=None), timeout=tmo)
+  2511:             payload = await self.request("GET", "/market/symbols/", auth=False, params=None)
+  2535:                     payload = await self.request("GET", "/market/symbols/", auth=False, params=params)
+  2560:                 payload = await self.request("GET", ep, auth=False, params=None)
+  2608:                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False, params=None), timeout=tmo)
+  2720:         """Return seconds since last successful public API update.
+  2832:                 payload = await asyncio.wait_for(self.request("GET", ep, auth=False), timeout=tmo)
+  2875:                 return await self.request("GET", ep, params={"symbol": sym}, auth=False)
+      ... truncated ...
+
+[POSITION]
+   240:     max_open_positions: int = field(default_factory=lambda: _env_int("MAX_OPEN_POSITIONS", 4))
+  4694: class Position:
+  7897: class DynamicPositionSizer:
+  7900:         self.base_position_size = config.get("base_position_size", 0.1)
+  7901:         self.max_position_size = config.get("max_position_size", 0.25)
+  7902:         self.min_position_size = config.get("min_position_size", 0.01)
+  7908:         self.position_history: Deque[Dict[str, Any]] = __import__("collections").deque(maxlen=1000)
+  7911:     def calculate_position_size(
+  7917:         current_exposure: float,
+  7921:             base_size = self.base_position_size * capital
+  7929:             exposure_penalty = self._calculate_exposure_penalty(current_exposure, capital)
+  7930:             base_size *= exposure_penalty
+  7939:                 self.min_position_size * capital,
+  7940:                 min(final_size, self.max_position_size * capital)
+  7943:             max_position_for_loss = daily_loss_limit / (
+  7946:             if max_position_for_loss > 0:
+  7947:                 final_size = min(final_size, max_position_for_loss)
+  7948:             final_size = self._round_position_size(final_size, symbol)
+  7950:                 "position_size": final_size,
+  7951:                 "position_pct": final_size / capital if capital > 0 else 0,
+  7957:                 "exposure_penalty": exposure_penalty,
+  7987:     def _calculate_exposure_penalty(self, current_exposure: float, capital: float) -> float:
+  7990:         exposure_ratio = current_exposure / capital
+  7991:         if exposure_ratio < 0.1:
+  7993:         elif exposure_ratio < 0.3:
+  7995:         elif exposure_ratio < 0.5:
+  7997:         elif exposure_ratio < 0.7:
+  8021:     def _round_position_size(self, size: float, symbol: str) -> float:
+  8194:     position_size_pct: float
+  8326:                 position_size_pct=0.0,
+  8784:     total_exposure: float = 0.0
+  8800:     open_positions: int = 0
+  8801:     largest_position: float = 0.0
+  8892:         metrics.total_exposure = portfolio_data.get("total_exposure", 0.0)
+  8894:         metrics.open_positions = portfolio_data.get("open_positions", 0)
+  8895:         metrics.largest_position = portfolio_data.get("largest_position", 0.0)
+  8914:             metrics.concentration_ratio = metrics.largest_position / metrics.total_equity
+  9013:         self.position_sizer = DynamicPositionSizer(
+  9014:             config=original_config.get("position_sizing", {})
+  9108:             volatility_metrics = self.position_sizer.update_volatility_metrics(
+  9122:             position_size = self.position_sizer.calculate_position_size(
+  9127:                 current_exposure=portfolio_data.get("exposure", 0),
+  9130:             filtered_signal.position_size_pct = position_size["position_pct"]
+  9133:                 self._execute_trade(filtered_signal, position_size),
+  9245:                 "exposure": 0.0,
+  9246:                 "positions": []
+  9253:         position_size: Dict[str, Any]
+  9259:                 "amount": position_size["position_size"],
+  9270:                 f"Size={position_size['position_size']:.2f}, "
+ 10566:             pos = (getattr(w, "positions", {}) or {}).get(sym)
+ 11091:     def should_exit(self, pos: Position, book: OrderBookTop, score: float, cfg: Optional[BotConfig] = None) -> Tuple[bool, str]:
+ 11471:     async def deep_prune_ghost_orders(self, positions: Optional[Dict[str, 'Position']] = None, *, force: bool = False) -> int:
+ 11482:         positions = positions or {}
+ 11680:                 if isinstance(positions, dict) and sym in positions and abs(float(getattr(positions.get(sym), "qty", 0.0) or 0.0)) > 0.0:
+ 11836:                     posn = len(getattr(w, "positions", {}) or {})
+ 12103:     positions: Dict[str, Position] = field(default_factory=dict)
+ 12994:             w_max_pos = _env_int(f"WALLET_{slot}_MAX_OPEN_POSITIONS", int(getattr(cfg, "max_open_positions", 0) or 0))
+ 13004:                 max_open_positions=w_max_pos,
+ 13118:             for sym, p in (getattr(w, "positions", {}) or {}).items():
+ 13130:                 "positions": pos_out,
+ 13201:                 curp = getattr(w, "positions", {}) or {}
+ 13206:             pmap = ws.get("positions", {})
+ 13217:                     outp[str(sym)] = Position(
+ 13226:                 setattr(w, "positions", outp)
+ 13481:                     eq = float(self._estimate_equity_irt(cash, getattr(st, "positions", {}) or {}))
+ 13556:             total_pos += int(len(getattr(st, "positions", {}) or {}))
+ 13560:                 total_open_orders += int(ws.get("open_trades", 0) or 0)
+ 13563:                 "open_positions": int(len(getattr(st, "positions", {}) or {})),
+ 13564:                 "open_trades": int(ws.get("open_trades", 0) or 0),
+ 13571:                 "exposure_irt": exp,
+ 13575:                 "open_orders_exch": open_orders_exch if isinstance(open_orders_exch, int) else int(ws.get("open_trades", 0) or 0),
+ 13593:             "exposure_irt": total_exp,
+ 13595:             "open_positions": int(total_pos),
+ 13648:                     "positions": {sym: {"qty": p.qty, "entry_px": p.entry_px, "entry_ts": p.entry_ts} for sym, p in st.positions.items()},
+ 13755:                         pos = st_obj.get("positions")
+ 13766:                                         st.positions[s] = Position(symbol=s, qty=qty, entry_px=ep, entry_ts=ets)
+ 14573:                 for p in (getattr(w, "positions", {}) or {}).values():
+ 16627:                     pos = getattr(w, "positions", None) or getattr(getattr(w, "exec", None), "positions", None) or {}
+ 16922:             for p in (getattr(w, "positions", {}) or {}).values():
+ 17731:     def _estimate_equity_irt(self, cash_irt: float, positions: Dict[str, Position], current_sym: Optional[str] = None, current_mid: Optional[float] = None) -> float:
+      ... truncated ...
+
+[ERROR]
+    57:     try:
+    62:     except Exception:
+    84:                 try:
+    87:                     try:
+    90:                     except Exception:
+    93:                 except NotImplementedError:
+    95:                 except Exception:
+   102:             try:
+   105:             except Exception:
+   124: try:
+   126: except Exception:
+   129: try:
+   131: except Exception:
+   134: try:
+   136: except Exception:
+   139: try:
+   141: except Exception:
+   144: try:
+   146: except Exception:
+   149: try:
+   159: except Exception:
+   218:     dzh_safety_entry: bool = field(default_factory=lambda: _env_bool("DZH_SAFETY_ENTRY", True))
+   333:         try:
+   335:         except Exception:
+   341:                 try:
+   343:                 except Exception:
+   353:         try:
+   355:         except Exception:
+   357:         try:
+   359:         except Exception:
+   361:         try:
+   363:         except Exception:
+   373: try:
+   375: except NameError:
+   379: try:
+   381: except NameError:
+   390:     try:
+   391:         try:
+   392:             try:
+   398:     except Exception as e:
+   402:     try:
+   404:     except Exception:
+   406:     try:
+   408:     except Exception:
+   410:     try:
+   412:     except Exception as e:
+   436:     try:
+   439:     except Exception:
+   451:     try:
+   453:     except Exception:
+   455:     try:
+   460:     except Exception:
+   464:             try:
+   466:             except Exception as e:
+   469:     try:
+   475:     except Exception:
+   477:     try:
+   488:                 try:
+   489:                     try:
+   490:                         try:
+   500:                 except Exception:
+   502:     except Exception:
+   516: try:
+   520: except Exception:
+   524: try:
+   526: except NameError:
+   552:                 try:
+   556:                 except Exception:
+   562:                 try:
+   570:                 except Exception:
+   579:         try:
+   581:         except Exception:
+   582:             try:
+   584:             except Exception:
+   608:         try:
+   612:         except Exception:
+   615:         try:
+   620:         except Exception:
+   625:             try:
+   627:             except Exception:
+      ... truncated ...
+
+[CONFIG]
+     9: if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+    32: def _parse_hard_veto_sources_env(default_sources=None):
+    34:     Fail-safe fallback for _parse_hard_veto_sources_env.
+    38:     hard_sources_env_set = False
+    41:     return hard_sources, hard_sources_env_set, hard_all_sources, strict_unknown_hard
+    59:         return str(_s43_os.getenv("S43_DEBUG_PRINTS", "")).strip().lower() in (
+   169: class BotConfig:
+   172:     request_timeout_sec: float = field(default_factory=lambda: _env_float("REQ_TIMEOUT_SEC", 15.0))
+   173:     dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+   174:     loop_interval_sec: float = field(default_factory=lambda: (_env_float("LOOP_INTERVAL_SEC", 8.0) if _env_bool("TERMUX_MODE", False) else _env_float("LOOP_INTERVAL_SEC", 2.0)))
+   175:     quote: str = field(default_factory=lambda: _env_str("QUOTE", "IRT").upper())
+   177:         _canon_symbol(s) for s in _env_str("PP_SYMBOLS", "PAXGIRT,USDTIRT,BTCIRT,ETHIRT").split(",") if str(s).strip()
+   179:     symbol_timeout_sec: float = field(default_factory=lambda: _env_float("SYMBOL_TIMEOUT_SEC", 3.2))
+   180:     cycle_budget_sec: float = field(default_factory=lambda: _env_float("CYCLE_BUDGET_SEC", 25.0))
+   181:     low_priority_timeout_sec: float = field(default_factory=lambda: _env_float("LOW_PRIORITY_TIMEOUT_SEC", 1.2))
+   183:         _canon_symbol(s) for s in _env_str("SYMBOL_PRIORITY", "").split(",") if str(s).strip()
+   185:     collective_intelligence: bool = field(default_factory=lambda: _env_bool("COLLECTIVE_INTELLIGENCE", True))
+   186:     collective_multiplier: float = field(default_factory=lambda: _env_float("COLLECTIVE_MULTIPLIER", 2.0))
+   187:     collective_min_raz_conf: float = field(default_factory=lambda: _env_float("COLLECTIVE_MIN_RAZ_CONF", 0.78))
+   188:     parisa_vote_thr: float = field(default_factory=lambda: _env_float("PARISA_VOTE_THR", 0.22))
+   189:     parisa_veto_thr: float = field(default_factory=lambda: _env_float("PARISA_VETO_THR", -0.35))
+   190:     collective_max_notional_frac: float = field(default_factory=lambda: _env_float("COLLECTIVE_MAX_NOTIONAL_FRAC", 0.25))
+   191:     autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", False))
+   192:     jitter_proxy: bool = field(default_factory=lambda: _env_bool("JITTER_PROXY", False))
+   193:     jitter_ttl_mult: float = field(default_factory=lambda: _env_float("JITTER_TTL_MULT", 2.0))
+   194:     jitter_samples: int = field(default_factory=lambda: max(1, _env_int("JITTER_SAMPLES", 5)))
+   195:     laddering: bool = field(default_factory=lambda: _env_bool("LADDERING", False))
+   196:     ladder_steps: int = field(default_factory=lambda: max(1, _env_int("LADDER_STEPS", 3)))
+   197:     ladder_bps: float = field(default_factory=lambda: max(0.0, _env_float("LADDER_BPS", 2.0)))
+   198:     ladder_pause_ms: int = field(default_factory=lambda: max(0, _env_int("LADDER_PAUSE_MS", 150)))
+   199:     top8_enabled: bool = field(default_factory=lambda: _env_bool("TOP8", True))
+   200:     top8_use_for_selection: bool = field(default_factory=lambda: _env_bool("TOP8_USE_FOR_SELECTION", True))
+   201:     top8_refresh_sec: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_REFRESH_SEC", 12.0)))
+   202:     top8_trades_lookback_sec: float = field(default_factory=lambda: max(10.0, _env_float("TOP8_TRADES_LOOKBACK_SEC", 300.0)))
+   203:     top8_depth_bps: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_DEPTH_BPS", 10.0)))
+   204:     batch_tickers_enabled: bool = field(default_factory=lambda: _env_bool("BATCH_TICKERS", True))
+   205:     batch_tickers_min_interval_sec: float = field(default_factory=lambda: max(0.25, _env_float("BATCH_TICKERS_MIN_INTERVAL_SEC", 1.0)))
+   206:     market_age_skip_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SKIP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+   207:     market_age_sleep_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SLEEP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+   208:     dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES", False))
+   211:     ai_mode: str = field(default_factory=lambda: str(os.getenv("AI_MODE", "off")).strip().lower())
+   212:     runtime_profile: str = field(default_factory=lambda: str(os.getenv("RUNTIME_PROFILE", ("termux" if _env_bool("TERMUX_MODE", False) else "server"))).strip().lower())
+   213:     live_trading_armed: bool = field(default_factory=lambda: _env_bool("LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+   214:     ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("AI_LIVE_TRADING_ARMED", False))
+   215:     dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("AI_LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+   216:     dzh_auto_tune: bool = field(default_factory=lambda: _env_bool("DZH_AUTO_TUNE", True))
+   217:     dzh_dyn_tune: bool = field(default_factory=lambda: _env_bool("DZH_DYN_TUNE", True))
+   218:     dzh_safety_entry: bool = field(default_factory=lambda: _env_bool("DZH_SAFETY_ENTRY", True))
+   219:     dzh_veto_htf: bool = field(default_factory=lambda: _env_bool("DZH_VETO_HTF", True))
+   220:     dzh_net_alpha: bool = field(default_factory=lambda: _env_bool("DZH_NET_ALPHA", True))
+   221:     dzh_net_alpha_span: int = field(default_factory=lambda: max(10, _env_int("DZH_NET_ALPHA_SPAN", 50)))
+   222:     dzh_liquidity_min_irt: float = field(default_factory=lambda: max(0.0, _env_float("DZH_LIQ_MIN_IRT", 25_000_000.0)))
+   223:     dzh_spread_max_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_SPREAD_MAX_BPS", 35.0)))
+   224:     dzh_fake_breakout_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_FAKE_BREAKOUT_BPS", 8.0)))
+   225:     dzh_htf_reject_thr: float = field(default_factory=lambda: float(_env_float("DZH_HTF_REJECT_THR", 0.42)))
+   226:     dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MIN", 0.35), 0.05, 1.0))
+   227:     dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MAX", 1.0), 0.05, 2.0))
+   228:     flash_crash_enabled: bool = field(default_factory=lambda: _env_bool("FLASH_CRASH_EXIT", True))
+   229:     flash_crash_pct: float = field(default_factory=lambda: abs(_env_float("FLASH_CRASH_PCT", 0.05)))
+   230:     flash_crash_window_sec: float = field(default_factory=lambda: _env_float("FLASH_CRASH_WINDOW_SEC", 30.0))
+   232:         _canon_symbol(s) for s in _env_str("FLASH_REF_SYMBOLS", "").split(",") if str(s).strip()
+   234:     flash_min_confirmations: int = field(default_factory=lambda: _env_int("FLASH_MIN_CONFIRMATIONS", 1))
+   235:     global_exit_slippage_bps: float = field(default_factory=lambda: abs(_env_float("GLOBAL_EXIT_SLIPPAGE_BPS", 80.0)))
+   236:     global_exit_armed: bool = field(default_factory=lambda: _env_bool("GLOBAL_EXIT_ARMED", False))
+   238:     min_notional_irt: float = field(default_factory=lambda: _env_float("MIN_NOTIONAL_IRT", 200_000.0))
+   239:     max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("MAX_NOTIONAL_FRAC", 0.90), 0.05, 0.95))
+   240:     max_open_positions: int = field(default_factory=lambda: _env_int("MAX_OPEN_POSITIONS", 4))
+   241:     buy_threshold: float = field(default_factory=lambda: abs(_env_float("BUY_THRESHOLD", 0.20)))
+   242:     sell_threshold: float = field(default_factory=lambda: abs(_env_float("SELL_THRESHOLD", 0.20)))
+   243:     min_hold_sec: float = field(default_factory=lambda: _env_float("MIN_HOLD_SEC", 8.0))
+   244:     stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("STOP_LOSS_PCT", 0.02)))
+   245:     take_profit_pct: float = field(default_factory=lambda: abs(_env_float("TAKE_PROFIT_PCT", 0.03)))
+   246:     max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("MAX_DAILY_LOSS_PCT", 0.05)))
+   247:     rate_limit_per_min: int = field(default_factory=lambda: _env_int("RATE_LIMIT_PER_MIN", 100))
+   248:     circuit_breaker_errors: int = field(default_factory=lambda: _env_int("CB_ERRORS", 12))
+   249:     circuit_breaker_cooldown_sec: float = field(default_factory=lambda: _env_float("CB_COOLDOWN_SEC", 45.0))
+   250:     balance_refresh_sec: float = field(default_factory=lambda: _env_float("BALANCE_REFRESH_SEC", 8.0))
+   251:     orders_refresh_sec: float = field(default_factory=lambda: _env_float("ORDERS_REFRESH_SEC", 3.0))
+   252:     orders_reconcile_interval_sec: float = field(default_factory=lambda: _env_float("ORDERS_RECONCILE_INTERVAL_SEC", 30.0))
+   253:     depth_cache_ttl_sec: float = field(default_factory=lambda: _env_float("DEPTH_CACHE_TTL_SEC", 1.2))
+      ... truncated ...

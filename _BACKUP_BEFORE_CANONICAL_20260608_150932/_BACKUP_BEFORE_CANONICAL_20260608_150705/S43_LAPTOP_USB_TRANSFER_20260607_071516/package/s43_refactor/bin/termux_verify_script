@@ -1,0 +1,60 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: termux_verify_script <script_path>" >&2
+  exit 2
+fi
+
+target="$1"
+
+if [ ! -e "$target" ]; then
+  echo "VERIFY: FAIL"
+  echo "reason: file not found"
+  echo "path: $target"
+  exit 1
+fi
+
+if [ ! -f "$target" ]; then
+  echo "VERIFY: FAIL"
+  echo "reason: not a regular file"
+  echo "path: $target"
+  exit 1
+fi
+
+echo "VERIFY: TARGET"
+echo "path: $target"
+
+first_line="$(head -n 1 "$target" || true)"
+
+if [ -z "$first_line" ]; then
+  echo "shebang: FAIL"
+  echo "reason: empty file"
+  exit 1
+fi
+
+if [[ "$first_line" == "#!"* ]]; then
+  echo "shebang: PASS"
+  echo "value: $first_line"
+else
+  echo "shebang: FAIL"
+  echo "value: $first_line"
+  exit 1
+fi
+
+if bash -n "$target"; then
+  echo "syntax: PASS"
+else
+  echo "syntax: FAIL"
+  exit 1
+fi
+
+if [ -x "$target" ]; then
+  echo "executable: PASS"
+else
+  echo "executable: FAIL"
+  echo "hint: chmod 700 \"$target\""
+  exit 1
+fi
+
+echo "VERIFY: PASS"

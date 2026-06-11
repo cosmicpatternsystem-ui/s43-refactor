@@ -1,0 +1,20 @@
+4:# High-risk local artifacts. Local only; not committed.
+6:diagnostics/
+9:cache/
+10:runtime_probes/
+13:phase7c_artifacts/
+23:*.log
+40:*SECRET*
+41:*TOKEN*
+42:*AUTH*
+43:*auth*
+44:*credential*
+45:*wallet*
+47:s43_auth_context.txt
+66:# Keep check_token.py and SYSTEM_STATE.txt visible intentionally.
+69:MASTER_ARTIFACT_INDEX.md
+73:THREE_WALLETS_RUNTIME_PLAN.md
+79:PHASE*.json
+80:PHASE*.log
+115:phase*_artifacts/
+156:phase*_context_extract_*.txt

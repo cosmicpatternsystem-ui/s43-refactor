@@ -1,0 +1,65 @@
+# Final Manifest Lock
+
+## Status
+
+FINAL_MANIFEST_LOCKED
+
+## Target
+
+- file: s43.py
+- sha256: 8270dbb24d728c22e4a1c42b00c148dc0bf81e00454a1932003531963eef3786
+- baseline sha256: 8270dbb24d728c22e4a1c42b00c148dc0bf81e00454a1932003531963eef3786
+
+## Release Bundle
+
+- tar: .release_evidence/s43_final_release_evidence_bundle_20260606_215239.tar.gz
+- sha256: a1a37e3ed2a440c8c517af02f2bdcc29f87738959792993c35d3d6d03aac39f0
+- sha file: .release_evidence/s43_final_release_evidence_bundle_20260606_215239.tar.gz.sha256
+
+## Verification Chain
+
+- READONLY_PROFILE_VALIDATOR_REGISTERED
+- FINAL_VALIDATION_LOCKED
+- FINAL_RELEASE_EVIDENCE_BUNDLE_CREATED
+- PUBLISH_READY_VERIFIED
+- IMMUTABLE_FINAL_HANDOFF_READY
+- FINAL_CHAIN_SEALED
+- POST_SEAL_INTEGRITY_VERIFIED
+- FINAL_SEALED_PROJECT_INDEXED
+- FINAL_MANIFEST_LOCKED
+- S43_UNCHANGED
+- TRIWALLET_PROFILE_LAYER_PRESERVED
+
+## Hashed Artifacts
+
+8270dbb24d728c22e4a1c42b00c148dc0bf81e00454a1932003531963eef3786  s43.py
+523ea8986d1bbb82f41ae2746fd656d322369214ce2006319b96c6f3e060dead  tools/validate_wallet_profiles.py
+0cc140a5e2aa22c86f081514fe9e749cf24788af42d3ef9dcd5d33f85dd4d4e3  config/wallet_profiles.example.json
+35701871aaeb85a9ff3c1808ccf690ed21ca0b6a2707400bc347d20760da0108  docs/PROFILE_VALIDATOR.md
+11f4ffe060782fb7f92c6d1ade58d68411d6952a3d3b5b6b122da9d25f4bd18d  docs/FINAL_VALIDATOR_LOCK.md
+6159fb1c54b66c1e88465c94a5114f88e4da05487e748cc84a15f391c3157aeb  docs/FINAL_RELEASE_EVIDENCE_BUNDLE.md
+265874d4a1208f46aa019a2028ca716af66dc5006ee0acb19b12dcf106105d98  docs/PUBLISH_READY_VERIFICATION.md
+58e02226e61c469c009416ca0bb4370fb985e69a9b9cbacc8f20b0c70e8736a3  docs/IMMUTABLE_FINAL_HANDOFF.md
+ea37e5184256e2b8862f9a0a0b6ffd135228a0072a1bc0186fda54f3b58a422a  docs/FINAL_CHAIN_SEAL.md
+338571de6c606dbb9a476e42ef5d0cb749e0eb8b95da1c0644a6dabeca478bdd  docs/FINAL_SEAL_VERIFICATION.md
+4ee6d0e425b38a7fa71923f26335b216606a74321930ed1a3b40aefc056c54c5  docs/FINAL_PROJECT_INDEX.md
+02265c491438c1e6fb8ceb2633ec39221bfdea6749be48cdcec1422f5ff93195  .provenance/decisions/ADR-0004-readonly-profile-validator.md
+b34f23cb1178f46d897c96482a201342701db3a1dbe02d2e2233db10f5f0d6f7  .provenance/handoff_notes/HANDOFF-0004-readonly-profile-validator.md
+53970002fdd7fd5253f626d46ff69c205e3974199d6194244c9fd6b5fa67ca39  .provenance/status/STATUS-0004-final-validator-lock.txt
+ad2d083172651fe625c0ab4533a372b20db4b9bbf1147e4bc7763e4e041e1638  .provenance/release/RELEASE-0004-final-evidence-bundle.txt
+f34b9870f33cde66d8fb60fa5b21ec1686d3420473d037d9b56ccd65ff817cfa  .provenance/publish/PUBLISH-0004-ready.txt
+892b4a2f78787c460f77df9d0f5b55505aae02c8ecda82af6bd0ab877f41f991  .provenance/handoff_final/HANDOFF-0004-immutable-final.txt
+f5080fb1502ea0e0d1647e729ae282e94ce1854cdfb48789a0dc5aed8ff3ec46  .provenance/final_seal/FINAL-SEAL-0004.txt
+ff6110ed025724feb6d2f1e1d4c4a6865e0f68fc40893973bc5b0661c69a6b3f  .provenance/final_seal/FINAL-SEAL-0004-VERIFICATION.txt
+2e52a8d6d9ca78a86d62dd49e15dd2fc7d8d90ab7270fa9a3771c13b35a1d17b  .provenance/final_seal/FINAL-SEAL-0004-INDEX.txt
+a1a37e3ed2a440c8c517af02f2bdcc29f87738959792993c35d3d6d03aac39f0  .release_evidence/s43_final_release_evidence_bundle_20260606_215239.tar.gz
+faaae06900b76cc473b14acb9f6e1901eac4ee35b73788cbdbeccb4849441248  .release_evidence/s43_final_release_evidence_bundle_20260606_215239.tar.gz.sha256
+
+## Runtime Impact
+
+No runtime modification was made to s43.py.
+
+## Validator
+
+- validator exit code: 0
+- import isolation: IMPORT_ISOLATION_OK

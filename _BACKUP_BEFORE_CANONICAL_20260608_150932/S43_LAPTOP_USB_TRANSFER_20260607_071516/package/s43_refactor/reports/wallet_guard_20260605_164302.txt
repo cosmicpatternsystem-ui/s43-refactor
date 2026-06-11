@@ -1,0 +1,45 @@
+== S43 WALLET GUARD REPORT ==
+generated_at=2026-06-05 16:43:02
+
+wallet_id=1
+label=
+role=
+status=undefined
+token_present=NO
+token_masked=NONE
+token_fp=NONE
+registered_at=
+token_expires_at=
+warn_days=7
+days_left=
+expiry_state=UNKNOWN
+
+wallet_id=2
+label=
+role=
+status=undefined
+token_present=NO
+token_masked=NONE
+token_fp=NONE
+registered_at=
+token_expires_at=
+warn_days=7
+days_left=
+expiry_state=UNKNOWN
+
+wallet_id=3
+label=
+role=
+status=undefined
+token_present=NO
+token_masked=NONE
+token_fp=NONE
+registered_at=
+token_expires_at=
+warn_days=7
+days_left=
+expiry_state=UNKNOWN
+
+== VERDICT ==
+WALLET_GUARD_RESULT=CHECK_COMPLETE
+REPORT_SAVED=/data/data/com.termux/files/home/s43_refactor/reports/wallet_guard_20260605_164302.txt

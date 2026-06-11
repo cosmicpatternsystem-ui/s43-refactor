@@ -1,0 +1,32 @@
+import os
+import sys
+import requests
+
+url = "https://api.arzplus.net/api/v1/wallet/balance/"
+token = os.environ.get("ARZPLUS_TOKEN", "")
+token = token.replace("\r", "").replace("\n", "").strip()
+
+if not token:
+    print("FATAL: ARZPLUS_TOKEN_NOT_FOUND")
+    sys.exit(1)
+
+if token.lower().startswith("token "):
+    token = token[6:].strip()
+
+headers = {
+    "Authorization": "Token " + token,
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+print("DIAG: endpoint=" + url)
+print("DIAG: token_prefix=" + token[:8] + "... length=" + str(len(token)))
+
+try:
+    r = requests.get(url, headers=headers, timeout=15)
+    print("RESULT: status_code=" + str(r.status_code))
+    print("RESULT: body_repr=" + ascii(r.text))
+    print("RESULT: body_len=" + str(len(r.text)))
+except Exception as exc:
+    print("ERROR: type=" + type(exc).__name__ + " detail=" + str(exc))
+    sys.exit(2)

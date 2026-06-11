@@ -1,0 +1,4 @@
+### callsites: entry_multiplier
+
+12151:    def entry_multiplier(self, symbol: str, raz_signal: Signal, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, Dict[str, Any]]:
+20062:                mult, ci_meta = w.cortex.entry_multiplier(sym, sig, book, depth_data=None)

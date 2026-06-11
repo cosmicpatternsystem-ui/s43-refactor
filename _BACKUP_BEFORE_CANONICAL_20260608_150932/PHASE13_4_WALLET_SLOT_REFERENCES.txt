@@ -1,0 +1,18 @@
+237:    wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+13060:        slots = set()
+13061:        for _s in (cfg.wallet_slots or [1]):
+13063:                slots.add(int(_s))
+13069:                    slots.add(int(_k))
+14436:        wslots = str(getattr(args, "wallets", "") or "").strip()
+14438:            os.environ["WALLET_SLOTS"] = wslots.replace(" ", "")
+29244:    def __init__(self, cfg: "BotConfig", log: logging.Logger, *, wallet_slots: Optional[List[int]] = None,
+29258:        slots = list(wallet_slots or getattr(cfg, "wallet_slots", []) or [])
+29260:            slots = [1]
+29261:        self._wallet_slots = [int(x) for x in (slots or [])]
+29401:        slots = list(getattr(self, "_wallet_slots", []) or [])
+29403:            slots = [1]
+29537:        raw = getattr(args, "wallet_slots", None)
+29539:            slots = [int(x) for x in str(raw).replace(" ", "").split(",") if x.strip().isdigit()]
+29541:        slots = None
+29549:        wallet_slots=slots,
+29561:    _orch22_log(log, logging.INFO, "BOOT", base_url=cfg.base_url, wallet_slots=(slots or cfg.wallet_slots))

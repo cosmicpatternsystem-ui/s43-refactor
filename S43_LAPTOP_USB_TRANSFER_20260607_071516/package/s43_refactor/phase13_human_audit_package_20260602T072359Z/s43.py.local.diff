@@ -1,0 +1,293 @@
+diff --git a/s43.py b/s43.py
+index 70d365f..5152f65 100644
+--- a/s43.py
++++ b/s43.py
+@@ -644,7 +644,15 @@ try:
+     get_best_snapshot
+ except NameError:
+     def get_best_snapshot(symbol, bot=None, now=None, stale_after_sec=90.0):
+-        sym = str(symbol).replace("-", "")
++        import time as _time
++
++        now = float(now if now is not None else _time.time())
++        sym = str(symbol or "").replace("-", "").upper()
++        keys = []
++        for k in (symbol, sym, str(symbol or "").upper(), str(symbol or "").replace("-", ""), sym.replace("-", "")):
++            if k and k not in keys:
++                keys.append(k)
++
+         base = {
+             "symbol": symbol,
+             "norm_symbol": sym,
+@@ -653,43 +661,229 @@ except NameError:
+             "last": None,
+             "mid": None,
+             "spread": None,
+-            "stale": True,
+-            "source": "fallback",
+             "ts": now,
++            "source": "fallback",
++            "stale": True,
++            "stale_reason": "NO_DATA",
+         }
+ 
+-        candidates = []
+-        if bot is not None:
+-            for name in (
++        def _safe_float(x):
++            try:
++                return float(x)
++            except Exception:
++                return x
++
++        def _calc_stale(ts_value):
++            try:
++                age = max(0.0, float(now) - float(ts_value))
++                return (age > float(stale_after_sec), f"STALE age={age:.3f}s" if age > float(stale_after_sec) else "")
++            except Exception:
++                return (False, "")
++
++        def _normalize_snapshot(out):
++            if out.get("dp_pct") is None and out.get("pct") is not None:
++                out["dp_pct"] = out.get("pct")
++            if out.get("last") is None and out.get("last_price") is not None:
++                out["last"] = out.get("last_price")
++            if out.get("mid") is None and out.get("last") is not None:
++                try:
++                    out["mid"] = float(out.get("last"))
++                except Exception:
++                    out["mid"] = out.get("last")
++            out.setdefault("symbol", symbol)
++            out.setdefault("norm_symbol", sym)
++            return out
++
++        def _find_key(d):
++            if not isinstance(d, dict):
++                return None
++            for k in keys:
++                if k in d:
++                    return k
++            return None
++
++        # 1) bot cache dictionaries
++        try:
++            for attr in (
+                 "snapshots",
+                 "_snapshots",
+                 "market_snapshots",
+                 "_market_snapshots",
++                "_market_snapshot",
+                 "ticker_cache",
+                 "_ticker_cache",
+             ):
+-                try:
+-                    obj = getattr(bot, name, None)
+-                    if isinstance(obj, dict):
+-                        candidates.append(obj)
+-                except Exception:
+-                    pass
++                d = getattr(bot, attr, None) if bot is not None else None
++                if not isinstance(d, dict):
++                    continue
++                hit = _find_key(d)
++                if hit is None:
++                    continue
++                row = d.get(hit)
++                if isinstance(row, dict):
++                    out = dict(base)
++                    out.update(row)
++                    out["source"] = "bot-cache"
++                    out = _normalize_snapshot(out)
++                    if out.get("ts") is not None:
++                        out["stale"], out["stale_reason"] = _calc_stale(out.get("ts"))
++                    else:
++                        out.setdefault("stale", False)
++                        out.setdefault("stale_reason", "")
++                    return out
++        except Exception:
++            pass
+ 
+-        keys = [symbol, sym, sym.upper(), str(symbol).upper()]
+-        for d in candidates:
+-            for k in keys:
++        # 2) feed._cache fallback support
++        try:
++            feed = getattr(bot, "feed", None) if bot is not None else None
++            cache = getattr(feed, "_cache", None) if feed is not None else None
++            if isinstance(cache, dict):
++                hit = _find_key(cache)
++                if hit is not None:
++                    raw = cache.get(hit)
++                    ts = now
++                    obj = raw
++
++                    if isinstance(raw, tuple) and len(raw) >= 2:
++                        ts, obj = raw[0], raw[1]
++                    elif isinstance(raw, tuple) and len(raw) == 1:
++                        obj = raw[0]
++
++                    try:
++                        ts = float(ts)
++                    except Exception:
++                        ts = now
++
++                    def _g(o, name, default=None):
++                        try:
++                            return getattr(o, name, default)
++                        except Exception:
++                            return default
++
++                    bid = _g(obj, "bid", None)
++                    ask = _g(obj, "ask", None)
++                    last = _g(obj, "last", None)
++                    mid = _g(obj, "mid", None)
++
++                    try:
++                        if mid is None and bid is not None and ask is not None:
++                            mid = (float(bid) + float(ask)) / 2.0
++                        elif mid is not None:
++                            mid = float(mid)
++                        elif last is not None:
++                            mid = float(last)
++                    except Exception:
++                        pass
++
++                    spread = _g(obj, "spread", None)
++                    if spread is None:
++                        spread = _g(obj, "spr_bps", None)
++
++                    out = dict(base)
++                    out.update({
++                        "symbol": symbol,
++                        "norm_symbol": sym,
++                        "bid": bid,
++                        "ask": ask,
++                        "last": last,
++                        "mid": mid,
++                        "spread": spread,
++                        "ts": ts,
++                        "source": "feed-cache",
++                    })
++
++                    out["stale"], out["stale_reason"] = _calc_stale(ts)
++                    return out
++        except Exception:
++            pass
++
++        # 3) phoenix price history + spot cache support
++        try:
++            feed = getattr(bot, "feed", None) if bot is not None else None
++            hist_map = getattr(bot, "_phoenix_px_hist", None) if bot is not None else None
++            spot_map = getattr(feed, "_spot_cache", None) if feed is not None else None
++
++            def _cache_get(m):
++                if not isinstance(m, dict):
++                    return None
++                for kk in (symbol, sym, str(symbol).replace("-", ""), str(sym).replace("-", "")):
++                    if kk in m:
++                        return m.get(kk)
++                return None
++
++            def _price_from(v):
++                if v is None:
++                    return None
++                if isinstance(v, (list, tuple)):
++                    if len(v) >= 2:
++                        return v[1]
++                    if len(v) == 1:
++                        return v[0]
++                if isinstance(v, dict):
++                    for kk in ("mid", "last", "last_price", "price", "close"):
++                        if v.get(kk) is not None:
++                            return v.get(kk)
++                return v
++
++            def _ts_from(v):
++                if isinstance(v, (list, tuple)) and len(v) >= 2:
++                    return v[0]
++                if isinstance(v, dict):
++                    return v.get("ts") or v.get("timestamp") or v.get("time")
++                return None
++
++            hist = _cache_get(hist_map)
++            spot = _cache_get(spot_map)
++
++            latest = _price_from(spot)
++            latest_ts = _ts_from(spot)
++            prev = None
++
++            if hist is not None:
+                 try:
+-                    if k in d and isinstance(d[k], dict):
+-                        out = dict(base)
+-                        out.update(d[k])
+-                        out.setdefault("symbol", symbol)
+-                        out.setdefault("norm_symbol", sym)
+-                        out.setdefault("source", "bot-cache")
+-                        return out
++                    hist_list = list(hist)
++                    prices = []
++                    for item in hist_list:
++                        px = _price_from(item)
++                        if px is not None:
++                            prices.append(px)
++                    if prices:
++                        if latest is None:
++                            latest = prices[-1]
++                        if len(prices) >= 2:
++                            prev = prices[0]
+                 except Exception:
+                     pass
+ 
+-        return base
++            dp_pct = None
++            try:
++                if prev is not None and latest is not None and float(prev) != 0.0:
++                    dp_pct = (float(latest) - float(prev)) / float(prev) * 100.0
++            except Exception:
++                dp_pct = None
++
++            if latest is not None or dp_pct is not None:
++                out = dict(base)
++                if latest is not None:
++                    try:
++                        out["mid"] = float(latest)
++                        out["last"] = float(latest)
++                    except Exception:
++                        out["mid"] = latest
++                        out["last"] = latest
++                if dp_pct is not None:
++                    out["dp_pct"] = dp_pct
++                if latest_ts is not None:
++                    out["ts"] = latest_ts
++                out["source"] = "phoenix-px-hist/spot-cache"
++                out["stale"] = False
++                out["stale_reason"] = ""
++                return out
++        except Exception:
++            pass
++
++        return dict(base)
+ # === /S43_INTERNAL_NAMEERROR_FALLBACKS ===
+ 
+         self._buf = _s43_deque(maxlen=int(maxlen or 400))
+@@ -9780,6 +9974,19 @@ class PhoenixEngine:
+             age_px = None
+         allow_spot_ready = bool(_env_bool("PHOENIX_ALLOW_SPOT_READY", bool(getattr(self.cfg, "phoenix_allow_spot_ready", False))))
+         depth_required_only = bool(source == "spot" and (not allow_spot_ready))
++        if depth_required_only:
++            dec = PhoenixDecision(
++                state="FLAT",
++                confidence=float(getattr(sig, "confidence", 0.0) or 0.0) if sig is not None else 0.0,
++                composite=float(getattr(sig, "score", 0.0) or 0.0) if sig is not None else 0.0,
++                rsi=50.0,
++                shadow_score=0.0,
++                shadow_label="DEPTH_REQUIRED",
++                ready=False,
++                reason="NO_DEPTH_PRICE",
++            )
++            st.last_decision = dec
++            return dec
+         if ts_px is None:
+             dec = PhoenixDecision(
+                 state="FLAT",

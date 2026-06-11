@@ -1,0 +1,16 @@
+PHASE13_4_ACTIVE_KEYWORD_SUMMARY_AT=2026-05-30T16:53:04+03:30
+
+Hit counts by keyword:
+     50 WALLET
+     40 TOKEN
+     35 ARZPLUS
+     14 ARZ
+      2 OPENAI
+
+
+Hit counts by active file:
+    133 ./s43.py
+      3 ./patch13_3_rev2.py
+      2 ./patch13_3_rev1.py
+      2 ./patch13_3.py
+      1 ./inspect_patch13_3_targets.py

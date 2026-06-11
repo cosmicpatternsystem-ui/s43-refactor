@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "default_profile": "primary",
+  "wallets": {
+    "primary": {
+      "label": "Primary Wallet",
+      "network": "TRX",
+      "address": "REPLACE_WITH_ADDRESS",
+      "enabled": true
+    },
+    "secondary": {
+      "label": "Secondary Wallet",
+      "network": "TRX",
+      "address": "REPLACE_WITH_ADDRESS",
+      "enabled": false
+    },
+    "reserve": {
+      "label": "Reserve Wallet",
+      "network": "TRX",
+      "address": "REPLACE_WITH_ADDRESS",
+      "enabled": false
+    }
+  }
+}

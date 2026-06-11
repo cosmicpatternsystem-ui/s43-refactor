@@ -1,0 +1,19 @@
+﻿GeneratedAt: 2026-06-10 12:49:46
+ProjectRoot: E:\اخباری\ssl\s43_refactor
+Canonical: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+CanonicalSHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+LatestBundle: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047
+BaselineCopy: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\baseline_verify_20260610_121219
+BundleIndex: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\BUNDLE_INDEX.txt
+VerificationIndex: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\baseline_verify_20260610_121219\VERIFICATION_INDEX.txt
+Manifest: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\baseline_verify_20260610_121219\MANIFEST.txt
+StoredHash: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+HashStatus: MATCH
+PyCompileExitCode: 0
+PythonFilesModified: False
+ProtectedFile: E:\اخباری\ssl\s43_refactor\s43_latest_refactor.py
+ProtectedFileStatus: PRESENT_UNTOUCHED_BY_AUDIT
+NewHandoffDocCreated: False
+SemanticCodeChange: False
+AuditMode: Final read-only handoff bundle audit
+Status: VERIFIED

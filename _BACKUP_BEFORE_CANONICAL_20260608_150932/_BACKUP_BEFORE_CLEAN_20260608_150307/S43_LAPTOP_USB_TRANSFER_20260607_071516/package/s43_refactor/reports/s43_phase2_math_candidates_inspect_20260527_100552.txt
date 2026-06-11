@@ -1,0 +1,419 @@
+===== S43 PHASE2 MATH/NUMERIC CANDIDATES INSPECT =====
+TS=20260527_100552
+
+===== FUNCTION: _first_num =====
+
+[DEFINITION LINE]
+3513:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+
+[USAGES]
+3513:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+3653:        step = _first_num(spec, "step_size", "amount_step", "qty_step", "step", default=0.0)
+3654:        tick = _first_num(spec, "tick_size", "price_tick", "tick", default=1.0)
+3655:        min_qty = _first_num(spec, "min_amount", "min_qty", "minimum_quantity", default=0.0)
+3656:        max_qty = _first_num(spec, "max_amount", "max_qty", "maximum_quantity", default=0.0)
+3657:        min_price = _first_num(spec, "min_price", default=0.0)
+3658:        max_price = _first_num(spec, "max_price", default=0.0)
+
+[CONTEXT]
+            raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+        last_err = None
+        for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+            try:
+                return await self.request("POST", ep, payload=None, auth=True)
+            except Exception as e:
+                last_err = e
+        for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+            try:
+                return await self.request("DELETE", ep, payload=None, auth=True)
+            except Exception as e:
+                last_err = e
+        for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+            try:
+                return await self.request("POST", ep, payload=payload, auth=True)
+            except Exception as e:
+                last_err = e
+        if last_err:
+            raise last_err
+        return {}
+def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+    for k in keys:
+        if k in d and d.get(k) is not None and str(d.get(k)).strip() != "":
+            try:
+                return float(d.get(k))
+            except Exception:
+                continue
+    return float(default)
+def _quantize_down(x: float, step: float) -> float:
+    if step <= 0:
+        return float(x)
+    return float(math.floor(float(x) / float(step)) * float(step))
+    async def get_all_market_stats(self) -> dict:
+        for ep in ("/market/symbols/", "/market/symbols"):
+            try:
+                return await self.request("GET", ep, auth=False)
+            except Exception:
+                continue
+        return {}
+    async def get_trades(self, symbol: str) -> dict:
+        try:
+            sym = _canon_symbol(symbol)
+        except Exception:
+            sym = str(symbol or "")
+        for ep in ("/market/trades/", "/market/trades"):
+            try:
+                return await self.request("GET", ep, params={"symbol": sym}, auth=False)
+            except Exception:
+                continue
+        return {}
+    async def get_market_snapshot(self) -> dict:
+        if self._is_arzplus():
+            return await self._arzplus_market_snapshot()
+        now = float(time.time())
+        last_err = None
+        for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/tickers/", "/market/tickers"):
+            try:
+                payload = await self.request("GET", ep, auth=False)
+                stats = None
+                if isinstance(payload, dict):
+                    if isinstance(payload.get("stats"), dict):
+                        stats = payload.get("stats")
+                    elif isinstance(payload.get("data"), dict) and isinstance(payload["data"].get("stats"), dict):
+                        stats = payload["data"]["stats"]
+                    elif isinstance(payload.get("result"), dict) and isinstance(payload["result"].get("stats"), dict):
+                        stats = payload["result"]["stats"]
+                    elif all(isinstance(v, dict) for v in payload.values()) and len(payload) >= 10:
+                        stats = payload
+                if isinstance(stats, dict) and stats:
+                    try:
+                        self.last_update_time = now
+                    except Exception:
+                        pass
+                    try:
+                        self._last_market_stats_snapshot = stats
+                    except Exception:
+                        pass
+                    return stats
+            except Exception as e:
+                last_err = e
+        try:
+            m = await self.get_all_market_stats()
+            if isinstance(m, dict) and m:
+                try:
+                    self.last_update_time = now
+                except Exception:
+                    pass
+                try:
+                    self._last_market_stats_snapshot = m
+                except Exception:
+                    pass
+                out = {}
+                for k, v in m.items():
+                    kk = _canon_symbol(k)
+                    if isinstance(v, dict) and isinstance(v.get("raw"), dict):
+                        out[kk] = v["raw"]
+                    elif isinstance(v, dict):
+                        out[kk] = dict(v)
+                    else:
+                        out[kk] = {"value": v}
+                return out
+        except Exception as e:
+            last_err = last_err or e
+        if last_err:
+            try:
+                getattr(self, "_logger", None) and self._logger.debug("event=MARKET_STATS_FAIL err=%s", last_err)
+            except Exception:
+                pass
+        return {}
+class MarketSpecsCache:
+    def __init__(self, ex_public: ExchangeClient, logger: logging.Logger):
+        self._ex = ex_public
+        self._logger = logger
+        self._cache: Dict[str, dict] = {}
+        self._ts = 0.0
+        self._ttl_sec = float(_env_float("META_REFRESH_SEC", 3600.0))
+    async def refresh_if_needed(self) -> None:
+        now = time.time()
+        if self._cache and (now - self._ts) < self._ttl_sec:
+            return
+        try:
+
+===== FUNCTION: _quantize_down =====
+
+[DEFINITION LINE]
+3521:def _quantize_down(x: float, step: float) -> float:
+
+[USAGES]
+3521:def _quantize_down(x: float, step: float) -> float:
+3662:            q = _quantize_down(q, step)
+3664:            p = _quantize_down(p, tick)
+
+[CONTEXT]
+            try:
+                return await self.request("DELETE", ep, payload=None, auth=True)
+            except Exception as e:
+                last_err = e
+        for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+            try:
+                return await self.request("POST", ep, payload=payload, auth=True)
+            except Exception as e:
+                last_err = e
+        if last_err:
+            raise last_err
+        return {}
+def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+    for k in keys:
+        if k in d and d.get(k) is not None and str(d.get(k)).strip() != "":
+            try:
+                return float(d.get(k))
+            except Exception:
+                continue
+    return float(default)
+def _quantize_down(x: float, step: float) -> float:
+    if step <= 0:
+        return float(x)
+    return float(math.floor(float(x) / float(step)) * float(step))
+    async def get_all_market_stats(self) -> dict:
+        for ep in ("/market/symbols/", "/market/symbols"):
+            try:
+                return await self.request("GET", ep, auth=False)
+            except Exception:
+                continue
+        return {}
+    async def get_trades(self, symbol: str) -> dict:
+        try:
+            sym = _canon_symbol(symbol)
+        except Exception:
+            sym = str(symbol or "")
+        for ep in ("/market/trades/", "/market/trades"):
+            try:
+                return await self.request("GET", ep, params={"symbol": sym}, auth=False)
+            except Exception:
+                continue
+        return {}
+    async def get_market_snapshot(self) -> dict:
+        if self._is_arzplus():
+            return await self._arzplus_market_snapshot()
+        now = float(time.time())
+        last_err = None
+        for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/tickers/", "/market/tickers"):
+            try:
+                payload = await self.request("GET", ep, auth=False)
+                stats = None
+                if isinstance(payload, dict):
+                    if isinstance(payload.get("stats"), dict):
+                        stats = payload.get("stats")
+                    elif isinstance(payload.get("data"), dict) and isinstance(payload["data"].get("stats"), dict):
+                        stats = payload["data"]["stats"]
+                    elif isinstance(payload.get("result"), dict) and isinstance(payload["result"].get("stats"), dict):
+                        stats = payload["result"]["stats"]
+                    elif all(isinstance(v, dict) for v in payload.values()) and len(payload) >= 10:
+                        stats = payload
+                if isinstance(stats, dict) and stats:
+                    try:
+                        self.last_update_time = now
+                    except Exception:
+                        pass
+                    try:
+                        self._last_market_stats_snapshot = stats
+                    except Exception:
+                        pass
+                    return stats
+            except Exception as e:
+                last_err = e
+        try:
+            m = await self.get_all_market_stats()
+            if isinstance(m, dict) and m:
+                try:
+                    self.last_update_time = now
+                except Exception:
+                    pass
+                try:
+                    self._last_market_stats_snapshot = m
+                except Exception:
+                    pass
+                out = {}
+                for k, v in m.items():
+                    kk = _canon_symbol(k)
+                    if isinstance(v, dict) and isinstance(v.get("raw"), dict):
+                        out[kk] = v["raw"]
+                    elif isinstance(v, dict):
+                        out[kk] = dict(v)
+                    else:
+                        out[kk] = {"value": v}
+                return out
+        except Exception as e:
+            last_err = last_err or e
+        if last_err:
+            try:
+                getattr(self, "_logger", None) and self._logger.debug("event=MARKET_STATS_FAIL err=%s", last_err)
+            except Exception:
+                pass
+        return {}
+class MarketSpecsCache:
+    def __init__(self, ex_public: ExchangeClient, logger: logging.Logger):
+        self._ex = ex_public
+        self._logger = logger
+        self._cache: Dict[str, dict] = {}
+        self._ts = 0.0
+        self._ttl_sec = float(_env_float("META_REFRESH_SEC", 3600.0))
+    async def refresh_if_needed(self) -> None:
+        now = time.time()
+        if self._cache and (now - self._ts) < self._ttl_sec:
+            return
+        try:
+            payload = await self._ex.get_symbols()
+            rows = []
+            if isinstance(payload, dict):
+                for k in ("data", "results", "symbols", "markets", "items"):
+                    if isinstance(payload.get(k), list):
+                        rows = payload.get(k)
+                        break
+            if isinstance(payload, list):
+
+===== FUNCTION: _calc_rsi =====
+
+[DEFINITION LINE]
+5647:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+
+[USAGES]
+5400:    def _calc_rsi_pair(self, closes: List[float]) -> Tuple[float, float]:
+5404:        now = _calc_rsi(closes, p)
+5405:        prev = _calc_rsi(closes[:-5], p)
+5535:        rsi_now, rsi_prev = self._calc_rsi_pair(closes)
+5647:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+5705:            rsi = _calc_rsi(closes, 14)
+5904:        rsi = _calc_rsi(closes, 14)
+
+[CONTEXT]
+    last_update: float = 0.0
+class _AnalyticsParsing:
+    @staticmethod
+    def parse_weight_map(raw: str, *, key_upper: bool = False) -> Dict[str, float]:
+        m: Dict[str, float] = {}
+        s = str(raw or "")
+        for item in s.split(","):
+            if ":" not in item:
+                continue
+            k, w = item.split(":", 1)
+            k = k.strip()
+            if not k:
+                continue
+            if key_upper:
+                k = k.upper()
+            try:
+                m[k] = float(w.strip())
+            except Exception:
+                continue
+        return m
+def _calc_rsi(prices: List[float], period: int = 14) -> float:
+    if len(prices) < period + 1:
+        return 50.0
+    gains = 0.0
+    losses = 0.0
+    for i in range(-period, 0):
+        ch = float(prices[i]) - float(prices[i - 1])
+        if ch > 0:
+            gains += ch
+        else:
+            losses += abs(ch)
+    avg_gain = gains / period
+    avg_loss = losses / period
+    if avg_loss <= 0:
+        if avg_gain <= 0:
+            return 50.0
+        return 100.0
+    rs = avg_gain / (avg_loss + 1e-9)
+    return float(100.0 - (100.0 / (1.0 + rs)))
+class MultiTimeframeAnalyzer:
+    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+        self.cfg = cfg
+        self._log = logger
+        self.weights = _AnalyticsParsing.parse_weight_map(getattr(cfg, "mtf_weights", "") or "")
+        if not self.weights:
+            self.weights = {"1m": 0.2, "5m": 0.3, "15m": 0.25, "30m": 0.15, "1h": 0.1}
+    @staticmethod
+    def _ema(prices: List[float], period: int) -> float:
+        if not prices:
+            return 0.0
+        if len(prices) < period:
+            return float(prices[-1])
+        alpha = 2.0 / (period + 1.0)
+        ema = float(prices[0])
+        for p in prices[1:]:
+            ema = alpha * float(p) + (1.0 - alpha) * ema
+        return float(ema)
+    @staticmethod
+    def _score_trend(ma_fast: float, ma_slow: float, rsi: float) -> float:
+        if ma_slow <= 0:
+            return 0.0
+        ma_score = (ma_fast - ma_slow) / ma_slow * 10.0
+        rsi_score = 0.0
+        if rsi > 70:
+            rsi_score = -((rsi - 70.0) / 30.0)
+        elif rsi < 30:
+            rsi_score = (30.0 - rsi) / 30.0
+        return float(clamp(ma_score * 0.7 + rsi_score * 0.3, -1.0, 1.0))
+    def analyze(self, _symbol: str, history_by_tf: Dict[str, PriceHistory]) -> Dict[str, Any]:
+        scores: List[float] = []
+        used: List[str] = []
+        for tf, w in self.weights.items():
+            hist = history_by_tf.get(tf)
+            if not hist or len(hist.closes) < 50:
+                continue
+            closes = list(hist.closes)
+            ma_fast = self._ema(closes[-12:], 12)
+            ma_slow = self._ema(closes[-50:], 50)
+            rsi = _calc_rsi(closes, 14)
+            s = self._score_trend(ma_fast, ma_slow, rsi)
+            scores.append(float(s) * float(w))
+            used.append(tf)
+        if not scores or not used:
+            return {"trend": "UNKNOWN", "strength": 0.0, "score": 0.0, "confidence": 0.0, "available_tfs": [], "passed": False}
+        denom = sum(self.weights.get(tf, 0.0) for tf in used) or 1.0
+        avg_score = float(sum(scores) / denom)
+        trend = "BULLISH" if avg_score > 0.3 else ("BEARISH" if avg_score < -0.3 else "SIDEWAYS")
+        confidence = float(len(used) / max(1, len(self.weights)))
+        passed = bool(confidence >= float(getattr(self.cfg, "mtf_min_confidence", 0.65)))
+        return {"trend": trend, "strength": abs(avg_score), "score": avg_score, "confidence": confidence, "available_tfs": used, "passed": passed}
+class PatternDetector:
+    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+        self.cfg = cfg
+        self._log = logger
+        self.lookback = int(getattr(cfg, "pattern_lookback_bars", 50) or 50)
+    @staticmethod
+    def _find_local_extremes(prices: List[float], window: int = 5) -> Tuple[List[int], List[int]]:
+        peaks: List[int] = []
+        troughs: List[int] = []
+        if len(prices) < 2 * window + 1:
+            return peaks, troughs
+        for i in range(window, len(prices) - window):
+            local = prices[i - window : i + window + 1]
+            if prices[i] == max(local):
+                peaks.append(i)
+            if prices[i] == min(local):
+                troughs.append(i)
+        return peaks, troughs
+    def detect_double_top(self, highs: List[float], closes: List[float]) -> Optional[Dict[str, Any]]:
+        if len(highs) < self.lookback:
+            return None
+        hh = highs[-self.lookback:]
+        cc = closes[-self.lookback:]
+        peaks, _ = self._find_local_extremes(hh, window=3)
+        if len(peaks) < 2:
+            return None
+        p1, p2 = peaks[-2], peaks[-1]
+        if abs(p2 - p1) < 10:
+            return None
+        peak1 = float(hh[p1])
+        peak2 = float(hh[p2])
+
+===== IMPORTS RELEVANT CHECK =====
+49:import math
+121:from typing import Any, Dict, List, Optional, Tuple, Union, Callable
+
+===== COMPILE S43 =====
+s43.py: SYNTAX_OK
+
+===== COMPILE HELPERS =====
+s43_core/helpers.py: SYNTAX_OK

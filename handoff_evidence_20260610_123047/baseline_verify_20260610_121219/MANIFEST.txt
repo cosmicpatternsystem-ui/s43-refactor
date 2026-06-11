@@ -1,0 +1,16 @@
+﻿BaselineDir: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219
+Canonical: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+VerifiedSHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+GeneratedAt: 2026-06-10 12:17:27
+File: hash.txt
+SizeBytes: 69
+LastWriteTimeUtc: 2026-06-10T08:42:19.8293602Z
+File: guards.txt
+SizeBytes: 1703
+LastWriteTimeUtc: 2026-06-10T08:42:20.1995491Z
+File: py_compile.txt
+SizeBytes: 16
+LastWriteTimeUtc: 2026-06-10T08:42:21.0593567Z
+File: SUMMARY.txt
+SizeBytes: 311
+LastWriteTimeUtc: 2026-06-10T08:42:21.0643635Z

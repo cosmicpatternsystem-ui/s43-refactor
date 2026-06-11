@@ -1,0 +1,15 @@
+S43 FINAL RELEASE MANIFEST
+Created: Wed Jun  3 00:10:57 +0330 2026
+
+Active file:
+-rw-------. 1 u0_a260 u0_a260 2.5M Jun  3 00:03 s43.py
+
+Latest release backup:
+-rw-------. 1 u0_a260 u0_a260 2.5M Jun  3 00:03 release_backups/s43.py.final_20260603_000824
+
+SHA256:
+721a02179c4f08e936478110d8b7f05962634a7507fa53fd27ce067f6fe7ebaa  s43.py
+721a02179c4f08e936478110d8b7f05962634a7507fa53fd27ce067f6fe7ebaa  release_backups/s43.py.final_20260603_000824
+
+Compile:
+py_compile: OK

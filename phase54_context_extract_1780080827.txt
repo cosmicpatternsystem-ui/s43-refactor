@@ -1,0 +1,771 @@
+target=s43.py
+
+================================================================================
+CONTEXT around line 3219 (3207-3237)
+================================================================================
+    03207:             extra["reduce_only"] = bool(reduce_only)
+    03208: 
+    03209:         if market_norm == "futures":
+    03210:             extra["reduce_only"] = bool(extra.get("reduce_only", False))
+    03211:             if "leverage" in extra and extra.get("leverage") is not None:
+    03212:                 try:
+    03213:                     extra["leverage"] = float(extra.get("leverage"))
+    03214:                 except (TypeError, ValueError):
+    03215:                     self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+    03216:                     extra.pop("leverage", None)
+    03217:         else:
+    03218:             if bool(extra.get("reduce_only", False)):
+>>> 03219:                 self._logger.warning("reduce_only=True ignored for spot order.")
+    03220:             extra.pop("reduce_only", None)
+    03221: 
+    03222:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+    03223:             extra.pop(protected_key, None)
+    03224: 
+    03225:         payload.update(extra)
+    03226: 
+    03227:         try:
+    03228:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+    03229:                 ok, rtt_ms, code = await self.conn_check()
+    03230:                 if not ok:
+    03231:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+    03232:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+    03233:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+    03234:                         diag = "CONN_CHECK_FAIL"
+    03235:                     try:
+    03236:                         _phase54_audit_log("raise_TemporaryPause", line=3219)
+    03237:                     except Exception:
+
+================================================================================
+CONTEXT around line 3224 (3212-3242)
+================================================================================
+    03212:                 try:
+    03213:                     extra["leverage"] = float(extra.get("leverage"))
+    03214:                 except (TypeError, ValueError):
+    03215:                     self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+    03216:                     extra.pop("leverage", None)
+    03217:         else:
+    03218:             if bool(extra.get("reduce_only", False)):
+    03219:                 self._logger.warning("reduce_only=True ignored for spot order.")
+    03220:             extra.pop("reduce_only", None)
+    03221: 
+    03222:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+    03223:             extra.pop(protected_key, None)
+>>> 03224: 
+    03225:         payload.update(extra)
+    03226: 
+    03227:         try:
+    03228:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+    03229:                 ok, rtt_ms, code = await self.conn_check()
+    03230:                 if not ok:
+    03231:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+    03232:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+    03233:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+    03234:                         diag = "CONN_CHECK_FAIL"
+    03235:                     try:
+    03236:                         _phase54_audit_log("raise_TemporaryPause", line=3219)
+    03237:                     except Exception:
+    03238:                         pass
+    03239:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+    03240:         except TemporaryPause:
+    03241:             raise
+    03242:         except Exception as e:
+
+================================================================================
+CONTEXT around line 3322 (3310-3340)
+================================================================================
+    03310:             extra["notional_irt"] = notional_irt
+    03311: 
+    03312:         return await self.place_order(
+    03313:             symbol=symbol,
+    03314:             side=side,
+    03315:             amount=qty,
+    03316:             price=0.0,
+    03317:             cid=cid,
+    03318:             fill_type="market",
+    03319:             market=market,
+    03320:             reduce_only=reduce_only,
+    03321:             leverage=leverage,
+>>> 03322:             **extra,
+    03323:         )
+    03324: 
+    03325:     # ---- repaired candidate method: cancel_all_orders from lines 3396-3459 ----
+    03326:     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+    03327:         payload: Dict[str, Any] = {}
+    03328:         try:
+    03329:             if _termux_env_bool("TERMUX_MODE", False):
+    03330:                 _termux_mark_order_activity()
+    03331:         except Exception:
+    03332:             pass
+    03333:         if symbol:
+    03334:             try:
+    03335:                 payload["symbol"] = _canon_symbol(symbol)
+    03336:             except Exception:
+    03337:                 payload["symbol"] = str(symbol or "")
+    03338:         try:
+    03339:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+    03340:                 ok, rtt_ms, code = await self.conn_check()
+
+================================================================================
+CONTEXT around line 3327 (3315-3345)
+================================================================================
+    03315:             amount=qty,
+    03316:             price=0.0,
+    03317:             cid=cid,
+    03318:             fill_type="market",
+    03319:             market=market,
+    03320:             reduce_only=reduce_only,
+    03321:             leverage=leverage,
+    03322:             **extra,
+    03323:         )
+    03324: 
+    03325:     # ---- repaired candidate method: cancel_all_orders from lines 3396-3459 ----
+    03326:     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+>>> 03327:         payload: Dict[str, Any] = {}
+    03328:         try:
+    03329:             if _termux_env_bool("TERMUX_MODE", False):
+    03330:                 _termux_mark_order_activity()
+    03331:         except Exception:
+    03332:             pass
+    03333:         if symbol:
+    03334:             try:
+    03335:                 payload["symbol"] = _canon_symbol(symbol)
+    03336:             except Exception:
+    03337:                 payload["symbol"] = str(symbol or "")
+    03338:         try:
+    03339:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+    03340:                 ok, rtt_ms, code = await self.conn_check()
+    03341:                 if not ok:
+    03342:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+    03343:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+    03344:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+    03345:                         diag = "CONN_CHECK_FAIL"
+
+================================================================================
+CONTEXT around line 3443 (3431-3461)
+================================================================================
+    03431:             ])
+    03432:         param_variants: List[Dict[str, Any]] = []
+    03433:         if st:
+    03434:             param_variants.append({"status": st})
+    03435:             param_variants.append({"state": st})
+    03436:         else:
+    03437:             param_variants.append({})
+    03438:         last_err = None
+    03439:         for ep in eps:
+    03440:             for pv in param_variants:
+    03441:                 params = dict(base_params)
+    03442:                 try:
+>>> 03443:                     params.update(pv or {})
+    03444:                 except Exception:
+    03445:                     pass
+    03446:                 try:
+    03447:                     return await self.request("GET", ep, auth=True, params=(params or None))
+    03448:                 except Exception as e:
+    03449:                     last_err = e
+    03450:         if last_err:
+    03451:             raise last_err
+    03452:         return {}
+    03453: 
+    03454:     # ---- repaired candidate method: cancel_order from lines 3513-3557 ----
+    03455:     async def cancel_order(self, order_id) -> dict:
+    03456:         oid = order_id
+    03457:         try:
+    03458:             oid = int(order_id)
+    03459:         except Exception:
+    03460:             oid = str(order_id)
+    03461:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+
+================================================================================
+CONTEXT around line 3448 (3436-3466)
+================================================================================
+    03436:         else:
+    03437:             param_variants.append({})
+    03438:         last_err = None
+    03439:         for ep in eps:
+    03440:             for pv in param_variants:
+    03441:                 params = dict(base_params)
+    03442:                 try:
+    03443:                     params.update(pv or {})
+    03444:                 except Exception:
+    03445:                     pass
+    03446:                 try:
+    03447:                     return await self.request("GET", ep, auth=True, params=(params or None))
+>>> 03448:                 except Exception as e:
+    03449:                     last_err = e
+    03450:         if last_err:
+    03451:             raise last_err
+    03452:         return {}
+    03453: 
+    03454:     # ---- repaired candidate method: cancel_order from lines 3513-3557 ----
+    03455:     async def cancel_order(self, order_id) -> dict:
+    03456:         oid = order_id
+    03457:         try:
+    03458:             oid = int(order_id)
+    03459:         except Exception:
+    03460:             oid = str(order_id)
+    03461:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+    03462:         try:
+    03463:             if _termux_env_bool("TERMUX_MODE", False):
+    03464:                 _termux_mark_order_activity()
+    03465:         except Exception:
+    03466:             pass
+
+================================================================================
+CONTEXT around line 3891 (3879-3909)
+================================================================================
+    03879: #                         )
+    03880: #                         _base = getattr(self, "base_url", None) or getattr(self, "_base_url", None) or ""
+    03881: #                         _s43_debug_print(
+    03882: #                             f"AUTHDBG_BALANCE_V1 wallet={_w} ep={ep} "
+    03883: #                             f"scheme={_scheme} "
+    03884: #                             f"token={_s43_mask_authdbg(_tok)} "
+    03885: #                             f"auth={_s43_mask_authdbg(_authv)} "
+    03886: #                             f"token_len={len(str(_tok or ''))} "
+    03887: #                             f"auth_len={len(str(_authv or ''))} "
+    03888: #                             f"base={_base}",
+    03889: #                             flush=True,
+    03890: #                         )
+>>> 03891: #                     except Exception as _authdbg_e:
+    03892: #                         _s43_debug_print(f"AUTHDBG_BALANCE_V1_FAIL err={type(_authdbg_e).__name__}:{_authdbg_e}", flush=True)
+    03893: #                     return await self.request("GET", ep, auth=True)
+    03894: #                 except Exception as e:
+    03895: #                     last_exc = e
+    03896: #                     continue
+    03897: #             if last_exc:
+    03898: #                 raise last_exc
+    03899: try:
+    03900:     _phase54_audit_log("raise_TradingHalt", line=3891)
+    03901: except Exception:
+    03902:     pass
+    03903: #             raise TradingHalt("BALANCE_FETCH_FAILED: EMPTY_RESPONSE")
+    03904: #         except Exception as e:
+    03905: #             print(f"GETBALDBG EXC {type(e).__name__}: {e}")
+    03906: #             raise
+    03907: #===================================================================================================
+    03908: 
+    03909: 
+
+================================================================================
+CONTEXT around line 4133 (4121-4151)
+================================================================================
+    04121: #         }
+    04122: #         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+    04123: #         if fill_norm not in ("limit", "market"):
+    04124: #             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+    04125: #             raise ValueError(f"Unsupported fill_type: {fill_type}")
+    04126: #
+    04127: #         if fill_norm == "limit" and price is None:
+    04128: #             raise ValueError("Price must be specified for LIMIT orders.")
+    04129: #
+    04130: #         payload: Dict[str, Any] = {
+    04131: #             "symbol": sym,
+    04132: #             "amount": self._as_payload_number(amount),
+>>> 04133: #             "side": self._norm_side(side),
+    04134: #             "fill_type": fill_norm,
+    04135: #             "market": market_norm,
+    04136: #         }
+    04137: #
+    04138: #         if price is not None:
+    04139: #             payload["price"] = self._as_payload_number(price)
+    04140: #         else:
+    04141: #             payload["price"] = None
+    04142: #
+    04143: #         if cid:
+    04144: #             payload["client_id"] = str(cid)
+    04145: #
+    04146: #         extra: Dict[str, Any] = dict(kwargs or {})
+    04147: #
+    04148: #         if reduce_only is not None:
+    04149: #             extra["reduce_only"] = bool(reduce_only)
+    04150: #
+    04151: #         if market_norm == "futures":
+
+================================================================================
+CONTEXT around line 4138 (4126-4156)
+================================================================================
+    04126: #
+    04127: #         if fill_norm == "limit" and price is None:
+    04128: #             raise ValueError("Price must be specified for LIMIT orders.")
+    04129: #
+    04130: #         payload: Dict[str, Any] = {
+    04131: #             "symbol": sym,
+    04132: #             "amount": self._as_payload_number(amount),
+    04133: #             "side": self._norm_side(side),
+    04134: #             "fill_type": fill_norm,
+    04135: #             "market": market_norm,
+    04136: #         }
+    04137: #
+>>> 04138: #         if price is not None:
+    04139: #             payload["price"] = self._as_payload_number(price)
+    04140: #         else:
+    04141: #             payload["price"] = None
+    04142: #
+    04143: #         if cid:
+    04144: #             payload["client_id"] = str(cid)
+    04145: #
+    04146: #         extra: Dict[str, Any] = dict(kwargs or {})
+    04147: #
+    04148: #         if reduce_only is not None:
+    04149: #             extra["reduce_only"] = bool(reduce_only)
+    04150: #
+    04151: #         if market_norm == "futures":
+    04152: #             extra["reduce_only"] = bool(extra.get("reduce_only", False))
+    04153: #             if "leverage" in extra and extra.get("leverage") is not None:
+    04154: #                 try:
+    04155: #                     extra["leverage"] = float(extra.get("leverage"))
+    04156: #                 except (TypeError, ValueError):
+
+================================================================================
+CONTEXT around line 4258 (4246-4276)
+================================================================================
+    04246: #===================================================================================================
+    04247: # QUARANTINED BROKEN NESTED BLOCK: place_market original lines 3367-3395, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+    04248: # This block was not removed in the candidate output.
+    04249: # It is commented out to avoid duplicate/nested accidental definitions.
+    04250: # Review manually before applying any final repair.
+    04251: #===================================================================================================
+    04252: #     async def place_market(
+    04253: #         self,
+    04254: #         symbol: str,
+    04255: #         side: str,
+    04256: #         qty: float,
+    04257: #         cid: Optional[str] = None,
+>>> 04258: #         *,
+    04259: #         notional_irt: Optional[float] = None,
+    04260: #         market: str = "spot",
+    04261: #         reduce_only: Optional[bool] = None,
+    04262: #         leverage: Optional[Union[int, float]] = None,
+    04263: #         **kwargs: Any,
+    04264: #     ) -> dict:
+    04265: #         extra: Dict[str, Any] = dict(kwargs or {})
+    04266: #         if notional_irt is not None and "notional_irt" not in extra:
+    04267: #             extra["notional_irt"] = notional_irt
+    04268: #
+    04269: #         return await self.place_order(
+    04270: #             symbol=symbol,
+    04271: #             side=side,
+    04272: #             amount=qty,
+    04273: #             price=0.0,
+    04274: #             cid=cid,
+    04275: #             fill_type="market",
+    04276: #             market=market,
+
+================================================================================
+CONTEXT around line 4263 (4251-4281)
+================================================================================
+    04251: #===================================================================================================
+    04252: #     async def place_market(
+    04253: #         self,
+    04254: #         symbol: str,
+    04255: #         side: str,
+    04256: #         qty: float,
+    04257: #         cid: Optional[str] = None,
+    04258: #         *,
+    04259: #         notional_irt: Optional[float] = None,
+    04260: #         market: str = "spot",
+    04261: #         reduce_only: Optional[bool] = None,
+    04262: #         leverage: Optional[Union[int, float]] = None,
+>>> 04263: #         **kwargs: Any,
+    04264: #     ) -> dict:
+    04265: #         extra: Dict[str, Any] = dict(kwargs or {})
+    04266: #         if notional_irt is not None and "notional_irt" not in extra:
+    04267: #             extra["notional_irt"] = notional_irt
+    04268: #
+    04269: #         return await self.place_order(
+    04270: #             symbol=symbol,
+    04271: #             side=side,
+    04272: #             amount=qty,
+    04273: #             price=0.0,
+    04274: #             cid=cid,
+    04275: #             fill_type="market",
+    04276: #             market=market,
+    04277: #             reduce_only=reduce_only,
+    04278: #             leverage=leverage,
+    04279: #             **extra,
+    04280: #         )
+    04281: #===================================================================================================
+
+================================================================================
+CONTEXT around line 4393 (4381-4411)
+================================================================================
+    04381: #                 base_params["limit"] = int(limit) if limit is not None else 50
+    04382: #             except Exception:
+    04383: #                 base_params["limit"] = 50
+    04384: #             try:
+    04385: #                 base_params["offset"] = int(offset) if offset is not None else 0
+    04386: #             except Exception:
+    04387: #                 base_params["offset"] = 0
+    04388: #         st = None
+    04389: #         try:
+    04390: #             st = str(status).strip().lower() if status is not None else None
+    04391: #         except Exception:
+    04392: #             st = None
+>>> 04393: #         if self._is_arzplus() and st in ("open", "opened", "active", "pending"):
+    04394: #             st = "new"
+    04395: #         eps: List[str] = ["/market/orders/", "/market/orders"]
+    04396: #         if st in ("open", "opened", "active", "pending"):
+    04397: #             eps.extend([
+    04398: #                 "/market/orders/open/",
+    04399: #                 "/market/orders/open",
+    04400: #                 "/market/open_orders/",
+    04401: #                 "/market/open_orders",
+    04402: #             ])
+    04403: #         param_variants: List[Dict[str, Any]] = []
+    04404: #         if st:
+    04405: #             param_variants.append({"status": st})
+    04406: #             param_variants.append({"state": st})
+    04407: #         else:
+    04408: #             param_variants.append({})
+    04409: #         last_err = None
+    04410: #         for ep in eps:
+    04411: #             for pv in param_variants:
+
+================================================================================
+CONTEXT around line 4398 (4386-4416)
+================================================================================
+    04386: #             except Exception:
+    04387: #                 base_params["offset"] = 0
+    04388: #         st = None
+    04389: #         try:
+    04390: #             st = str(status).strip().lower() if status is not None else None
+    04391: #         except Exception:
+    04392: #             st = None
+    04393: #         if self._is_arzplus() and st in ("open", "opened", "active", "pending"):
+    04394: #             st = "new"
+    04395: #         eps: List[str] = ["/market/orders/", "/market/orders"]
+    04396: #         if st in ("open", "opened", "active", "pending"):
+    04397: #             eps.extend([
+>>> 04398: #                 "/market/orders/open/",
+    04399: #                 "/market/orders/open",
+    04400: #                 "/market/open_orders/",
+    04401: #                 "/market/open_orders",
+    04402: #             ])
+    04403: #         param_variants: List[Dict[str, Any]] = []
+    04404: #         if st:
+    04405: #             param_variants.append({"status": st})
+    04406: #             param_variants.append({"state": st})
+    04407: #         else:
+    04408: #             param_variants.append({})
+    04409: #         last_err = None
+    04410: #         for ep in eps:
+    04411: #             for pv in param_variants:
+    04412: #                 params = dict(base_params)
+    04413: #                 try:
+    04414: #                     params.update(pv or {})
+    04415: #                 except Exception:
+    04416: #                     pass
+
+================================================================================
+CONTEXT around line 8635 (8623-8653)
+================================================================================
+    08623:             if self.state == CircuitBreakerState.HALF_OPEN:
+    08624:                 self.success_count += 1
+    08625:                 if self.success_count >= 3:
+    08626:                     self.state = CircuitBreakerState.CLOSED
+    08627:                     self.failure_count = 0
+    08628:                     self.success_count = 0
+    08629:                     self._state_change_time = time.time()
+    08630:                     logging.info(f"Circuit breaker {self.name} closed")
+    08631:             elif self.state == CircuitBreakerState.CLOSED:
+    08632:                 if self.failure_count > 0:
+    08633:                     elapsed = time.time() - self.last_failure_time
+    08634:                     if elapsed > 30:
+>>> 08635:                         self.failure_count = max(0, self.failure_count - 1)
+    08636:     def record_failure(self):
+    08637:         with self._lock:
+    08638:             self.failure_count += 1
+    08639:             self.last_failure_time = time.time()
+    08640:             self.success_count = 0
+    08641:             if (self.state == CircuitBreakerState.CLOSED and
+    08642:                 self.failure_count >= self.config.circuit_breaker_threshold):
+    08643:                 self.state = CircuitBreakerState.OPEN
+    08644:                 self._state_change_time = time.time()
+    08645:                 logging.warning(f"Circuit breaker {self.name} opened")
+    08646:                 self._schedule_half_open()
+    08647:             elif self.state == CircuitBreakerState.HALF_OPEN:
+    08648:                 self.state = CircuitBreakerState.OPEN
+    08649:                 self._state_change_time = time.time()
+    08650:                 logging.warning(f"Circuit breaker {self.name} re-opened")
+    08651:                 self._schedule_half_open()
+    08652:     def _schedule_half_open(self):
+    08653:         async def _transition():
+
+================================================================================
+CONTEXT around line 8667 (8655-8685)
+================================================================================
+    08655:                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+    08656:                 with self._lock:
+    08657:                     if self.state == CircuitBreakerState.OPEN:
+    08658:                         self.state = CircuitBreakerState.HALF_OPEN
+    08659:                         self._state_change_time = time.time()
+    08660:                         logging.info("event=CB_HALF_OPEN name=%s", str(self.name))
+    08661:             except asyncio.CancelledError:
+    08662:                 raise
+    08663:             except Exception:
+    08664:                 logging.exception("event=CB_HALF_OPEN_ERR name=%s", str(self.name))
+    08665:         try:
+    08666:             asyncio.create_task(_transition(), name=f"cb_halfopen_{self.name}")
+>>> 08667:         except Exception:
+    08668:             logging.exception("event=CB_SCHED_ERR name=%s", str(self.name))
+    08669:     def can_execute(self) -> bool:
+    08670:         with self._lock:
+    08671:             return self.state != CircuitBreakerState.OPEN
+    08672:     def get_state(self) -> Dict[str, Any]:
+    08673:         with self._lock:
+    08674:             return {
+    08675:                 "name": self.name,
+    08676:                 "state": self.state.value,
+    08677:                 "failure_count": self.failure_count,
+    08678:                 "success_count": self.success_count,
+    08679:                 "last_failure": self.last_failure_time,
+    08680:                 "state_since": self._state_change_time
+    08681:             }
+    08682: class AdaptiveRetryHandler:
+    08683:     def __init__(self):
+    08684:         self.breakers: Dict[str, SmartCircuitBreaker] = {}
+    08685:         self.retry_stats: Dict[str, Dict[str, int]] = defaultdict(
+
+================================================================================
+CONTEXT around line 9338 (9326-9356)
+================================================================================
+    09326:             base_conf = float(clamp(base_conf + 0.15, 0.0, 1.0))
+    09327:         elif action == "SELL" and downtrend:
+    09328:             base_conf = float(clamp(base_conf + 0.15, 0.0, 1.0))
+    09329:         if action == "HOLD":
+    09330:             base_conf = float(min(base_conf, 0.45))
+    09331:         return {
+    09332:             "action": action,
+    09333:             "symbol": symbol,
+    09334:             "score": float(comp),
+    09335:             "confidence": float(base_conf),
+    09336:         }
+    09337:     async def _get_portfolio_data(self) -> Dict[str, Any]:
+>>> 09338:         try:
+    09339:             balance_data = await self.api_client.request(
+    09340:                 "GET",
+    09341:                 "/wallet/balance/"
+    09342:             )
+    09343:             cash = float(balance_data.get("IRT", {}).get("available", 0))
+    09344:             return {
+    09345:                 "capital": cash,
+    09346:                 "exposure": 0.0,
+    09347:                 "positions": []
+    09348:             }
+    09349:         except Exception as e:
+    09350:             try:
+    09351:                 _phase54_audit_log("raise_TradingHalt", line=9338)
+    09352:             except Exception:
+    09353:                 pass
+    09354:             raise TradingHalt("BALANCE_FETCH_FAILED: DASH_PORTFOLIO_BALANCE") from e
+    09355:     async def _execute_trade(
+    09356:         self,
+
+================================================================================
+CONTEXT around line 11317 (11305-11335)
+================================================================================
+    11305:     def __init__(self, cfg: BotConfig, ex: ExchangeClient, normalizer: OrderNormalizer, logger: logging.Logger,
+    11306:                  recorder: Optional[TickRecorder] = None, wallet_name: str = "W1", order_journal: Optional['OrderJournal'] = None):
+    11307:         self.cfg = cfg
+    11308:         self._ex = ex
+    11309:         self._norm = normalizer
+    11310:         self._logger = logger
+    11311:         self._rec = recorder
+    11312:         self._wallet = wallet_name
+    11313:         self._oj = order_journal
+    11314:         self._submit_lock = asyncio.Lock()
+    11315:         self.max_retries = _env_int("ORDER_MAX_RETRIES", 2)
+    11316:         self.base_backoff = _env_float("ORDER_BACKOFF_SEC", 0.5)
+>>> 11317:         self.ghost_order_count: int = 0
+    11318:         self._last_deep_prune_ts: float = 0.0
+    11319:     def _regime_multiplier(self, symbol: str, notional_irt: float) -> float:
+    11320:         sym = _canon_symbol(symbol)
+    11321:         reg = AlphaModel.get_regime(sym)
+    11322:         st = str(reg.get("state") or "").upper()
+    11323:         strength = float(reg.get("strength") or 0.0)
+    11324:         mult = 1.0
+    11325:         if st == "VOLATILE":
+    11326:             mult *= 0.50
+    11327:         elif st == "RANGING":
+    11328:             mult *= 0.85
+    11329:         elif st == "TRENDING":
+    11330:             if strength >= 0.55:
+    11331:                 try:
+    11332:                     kf = 1.0
+    11333:                     r = getattr(self, "_risk", None)
+    11334:                     mem = getattr(r, "memory", None) if r is not None else None
+    11335:                     if mem is not None and hasattr(mem, "kelly_fraction"):
+
+================================================================================
+CONTEXT around line 11365 (11353-11383)
+================================================================================
+    11353:             mult = 1.0
+    11354:         return float(mult)
+    11355:     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+    11356:         sym = _canon_symbol(symbol)
+    11357:         try:
+    11358:             side_l0 = str(side or "").lower()
+    11359:             if side_l0.startswith("buy"):
+    11360:                 m = self._regime_multiplier(sym, float(notional_irt))
+    11361:                 m = float(clamp(float(m), 0.0, 1.0))
+    11362:                 if m != 1.0:
+    11363:                     qty = float(qty) * float(m)
+    11364:                     notional_irt = float(notional_irt) * float(m)
+>>> 11365:         except Exception:
+    11366:             pass
+    11367:         if self.cfg.dry_run:
+    11368:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+    11369:             if self._rec:
+    11370:                 self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+    11371:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+    11372:             return {"ok": True, "dry_run": True}
+    11373:         r = getattr(self, "_risk", None)
+    11374:         if r is not None:
+    11375:             try:
+    11376:                 hb = getattr(r, "hard_blocks_all_orders", None)
+    11377:                 side_lk = str(side or "").lower().strip()
+    11378:                 if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+    11379:                     reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+    11380:                     self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+    11381:                     try:
+    11382:                         _phase54_audit_log("raise_TradingHalt", line=11365)
+    11383:                     except Exception:
+
+================================================================================
+CONTEXT around line 11370 (11358-11388)
+================================================================================
+    11358:             side_l0 = str(side or "").lower()
+    11359:             if side_l0.startswith("buy"):
+    11360:                 m = self._regime_multiplier(sym, float(notional_irt))
+    11361:                 m = float(clamp(float(m), 0.0, 1.0))
+    11362:                 if m != 1.0:
+    11363:                     qty = float(qty) * float(m)
+    11364:                     notional_irt = float(notional_irt) * float(m)
+    11365:         except Exception:
+    11366:             pass
+    11367:         if self.cfg.dry_run:
+    11368:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+    11369:             if self._rec:
+>>> 11370:                 self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+    11371:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+    11372:             return {"ok": True, "dry_run": True}
+    11373:         r = getattr(self, "_risk", None)
+    11374:         if r is not None:
+    11375:             try:
+    11376:                 hb = getattr(r, "hard_blocks_all_orders", None)
+    11377:                 side_lk = str(side or "").lower().strip()
+    11378:                 if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+    11379:                     reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+    11380:                     self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+    11381:                     try:
+    11382:                         _phase54_audit_log("raise_TradingHalt", line=11365)
+    11383:                     except Exception:
+    11384:                         pass
+    11385:                     raise TradingHalt(f"HARD_BLOCK:{reason}")
+    11386:             except TradingHalt:
+    11387:                 raise
+    11388:             except Exception as e:
+
+================================================================================
+CONTEXT around line 11418 (11406-11436)
+================================================================================
+    11406:                         _phase54_audit_log("raise_TemporaryPause", line=11317)
+    11407:                     except Exception:
+    11408:                         pass
+    11409:                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+    11410:                 mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+    11411:                 mult = float(clamp(mult, 0.0, 1.0))
+    11412:                 _skip_mult = False
+    11413:                 try:
+    11414:                     _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+    11415:                 except Exception:
+    11416:                     _skip_mult = False
+    11417:                 if (not _skip_mult) and mult < 0.999:
+>>> 11418:                     qty = float(qty) * mult
+    11419:                     notional_irt = float(notional_irt) * mult
+    11420:                     try:
+    11421:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+    11422:                                           self._wallet, sym, str(getattr(rd,'level','?')), mult)
+    11423:                     except Exception:
+    11424:                         pass
+    11425:         except TemporaryPause:
+    11426:             raise
+    11427:         except Exception:
+    11428:             pass
+    11429:         if qty <= 0 or price <= 0:
+    11430:             raise ValueError(f"Invalid order params qty={qty} price={price}")
+    11431:         qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+    11432:         if qty2 <= 0 or px2 <= 0:
+    11433:             raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+    11434:         cid: Optional[str] = None
+    11435:         if self._oj is not None:
+    11436:             cid = self._oj.new_cid(self._wallet, sym, side)
+
+================================================================================
+CONTEXT around line 11515 (11503-11533)
+================================================================================
+    11503:                             resp["cid"] = str(cid)
+    11504:                 except Exception:
+    11505:                     pass
+    11506:                 return resp
+    11507:             except (TradingHalt, TemporaryPause):
+    11508:                 raise
+    11509:             except asyncio.TimeoutError as e:
+    11510:                 last_exc = e
+    11511:                 try:
+    11512:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+    11513:                 except Exception:
+    11514:                     pass
+>>> 11515:                 if attempt < self.max_retries:
+    11516:                     try:
+    11517:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+    11518:                     except Exception:
+    11519:                         pass
+    11520:                     continue
+    11521:                 break
+    11522:             except Exception as e:
+    11523:                 last_exc = e
+    11524:                 try:
+    11525:                     self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+    11526:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+    11527:                 except Exception:
+    11528:                     pass
+    11529:                 if attempt < self.max_retries:
+    11530:                     try:
+    11531:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+    11532:                     except Exception:
+    11533:                         pass
+
+================================================================================
+CONTEXT around line 11666 (11654-11684)
+================================================================================
+    11654:                 try:
+    11655:                     r = await self._ex.list_orders(status=st)
+    11656:                     if r is not None:
+    11657:                         resps.append(r)
+    11658:                 except Exception:
+    11659:                     pass
+    11660:             if not resps:
+    11661:                 try:
+    11662:                     r = await self._ex.list_orders()
+    11663:                     if r is not None:
+    11664:                         resps.append(r)
+    11665:                 except Exception:
+>>> 11666:                     pass
+    11667:         except Exception:
+    11668:             resps = []
+    11669:         orders: List[dict] = []
+    11670:         try:
+    11671:             for r in (resps or []):
+    11672:                 orders.extend(OrderJournal._extract_orders(r))
+    11673:         except Exception:
+    11674:             orders = []
+    11675:         seen = set()
+    11676:         uniq: List[dict] = []
+    11677:         for o in (orders or []):
+    11678:             if not isinstance(o, dict):
+    11679:                 continue
+    11680:             try:
+    11681:                 oid0 = OrderJournal._order_id(o)
+    11682:             except Exception:
+    11683:                 oid0 = None
+    11684:             k = str(oid0 or "").strip()

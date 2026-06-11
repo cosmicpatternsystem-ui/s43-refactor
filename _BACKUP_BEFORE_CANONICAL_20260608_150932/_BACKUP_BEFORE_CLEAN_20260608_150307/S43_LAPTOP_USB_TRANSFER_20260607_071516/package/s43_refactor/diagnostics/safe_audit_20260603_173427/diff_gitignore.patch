@@ -1,0 +1,158 @@
+diff --git a/.gitignore b/.gitignore
+index 65757b4..bd93d52 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,103 +1,56 @@
++# Python
+ __pycache__/
+ *.pyc
+-.pytest_cache/
+-
+-*.log
++*.pyo
++*.pyd
++*.pdb
++
++# Virtual environments / env files
++venv/
++.venv/
++env/
++.env
++.env.*
++!.env.example
++
++# Logs
+ logs/
+-runtime_probes/
++*.log
+ 
+-cache/
++# Temporary files
++tmp/
++temp/
+ *.tmp
+-.pp_price_cache.json.tmp
+-
+-backups/
+-snapshots/
+-*.bak
+-*.bak.*
+-s43.py.bak*
+-s43.py.stable*
+-s43.py.pre_*
+-s43.py.before_*
+-snap_before_patch_*.py
+-
+-phase*_reports/
+-phase7c_artifacts/
+-*_snippets_*/
+-
+-# Local probes / phase backups
+-.phase*_gate_probe.py
+-.phase*_backup_*/
+-
+-# Local patch/fix/helper scripts
+-fix_*.py
+-patch*.py
+-phase*_*.py
+-inspect_*_targets.py
+-compile_or_restore.sh
+-monitor_*.sh
+-s43_extract_hotspots.sh
+-s43_manager.sh
+-s43_probe_runtime.sh
+-safe_check.sh
+-smoke_execute_trade.py
+-
+-# Generated audit/status/report documents
+-PHASE*.txt
+-PATCH*.txt
+-*_STATUS.md
+-*_PLAN.md
+-*_audit.txt
+-*_grep.txt
+-*_inspect.txt
+-*_report.txt
+-*_reports.txt
+-*_manifest.txt
+-*_snippets.txt
+-*_context.txt
+-*_map.txt
+-*_evidence.txt
+-*_ledger.txt
+-
+-# Sensitive/security triage artifacts - do not commit
+-*SECRET*
+-*TOKEN*
+-*REDACTED*
+-*CREDENTIAL*
+-*KEYWORD*
+-*KEY_PATTERNS*
+-*ENV_KEY*
+-*WALLET_SLOT*
+-*WALLET_SLOTS*
+-
+-# Local repaired/restored/candidate copies of s43
+-s43_FINAL_*.py
+-s43_before_*.py
+-s43_broken_*.py
+-s43_final_*.py
+-s43_repair_*.py
+-s43_restored_*.py
+-s43_auth_context.txt
+-s43_canonical_core_map.txt
+-s43_execution_path_audit.txt
+-s43_patch_plan*
+-s43_runtime_path_snippets.txt
+-s43_structural_map.txt
+-
+-# Additional local patch/release leftovers
+-*.patch
+-*.diff
+ *.bak
+-final_release_*/
+-phase*_instrument_report_*.txt
+-phase*_context_extract_*.txt
+-phase*_auto_audit_report_*.txt
+-phase*_patch_termux.sh
+-quarantine_check.txt
+-
+-# Final local leftovers
+-*.literal_n_bak
+-❌
+-
+-# Local audit scratch files
+-audit_targets.txt
+-critical_only.txt
++*.old
++*.swp
++
++# Archives and packed backups
++archive/
++archive_packed_backup/
++*.tar.gz
++*.zip
++*.rar
++*.7z
++
++# Snapshots / historical backups
++snapshots/
++*_snapshot_*
++*_backup_*
++*.before_*
++
++# Reports / audit artifacts
++reports/
++audit_reports/
++*_audit_*
++*_report_*
++*_status_*
++
++# Termux / system / OS
++.termux/
++.DS_Store
++Thumbs.db
++
++# Local editor files
++.vscode/
++.idea/

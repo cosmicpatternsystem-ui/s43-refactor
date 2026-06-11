@@ -1,0 +1,2 @@
+﻿Rollback command:
+Copy-Item ".\auto_apply_safe_patch_pyfix_20260610_090556\s43_instrumented_LATEST.py.bak" ".\s43_instrumented_LATEST.py" -Force

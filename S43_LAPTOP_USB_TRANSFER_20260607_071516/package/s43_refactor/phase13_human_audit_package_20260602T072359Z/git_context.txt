@@ -1,0 +1,28 @@
+Current branch:
+planning/phase11-readiness-discovery
+
+Recent commits:
+40274b2 docs: add phase 11 final review summary
+9410d09 docs: add phase 11 readiness gate review entry
+ba38fa7 docs: add phase 11 evidence index handoff closure
+e1acbac docs: add phase 11 evidence index handoff closure
+63ef933 docs: add phase 11 reconciliation git context evidence
+b4433ab docs: record phase 11 roadmap reconciliation
+516ea35 docs: define phase 11 scope boundaries
+e1d7e9d docs: record phase 11 readiness discovery baseline
+d5e21bf merge: integrate phase 10 hardening closure
+748db70 docs: close phase 10 hardening verification
+936345c docs: add phase10 post-freeze local hardening handoff
+2c41616 docs: record phase10 post-freeze live guard verification
+438c881 hardening: add post-freeze environment live safety guard
+4b49ed0 docs: prepare termux local post-freeze edit mode
+789cef7 hardening: block --live activation by default in offline review mode
+f9037c8 chore: align phase 9 verifier with review intake
+c82795c Open Phase 9 review intake
+e8b5c4e Add final Phase 9 review handoff note
+cd1b508 Reference Phase 9 guardrails in checkpoint manifest
+0c31215 Add Phase 9 post-checkpoint guardrails
+
+Remote info:
+origin	https://github.com/cosmicpatternsystem-ui/s43-refactor.git (fetch)
+origin	https://github.com/cosmicpatternsystem-ui/s43-refactor.git (push)

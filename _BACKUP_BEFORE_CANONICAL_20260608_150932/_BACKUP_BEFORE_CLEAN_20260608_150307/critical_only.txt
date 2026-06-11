@@ -1,0 +1,1514 @@
+LINE 105:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+
+    logging.Logger.callHandlers = _s43_safe_callHandlers
+
+import traceback
+import subprocess
+import threading
+import sqlite3
+------------------------
+LINE 166:             except Exception
+CONTEXT:
+            except Exception:
+                parts.append(f"{k}=<unrepr>")
+        line = " | ".join(parts)
+        try:
+            print(line)
+        except Exception:
+            pass
+        try:
+            with open("phase54_runtime_audit.log", "a", encoding="utf-8") as f:
+------------------------
+LINE 171:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            with open("phase54_runtime_audit.log", "a", encoding="utf-8") as f:
+                f.write(line + "\\n")
+        except Exception:
+            pass
+    except Exception:
+        pass
+------------------------
+LINE 176:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+    except Exception:
+        pass
+# === PHASE54 AUDIT HELPER END ===
+
+
+
+
+------------------------
+LINE 178:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+# === PHASE54 AUDIT HELPER END ===
+
+
+
+
+@dataclass(frozen=True)
+class BotConfig:
+------------------------
+LINE 372:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            object.__setattr__(self, "symbol_priority", _norm_list(getattr(self, "symbol_priority", None)))
+        except Exception:
+            pass
+        try:
+            object.__setattr__(self, "flash_ref_symbols", _norm_list(getattr(self, "flash_ref_symbols", None)))
+        except Exception:
+------------------------
+LINE 376:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            object.__setattr__(self, "flash_ref_symbols", _norm_list(getattr(self, "flash_ref_symbols", None)))
+        except Exception:
+            pass
+class _DashRingHandler(logging.Handler):
+    def __init__(self, maxlen: int = 400):
+        super().__init__(level=logging.INFO)
+------------------------
+LINE 380:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+class _DashRingHandler(logging.Handler):
+    def __init__(self, maxlen: int = 400):
+        super().__init__(level=logging.INFO)
+        from collections import deque as _s43_deque
+
+
+# === S43_INTERNAL_NAMEERROR_FALLBACKS ===
+------------------------
+LINE 411:             except
+CONTEXT:
+            except:
+                pass
+        except:
+            pass
+    except Exception as e:
+        raise SystemExit(f"pathlib missing: {e}")
+    data = _parisa_embedded_code_bytes()
+    p = Path(out_path).expanduser()
+    try:
+------------------------
+LINE 413:         except
+CONTEXT:
+        except:
+            pass
+    except Exception as e:
+        raise SystemExit(f"pathlib missing: {e}")
+    data = _parisa_embedded_code_bytes()
+    p = Path(out_path).expanduser()
+    try:
+        p = p.resolve()
+    except Exception:
+------------------------
+LINE 421:     except Exception
+CONTEXT:
+    except Exception:
+        p = Path(os.path.abspath(str(p)))
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    try:
+        p.write_bytes(data)
+    except Exception as e:
+------------------------
+LINE 425:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    try:
+        p.write_bytes(data)
+    except Exception as e:
+        raise SystemExit(f"Failed to write embedded Parisa to {p}: {e}")
+    return str(p)
+def _load_parisa_module():
+    import types as _types
+------------------------
+LINE 456:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    _sys.modules[name] = mod
+    exec(compile(code_bytes, virtual_file, "exec"), mod.__dict__)
+    return mod
+
+
+def _parisa_preflight(mod) -> None:
+    import os as _os
+------------------------
+LINE 470:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    try:
+        for slot in (1, 2, 3):
+            tok = get_arzplus_token(slot)
+            if tok and (not _looks_placeholder_token(tok)):
+                setattr(mod, f"ARZPLUS_WALLET_{slot}_TOKEN", tok)
+    except Exception:
+        pass
+------------------------
+LINE 477:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    for fn in ("_pp_apply_manual_tokens", "_maybe_set_env_from_walletstore", "_pp110_child_hb_init"):
+        if hasattr(mod, fn):
+            try:
+                getattr(mod, fn)()
+            except Exception as e:
+                _boot_logger().exception("event=PARISA_PREFLIGHT_FAIL fn=%s err=%s", fn, e)
+                raise
+------------------------
+LINE 492:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    try:
+        if _env_bool("ARZPLUS_AUTH_DEBUG", False):
+            lg = _boot_logger()
+            for _slot in (1, 2, 3):
+                _tok = get_arzplus_token(_slot)
+                _src = _ARZPLUS_TOKEN_SOURCE.get(int(_slot), "unknown")
+                _val = _strip_token_value(_tok)
+------------------------
+LINE 509:                         except
+CONTEXT:
+                        except:
+                            pass
+                    except:
+                        pass
+                    _sys.stderr.write(
+                        f"ARZPLUS_AUTH slot={_slot} source={_src} scheme=Token token_len={(len(_val) if _val else 0)} fp={_token_fingerprint(_tok)}\n"
+                    )
+                    _sys.stderr.flush()
+                except Exception:
+------------------------
+LINE 511:                     except
+CONTEXT:
+                    except:
+                        pass
+                    _sys.stderr.write(
+                        f"ARZPLUS_AUTH slot={_slot} source={_src} scheme=Token token_len={(len(_val) if _val else 0)} fp={_token_fingerprint(_tok)}\n"
+                    )
+                    _sys.stderr.flush()
+                except Exception:
+                    pass
+    except Exception:
+------------------------
+LINE 517:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+    except Exception:
+        pass
+class _NoopLock:
+    __slots__ = ()
+    def acquire(self, *args, **kwargs):
+        return True
+    def release(self):
+------------------------
+LINE 519:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+class _NoopLock:
+    __slots__ = ()
+    def acquire(self, *args, **kwargs):
+        return True
+    def release(self):
+        return None
+    def locked(self):
+------------------------
+LINE 573:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+
+        keys = [symbol, sym, sym.upper(), str(symbol).upper()]
+        for d in candidates:
+            for k in keys:
+                try:
+                    if k in d and isinstance(d[k], dict):
+                        out = dict(base)
+------------------------
+LINE 587:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+
+        return base
+# === /S43_INTERNAL_NAMEERROR_FALLBACKS ===
+
+        self._buf = _s43_deque(maxlen=int(maxlen or 400))
+        self._lock = _NoopLock()
+    def emit(self, record: logging.LogRecord) -> None:
+------------------------
+LINE 644:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            try:
+                s = re.sub(
+                    r"\[(?:/)?(?:red|green|yellow|cyan|magenta|blue|white|black|grey\d*|gray\d*|bold|dim|italic|underline|blink|reverse)\]",
+                    "",
+                    s,
+                    flags=re.I,
+                )
+------------------------
+LINE 653:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            return s
+        def _norm_ev(s: str) -> str:
+            s = _plain_ev(s)
+            s = re.sub(r"\b\d{1,2}:\d{2}:\d{2}\b", "", s)
+            s = re.sub(r"\b\d+(?:\.\d+)?(ms|s)\b", "", s)
+            s = re.sub(r"Age:\s*\d+(?:\.\d+)?s", "Age:", s, flags=re.I)
+            s = re.sub(r"\d+", "N", s)
+------------------------
+LINE 692:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+            u = s.upper()
+            if "[RECLAIM]" in u and not s.lstrip().startswith(("♻️", "🔁", "↩️")):
+                s = "♻️ " + s
+            elif ("[VOLTAGE]" in u or "RADAR SET" in u) and not s.lstrip().startswith("⚡"):
+                s = "⚡ " + s
+            elif any(k in u for k in ("BUY", "SELL", "FILLED", "ORDER")) and not s.lstrip().startswith(("✅", "🟢", "🔴")):
+                s = "✅ " + s
+------------------------
+LINE 720:     except
+CONTEXT:
+    except:
+        pass
+except:
+    pass
+_TERMUX_BOOT_TS = time.time()
+_TERMUX_LAST_ORDER_TS = _TERMUX_BOOT_TS
+
+def _ensure_dir(path):
+    """Ensure parent directory for a file path exists."""
+------------------------
+LINE 722: except
+CONTEXT:
+except:
+    pass
+_TERMUX_BOOT_TS = time.time()
+_TERMUX_LAST_ORDER_TS = _TERMUX_BOOT_TS
+
+def _ensure_dir(path):
+    """Ensure parent directory for a file path exists."""
+    try:
+        import os
+------------------------
+LINE 736:     except Exception
+CONTEXT:
+    except Exception:
+        pass
+    return path
+
+
+# s43 recovery: required by Logger
+try:
+    from logging.handlers import RotatingFileHandler
+except Exception:
+------------------------
+LINE 786:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+        except Exception:
+            try:
+                print("[SAFE-LOGGING] Logging init skipped")
+            except Exception:
+                pass
+class CircuitBreaker:
+    def __init__(self, max_errors: int, cooldown_sec: float, logger: logging.Logger):
+------------------------
+LINE 788:         except Exception
+CONTEXT:
+        except Exception:
+            try:
+                print("[SAFE-LOGGING] Logging init skipped")
+            except Exception:
+                pass
+class CircuitBreaker:
+    def __init__(self, max_errors: int, cooldown_sec: float, logger: logging.Logger):
+        self.max_errors = int(max_errors)
+        self.cooldown_sec = float(cooldown_sec)
+------------------------
+LINE 791:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+class CircuitBreaker:
+    def __init__(self, max_errors: int, cooldown_sec: float, logger: logging.Logger):
+        self.max_errors = int(max_errors)
+        self.cooldown_sec = float(cooldown_sec)
+        self._logger = logger
+        self._errors = 0
+        self._open_until = 0.0
+------------------------
+LINE 846:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+    async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+        pause = float(max(0.0, pause_sec or 0.0))
+        if pause <= 0.0 and not hard:
+            return
+        async with self._lock:
+            now = time.time()
+            if pause > 0.0:
+------------------------
+LINE 935:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+        try:
+            t = re.sub(r"\s+", "", t)
+        except Exception:
+            t = t.replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "")
+        return scheme, t
+    def __init__(
+        self,
+------------------------
+LINE 959:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        self.api_key = self._token
+        self._headers_public = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+        self._headers_private = dict(self._headers_public)
+        if self._token:
+------------------------
+LINE 994:                 except Exception
+CONTEXT:
+                except Exception:
+                    print(_msg, flush=True)
+        except Exception:
+            pass
+        self._limiter = limiter
+        self._logger = logger
+        self._breaker = breaker or CircuitBreaker(
+            cfg.circuit_breaker_errors,
+            cfg.circuit_breaker_cooldown_sec,
+------------------------
+LINE 996:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        self._limiter = limiter
+        self._logger = logger
+        self._breaker = breaker or CircuitBreaker(
+            cfg.circuit_breaker_errors,
+            cfg.circuit_breaker_cooldown_sec,
+            logger,
+        )
+------------------------
+LINE 1050:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not getattr(self, "_auth_scheme", None):
+                if "arzplus" in str(getattr(self.cfg, "base_url", "") or "").lower():
+                    self._auth_scheme = "Token"
+                else:
+                    self._auth_scheme = "Bearer"
+        except Exception:
+------------------------
+LINE 1058:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            hp = getattr(self, "_headers_public", None)
+            if not isinstance(hp, dict):
+                self._headers_public = {"Accept": "application/json", "Content-Type": "application/json"}
+        except Exception:
+            self._headers_public = {"Accept": "application/json", "Content-Type": "application/json"}
+        try:
+------------------------
+LINE 1072:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_headers") or not isinstance(getattr(self, "_headers", None), dict):
+                self._headers = getattr(self, "_headers_private", None) or getattr(self, "_headers_public", None) or {}
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_limiter") or getattr(self, "_limiter", None) is None:
+------------------------
+LINE 1077:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_limiter") or getattr(self, "_limiter", None) is None:
+                rpm = int(getattr(cfg, "rate_limit_per_min", 100) or 100)
+                self._limiter = SharedAsyncRateLimiter(max(10, rpm))
+        except Exception:
+            try:
+                self._limiter = SharedAsyncRateLimiter(100)
+------------------------
+LINE 1083:         except Exception
+CONTEXT:
+        except Exception:
+            try:
+                self._limiter = SharedAsyncRateLimiter(100)
+            except Exception:
+                pass
+        try:
+            if not hasattr(self, "_logger") or getattr(self, "_logger", None) is None:
+                self._logger = logging.getLogger("RazTraderPlus")
+        except Exception:
+------------------------
+LINE 1086:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+        try:
+            if not hasattr(self, "_logger") or getattr(self, "_logger", None) is None:
+                self._logger = logging.getLogger("RazTraderPlus")
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_breaker") or getattr(self, "_breaker", None) is None:
+------------------------
+LINE 1091:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_breaker") or getattr(self, "_breaker", None) is None:
+                self._breaker = CircuitBreaker(
+                    int(getattr(cfg, "circuit_breaker_errors", 6) or 6),
+                    float(getattr(cfg, "circuit_breaker_cooldown_sec", 45.0) or 45.0),
+                    self._logger if isinstance(getattr(self, "_logger", None), logging.Logger) else logging.getLogger("RazTraderPlus"),
+                )
+------------------------
+LINE 1100:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_sem") or getattr(self, "_sem", None) is None:
+                self._sem = PrioritySemaphore(1)
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_session"):
+------------------------
+LINE 1105:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_session"):
+                self._session = None
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_depth_ep_lock") or getattr(self, "_depth_ep_lock", None) is None:
+------------------------
+LINE 1110:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_depth_ep_lock") or getattr(self, "_depth_ep_lock", None) is None:
+                self._depth_ep_lock = asyncio.Lock()
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_working_depth_ep_map") or not isinstance(getattr(self, "_working_depth_ep_map", None), dict):
+------------------------
+LINE 1115:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_working_depth_ep_map") or not isinstance(getattr(self, "_working_depth_ep_map", None), dict):
+                self._working_depth_ep_map = {}
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_working_depth_symid_map") or not isinstance(getattr(self, "_working_depth_symid_map", None), dict):
+------------------------
+LINE 1120:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_working_depth_symid_map") or not isinstance(getattr(self, "_working_depth_symid_map", None), dict):
+                self._working_depth_symid_map = {}
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_arz_stats_cache") or not isinstance(getattr(self, "_arz_stats_cache", None), dict):
+------------------------
+LINE 1125:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_arz_stats_cache") or not isinstance(getattr(self, "_arz_stats_cache", None), dict):
+                self._arz_stats_cache = {}
+        except Exception:
+            pass
+    async def _discover_depth_endpoint(self, symbol: str) -> str:
+        sym0 = _canon_symbol(symbol)
+------------------------
+LINE 1130:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+    async def _discover_depth_endpoint(self, symbol: str) -> str:
+        sym0 = _canon_symbol(symbol)
+        aliases = _symbol_aliases(sym0) or [sym0]
+        try:
+            m = getattr(self, "_working_depth_ep_map", None)
+            if isinstance(m, dict):
+                ep0 = m.get(sym0)
+------------------------
+LINE 1141:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        candidates: List[str] = []
+        try:
+            cand_env = str(os.environ.get("DEPTH_ENDPOINT_CANDIDATES", "") or "").strip()
+        except Exception:
+            cand_env = ""
+        if cand_env:
+            candidates.extend([c.strip() for c in cand_env.split(",") if c.strip()])
+------------------------
+LINE 1219:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+                        res = await asyncio.wait_for(
+                            self.request("GET", url, auth=False, params=params, priority=bool(priority)),
+                            timeout=probe_to,
+                        )
+                        if _looks_like_book(res):
+                            try:
+                                self._working_depth_ep_map[sym0] = ep
+------------------------
+LINE 1228:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+                            try:
+                                self._working_depth_symid_map[sym0] = str(a)
+                            except Exception:
+                                pass
+                            self._working_depth_ep = ep
+                            self._depth_ep_last_sym = sym0
+                            try:
+------------------------
+LINE 1232:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+                            self._working_depth_ep = ep
+                            self._depth_ep_last_sym = sym0
+                            try:
+                                self._logger.info("event=DEPTH_EP_OK sym=%s ep=%s dt_ms=%.0f", sym0, ep, (time.time() - t0) * 1000.0)
+                            except Exception:
+                                pass
+                            return ep
+------------------------
+LINE 1238:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+                            return ep
+                    except Exception as e:
+                        try:
+                            last_err = str(e or "").strip()
+                        except Exception:
+                            last_err = ""
+                        if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+------------------------
+LINE 1244:                         except Exception
+CONTEXT:
+                        except Exception:
+                            last_err = ""
+                        if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+                            try:
+                                self._logger.debug("event=DEPTH_DISCOVER_FAIL sym=%s ep=%s err=%s dt_ms=%.0f", sym0, ep, last_err[:160], (time.time() - t0) * 1000.0)
+                            except Exception:
+                                pass
+                        continue
+        try:
+------------------------
+LINE 1249:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+                        continue
+        try:
+            self._logger.warning("event=DEPTH_EP_DISCOVER_FAIL sym=%s last_err=%s", sym0, str(last_err)[:160])
+        except Exception:
+            pass
+        return "/market/depth/{sym}"
+    def invalidate_depth_endpoint(self, symbol: str, reason: str = "") -> None:
+------------------------
+LINE 1254:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        return "/market/depth/{sym}"
+    def invalidate_depth_endpoint(self, symbol: str, reason: str = "") -> None:
+        sym = _canon_symbol(symbol)
+        try:
+            m = getattr(self, "_working_depth_ep_map", None)
+            if isinstance(m, dict):
+                m.pop(sym, None)
+------------------------
+LINE 1263:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            m2 = getattr(self, "_working_depth_symid_map", None)
+            if isinstance(m2, dict):
+                m2.pop(sym, None)
+        except Exception:
+            pass
+        try:
+------------------------
+LINE 1269:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            if getattr(self, "_depth_ep_last_sym", None) == sym:
+                self._working_depth_ep = None
+                self._depth_ep_last_sym = None
+        except Exception:
+            pass
+        if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+------------------------
+LINE 1275:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+            try:
+                self._logger.debug("event=DEPTH_EP_INVALIDATE sym=%s reason=%s", sym, str(reason or "")[:80])
+            except Exception:
+                pass
+    async def get_depth(self, symbol: str, priority: bool = False) -> dict:
+        q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+------------------------
+LINE 1280:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+    async def get_depth(self, symbol: str, priority: bool = False) -> dict:
+        q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+        sym = _canon_pair(symbol, default_quote=q)
+        if q and sym.upper() == q:
+            return {}
+        if self._is_arzplus():
+            last_err: Optional[Exception] = None
+------------------------
+LINE 1334:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        def _build_call(ep_t: str, sym_used: str) -> Tuple[str, Optional[dict]]:
+            url = ep_t
+            params = None
+            try:
+                if isinstance(ep_t, str) and "{sym}" in ep_t:
+                    url = ep_t.format(sym=sym_used)
+                    params = None
+------------------------
+LINE 1372:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+                try:
+                    self._logger.debug("event=DEPTH_OK sym=%s ep=%s dt_ms=%.0f", sym, str(ep), (time.time() - t0) * 1000.0)
+                except Exception:
+                    pass
+            return out
+        except Exception as e:
+------------------------
+LINE 1377:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+            return out
+        except Exception as e:
+            msg = ""
+            try:
+                msg = str(e or "").strip()
+            except Exception:
+                msg = ""
+------------------------
+LINE 1390:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+                try:
+                    lock = getattr(self, "_depth_ep_lock", None)
+                    if lock is None:
+                        ep2 = await self._discover_depth_endpoint(sym)
+                    else:
+                        async with lock:
+                            ep2 = await self._discover_depth_endpoint(sym)
+------------------------
+LINE 1418:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    if getattr(self._logger, "isEnabledFor", None) and self._logger.isEnabledFor(logging.DEBUG):
+                        try:
+                            self._logger.debug("event=DEPTH_OK_RETRY sym=%s ep=%s dt_ms=%.0f", sym, str(ep2), (time.time() - t0) * 1000.0)
+                        except Exception:
+                            pass
+                    return out
+                except Exception:
+------------------------
+LINE 1423:                         except Exception
+CONTEXT:
+                        except Exception:
+                            pass
+                    return out
+                except Exception:
+                    pass
+            try:
+                self._logger.warning("event=DEPTH_FETCH_FAIL sym=%s ep=%s err=%s", sym, str(ep), msg[:180])
+            except Exception:
+                pass
+------------------------
+LINE 1426:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+            try:
+                self._logger.warning("event=DEPTH_FETCH_FAIL sym=%s ep=%s err=%s", sym, str(ep), msg[:180])
+            except Exception:
+                pass
+            raise
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+------------------------
+LINE 1430:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            raise
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+            timeout = aiohttp.ClientTimeout(total=float(self.cfg.request_timeout_sec))
+            headers = {
+                "User-Agent": self.cfg.user_agent,
+                "Accept": "application/json",
+------------------------
+LINE 1482:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            self._session = None
+        except Exception:
+            pass
+        try:
+            self.last_update_time = 0.0
+        except Exception:
+------------------------
+LINE 1486:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            self.last_update_time = 0.0
+        except Exception:
+            pass
+        try:
+            br = getattr(self, "_breaker", None)
+            if br is not None and hasattr(br, "reset"):
+------------------------
+LINE 1490:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            br = getattr(self, "_breaker", None)
+            if br is not None and hasattr(br, "reset"):
+                br.reset()
+        except Exception:
+            pass
+        try:
+------------------------
+LINE 1496:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            lim = getattr(self, "_limiter", None)
+            if lim is not None and hasattr(lim, "reset"):
+                out = lim.reset()
+                if asyncio.iscoroutine(out):
+                    await out
+        except Exception:
+------------------------
+LINE 1504:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        return True
+    async def reset_http(self) -> bool:
+        return await self.reset_session()
+    async def reset_network(self) -> bool:
+        return await self.reset_session()
+    @staticmethod
+    def _is_transient_for_breaker(exc: Exception) -> bool:
+------------------------
+LINE 1516:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            msg = str(exc or "")
+        except Exception:
+            msg = ""
+        msgu = msg.upper()
+        if "TRANSIENT HTTP" in msgu or "BAD JSON" in msgu or "JSONDECODE" in msgu:
+            return True
+------------------------
+LINE 1533:         except Exception
+CONTEXT:
+        except Exception:
+            return ""
+        try:
+            s = s.replace("\n", " ").replace("\r", " ").strip()
+        except Exception:
+            pass
+        try:
+            s = s.encode("ascii", "ignore").decode("ascii", "ignore")
+        except Exception:
+------------------------
+LINE 1537:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            s = s.encode("ascii", "ignore").decode("ascii", "ignore")
+        except Exception:
+            pass
+        if len(s) > int(limit):
+            s = s[: int(limit)]
+        return s
+------------------------
+LINE 1541:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        if len(s) > int(limit):
+            s = s[: int(limit)]
+        return s
+
+    @staticmethod
+    def _sanitize_body_for_debug(raw: str, limit: int = 300) -> str:
+        """Short body snippet for logs (unicode-safe, redacted, max `limit` chars)."""
+------------------------
+LINE 1552:         except Exception
+CONTEXT:
+        except Exception:
+            return ""
+        try:
+            s = s.replace("\r", " ").replace("\n", " ")
+            s = re.sub(r"\s+", " ", s).strip()
+        except Exception:
+            pass
+        try:
+            # Reuse global redactor (tokens/keys) if present
+------------------------
+LINE 1557:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            # Reuse global redactor (tokens/keys) if present
+            if "_pp200_redact" in globals() and callable(globals().get("_pp200_redact")):
+                s = globals()["_pp200_redact"](s)
+        except Exception:
+            pass
+        if len(s) > int(limit):
+------------------------
+LINE 1563:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        if len(s) > int(limit):
+            s = s[: int(limit)]
+        return s
+
+    @staticmethod
+    def _waf_headers_subset(resp_headers: Dict[str, str]) -> Dict[str, str]:
+        """Return a compact subset of server/WAF-related headers."""
+------------------------
+LINE 1602:                 except
+CONTEXT:
+                except:
+                    pass
+            except:
+                pass
+            dt = parsedate_to_datetime(str(date_val))
+            if dt is None:
+                return None
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=datetime.timezone.utc)
+------------------------
+LINE 1604:             except
+CONTEXT:
+            except:
+                pass
+            dt = parsedate_to_datetime(str(date_val))
+            if dt is None:
+                return None
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=datetime.timezone.utc)
+            return float(dt.timestamp())
+        except Exception:
+------------------------
+LINE 1612:         except Exception
+CONTEXT:
+        except Exception:
+            return None
+
+    def _clock_drift_from_headers(self, resp_headers: Dict[str, str]) -> Tuple[Optional[float], Optional[float]]:
+        """Return (server_ts, drift_seconds) using HTTP Date header when available."""
+        try:
+            if not isinstance(resp_headers, dict):
+                return None, None
+            date_val = resp_headers.get("Date") or resp_headers.get("date") or ""
+------------------------
+LINE 1636:             except Exception
+CONTEXT:
+            except Exception:
+                off = 0.0
+            drift = abs((float(lt) + float(off)) - float(st))
+            return float(st), float(drift)
+        except Exception:
+            return None, None
+
+    def _arzplus_health_check_clock(self, *, resp_headers: Dict[str, str], endpoint: str = "") -> None:
+        """Health-check: compare local time with server time; warn if drift > 2s."""
+------------------------
+LINE 1640:         except Exception
+CONTEXT:
+        except Exception:
+            return None, None
+
+    def _arzplus_health_check_clock(self, *, resp_headers: Dict[str, str], endpoint: str = "") -> None:
+        """Health-check: compare local time with server time; warn if drift > 2s."""
+        try:
+            if not self._is_arzplus():
+                return
+            st, drift = self._clock_drift_from_headers(resp_headers or {})
+------------------------
+LINE 1682:                         except Exception
+CONTEXT:
+                        except Exception:
+                            pass
+                        if do_log:
+                            try:
+                                self._logger.info(
+                                    "event=ARZPLUS_CLOCK_SELFHEAL endpoint=%s drift_s=%.3f delta_s=%.3f new_offset_s=%.3f",
+                                    str(endpoint or ""), float(drift), float(delta), float(cur_off + delta),
+                                )
+                            except Exception:
+------------------------
+LINE 1690:                             except Exception
+CONTEXT:
+                            except Exception:
+                                pass
+            except Exception:
+                pass
+            if float(drift) <= 2.0:
+                return
+            now = float(time.time())
+            # throttle warnings
+            if (now - float(self._last_clock_warn_ts or 0.0)) < 60.0:
+------------------------
+LINE 1692:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            if float(drift) <= 2.0:
+                return
+            now = float(time.time())
+            # throttle warnings
+            if (now - float(self._last_clock_warn_ts or 0.0)) < 60.0:
+                return
+            self._last_clock_warn_ts = now
+------------------------
+LINE 1706:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+        except Exception:
+            return
+
+    def _arzplus_detect_403_cause(
+        self,
+        *,
+        endpoint: str,
+------------------------
+LINE 1724:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            h = resp_headers or {}
+            srv = str(h.get("server") or h.get("Server") or "").lower()
+            # Cloudflare / WAF / IP block hints
+            if ("cf-ray" in {k.lower() for k in h.keys()}) or ("cloudflare" in srv):
+                return "ip_waf_block"
+            b = str(body_snip or "").lower()
+------------------------
+LINE 1735:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            ep = str(endpoint or "").lower()
+            b = str(body_snip or "").lower()
+            if "/wallet/balance" in ep or "balance" in ep:
+                if any(x in b for x in ("permission", "scope", "not allowed", "denied", "unauthorized", "token")):
+                    return "permission_scope_balance"
+                # if it's only balance endpoint and not WAF, assume permission/IP allowlist issue
+------------------------
+LINE 1745:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        return "unknown"
+
+    def _arzplus_log_403(
+        self,
+        *,
+        endpoint: str,
+        method: str,
+------------------------
+LINE 1795:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+        except Exception:
+            return
+    @classmethod
+    def _extract_rate_limit_pause_sec(cls, raw: str, default: float = 1.0) -> float:
+        try:
+            s = str(raw or "")
+        except Exception:
+------------------------
+LINE 1811:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            s = s.translate(cls._PERSIAN_DIGITS)
+        except Exception:
+            pass
+        m = cls._RE_PAUSE_SECONDS.search(s)
+        if not m:
+            m = cls._RE_PAUSE_TA.search(s)
+------------------------
+LINE 1815:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        m = cls._RE_PAUSE_SECONDS.search(s)
+        if not m:
+            m = cls._RE_PAUSE_TA.search(s)
+        if not m:
+            return float(default)
+        try:
+            v = float(m.group(1))
+------------------------
+LINE 1831:             except Exception
+CONTEXT:
+            except Exception:
+                rem = 0.0
+            try:
+                _phase54_audit_log("raise_TemporaryPause", line=1841)
+            except Exception:
+                pass
+            raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+    def _build_url(self, endpoint: str) -> str:
+        ep = str(endpoint or "").strip()
+------------------------
+LINE 1835:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+    def _build_url(self, endpoint: str) -> str:
+        ep = str(endpoint or "").strip()
+        return f"{self.cfg.base_url}{ep if ep.startswith('/') else '/' + ep}"
+    def _build_headers(self, auth: bool) -> dict:
+        headers: dict = {
+            "Accept": "application/json",
+------------------------
+LINE 1854:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        if "Authorization" not in headers:
+            auth_value = f"{getattr(self, '_auth_scheme', 'Token') or 'Token'} {self._token}"
+            _s43_debug_print(f"[AUTHDBG_HEADER] present={bool(auth_value)} scheme={str(auth_value).split()[0] if str(auth_value).split() else ''} len={len(str(auth_value))}")
+            headers["Authorization"] = auth_value
+        # Include Date header for ArzPlus private requests using self-healed signing time offset.
+        try:
+            if self._is_arzplus():
+------------------------
+LINE 1867:                         except
+CONTEXT:
+                        except:
+                            pass
+                    except:
+                        pass
+                    off = 0.0
+                    try:
+                        lk = getattr(self, "_auth_time_offset_lock", None)
+                        if lk is not None:
+                            with lk:
+------------------------
+LINE 1869:                     except
+CONTEXT:
+                    except:
+                        pass
+                    off = 0.0
+                    try:
+                        lk = getattr(self, "_auth_time_offset_lock", None)
+                        if lk is not None:
+                            with lk:
+                                off = float(getattr(self, "_auth_time_offset_s", 0.0) or 0.0)
+                        else:
+------------------------
+LINE 1879:                     except Exception
+CONTEXT:
+                    except Exception:
+                        off = 0.0
+                    headers["Date"] = formatdate(timeval=float(time.time()) + float(off), usegmt=True)
+        except Exception:
+            pass
+        return headers
+    def _update_network_metrics(self, t0: float) -> None:
+        try:
+            lat_ms = (time.time() - float(t0)) * 1000.0
+------------------------
+LINE 1882:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        return headers
+    def _update_network_metrics(self, t0: float) -> None:
+        try:
+            lat_ms = (time.time() - float(t0)) * 1000.0
+            self.last_latency_ms = float(lat_ms)
+            self._lat_hist.append(float(lat_ms))
+            if len(self._lat_hist) >= 5:
+------------------------
+LINE 1895:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+    async def _fetch_text(
+        self,
+        sess: aiohttp.ClientSession,
+        method_u: str,
+        url: str,
+        payload: Optional[dict],
+        params: Optional[dict],
+------------------------
+LINE 1930:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        match st:
+            case 429:
+                pause = self._extract_rate_limit_pause_sec(raw, default=1.0)
+                try:
+                    await self._limiter.penalize(pause, hard=True)
+                except Exception:
+                    pass
+------------------------
+LINE 1937:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+                try:
+                    _phase54_audit_log("raise_TemporaryPause", line=1943)
+                except Exception:
+                    pass
+                raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+            case 500 | 502 | 503 | 504:
+                body = self._safe_body_for_log(raw)
+------------------------
+LINE 1941:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+                raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+            case 500 | 502 | 503 | 504:
+                body = self._safe_body_for_log(raw)
+                raise ApiError(f"Transient HTTP {st}: {body}")
+            case 401 | 403:
+                body_snip = self._sanitize_body_for_debug(raw, limit=300)
+                # Determine clock drift, WAF/IP allowlist, or permission scope issues
+------------------------
+LINE 1960:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    raise TradingHalt(f"ARZPLUS_403_{cause}")
+                if st == 403 and ("/wallet/balance" in str(endpoint or "").lower()):
+                    self._arzplus_log_403(
+                        endpoint=str(endpoint or ""),
+                        method=str(method or ""),
+                        http_status=st,
+                        raw=str(raw or ""),
+------------------------
+LINE 2005:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            await self._limiter.reward()
+        except Exception:
+            pass
+    def _record_failure_if_transient(self, exc: Exception) -> None:
+        if self._is_transient_for_breaker(exc):
+            self._breaker.record_failure(exc)
+------------------------
+LINE 2009:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+    def _record_failure_if_transient(self, exc: Exception) -> None:
+        if self._is_transient_for_breaker(exc):
+            self._breaker.record_failure(exc)
+    def _harden_request(
+        self,
+        *,
+        method: str,
+------------------------
+LINE 2058:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+
+    async def _request_impl(
+        self,
+        method: str,
+        endpoint: str,
+        payload: Optional[dict] = None,
+        auth: bool = False,
+------------------------
+LINE 2161:             except Exception
+CONTEXT:
+            except Exception:
+                return None
+        def _extract_server_time(payload: Any) -> float:
+            if isinstance(payload, dict):
+                for k in ("server_time", "serverTime", "time", "timestamp", "ts", "t"):
+                    if k in payload:
+                        v = _to_unix_seconds(payload.get(k))
+                        if v:
+                            return v
+------------------------
+LINE 2231:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    try:
+                        self.last_update_time = time.time()
+                    except Exception:
+                        pass
+                    return snap
+            except Exception as e:
+                last_err = e
+------------------------
+LINE 2235:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    return snap
+            except Exception as e:
+                last_err = e
+        try:
+            payload = await self.get_symbols()
+            server_time = _extract_server_time(payload)
+            rows = _extract_ticker_rows(payload) or []
+------------------------
+LINE 2256:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            try:
+                self.last_update_time = time.time()
+            except Exception:
+                pass
+            return snap
+        except Exception:
+            if last_err:
+------------------------
+LINE 2260:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            return snap
+        except Exception:
+            if last_err:
+                raise last_err
+            return {"server_time": now, "tickers": [], "by_symbol": {}}
+    async def get_all_tickers_optimized(self) -> dict:
+        'Fetch tickers with a sanity pass to ensure priced rows.'
+------------------------
+LINE 2263:         except Exception
+CONTEXT:
+        except Exception:
+            if last_err:
+                raise last_err
+            return {"server_time": now, "tickers": [], "by_symbol": {}}
+    async def get_all_tickers_optimized(self) -> dict:
+        'Fetch tickers with a sanity pass to ensure priced rows.'
+        now = time.time()
+        snap = await self.get_all_tickers()
+        def _px_from_row(row: Any) -> float:
+------------------------
+LINE 2292:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            return 0.0
+        def _priced_count(s: Any) -> int:
+            if not isinstance(s, dict):
+                return 0
+            by = s.get("by_symbol") if isinstance(s.get("by_symbol"), dict) else None
+            if not isinstance(by, dict):
+                by = s if (len(s) >= 5 and all(isinstance(v, dict) for v in s.values())) else {}
+------------------------
+LINE 2364:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    try:
+                        px = _px_from_row(dst)
+                        if px > 0.0:
+                            dst.setdefault("last", float(px))
+                    except Exception:
+                        pass
+                    merged_by[cs] = dst
+------------------------
+LINE 2370:                     except Exception
+CONTEXT:
+                    except Exception:
+                        pass
+                    merged_by[cs] = dst
+                snap_d["by_symbol"] = merged_by
+                try:
+                    snap_d["tickers"] = list(merged_by.values())
+                except Exception:
+                    snap_d["tickers"] = []
+                try:
+------------------------
+LINE 2383:                 except Exception
+CONTEXT:
+                except Exception:
+                    snap_d["server_time"] = now
+                snap = snap_d
+        try:
+            self._last_all_tickers_snapshot = snap
+        except Exception:
+            pass
+        try:
+            self.last_update_time = float(time.time())
+------------------------
+LINE 2388:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        try:
+            self.last_update_time = float(time.time())
+        except Exception:
+            pass
+        return snap
+    def get_current_age(self, now: Optional[float] = None) -> float:
+        now_f = float(time.time() if now is None else now)
+------------------------
+LINE 2392:         except Exception
+CONTEXT:
+        except Exception:
+            pass
+        return snap
+    def get_current_age(self, now: Optional[float] = None) -> float:
+        now_f = float(time.time() if now is None else now)
+        snap = getattr(self, "_last_all_tickers_snapshot", None)
+        if isinstance(snap, dict):
+            st = snap.get("server_time")
+            if st is not None:
+------------------------
+LINE 2405:                 except Exception
+CONTEXT:
+                except Exception:
+                    pass
+        return float("inf")
+    @staticmethod
+    def _as_payload_number(x) -> str:
+        try:
+            if x is None:
+                return "0"
+            if isinstance(x, bool):
+------------------------
+LINE 2425:             except Exception
+CONTEXT:
+            except Exception:
+                pass
+            s = s.replace(",", "")
+            return s
+        except Exception:
+            return str(x)
+    @staticmethod
+    def _norm_side(side: str) -> str:
+        s = str(side or "").strip().lower()
+------------------------
+LINE 2525:                 except Exception
+CONTEXT:

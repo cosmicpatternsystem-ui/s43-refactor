@@ -1,0 +1,24 @@
+﻿LATEST STATUS POINTER
+Generated: 2026-06-09 17:04:02
+
+PROJECT
+- Name: s43_refactor
+- Root: E:\اخباری\ssl\s43_refactor
+
+CURRENT CANONICAL DECISION
+- Canonical: s43_instrumented_LATEST.py
+- Baseline: MY_S43_LATEST.py
+- Excluded: s43_latest_refactor.py
+
+DOCUMENTATION
+- Reports directory: E:\اخباری\ssl\s43_refactor\reports
+- Continuity file: E:\اخباری\ssl\s43_refactor\PROJECT_CONTINUITY_STATUS.txt
+
+READ FIRST FOR FUTURE SESSIONS
+1. PROJECT_CONTINUITY_STATUS.txt
+2. reports\FINAL_HANDOFF_VERIFY_14050319.txt
+3. reports\SAFETY_PROTOCOL_FINAL_SIGNOFF_14050319.md
+4. reports\SAFETY_EXEC_SUMMARY_14050319.md
+
+WORKING RULE
+- Unless a new formal validation cycle supersedes this record, treat s43_instrumented_LATEST.py as the active canonical artifact.

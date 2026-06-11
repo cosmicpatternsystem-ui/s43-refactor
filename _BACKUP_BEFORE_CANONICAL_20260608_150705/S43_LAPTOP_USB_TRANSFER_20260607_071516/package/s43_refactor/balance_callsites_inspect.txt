@@ -1,0 +1,141 @@
+=== S43 BALANCE CALL-SITE INSPECTION ===
+file: s43.py
+
+===== BLOCK_7445_7495 | lines 7445-7495 =====
+  7445:         volume_history: Optional[List[float]] = None,
+  7446:         *,
+  7447:         signal: str = "BUY",
+  7448:     ) -> None:
+  7449:         self.engine.governor.validate()
+  7450:         ok, _lag = self.engine.monitor.check_lag(ts_ms)
+  7451:         if not ok:
+  7452:             return
+  7453:         px = float(current_price or 0.0)
+  7454:         if px <= 0:
+  7455:             return
+  7456:         if not self.warmup_done:
+  7457:             for _ in range(20):
+  7458:                 self._px_hist.append(px)
+  7459:                 self.engine.evolution.update(px)
+  7460:             self.warmup_done = True
+  7461:         self._px_hist.append(px)
+  7462:         self.engine.evolution.update(px)
+  7463:         sig = float(sigma) if sigma is not None else self.engine.evolution.sigma()
+  7464:         whale_active = False
+  7465:         try:
+  7466:             if current_volume is not None:
+  7467:                 whale_active = bool(self.engine.monitor.detect_whale_activity(float(current_volume), volume_history))
+  7468:                 self.engine.monitor.update_volume(float(current_volume))
+  7469:         except Exception:
+  7470:             whale_active = False
+  7471:         effective_sigma = float(sig) * 2.0 if whale_active else float(sig)
+  7472:         balance = float(await self.bp.get_balance())
+  7473:         if not self.engine.risk.is_safe(balance):
+  7474:             await self._safe_cancel_all()
+  7475:             raise SystemExit("ALERT [KILL-SWITCH] Risk Threshold Exceeded.")
+  7476:         self.engine.risk.arm_panic_if_flash_crash(self._px_hist)
+  7477:         if self.engine.risk.panic_sniper_active():
+  7478:             if (time.time() - float(self._sniper_fired_ts)) > 30:
+  7479:                 orders = self.engine.risk.build_panic_sniper_orders(px, balance, profit_target=0.07)
+  7480:                 for o in orders:
+  7481:                     await self._place(o["side"], o["price"], o["qty"], o.get("cid", "SOV_SNIPER"))
+  7482:                 self._sniper_fired_ts = float(time.time())
+  7483:             self.engine.stability.refresh()
+  7484:             return
+  7485:         if str(signal).upper() == "BUY":
+  7486:             qty_total = float(self.engine.risk.calculate_kelly_size(balance, price=px))
+  7487:             ladder = self.engine.evolution.get_exponential_ladder(px, effective_sigma, side="buy", levels=5)
+  7488:             try:
+  7489:                 if ladder and abs(px - float(ladder[0])) / px < 0.001:
+  7490:                     ladder[0] = px
+  7491:             except Exception:
+  7492:                 pass
+  7493:             if qty_total > 0 and ladder:
+  7494:                 qty_each = qty_total / len(ladder)
+  7495:                 ts = int(time.time())
+
+===== BLOCK_11560_11605 | lines 11560-11605 =====
+ 11560:         orders: List[dict] = []
+ 11561:         try:
+ 11562:             for r in (resps or []):
+ 11563:                 orders.extend(OrderJournal._extract_orders(r))
+ 11564:         except Exception:
+ 11565:             orders = []
+ 11566:         seen = set()
+ 11567:         uniq: List[dict] = []
+ 11568:         for o in (orders or []):
+ 11569:             if not isinstance(o, dict):
+ 11570:                 continue
+ 11571:             try:
+ 11572:                 oid0 = OrderJournal._order_id(o)
+ 11573:             except Exception:
+ 11574:                 oid0 = None
+ 11575:             k = str(oid0 or "").strip()
+ 11576:             if not k or k in seen:
+ 11577:                 continue
+ 11578:             seen.add(k)
+ 11579:             uniq.append(o)
+ 11580:         orders = uniq
+ 11581:         prefixes = tuple(str(os.getenv("BOT_CID_PREFIXES", "raz_,sov_,bot_") or "raz_,sov_,bot_").split(","))
+ 11582:         max_cancel = int(_env_int("DEEP_PRUNE_MAX_CANCEL", 7) or 7)
+ 11583:         cash_free = cash_total = 0.0
+ 11584:         assets_free: Dict[str, float] = {}
+ 11585:         assets_total: Dict[str, float] = {}
+ 11586:         bal = await self._ex.get_balance()
+ 11587:         q = str(getattr(self.cfg, "quote", "IRT") or "IRT")
+ 11588:         cash_free, cash_total, assets_free, assets_total, _ok = _parse_wallet_balance_response_v2(bal, quote=q)
+ 11589:         if not _ok: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
+ 11590:         mid_cache: Dict[str, float] = {}
+ 11591:         depth_budget = int(_env_int("DEEP_PRUNE_DEPTH_BUDGET", 3) or 3)
+ 11592:         async def _mid(sym: str) -> float:
+ 11593:             nonlocal depth_budget
+ 11594:             sym = _canon_symbol(sym)
+ 11595:             if sym in mid_cache:
+ 11596:                 return float(mid_cache[sym] or 0.0)
+ 11597:             if depth_budget <= 0:
+ 11598:                 return 0.0
+ 11599:             depth_budget -= 1
+ 11600:             try:
+ 11601:                 d = await self._ex.get_depth(sym, priority=True)
+ 11602:                 bids = d.get("bids") or d.get("buy") or d.get("bid") or []
+ 11603:                 asks = d.get("asks") or d.get("sell") or d.get("ask") or []
+ 11604:                 bb = float(bids[0][0]) if bids and isinstance(bids[0], (list, tuple)) and len(bids[0]) >= 1 else 0.0
+ 11605:                 ba = float(asks[0][0]) if asks and isinstance(asks[0], (list, tuple)) and len(asks[0]) >= 1 else 0.0
+
+===== BLOCK_9228_9248 | lines 9228-9248 =====
+  9228:         if action == "HOLD":
+  9229:             base_conf = float(min(base_conf, 0.45))
+  9230:         return {
+  9231:             "action": action,
+  9232:             "symbol": symbol,
+  9233:             "score": float(comp),
+  9234:             "confidence": float(base_conf),
+  9235:         }
+  9236:     async def _get_portfolio_data(self) -> Dict[str, Any]:
+  9237:         try:
+  9238:             balance_data = await self.api_client.request(
+  9239:                 "GET",
+  9240:                 "/wallet/balance/"
+  9241:             )
+  9242:             cash = float(balance_data.get("IRT", {}).get("available", 0))
+  9243:             return {
+  9244:                 "capital": cash,
+  9245:                 "exposure": 0.0,
+  9246:                 "positions": []
+  9247:             }
+  9248:         except Exception as e:
+
+===== BLOCK_14936_14948 | lines 14936-14948 =====
+ 14936:     async def list_orders(self, symbol: Optional[str] = None, status: Optional[str] = None) -> dict:
+ 14937:         return await self._ex.list_orders(symbol=symbol, status=status)
+ 14938: 
+ 14939:     async def get_depth(self, symbol: str) -> dict:
+ 14940:         return await self._ex.get_depth(symbol)
+ 14941: 
+ 14942:     async def get_balance(self) -> dict:
+ 14943:         return await self._ex.get_balance()
+ 14944: 
+ 14945: class TradingBotOps:
+ 14946:     async def refresh_market_focus(self) -> List[str]:
+ 14947:         try:
+ 14948:             if bool(getattr(self, "_sniper_only", False)):

@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual environments / env files
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+*.swp
+
+# Archives and packed backups
+archive/
+archive_packed_backup/
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Snapshots / historical backups
+snapshots/
+*_snapshot_*
+*_backup_*
+*.before_*
+
+# Reports / audit artifacts
+reports/
+audit_reports/
+*_audit_*
+*_report_*
+*_status_*
+
+# Termux / system / OS
+.termux/
+.DS_Store
+Thumbs.db
+
+# Local editor files
+.vscode/
+.idea/

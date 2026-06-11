@@ -1,0 +1,4 @@
+1254:    _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+1255:    _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+14863:            if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+25762:                            s = str(_x).replace(",", "").replace("٪", "%").strip()

@@ -1,0 +1,13 @@
+# S43 Laptop Active Gap v4 Pointer
+
+latest_laptop_active_gap_v4_dir:
+docs/laptop_active_gap_v4_20260607_053618
+
+files:
+- docs/laptop_active_gap_v4_20260607_053618/ACTIVE_REVIEW_FILES.txt
+- docs/laptop_active_gap_v4_20260607_053618/STRICT_ROADMAP_CANDIDATES.txt
+- docs/laptop_active_gap_v4_20260607_053618/STRICT_TODO_FIXME_BY_FILE.txt
+- docs/laptop_active_gap_v4_20260607_053618/STRICT_TODO_FIXME_CANDIDATES.txt
+- docs/laptop_active_gap_v4_20260607_053618/STRICT_TODO_FIXME_CANDIDATES.json
+- docs/laptop_active_gap_v4_20260607_053618/NEXT_PATCH_DECISION.md
+- docs/laptop_active_gap_v4_20260607_053618/SUMMARY_FOR_ASSISTANT.txt

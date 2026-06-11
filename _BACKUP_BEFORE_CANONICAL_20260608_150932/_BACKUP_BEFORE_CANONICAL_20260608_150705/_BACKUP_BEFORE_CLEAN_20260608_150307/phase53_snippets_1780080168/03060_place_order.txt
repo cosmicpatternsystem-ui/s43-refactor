@@ -1,0 +1,152 @@
+03060:     async def place_order(
+03061:         self,
+03062:         symbol: str,
+03063:         side: str,
+03064:         amount: float,
+03065:         price: float,
+03066:         cid: Optional[str] = None,
+03067:         *,
+03068:         fill_type: str = "limit",
+03069:         market: str = "spot",
+03070:         reduce_only: Optional[bool] = None,
+03071:         **kwargs: Any,
+03072:     ) -> dict:
+03073:         try:
+03074:             if _termux_env_bool("TERMUX_MODE", False):
+03075:                 _termux_mark_order_activity()
+03076:         except Exception:
+03077:             pass
+03078: 
+03079:         # PHASE4_ORDER_GATE_MAIN
+03080:         if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+03081:             try:
+03082:                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+03083:                 if hasattr(_gate_log, "warning"):
+03084:                     _gate_log.warning(
+03085:                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+03086:                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+03087:                     )
+03088:             except Exception:
+03089:                 pass
+03090:             return {}
+03091: 
+03092:         if (
+03093:             not bool(getattr(self, "_ai_live_trading_armed", False))
+03094:             and bool(getattr(getattr(self, "_cfg", getattr(self, "cfg", None)), "autonomous_ai", False))
+03095:         ):
+03096:             try:
+03097:                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+03098:                 if hasattr(_gate_log, "warning"):
+03099:                     _gate_log.warning(
+03100:                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+03101:                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+03102:                     )
+03103:             except Exception:
+03104:                 pass
+03105:             return {}
+03106: 
+03107:         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+03108:         try:
+03109:             sym = _canon_pair(symbol, default_quote=q)
+03110:         except Exception:
+03111:             try:
+03112:                 sym = _canon_symbol(symbol)
+03113:             except Exception:
+03114:                 sym = str(symbol or "")
+03115: 
+03116:         market_raw = market
+03117:         market_norm = str(market or "spot").lower().strip()
+03118:         market_aliases = {
+03119:             "spot": "spot",
+03120:             "cash": "spot",
+03121:             "future": "futures",
+03122:             "futures": "futures",
+03123:             "perp": "futures",
+03124:             "perpetual": "futures",
+03125:             "swap": "futures",
+03126:         }
+03127:         market_norm = market_aliases.get(market_norm, market_norm)
+03128:         if market_norm not in ("spot", "futures"):
+03129:             self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
+03130:             raise ValueError(f"Unsupported market type: {market_raw}")
+03131: 
+03132:         fill_norm = str(fill_type or "limit").lower().strip()
+03133:         fill_aliases = {
+03134:             "limit": "limit",
+03135:             "lmt": "limit",
+03136:             "market": "market",
+03137:             "mkt": "market",
+03138:         }
+03139:         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+03140:         if fill_norm not in ("limit", "market"):
+03141:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+03142:             raise ValueError(f"Unsupported fill_type: {fill_type}")
+03143: 
+03144:         if fill_norm == "limit" and price is None:
+03145:             raise ValueError("Price must be specified for LIMIT orders.")
+03146: 
+03147:         payload: Dict[str, Any] = {
+03148:             "symbol": sym,
+03149:             "amount": self._as_payload_number(amount),
+03150:             "side": self._norm_side(side),
+03151:             "fill_type": fill_norm,
+03152:             "market": market_norm,
+03153:         }
+03154: 
+03155:         if price is not None:
+03156:             payload["price"] = self._as_payload_number(price)
+03157:         else:
+03158:             payload["price"] = None
+03159: 
+03160:         if cid:
+03161:             payload["client_id"] = str(cid)
+03162: 
+03163:         extra: Dict[str, Any] = dict(kwargs or {})
+03164: 
+03165:         if reduce_only is not None:
+03166:             extra["reduce_only"] = bool(reduce_only)
+03167: 
+03168:         if market_norm == "futures":
+03169:             extra["reduce_only"] = bool(extra.get("reduce_only", False))
+03170:             if "leverage" in extra and extra.get("leverage") is not None:
+03171:                 try:
+03172:                     extra["leverage"] = float(extra.get("leverage"))
+03173:                 except (TypeError, ValueError):
+03174:                     self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+03175:                     extra.pop("leverage", None)
+03176:         else:
+03177:             if bool(extra.get("reduce_only", False)):
+03178:                 self._logger.warning("reduce_only=True ignored for spot order.")
+03179:             extra.pop("reduce_only", None)
+03180: 
+03181:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+03182:             extra.pop(protected_key, None)
+03183: 
+03184:         payload.update(extra)
+03185: 
+03186:         try:
+03187:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03188:                 ok, rtt_ms, code = await self.conn_check()
+03189:                 if not ok:
+03190:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03191:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03192:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03193:                         diag = "CONN_CHECK_FAIL"
+03194:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03195:         except TemporaryPause:
+03196:             raise
+03197:         except Exception as e:
+03198:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03199:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03200: 
+03201:         last_exc: Optional[Exception] = None
+03202:         for ep in ("/market/orders/", "/market/orders"):
+03203:             try:
+03204:                 return await self.request("POST", ep, payload=payload, auth=True)
+03205:             except Exception as e:
+03206:                 last_exc = e
+03207:                 continue
+03208: 
+03209:         if last_exc:
+03210:             raise last_exc
+03211:         return {}

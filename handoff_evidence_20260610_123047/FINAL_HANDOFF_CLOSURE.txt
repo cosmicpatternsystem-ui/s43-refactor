@@ -1,0 +1,18 @@
+﻿GeneratedAt: 2026-06-10 13:11:48
+ProjectRoot: E:\اخباری\ssl\s43_refactor
+Canonical: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+CanonicalSHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+BaselineDir: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219
+HandoffBundleDir: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047
+VerificationIndex: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219\VERIFICATION_INDEX.txt
+BundleIndex: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\BUNDLE_INDEX.txt
+FinalAudit: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\FINAL_HANDOFF_AUDIT.txt
+ArtifactPathSummary: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\ARTIFACT_PATH_SUMMARY.txt
+BaselineEvidenceExport: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\BASELINE_EVIDENCE_EXPORT.txt
+SnapshotManifest: E:\اخباری\ssl\s43_refactor\handoff_evidence_20260610_123047\SNAPSHOT_MANIFEST.txt
+PyCompileExitCode: 0
+ProtectedFile: E:\اخباری\ssl\s43_refactor\s43_latest_refactor.py
+ProtectedFileStatus: PRESENT_UNTOUCHED
+PythonFilesModified: False
+ClosureDecision: READY_FOR_HANDOFF
+Status: VERIFIED

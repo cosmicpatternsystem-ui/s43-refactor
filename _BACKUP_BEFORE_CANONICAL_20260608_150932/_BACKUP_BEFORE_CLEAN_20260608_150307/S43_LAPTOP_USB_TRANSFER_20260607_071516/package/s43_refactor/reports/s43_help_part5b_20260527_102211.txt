@@ -1,0 +1,34 @@
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+  --token-bot           Run Telegram token bot (independent).
+  --wallet-concurrency WALLET_CONCURRENCY
+                        Concurrent wallet cycles in one process (async
+                        gather). 0=env/default.

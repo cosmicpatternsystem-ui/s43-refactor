@@ -1,0 +1,15 @@
+S43 production freeze manifest
+timestamp=20260605_221408
+root=/data/data/com.termux/files/home/s43_refactor
+
+runner_sha256:
+c4afe9237b5cfe66956d1621428d46604c0b1e171ce3fac15ccad6c0d40e2eb8  /data/data/com.termux/files/home/s43_refactor/s43_run_wallet.sh
+
+env_sha256:
+c2d02a65ba2ca8fb065e1a6badc326f79b38845e7dfa292cdd274c908451fe44  /data/data/com.termux/files/home/.s43_wallet_token_metadata.env
+
+final_status:
+B4_ENV_GUARD=PASS
+B3_PREFLIGHT=PASS
+B2_RUNTIME_METADATA=PASS
+ORDER_B4_B3_B2=PASS

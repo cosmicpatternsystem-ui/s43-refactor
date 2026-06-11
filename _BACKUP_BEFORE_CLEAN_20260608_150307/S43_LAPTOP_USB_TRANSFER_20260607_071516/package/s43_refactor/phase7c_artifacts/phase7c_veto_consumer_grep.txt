@@ -1,0 +1,75 @@
+### grep: veto / parisa_meta / entry_multiplier consumers
+
+151:def _parse_hard_veto_sources_env(default_sources=None):
+153:    Fail-safe fallback for _parse_hard_veto_sources_env.
+308:    parisa_veto_thr: float = field(default_factory=lambda: _env_float("PARISA_VETO_THR", -0.35))
+338:    dzh_veto_htf: bool = field(default_factory=lambda: _env_bool("DZH_VETO_HTF", True))
+446:    analytics_signal_boost: float = field(default_factory=lambda: clamp(_env_float("ANALYTICS_SIGNAL_BOOST", 1.25), 1.0, 2.0))
+447:    analytics_confidence_boost: float = field(default_factory=lambda: clamp(_env_float("ANALYTICS_CONFIDENCE_BOOST", 1.15), 1.0, 2.0))
+7098:        analysis["signal_boost"] = self._calculate_signal_boost(float(composite))
+7099:        analysis["confidence_boost"] = self._calculate_confidence_boost(layers)
+7163:    def _calculate_signal_boost(self, composite: float) -> float:
+7164:        base = float(getattr(self.cfg, "analytics_signal_boost", 1.25) or 1.25)
+7173:    def _calculate_confidence_boost(self, layers: Dict[str, Any]) -> float:
+7174:        base = float(getattr(self.cfg, "analytics_confidence_boost", 1.15) or 1.15)
+7195:        boost = 1.0 + (base - 1.0) * layer_conf * consistency
+7196:        return float(clamp(boost, 1.0, 2.0))
+10430:        if bool(getattr(wallet.cfg, "dzh_veto_htf", True)):
+12132:    def parisa_delta(self, symbol: str, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, List[Tuple[str, str]]]:
+12151:    def entry_multiplier(self, symbol: str, raz_signal: Signal, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, Dict[str, Any]]:
+12160:        delta, contrib = self.parisa_delta(symbol, book, depth_data=depth_data)
+12161:        meta["parisa_delta"] = float(delta)
+12163:        veto_thr = float(getattr(self.cfg, "parisa_veto_thr", -0.35) or -0.35)
+12164:        meta["parisa_veto_thr"] = float(veto_thr)
+12165:        if float(delta) <= float(veto_thr):
+12166:            meta["veto"] = True
+12173:            meta["boost"] = True
+12180:        meta["boost"] = False
+19351:                signal_boost = float(advanced_analysis.get("signal_boost", 1.0) or 1.0)
+19352:                confidence_boost = float(advanced_analysis.get("confidence_boost", 1.0) or 1.0)
+19356:                    sig.score = float(sig.score) * signal_boost
+19357:                    sig.confidence = float(sig.confidence) * confidence_boost
+19359:                    sig.score = float(sig.score) * signal_boost
+19360:                    sig.confidence = float(sig.confidence) * confidence_boost
+19395:                        "AA adjusted %s: score %.3f->%.3f (boost %.2f) conf %.2f->%.2f (boost %.2f) comp=%.3f",
+19396:                        sym, original_score, float(sig.score), signal_boost,
+19397:                        original_confidence, float(sig.confidence), confidence_boost,
+20062:                mult, ci_meta = w.cortex.entry_multiplier(sym, sig, book, depth_data=None)
+20065:            if isinstance(ci_meta, dict) and ci_meta.get("veto"):
+20067:                    "event=PARISA_VETO wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f veto_thr=%.3f",
+20071:                    float(ci_meta.get("parisa_delta", 0.0) or 0.0),
+20072:                    float(ci_meta.get("parisa_veto_thr", -0.35) or -0.35),
+20083:                    "event=COLLECTIVE_BOOST wallet=%s sym=%s raz_conf=%.2f parisa_delta=%.3f mult=%.2f notional_before=%.0f notional_after=%.0f",
+20084:                    w.name, sym, float(sig.confidence), float(ci_meta.get("parisa_delta", 0.0) or 0.0), float(mult), float(before), float(notional)
+24256:# s43 recovery: fallback veto registry
+24259:    Fail-safe veto registry fallback for dashboard/render paths.
+24262:    - no active vetoes
+24310:        # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+24314:            "vetoes": [],
+24330:        # خود registry وجود دارد، ولی veto فعال ندارد.
+26822:            veto_active_win = float(_env_float("DASH_VETO_ACTIVE_SEC", 45.0) or 45.0)
+26823:            vetoes_all = _VETO_REG.snapshot(now=now, include_stale=True)
+26824:            vetoes_active = []
+26826:                vetoes_active = [v for v in vetoes_all if v.age_sec(now) <= veto_active_win]
+26828:                vetoes_active = []
+26830:            hard_sources, hard_sources_env_set, hard_all_sources, strict_unknown_hard = _parse_hard_veto_sources_env(_default_hard_sources)
+26831:            hard_vetoes_active = []
+26832:            soft_vetoes_active = []
+26834:                for v in (vetoes_active or []):
+26850:                        hard_vetoes_active.append(v)
+26852:                        soft_vetoes_active.append(v)
+26854:                hard_vetoes_active = []
+26855:                soft_vetoes_active = list(vetoes_active or [])
+26861:            if stale_flags or soft_vetoes_active:
+26865:                elif soft_vetoes_active and not stale_flags:
+26868:            if hard_vetoes_active:
+26912:            elif hard_vetoes_active:
+26913:                st_line += f" | VETO {len(hard_vetoes_active)}"
+26914:            elif soft_vetoes_active and not stale_flags:
+26915:                st_line += f" | DEG {len(soft_vetoes_active)}"
+26938:                if bool(hard_vetoes_active):
+27156:            if vetoes_active:
+27157:                for v in vetoes_active[:3]:
+27167:                if vetoes_all:
+27169:                        v = vetoes_all[0]
+27219:                t.add_row("Entries: CAUTION (may veto) | Exits: OK | Cancel: AUTO")

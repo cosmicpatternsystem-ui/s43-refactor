@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+"""
+translator_module.py
+
+Defensive helper for translating selected API messages.
+"""
+
+from typing import Optional
+
+
+_EXACT_TRANSLATIONS = {
+    "insufficient balance": "Ù…ÙˆØ¬ÙˆØ¯ÛŒ Ú©Ø§ÙÛŒ Ù†ÛŒØ³Øª",
+    "invalid address": "Ø¢Ø¯Ø±Ø³ Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª",
+    "network error": "Ø®Ø·Ø§ÛŒ Ø´Ø¨Ú©Ù‡",
+    "timeout": "Ø§ØªÙ…Ø§Ù… Ø²Ù…Ø§Ù† Ø¯Ø±Ø®ÙˆØ§Ø³Øª",
+    "forbidden": "Ø¯Ø³ØªØ±Ø³ÛŒ Ù…Ø¬Ø§Ø² Ù†ÛŒØ³Øª",
+    "unauthorized": "Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ø§Ù†Ø¬Ø§Ù… Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª",
+    "too many requests": "ØªØ¹Ø¯Ø§Ø¯ Ø¯Ø±Ø®ÙˆØ§Ø³Øªâ€ŒÙ‡Ø§ Ø¨ÛŒØ´ Ø§Ø² Ø­Ø¯ Ù…Ø¬Ø§Ø² Ø§Ø³Øª",
+    "internal server error": "Ø®Ø·Ø§ÛŒ Ø¯Ø§Ø®Ù„ÛŒ Ø³Ø±ÙˆØ±",
+    "service unavailable": "Ø³Ø±ÙˆÛŒØ³ Ø¯Ø± Ø¯Ø³ØªØ±Ø³ Ù†ÛŒØ³Øª",
+    "bad request": "Ø¯Ø±Ø®ÙˆØ§Ø³Øª Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª",
+    "not found": "Ù…ÙˆØ±Ø¯ÛŒ ÛŒØ§ÙØª Ù†Ø´Ø¯",
+}
+
+
+_PARTIAL_TRANSLATIONS = {
+    "insufficient balance": "Ù…ÙˆØ¬ÙˆØ¯ÛŒ Ú©Ø§ÙÛŒ Ù†ÛŒØ³Øª",
+    "invalid address": "Ø¢Ø¯Ø±Ø³ Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª",
+    "network error": "Ø®Ø·Ø§ÛŒ Ø´Ø¨Ú©Ù‡",
+    "timeout": "Ø§ØªÙ…Ø§Ù… Ø²Ù…Ø§Ù† Ø¯Ø±Ø®ÙˆØ§Ø³Øª",
+    "forbidden": "Ø¯Ø³ØªØ±Ø³ÛŒ Ù…Ø¬Ø§Ø² Ù†ÛŒØ³Øª",
+    "unauthorized": "Ø§Ø­Ø±Ø§Ø² Ù‡ÙˆÛŒØª Ø§Ù†Ø¬Ø§Ù… Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª",
+    "too many requests": "ØªØ¹Ø¯Ø§Ø¯ Ø¯Ø±Ø®ÙˆØ§Ø³Øªâ€ŒÙ‡Ø§ Ø¨ÛŒØ´ Ø§Ø² Ø­Ø¯ Ù…Ø¬Ø§Ø² Ø§Ø³Øª",
+    "internal server error": "Ø®Ø·Ø§ÛŒ Ø¯Ø§Ø®Ù„ÛŒ Ø³Ø±ÙˆØ±",
+    "service unavailable": "Ø³Ø±ÙˆÛŒØ³ Ø¯Ø± Ø¯Ø³ØªØ±Ø³ Ù†ÛŒØ³Øª",
+    "bad request": "Ø¯Ø±Ø®ÙˆØ§Ø³Øª Ù†Ø§Ù…Ø¹ØªØ¨Ø± Ø§Ø³Øª",
+    "not found": "Ù…ÙˆØ±Ø¯ÛŒ ÛŒØ§ÙØª Ù†Ø´Ø¯",
+}
+
+
+def translate_api_message(message: Optional[str]) -> Optional[str]:
+    if message is None:
+        return None
+
+    original = str(message)
+    normalized = original.strip()
+
+    if not normalized:
+        return original
+
+    lowered = normalized.lower()
+
+    exact = _EXACT_TRANSLATIONS.get(lowered)
+    if exact is not None:
+        return exact
+
+    for key, value in _PARTIAL_TRANSLATIONS.items():
+        if key in lowered:
+            return value
+
+    return original

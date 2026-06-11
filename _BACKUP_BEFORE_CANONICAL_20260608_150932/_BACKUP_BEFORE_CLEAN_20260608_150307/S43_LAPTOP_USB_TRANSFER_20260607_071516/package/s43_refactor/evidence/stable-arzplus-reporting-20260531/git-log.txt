@@ -1,0 +1,5 @@
+caf2ed7 Fix conservative ArzPlus status reporting
+4c9a1c1 Fix ArzPlus token slot isolation and add safe healthcheck runner
+93f4023 phase4: enforce live and AI gates on order submit paths
+6427434 Fix remaining autonomous AI fallback default to false
+5cfddd3 Harden wallet autonomous AI fallback default to false

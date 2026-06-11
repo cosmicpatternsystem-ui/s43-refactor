@@ -1,0 +1,223 @@
+S43 AUTO REFACTOR PLAN
+========================================================================
+
+Top Refactor Candidates
+------------------------------------------------------------------------
+TradingBotOps                  score=5550.5 size=8287 methods= 88 deps= 28 big_methods=25 concerns=8
+WallStreetDashboardManager     score=2883.5 size=3993 methods= 58 deps= 18 big_methods=13 concerns=6
+ExchangeClient                 score=2320.0 size=2586 methods= 67 deps= 21 big_methods=15 concerns=7
+TradingBotBase                 score=1283.5 size=1375 methods= 17 deps= 45 big_methods= 6 concerns=5
+_DataFeedBase                  score= 815.0 size= 858 methods= 20 deps= 11 big_methods= 4 concerns=5
+RiskManager                    score= 731.0 size= 618 methods= 25 deps= 12 big_methods= 2 concerns=6
+ExecutionEngine                score= 544.5 size= 609 methods= 10 deps= 15 big_methods= 2 concerns=2
+RazTraderEnhanced              score= 491.5 size= 349 methods= 14 deps= 15 big_methods= 1 concerns=5
+TradingBot                     score= 480.0 size= 452 methods= 10 deps= 14 big_methods= 2 concerns=3
+Orch22Orchestrator             score= 435.0 size= 296 methods= 11 deps= 14 big_methods= 1 concerns=5
+AdvancedAnalyticsEngine        score= 364.0 size= 252 methods= 10 deps= 13 big_methods= 0 concerns=4
+AlphaModel                     score= 363.5 size= 317 methods= 13 deps= 11 big_methods= 1 concerns=1
+
+Detailed Split Recommendations
+------------------------------------------------------------------------
+
+[TradingBotOps]
+file: s43_project/core/trading_bot_ops.py
+size=8287 lines, methods=88, deps=28, big_methods=25, concern_spread=8, score=5550.5
+dominant concerns: misc:45, market:17, execution:12, state:11, runtime:6, risk:5, strategy:3, infra:2
+recommended split:
+  - TradingBotRuntime: event loop / scheduling / async orchestration
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - RiskCoordinator: risk checks / halt / guard / breaker integration
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - StrategyCoordinator: signal / model / decision routing
+method move suggestions:
+  - _process_symbol_heartbeat    2757 lines  -> layer=market    line=2904
+  - run                          1626 lines  -> layer=misc      line=6679
+  - _refresh_market_snapshot_if_needed  946 lines  -> layer=state     line=271
+  - _health_watchdog_loop         734 lines  -> layer=runtime   line=7378
+  - _apply_snapshot_result        671 lines  -> layer=state     line=524
+  - _refresh_orders_if_needed     634 lines  -> layer=execution line=1813
+  - _refresh_top8_if_needed       391 lines  -> layer=misc      line=2447
+  - _apply_resolved_fills         279 lines  -> layer=execution line=3040
+  - _update_market_snapshot_confidence  277 lines  -> layer=state     line=1217
+  - cycle_wallet                  271 lines  -> layer=state     line=5841
+  - refresh_market_focus          220 lines  -> layer=market    line=19
+  - _apply_one                    205 lines  -> layer=misc      line=3086
+
+[WallStreetDashboardManager]
+file: s43_project/core/wall_street_dashboard_manager.py
+size=3993 lines, methods=58, deps=18, big_methods=13, concern_spread=6, score=2883.5
+dominant concerns: misc:47, state:7, execution:2, runtime:1, market:1, strategy:1
+recommended split:
+  - TradingBotRuntime: event loop / scheduling / async orchestration
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / symbol / orderbook context
+method move suggestions:
+  - _run                         3931 lines  -> layer=misc      line=43
+  - phoenix_panel                 923 lines  -> layer=misc      line=1102
+  - render                        772 lines  -> layer=misc      line=3174
+  - dzh_panel                     599 lines  -> layer=misc      line=2025
+  - wallet_overview_panel         319 lines  -> layer=state     line=783
+  - wallet_full_panel             214 lines  -> layer=state     line=567
+  - _run_assets_detail             78 lines  -> layer=misc      line=447
+  - multi_core_asset_panel         78 lines  -> layer=misc      line=2926
+  - _pick_best_focus               67 lines  -> layer=misc      line=1390
+  - _overview_assets_detail        65 lines  -> layer=misc      line=807
+  - net_resilience_panel           64 lines  -> layer=misc      line=2862
+  - _net_metrics                   62 lines  -> layer=misc      line=2747
+
+[ExchangeClient]
+file: s43_project/core/exchange_client.py
+size=2586 lines, methods=67, deps=21, big_methods=15, concern_spread=7, score=2320.0
+dominant concerns: misc:36, market:14, infra:7, execution:6, runtime:4, risk:3, state:3
+recommended split:
+  - TradingBotRuntime: event loop / scheduling / async orchestration
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - RiskCoordinator: risk checks / halt / guard / breaker integration
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - MarketContext: market snapshot / symbol / orderbook context
+method move suggestions:
+  - place_order                   152 lines  -> layer=execution line=2216
+  - get_depth                     151 lines  -> layer=market    line=383
+  - get_market_snapshot           134 lines  -> layer=state     line=1701
+  - get_all_tickers_optimized     128 lines  -> layer=runtime   line=1356
+  - _discover_depth_endpoint      125 lines  -> layer=market    line=233
+  - get_all_tickers               125 lines  -> layer=runtime   line=1231
+  - conn_check                    118 lines  -> layer=misc      line=2096
+  - __init__                       95 lines  -> layer=misc      line=43
+  - _ensure_ready                  95 lines  -> layer=misc      line=138
+  - get_all_market_stats           92 lines  -> layer=market    line=1887
+  - get_balance                    92 lines  -> layer=state     line=2002
+  - _arzplus_market_snapshot       91 lines  -> layer=state     line=1533
+
+[TradingBotBase]
+file: s43_project/core/trading_bot_base.py
+size=1375 lines, methods=17, deps=45, big_methods=6, concern_spread=5, score=1283.5
+dominant concerns: state:9, misc:6, market:2, risk:1, strategy:1
+recommended split:
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - RiskCoordinator: risk checks / halt / guard / breaker integration
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / symbol / orderbook context
+method move suggestions:
+  - snapshot                      399 lines  -> layer=state     line=374
+  - _refresh_balance_if_needed    357 lines  -> layer=state     line=1005
+  - __init__                      216 lines  -> layer=misc      line=38
+  - _load_state                   145 lines  -> layer=state     line=797
+  - _load_bot_state                63 lines  -> layer=state     line=311
+  - _save_state_if_needed          63 lines  -> layer=state     line=942
+  - _save_bot_state                33 lines  -> layer=state     line=278
+  - _bot_state_snapshot            24 lines  -> layer=state     line=254
+  - _state_obj                     24 lines  -> layer=state     line=773
+  - _balance_refresh_degraded      18 lines  -> layer=state     line=1007
+  - calculate_opportunity_score    15 lines  -> layer=strategy  line=1397
+  - _idem_forget                   10 lines  -> layer=misc      line=1371
+
+[_DataFeedBase]
+file: s43_project/core/__data_feed_base.py
+size=858 lines, methods=20, deps=11, big_methods=4, concern_spread=5, score=815.0
+dominant concerns: market:9, misc:7, state:5, execution:1, infra:1
+recommended split:
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - MarketContext: market snapshot / symbol / orderbook context
+  - ExchangeGateway: client / API / retry / transport wrappers
+method move suggestions:
+  - fetch_depth                   270 lines  -> layer=market    line=332
+  - _parse_depth                  175 lines  -> layer=market    line=65
+  - fetch_spot                    159 lines  -> layer=misc      line=602
+  - peek_mid                       63 lines  -> layer=misc      line=802
+  - _normalize_levels              51 lines  -> layer=execution line=95
+  - fetch_depths                   41 lines  -> layer=market    line=761
+  - _blacklist_symbol              32 lines  -> layer=market    line=268
+  - _load_price_cache              30 lines  -> layer=state     line=27
+  - _px_from_row                   30 lines  -> layer=misc      line=616
+  - is_ignored                     20 lines  -> layer=misc      line=248
+  - _try_snapshots                 20 lines  -> layer=state     line=646
+  - __init__                       19 lines  -> layer=misc      line=8
+
+[RiskManager]
+file: s43_project/core/risk_manager.py
+size=618 lines, methods=25, deps=12, big_methods=2, concern_spread=6, score=731.0
+dominant concerns: misc:16, risk:7, state:4, market:1, execution:1, strategy:1
+recommended split:
+  - TradingStateManager: state / snapshot / cache / wallet / positions
+  - RiskCoordinator: risk checks / halt / guard / breaker integration
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / symbol / orderbook context
+method move suggestions:
+  - safe_level                     66 lines  -> layer=misc      line=169
+  - can_open_explain               66 lines  -> layer=misc      line=408
+  - _load_risk_journal             47 lines  -> layer=state     line=304
+  - should_exit                    45 lines  -> layer=risk      line=520
+  - update_wallet_balance_snapshot   41 lines  -> layer=state     line=53
+  - can_open                       34 lines  -> layer=misc      line=374
+  - global_cash_total_irt          32 lines  -> layer=misc      line=94
+  - _safe_log_throttle             32 lines  -> layer=misc      line=126
+  - set_safe                       32 lines  -> layer=misc      line=596
+  - __init__                       30 lines  -> layer=misc      line=11
+  - hard_blocks_all_orders         30 lines  -> layer=execution line=235
+  - register_close                 28 lines  -> layer=misc      line=492
+
+[ExecutionEngine]
+file: s43_project/core/execution_engine.py
+size=609 lines, methods=10, deps=15, big_methods=2, concern_spread=2, score=544.5
+dominant concerns: misc:7, execution:3
+recommended split:
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+method move suggestions:
+  - deep_prune_ghost_orders       321 lines  -> layer=execution line=300
+  - place_limit                   190 lines  -> layer=execution line=63
+  - place_ladder                   47 lines  -> layer=execution line=253
+  - _regime_multiplier             36 lines  -> layer=misc      line=27
+  - _mid                           20 lines  -> layer=misc      line=430
+  - __init__                       14 lines  -> layer=misc      line=13
+  - _is_bot_cid                    14 lines  -> layer=misc      line=450
+  - _side                          10 lines  -> layer=misc      line=464
+  - _qty                            8 lines  -> layer=misc      line=474
+  - _px                             8 lines  -> layer=misc      line=482
+
+[RazTraderEnhanced]
+file: s43_project/core/raz_trader_enhanced.py
+size=349 lines, methods=14, deps=15, big_methods=1, concern_spread=5, score=491.5
+dominant concerns: misc:7, market:4, runtime:1, strategy:1, execution:1
+recommended split:
+  - TradingBotRuntime: event loop / scheduling / async orchestration
+  - ExecutionCoordinator: order placement / cancel / normalize / fills
+  - StrategyCoordinator: signal / model / decision routing
+  - MarketContext: market snapshot / symbol / orderbook context
+method move suggestions:
+  - _get_raw_signal                70 lines  -> layer=strategy  line=177
+  - _get_portfolio_data            51 lines  -> layer=misc      line=247
+  - _process_symbol_enhanced       42 lines  -> layer=market    line=108
+  - __init__                       30 lines  -> layer=misc      line=16
+  - _get_market_data               27 lines  -> layer=market    line=150
+  - _execute_trade                 25 lines  -> layer=execution line=298
+  - _enhanced_trading_loop         23 lines  -> layer=runtime   line=67
+  - _calculate_rsi                 20 lines  -> layer=misc      line=344
+  - _prioritize_symbols            16 lines  -> layer=market    line=92
+  - _update_dashboard              13 lines  -> layer=misc      line=323
+  - start                          12 lines  -> layer=misc      line=46
+  - stop                            9 lines  -> layer=misc      line=58
+
+Suggested Target Package Layout
+------------------------------------------------------------------------
+core/        orchestrators, app core, service facades
+engine/      execution engines, orchestration engines
+strategy/    alpha, signals, decision, models, filters
+risk/        risk manager, guards, breakers, health checks
+market/      snapshots, symbols, orderbook, specs, stores
+runtime/     event loop, schedulers, clocks, rate limiters
+infra/       exchange clients, API wrappers, retries, IO
+state/       wallet, positions, journals, persistence, caches
+
+Immediate Refactor Rules
+------------------------------------------------------------------------
+1) Split any class > 800 lines or > 25 methods.
+2) Extract any method > 80 lines into helper/service objects.
+3) Reduce classes with > 12 dependencies via façade or coordinator.
+4) Move exchange/API logic out of orchestration classes into infra gateways.
+5) Keep strategy pure: avoid direct IO/network calls inside signal/model code.
+6) Isolate state mutation from decision logic.

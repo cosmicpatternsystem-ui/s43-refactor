@@ -1,0 +1,30 @@
+03214:     async def place_limit(
+03215:         self,
+03216:         symbol: str,
+03217:         side: str,
+03218:         qty: float,
+03219:         price: float,
+03220:         cid: Optional[str] = None,
+03221:         *,
+03222:         notional_irt: Optional[float] = None,
+03223:         market: str = "spot",
+03224:         reduce_only: Optional[bool] = None,
+03225:         leverage: Optional[Union[int, float]] = None,
+03226:         **kwargs: Any,
+03227:     ) -> dict:
+03228:         extra: Dict[str, Any] = dict(kwargs or {})
+03229:         if notional_irt is not None and "notional_irt" not in extra:
+03230:             extra["notional_irt"] = notional_irt
+03231: 
+03232:         return await self.place_order(
+03233:             symbol=symbol,
+03234:             side=side,
+03235:             amount=qty,
+03236:             price=price,
+03237:             cid=cid,
+03238:             fill_type="limit",
+03239:             market=market,
+03240:             reduce_only=reduce_only,
+03241:             leverage=leverage,
+03242:             **extra,
+03243:         )

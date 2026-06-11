@@ -1,0 +1,15 @@
+﻿GeneratedAt: 2026-06-10 12:19:26
+ProjectRoot: E:\اخباری\ssl\s43_refactor
+Canonical: E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py
+BaselineDir: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219
+CurrentSHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+StoredSHA256: D4EC4D0200625DB3936D678B81C376158417DCAA4EEBE872994A91457787F506
+HashStatus: MATCH
+GuardArtifact: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219\guards.txt
+GuardArtifactLines: 9
+PyCompileExitCode: 0
+Manifest: E:\اخباری\ssl\s43_refactor\baseline_verify_20260610_121219\MANIFEST.txt
+LatestPatchReport: E:\اخباری\ssl\s43_refactor\auto_safe_ai_gate_patch_20260610_115020\PATCH_REPORT.md
+PythonFilesModified: False
+ExcludedFileTouched: False
+Status: VERIFIED

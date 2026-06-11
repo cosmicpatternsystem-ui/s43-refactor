@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+echo "======================================"
+echo "TERMUX SAFE PASTE GUARD"
+echo "======================================"
+echo "1) For long content, do NOT paste directly into bash logic."
+echo "2) Use: termux_write_sh <file>   for shell scripts"
+echo "3) Use: termux_write_text <file> for text/config files"
+echo "4) Finish input with Ctrl-D"
+echo "5) Then run: bash -n <script> before execution"
+echo "======================================"

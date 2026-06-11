@@ -1,0 +1,16 @@
+-.pytest_cache/
+-*.log
++.env
++.env.*
++!.env.example
++*.log
+-cache/
+-.pp_price_cache.json.tmp
+-*SECRET*
+-*TOKEN*
+-*CREDENTIAL*
+-*KEYWORD*
+-*KEY_PATTERNS*
+-*ENV_KEY*
+-*WALLET_SLOT*
+-*WALLET_SLOTS*

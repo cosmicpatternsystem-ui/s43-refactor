@@ -1,0 +1,135 @@
+===== S43 PHASE2 INVENTORY NEXT HELPERS =====
+TS=20260527_100422
+
+[TOP-LEVEL DEF NAMES]
+32:def _parse_hard_veto_sources_env(default_sources=None):
+55:def _s43_debug_print_enabled() -> bool:
+64:def _s43_debug_print(*args, **kwargs):
+3513:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+3521:def _quantize_down(x: float, step: float) -> float:
+5647:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+11186:def _obs_trace_deque() -> deque:
+11662:def _record_why_no_trade(bot: Any, *, wallet: str = "", sym: str = "", status: str = "", reason: str = "", meta: dict | None = None) -> None:
+11763:def _dash_param_update(bot: Any, *, wallet: str, sym: str, fields: dict) -> None:
+13445:def _run_coro_sync(coro):
+13456:def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
+14007:def _s43_autopatch_probe():
+22757:def _recorder_child_main(args: Any) -> None:
+22838:def _gc_freeze_after_init() -> None:
+27840:def _orch22_fmt_fields(fields: Dict[str, Any]) -> str:
+27855:def _orch22_log(log: logging.Logger, level: int, event: str, **fields: Any) -> None:
+28419:def _phoenix_selftests() -> None:
+
+[TOP-LEVEL CLASS NAMES]
+12:class TemporaryPause(Exception):
+17:class ApiError(Exception):
+19:class ApiHttpError(ApiError):
+169:class BotConfig:
+359:class _DashRingHandler(logging.Handler):
+558:class Logger:
+604:class CircuitBreaker:
+625:class SharedAsyncRateLimiter:
+687:class PrioritySemaphore:
+723:class ExchangeClient:
+3602:class MarketSpecsCache:
+3646:class OrderNormalizer:
+3675:class TickRecorder:
+3862:class OrderBookTop:
+3871:class Signal:
+3888:class Position:
+3893:class _DataFeedBase:
+4752:class _ClockArbiterBase:
+4822:class TradeHealth:
+4830:class RiskDecision:
+4838:class RiskEscalationLayer:
+4939:class TradeHealthController:
+5108:class OrderBookService:
+5180:class _SymbolState:
+5190:class EdgeModelV2:
+5278:class _NoopLock:
+5301:class AlphaModel:
+5619:class PriceHistory:
+5628:class _AnalyticsParsing:
+5666:class MultiTimeframeAnalyzer:
+5717:class PatternDetector:
+5822:class OrderBookAnalyzer:
+5877:class SentimentAnalyzer:
+5933:class LightMLPredictor:
+5982:class AdvancedAnalyticsEngine:
+6234:class TradingMemory:
+6264:class PhoenixDecision:
+6298:class SovereignEngine:
+6587:class SovereignCore:
+6695:class Priority(enum.IntEnum):
+6702:class PrioritizedItem:
+6706:class LatencyAwareEventLoop:
+6762:class AsyncRateLimiter:
+6824:class HealthMetric:
+6869:class SymbolHealthMonitor:
+6975:class GlobalHealthMonitor:
+7066:class VolatilityRegime(enum.Enum):
+7074:class VolatilityMetrics:
+7091:class DynamicPositionSizer:
+7366:class SignalConfidence(enum.Enum):
+7373:class FilteredSignal:
+7406:class HybridSignalFilter:
+7692:class RetryStrategy(enum.Enum):
+7698:class RetryConfig:
+7708:class CircuitBreakerState(enum.Enum):
+7712:class SmartCircuitBreaker:
+7783:class AdaptiveRetryHandler:
+7867:class ResilientAPIClient:
+7976:class RiskMetrics:
+8001:class DashboardRenderer:
+8073:class RiskMetricsCalculator:
+8198:class RazTraderEnhanced:
+8510:class PhoenixEngine:
+8960:class SanityStatus:
+8972:class SanityHaltController:
+9293:class _DzhBanIntegrityBase:
+9469:class ClockArbiter(_ClockArbiterBase):
+9520:class DataFeed(_DataFeedBase):
+9566:class DzhBanIntegrity(_DzhBanIntegrityBase):
+9775:class RiskManager:
+10393:class ExecutionEngine:
+10961:class DashboardManager:
+11041:class _CortexNullLogger:
+11064:class DecisionCortex:
+11145:class GlobalExitGuard:
+11195:class WalletRuntime:
+11341:class _VolatilityAnalyzer:
+11369:class SymbolSnapshot:
+11394:class MarketSnapshotStore:
+11607:class TradingPolicy:
+11844:class _S43NoopAwaitable:
+11875:class NetHealthMonitor:
+11968:class SoftSymbolBlacklist:
+12086:class TradingBotBase:
+13649:class Janitor:
+13856:class _MockExchangeForStress:
+14014:class _FaultInjectExchange:
+14105:class TradingBotOps:
+22279:class OrderJournal:
+22337:class TradingBot(TradingBotBase, TradingBotOps):
+22970:class _S43VetoRegistry:
+23068:class WallStreetDashboardManager(DashboardManager):
+27757:class _Orch22StaleClock:
+27773:class _Orch22AsyncComponent:
+27812:class Orch22SystemState(Enum):
+27818:class Orch22MarketState:
+27827:class Orch22WalletState:
+27861:class Orch22MarketRadar(_Orch22AsyncComponent):
+27988:class Orch22WalletEngine(_Orch22AsyncComponent):
+28089:class Orch22Orchestrator:
+
+[PARSE CANDIDATES]
+32:def _parse_hard_veto_sources_env(default_sources=None):
+
+[FMT CANDIDATES]
+
+[SAFE CANDIDATES]
+
+[NORM/CANON CANDIDATES]
+
+[COMPILE S43]
+s43.py: SYNTAX_OK

@@ -1,0 +1,13 @@
+﻿{
+    "document":  "S43_BASELINE_SELECTION_AND_REALITY_REVIEW.txt",
+    "document_sha256":  "22D3D1347137EC7BE5E3567B8A754AF46EA1C837F3A1AB32E942FFC58DE61CC5",
+    "status":  "BASELINE_SELECTION_AND_REALITY_REVIEW_REGISTERED",
+    "official_baseline":  "LOCKED_POST_S43_CHANGE_PLAN_002_PROJECT_STATE",
+    "fourth_codebase_authorized":  false,
+    "full_rewrite_authorized":  false,
+    "code_mutation_authorized":  false,
+    "live_trading_authorized":  false,
+    "next_meaningful_patch":  "S43_CHANGE_PLAN_003",
+    "cp003_patch_type":  "MODULAR_AUTONOMY_AI_SAFETY_ARCHITECTURE_SCAFFOLD",
+    "created_at":  "2026-06-11T23:49:22.3675223+03:30"
+}

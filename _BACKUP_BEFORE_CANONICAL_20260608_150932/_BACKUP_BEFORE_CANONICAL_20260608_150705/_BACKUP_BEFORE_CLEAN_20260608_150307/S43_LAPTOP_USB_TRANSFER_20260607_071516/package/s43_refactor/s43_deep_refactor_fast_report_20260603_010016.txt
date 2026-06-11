@@ -1,0 +1,482 @@
+=== S43 FAST DEEP REFACTOR REPORT ===
+timestamp: 20260603_010016
+file: s43.py
+total_lines: 29643
+functions: 828
+classes: 114
+
+=== MODULE SPLIT SUGGESTIONS ===
+s43_api.py: 17 functions, approx lines 58-29542
+s43_auth.py: 7 functions, approx lines 1258-15322
+s43_config.py: 7 functions, approx lines 33-29452
+s43_core.py: 707 functions, approx lines 67-29620
+s43_parser.py: 10 functions, approx lines 552-14700
+s43_runtime.py: 59 functions, approx lines 28-29558
+s43_ui.py: 19 functions, approx lines 669-28513
+
+=== COMPLEX FUNCTIONS ===
+s43.py:24611 _run complexity=2271 length=3931 group=runtime
+s43.py:18342 _process_symbol_heartbeat complexity=1637 length=2757 group=core
+s43.py:22117 run complexity=890 length=1626 group=runtime
+s43.py:15709 _refresh_market_snapshot_if_needed complexity=587 length=946 group=core
+s43.py:25670 phoenix_panel complexity=568 length=923 group=core
+s43.py:27742 render complexity=479 length=772 group=ui
+s43.py:15962 _apply_snapshot_result complexity=416 length=671 group=core
+s43.py:22816 _health_watchdog_loop complexity=392 length=734 group=runtime
+s43.py:17251 _refresh_orders_if_needed complexity=359 length=634 group=core
+s43.py:26593 dzh_panel complexity=353 length=599 group=core
+s43.py:17885 _refresh_top8_if_needed complexity=230 length=391 group=core
+s43.py:13643 snapshot complexity=227 length=399 group=core
+s43.py:11860 deep_prune_ghost_orders complexity=196 length=321 group=runtime
+s43.py:18478 _apply_resolved_fills complexity=183 length=279 group=core
+s43.py:14274 _refresh_balance_if_needed complexity=173 length=357 group=core
+s43.py:25351 wallet_overview_panel complexity=156 length=319 group=core
+s43.py:21279 cycle_wallet complexity=156 length=271 group=core
+s43.py:10175 evaluate complexity=151 length=297 group=core
+s43.py:16655 _update_market_snapshot_confidence complexity=150 length=277 group=core
+s43.py:18524 _apply_one complexity=138 length=205 group=core
+s43.py:5347 fetch_depth complexity=137 length=270 group=core
+s43.py:23979 cycle_wallet_execution complexity=136 length=238 group=core
+s43.py:25135 wallet_full_panel complexity=134 length=214 group=core
+s43.py:15457 refresh_market_focus complexity=132 length=220 group=core
+s43.py:9875 update complexity=129 length=263 group=core
+s43.py:5080 _parse_depth complexity=127 length=175 group=parser
+s43.py:15776 _fetch_snapshot complexity=118 length=186 group=core
+s43.py:21801 cycle_wallet_cleanup complexity=118 length=172 group=core
+s43.py:14712 _run_raz_entry complexity=113 length=277 group=runtime
+s43.py:5617 fetch_spot complexity=107 length=159 group=core
+s43.py:22289 _exec_loop complexity=102 length=175 group=runtime
+s43.py:21550 _assert_ordpos_invariant complexity=99 length=186 group=core
+s43.py:22648 _market_heartbeat_loop complexity=97 length=168 group=runtime
+s43.py:10746 update_wallet_metrics complexity=95 length=191 group=core
+s43.py:11623 place_limit complexity=94 length=190 group=core
+s43.py:690 get_best_snapshot complexity=92 length=245 group=core
+s43.py:10499 evaluate_entry complexity=91 length=122 group=core
+s43.py:13307 __init__ complexity=78 length=216 group=core
+s43.py:14066 _load_state complexity=78 length=145 group=core
+s43.py:1622 get_depth complexity=75 length=151 group=core
+s43.py:2595 get_all_tickers_optimized complexity=75 length=128 group=core
+s43.py:21981 execute_order_v121 complexity=74 length=136 group=core
+s43.py:1377 _ensure_ready complexity=72 length=95 group=core
+s43.py:2940 get_market_snapshot complexity=71 length=134 group=core
+s43.py:16992 _phoenix_target_symbols complexity=71 length=113 group=core
+s43.py:17105 _phoenix_health_symbols complexity=70 length=105 group=core
+s43.py:15021 _sweep complexity=66 length=107 group=core
+s43.py:6617 evaluate complexity=64 length=130 group=core
+s43.py:1472 _discover_depth_endpoint complexity=60 length=125 group=api
+s43.py:2470 get_all_tickers complexity=60 length=125 group=core
+s43.py:12882 _record_why_no_trade complexity=59 length=101 group=core
+s43.py:24350 run complexity=55 length=123 group=runtime
+s43.py:3455 place_order complexity=54 length=152 group=core
+s43.py:3335 conn_check complexity=54 length=118 group=core
+s43.py:947 last_important complexity=53 length=98 group=core
+s43.py:25015 _run_assets_detail complexity=50 length=78 group=runtime
+s43.py:3126 get_all_market_stats complexity=49 length=92 group=core
+s43.py:22560 _build_watch_symbols complexity=49 length=88 group=ui
+s43.py:25958 _pick_best_focus complexity=49 length=67 group=core
+s43.py:12983 _dash_param_update complexity=48 length=79 group=core
+s43.py:2772 _arzplus_market_snapshot complexity=43 length=91 group=core
+s43.py:22217 _bg_once complexity=43 length=72 group=core
+s43.py:5817 peek_mid complexity=43 length=63 group=core
+s43.py:3241 get_balance complexity=42 length=92 group=core
+s43.py:23910 _janitor_sweep_locked_wallets complexity=42 length=69 group=core
+s43.py:15128 _cancel_stale_orders complexity=42 length=68 group=core
+s43.py:13580 _load_bot_state complexity=41 length=63 group=core
+s43.py:22464 _cleanup_loop complexity=40 length=79 group=runtime
+s43.py:11464 should_exit complexity=39 length=45 group=core
+s43.py:27656 alpha_reclaim_panel complexity=38 length=62 group=core
+s43.py:1983 _arzplus_health_check_clock complexity=37 length=67 group=core
+s43.py:22318 _cycle_one_wallet_exec complexity=37 length=63 group=core
+s43.py:27315 _net_metrics complexity=37 length=62 group=core
+s43.py:6152 evaluate complexity=36 length=85 group=core
+s43.py:25375 _overview_assets_detail complexity=36 length=65 group=core
+s43.py:27377 raz_core_header_panel complexity=36 length=53 group=core
+s43.py:12674 mark_missing complexity=36 length=47 group=core
+s43.py:27494 multi_core_asset_panel complexity=35 length=78 group=core
+s43.py:11352 can_open_explain complexity=35 length=66 group=core
+s43.py:5110 _normalize_levels complexity=35 length=51 group=core
+s43.py:29002 _watchdog_loop complexity=34 length=67 group=runtime
+s43.py:3672 cancel_all_orders complexity=34 length=64 group=core
+s43.py:14211 _save_state_if_needed complexity=34 length=63 group=core
+s43.py:16123 _open_from_row complexity=34 length=51 group=core
+s43.py:28858 _run complexity=33 length=102 group=runtime
+s43.py:14875 _status_once complexity=32 length=110 group=core
+s43.py:10833 _resolve_bid complexity=32 length=69 group=core
+s43.py:27572 execution_brain_panel complexity=32 length=46 group=core
+s43.py:58 _parse_wallet_balance_response_v2 complexity=31 length=114 group=api
+s43.py:24918 _prediction_from complexity=31 length=49 group=core
+s43.py:17210 _symbols_priority_order complexity=31 length=33 group=core
+s43.py:609 _parisa_preflight complexity=30 length=58 group=core
+s43.py:11113 safe_level complexity=29 length=66 group=core
+s43.py:3076 get_last_update_age complexity=29 length=48 group=core
+s43.py:18276 _estimate_equity_irt complexity=29 length=43 group=ui
+s43.py:27430 net_resilience_panel complexity=28 length=64 group=core
+s43.py:7167 update_price_history complexity=28 length=57 group=core
+s43.py:21671 _do_cancel complexity=28 length=54 group=core
+s43.py:3738 list_orders complexity=28 length=53 group=core
+s43.py:21182 _liquidate_positions complexity=27 length=67 group=ui
+s43.py:11813 place_ladder complexity=27 length=47 group=core
+s43.py:22909 _age_from_mixed_ts complexity=27 length=47 group=core
+s43.py:10700 surgical_reset_symbol complexity=26 length=45 group=core
+s43.py:16932 _refresh_market_focus_if_needed complexity=26 length=44 group=core
+s43.py:17002 _add complexity=26 length=38 group=core
+s43.py:11038 global_cash_total_irt complexity=26 length=32 group=core
+s43.py:24256 _recorder_child_main complexity=25 length=80 group=core
+s43.py:9489 _get_raw_signal complexity=25 length=70 group=core
+s43.py:11248 _load_risk_journal complexity=25 length=47 group=core
+s43.py:2342 _harden_request complexity=25 length=46 group=api
+s43.py:3793 cancel_order complexity=25 length=45 group=core
+s43.py:2177 _build_headers complexity=25 length=44 group=ui
+s43.py:29069 _task_reset complexity=25 length=44 group=runtime
+s43.py:1282 __init__ complexity=24 length=95 group=core
+s43.py:2249 _handle_http_errors complexity=24 length=74 group=api
+s43.py:27192 ai_status_panel complexity=24 length=47 group=core
+s43.py:27618 surgical_repairs_panel complexity=24 length=38 group=core
+s43.py:18387 _set_engine complexity=24 length=33 group=core
+s43.py:11179 hard_blocks_all_orders complexity=24 length=30 group=core
+s43.py:6004 assess complexity=23 length=64 group=core
+s43.py:7762 execute_sovereign_strategy complexity=23 length=60 group=core
+s43.py:29166 _dashboard_loop complexity=23 length=56 group=runtime
+s43.py:23805 __init__ complexity=23 length=47 group=core
+s43.py:3143 _extract_map complexity=23 length=44 group=parser
+s43.py:1773 _get_session complexity=23 length=41 group=auth
+s43.py:10997 update_wallet_balance_snapshot complexity=23 length=41 group=core
+s43.py:12843 allow complexity=23 length=39 group=core
+s43.py:18440 _pending_guard complexity=23 length=38 group=core
+s43.py:21764 _market_regime_reeval complexity=23 length=37 group=core
+s43.py:2089 _arzplus_log_403 complexity=22 length=50 group=core
+s43.py:27239 policy_panel complexity=22 length=37 group=core
+s43.py:2504 _extract_ticker_rows complexity=22 length=36 group=parser
+s43.py:17115 _add complexity=22 length=32 group=core
+s43.py:12631 update_ok complexity=21 length=43 group=core
+s43.py:2051 _arzplus_detect_403_cause complexity=20 length=37 group=core
+s43.py:7026 analyze complexity=20 length=36 group=core
+s43.py:9696 _resolve_sym complexity=20 length=33 group=core
+s43.py:10649 __init__ complexity=20 length=33 group=core
+s43.py:12456 _flush_last_known_prices complexity=20 length=33 group=core
+s43.py:11540 set_safe complexity=20 length=32 group=core
+s43.py:9757 _dict_to_state complexity=20 length=30 group=core
+s43.py:28736 _compute_focus_and_top8 complexity=20 length=29 group=core
+s43.py:8356 update_volatility_metrics complexity=19 length=67 group=core
+s43.py:7225 analyze_symbol complexity=19 length=42 group=core
+s43.py:5776 fetch_depths complexity=19 length=41 group=core
+s43.py:23165 _compute_levels complexity=19 length=40 group=core
+s43.py:11587 _regime_multiplier complexity=19 length=36 group=core
+s43.py:13547 _save_bot_state complexity=19 length=33 group=core
+s43.py:11070 _safe_log_throttle complexity=19 length=32 group=core
+s43.py:15677 _soft_exit_removed_symbols complexity=19 length=32 group=core
+s43.py:5042 _load_price_cache complexity=19 length=30 group=core
+s43.py:15252 get_arzplus_token complexity=18 length=71 group=auth
+s43.py:23874 _janitor_loop complexity=18 length=36 group=runtime
+s43.py:12330 entry_multiplier complexity=18 length=35 group=core
+s43.py:494 __post_init__ complexity=18 length=34 group=core
+s43.py:1814 reset_session complexity=18 length=33 group=auth
+s43.py:21736 _derive_market_regime complexity=18 length=28 group=core
+s43.py:25093 _equity_from_wallet complexity=18 length=25 group=ui
+
+=== PERFORMANCE HOTSPOTS ===
+s43.py:24611 _run complexity=2271 length=3931 group=runtime
+s43.py:18342 _process_symbol_heartbeat complexity=1637 length=2757 group=core
+s43.py:22117 run complexity=890 length=1626 group=runtime
+s43.py:15709 _refresh_market_snapshot_if_needed complexity=587 length=946 group=core
+s43.py:25670 phoenix_panel complexity=568 length=923 group=core
+s43.py:27742 render complexity=479 length=772 group=ui
+s43.py:15962 _apply_snapshot_result complexity=416 length=671 group=core
+s43.py:22816 _health_watchdog_loop complexity=392 length=734 group=runtime
+s43.py:17251 _refresh_orders_if_needed complexity=359 length=634 group=core
+s43.py:26593 dzh_panel complexity=353 length=599 group=core
+s43.py:17885 _refresh_top8_if_needed complexity=230 length=391 group=core
+s43.py:13643 snapshot complexity=227 length=399 group=core
+s43.py:11860 deep_prune_ghost_orders complexity=196 length=321 group=runtime
+s43.py:18478 _apply_resolved_fills complexity=183 length=279 group=core
+s43.py:14274 _refresh_balance_if_needed complexity=173 length=357 group=core
+s43.py:25351 wallet_overview_panel complexity=156 length=319 group=core
+s43.py:21279 cycle_wallet complexity=156 length=271 group=core
+s43.py:10175 evaluate complexity=151 length=297 group=core
+s43.py:16655 _update_market_snapshot_confidence complexity=150 length=277 group=core
+s43.py:18524 _apply_one complexity=138 length=205 group=core
+s43.py:5347 fetch_depth complexity=137 length=270 group=core
+s43.py:23979 cycle_wallet_execution complexity=136 length=238 group=core
+s43.py:25135 wallet_full_panel complexity=134 length=214 group=core
+s43.py:15457 refresh_market_focus complexity=132 length=220 group=core
+s43.py:9875 update complexity=129 length=263 group=core
+s43.py:5080 _parse_depth complexity=127 length=175 group=parser
+s43.py:15776 _fetch_snapshot complexity=118 length=186 group=core
+s43.py:21801 cycle_wallet_cleanup complexity=118 length=172 group=core
+s43.py:14712 _run_raz_entry complexity=113 length=277 group=runtime
+s43.py:5617 fetch_spot complexity=107 length=159 group=core
+s43.py:22289 _exec_loop complexity=102 length=175 group=runtime
+s43.py:21550 _assert_ordpos_invariant complexity=99 length=186 group=core
+s43.py:22648 _market_heartbeat_loop complexity=97 length=168 group=runtime
+s43.py:10746 update_wallet_metrics complexity=95 length=191 group=core
+s43.py:11623 place_limit complexity=94 length=190 group=core
+s43.py:690 get_best_snapshot complexity=92 length=245 group=core
+s43.py:10499 evaluate_entry complexity=91 length=122 group=core
+s43.py:13307 __init__ complexity=78 length=216 group=core
+s43.py:14066 _load_state complexity=78 length=145 group=core
+s43.py:1622 get_depth complexity=75 length=151 group=core
+s43.py:2595 get_all_tickers_optimized complexity=75 length=128 group=core
+s43.py:21981 execute_order_v121 complexity=74 length=136 group=core
+s43.py:1377 _ensure_ready complexity=72 length=95 group=core
+s43.py:2940 get_market_snapshot complexity=71 length=134 group=core
+s43.py:16992 _phoenix_target_symbols complexity=71 length=113 group=core
+s43.py:17105 _phoenix_health_symbols complexity=70 length=105 group=core
+s43.py:15021 _sweep complexity=66 length=107 group=core
+s43.py:6617 evaluate complexity=64 length=130 group=core
+s43.py:1472 _discover_depth_endpoint complexity=60 length=125 group=api
+s43.py:2470 get_all_tickers complexity=60 length=125 group=core
+s43.py:12882 _record_why_no_trade complexity=59 length=101 group=core
+s43.py:24350 run complexity=55 length=123 group=runtime
+s43.py:3455 place_order complexity=54 length=152 group=core
+s43.py:3335 conn_check complexity=54 length=118 group=core
+s43.py:947 last_important complexity=53 length=98 group=core
+s43.py:25015 _run_assets_detail complexity=50 length=78 group=runtime
+s43.py:3126 get_all_market_stats complexity=49 length=92 group=core
+s43.py:22560 _build_watch_symbols complexity=49 length=88 group=ui
+s43.py:25958 _pick_best_focus complexity=49 length=67 group=core
+s43.py:12983 _dash_param_update complexity=48 length=79 group=core
+s43.py:2772 _arzplus_market_snapshot complexity=43 length=91 group=core
+s43.py:22217 _bg_once complexity=43 length=72 group=core
+s43.py:5817 peek_mid complexity=43 length=63 group=core
+s43.py:3241 get_balance complexity=42 length=92 group=core
+s43.py:23910 _janitor_sweep_locked_wallets complexity=42 length=69 group=core
+s43.py:15128 _cancel_stale_orders complexity=42 length=68 group=core
+s43.py:13580 _load_bot_state complexity=41 length=63 group=core
+s43.py:22464 _cleanup_loop complexity=40 length=79 group=runtime
+s43.py:11464 should_exit complexity=39 length=45 group=core
+s43.py:27656 alpha_reclaim_panel complexity=38 length=62 group=core
+s43.py:1983 _arzplus_health_check_clock complexity=37 length=67 group=core
+s43.py:22318 _cycle_one_wallet_exec complexity=37 length=63 group=core
+s43.py:27315 _net_metrics complexity=37 length=62 group=core
+s43.py:6152 evaluate complexity=36 length=85 group=core
+s43.py:25375 _overview_assets_detail complexity=36 length=65 group=core
+s43.py:27377 raz_core_header_panel complexity=36 length=53 group=core
+s43.py:12674 mark_missing complexity=36 length=47 group=core
+s43.py:27494 multi_core_asset_panel complexity=35 length=78 group=core
+s43.py:11352 can_open_explain complexity=35 length=66 group=core
+s43.py:5110 _normalize_levels complexity=35 length=51 group=core
+s43.py:29002 _watchdog_loop complexity=34 length=67 group=runtime
+s43.py:3672 cancel_all_orders complexity=34 length=64 group=core
+s43.py:14211 _save_state_if_needed complexity=34 length=63 group=core
+s43.py:16123 _open_from_row complexity=34 length=51 group=core
+s43.py:28858 _run complexity=33 length=102 group=runtime
+s43.py:14875 _status_once complexity=32 length=110 group=core
+s43.py:10833 _resolve_bid complexity=32 length=69 group=core
+s43.py:27572 execution_brain_panel complexity=32 length=46 group=core
+s43.py:58 _parse_wallet_balance_response_v2 complexity=31 length=114 group=api
+s43.py:24918 _prediction_from complexity=31 length=49 group=core
+s43.py:17210 _symbols_priority_order complexity=31 length=33 group=core
+s43.py:609 _parisa_preflight complexity=30 length=58 group=core
+s43.py:11113 safe_level complexity=29 length=66 group=core
+s43.py:3076 get_last_update_age complexity=29 length=48 group=core
+s43.py:18276 _estimate_equity_irt complexity=29 length=43 group=ui
+s43.py:27430 net_resilience_panel complexity=28 length=64 group=core
+s43.py:7167 update_price_history complexity=28 length=57 group=core
+s43.py:21671 _do_cancel complexity=28 length=54 group=core
+s43.py:3738 list_orders complexity=28 length=53 group=core
+s43.py:21182 _liquidate_positions complexity=27 length=67 group=ui
+s43.py:11813 place_ladder complexity=27 length=47 group=core
+s43.py:22909 _age_from_mixed_ts complexity=27 length=47 group=core
+s43.py:10700 surgical_reset_symbol complexity=26 length=45 group=core
+s43.py:16932 _refresh_market_focus_if_needed complexity=26 length=44 group=core
+s43.py:17002 _add complexity=26 length=38 group=core
+s43.py:11038 global_cash_total_irt complexity=26 length=32 group=core
+s43.py:24256 _recorder_child_main complexity=25 length=80 group=core
+s43.py:9489 _get_raw_signal complexity=25 length=70 group=core
+s43.py:11248 _load_risk_journal complexity=25 length=47 group=core
+s43.py:2342 _harden_request complexity=25 length=46 group=api
+s43.py:3793 cancel_order complexity=25 length=45 group=core
+s43.py:2177 _build_headers complexity=25 length=44 group=ui
+s43.py:29069 _task_reset complexity=25 length=44 group=runtime
+
+=== DUPLICATE FUNCTION NAMES ===
+_audit_only_block: first line 29589, duplicate line 29619
+__init__: first line 176, duplicate line 183
+__init__: first line 176, duplicate line 529
+__init__: first line 176, duplicate line 1088
+__init__: first line 176, duplicate line 1134
+__init__: first line 176, duplicate line 1155
+__init__: first line 176, duplicate line 1221
+acquire: first line 669, duplicate line 1230
+release: first line 671, duplicate line 1234
+locked: first line 673, duplicate line 1237
+__init__: first line 176, duplicate line 1282
+__init__: first line 176, duplicate line 4732
+__init__: first line 176, duplicate line 4776
+__init__: first line 176, duplicate line 4805
+__init__: first line 176, duplicate line 5023
+__init__: first line 176, duplicate line 5882
+__init__: first line 176, duplicate line 5953
+__init__: first line 176, duplicate line 5968
+__init__: first line 176, duplicate line 6069
+__init__: first line 176, duplicate line 6238
+__init__: first line 176, duplicate line 6320
+acquire: first line 669, duplicate line 6412
+release: first line 671, duplicate line 6415
+locked: first line 673, duplicate line 6418
+__enter__: first line 675, duplicate line 6421
+__exit__: first line 677, duplicate line 6425
+__init__: first line 176, duplicate line 6433
+_ema: first line 6343, duplicate line 6460
+evaluate: first line 6152, duplicate line 6617
+__init__: first line 176, duplicate line 6796
+_ema: first line 6343, duplicate line 6803
+__init__: first line 176, duplicate line 6847
+analyze: first line 6824, duplicate line 6933
+__init__: first line 176, duplicate line 6952
+analyze: first line 6824, duplicate line 6986
+__init__: first line 176, duplicate line 7007
+analyze: first line 6824, duplicate line 7026
+__init__: first line 176, duplicate line 7063
+__init__: first line 176, duplicate line 7112
+_estimate_volume: first line 6468, duplicate line 7133
+__init__: first line 176, duplicate line 7364
+to_dict: first line 7380, duplicate line 7402
+from_dict: first line 7383, duplicate line 7414
+__init__: first line 176, duplicate line 7428
+__init__: first line 176, duplicate line 7717
+__init__: first line 176, duplicate line 7836
+__init__: first line 176, duplicate line 7892
+acquire: first line 669, duplicate line 7907
+__aenter__: first line 1243, duplicate line 7935
+__aexit__: first line 1247, duplicate line 7938
+get_stats: first line 7889, duplicate line 7961
+__init__: first line 176, duplicate line 7999
+__init__: first line 176, duplicate line 8105
+__init__: first line 176, duplicate line 8221
+__init__: first line 176, duplicate line 8536
+__init__: first line 176, duplicate line 8842
+record_success: first line 1147, duplicate line 8851
+record_failure: first line 1149, duplicate line 8866
+__init__: first line 176, duplicate line 8913
+get_stats: first line 7889, duplicate line 8984
+__init__: first line 176, duplicate line 8997
+request: first line 2445, duplicate line 9050
+reset_session: first line 1814, duplicate line 9086
+reset_http: first line 1847, duplicate line 9097
+reset_network: first line 1849, duplicate line 9099
+__init__: first line 176, duplicate line 9131
+__init__: first line 176, duplicate line 9203
+__init__: first line 176, duplicate line 9328
+start: first line 9145, duplicate line 9358
+stop: first line 9152, duplicate line 9370
+__init__: first line 176, duplicate line 9688
+update: first line 8016, duplicate line 9875
+__init__: first line 176, duplicate line 10152
+_key: first line 6002, duplicate line 10173
+evaluate: first line 6152, duplicate line 10175
+__init__: first line 176, duplicate line 10473
+__init__: first line 176, duplicate line 10649
+_normalize_server_time: first line 5925, duplicate line 10682
+skew_s: first line 5941, duplicate line 10684
+__init__: first line 176, duplicate line 10955
+to_dict: first line 7380, duplicate line 11509
+__init__: first line 176, duplicate line 11573
+place_limit: first line 3609, duplicate line 11623
+__init__: first line 176, duplicate line 12182
+start: first line 9145, duplicate line 12220
+stop: first line 9152, duplicate line 12229
+__init__: first line 176, duplicate line 12262
+__init__: first line 176, duplicate line 12285
+__init__: first line 176, duplicate line 12366
+observe: first line 5927, duplicate line 12373
+__init__: first line 176, duplicate line 12562
+update: first line 8016, duplicate line 12565
+__init__: first line 176, duplicate line 12618
+get: first line 4767, duplicate line 12781
+__init__: first line 176, duplicate line 12831
+__init__: first line 176, duplicate line 13068
+__init__: first line 176, duplicate line 13104
+start: first line 9145, duplicate line 13117
+stop: first line 9152, duplicate line 13123
+close: first line 9101, duplicate line 13129
+aclose: first line 4968, duplicate line 13132
+score: first line 6369, duplicate line 13147
+to_dict: first line 7380, duplicate line 13153
+record_success: first line 1147, duplicate line 13156
+record_failure: first line 1149, duplicate line 13162
+__init__: first line 176, duplicate line 13197
+add: first line 7957, duplicate line 13219
+record_failure: first line 1149, duplicate line 13258
+record_success: first line 1147, duplicate line 13264
+snapshot: first line 13150, duplicate line 13274
+to_dict: first line 7380, duplicate line 13281
+__bool__: first line 13076, duplicate line 13290
+__getattr__: first line 13173, duplicate line 13293
+__init__: first line 176, duplicate line 13307
+snapshot: first line 13150, duplicate line 13643
+__init__: first line 176, duplicate line 14990
+stop: first line 9152, duplicate line 14994
+start: first line 9145, duplicate line 14996
+__init__: first line 176, duplicate line 15197
+place_order: first line 3455, duplicate line 15222
+__init__: first line 176, duplicate line 15366
+place_order: first line 3455, duplicate line 15420
+list_orders: first line 3738, duplicate line 15447
+get_depth: first line 1622, duplicate line 15450
+get_balance: first line 3241, duplicate line 15453
+run: first line 24350, duplicate line 22117
+__init__: first line 176, duplicate line 23751
+add: first line 7957, duplicate line 23757
+record: first line 7370, duplicate line 23766
+clear: first line 13243, duplicate line 23776
+save: first line 9806, duplicate line 23779
+close: first line 9101, duplicate line 23785
+__len__: first line 13287, duplicate line 23788
+__bool__: first line 13076, duplicate line 23794
+__getattr__: first line 13173, duplicate line 23797
+__init__: first line 176, duplicate line 23805
+__init__: first line 176, duplicate line 24485
+add: first line 7957, duplicate line 24488
+record: first line 7370, duplicate line 24499
+append: first line 23763, duplicate line 24505
+remove: first line 13230, duplicate line 24508
+discard: first line 13240, duplicate line 24511
+clear: first line 13243, duplicate line 24514
+snapshot: first line 13150, duplicate line 24527
+to_dict: first line 7380, duplicate line 24539
+__len__: first line 13287, duplicate line 24545
+__bool__: first line 13076, duplicate line 24548
+__iter__: first line 23791, duplicate line 24552
+__contains__: first line 13284, duplicate line 24555
+__getattr__: first line 13173, duplicate line 24558
+_run: first line 12240, duplicate line 24611
+_run_fallback: first line 12242, duplicate line 28542
+__init__: first line 176, duplicate line 28573
+age: first line 28580, duplicate line 28590
+stop: first line 9152, duplicate line 28598
+start: first line 9145, duplicate line 28605
+__init__: first line 176, duplicate line 28676
+_task_name: first line 28588, duplicate line 28688
+_update_history: first line 6490, duplicate line 28701
+_run: first line 12240, duplicate line 28765
+__init__: first line 176, duplicate line 28803
+_task_name: first line 28588, duplicate line 28814
+_run: first line 12240, duplicate line 28858
+__init__: first line 176, duplicate line 28968
+stop: first line 9152, duplicate line 28997
+run: first line 24350, duplicate line 29222
+_px_from_row: first line 2599, duplicate line 5631
+__init__: first line 176, duplicate line 7440
+__init__: first line 176, duplicate line 7528
+update: first line 8016, duplicate line 7531
+__init__: first line 176, duplicate line 7617
+_noop: first line 13175, duplicate line 13294
+_add: first line 12898, duplicate line 17002
+_add: first line 12898, duplicate line 17115
+_f: first line 16755, duplicate line 17652
+_dashboard_loop: first line 29166, duplicate line 22543
+_noop: first line 13175, duplicate line 23799
+_noop: first line 13175, duplicate line 24559
+__init__: first line 176, duplicate line 29308
+__init__: first line 176, duplicate line 29315
+__init__: first line 176, duplicate line 29320
+_qty: first line 12034, duplicate line 6471
+_f: first line 16755, duplicate line 22828
+_ema: first line 6343, duplicate line 22898
+_f: first line 16755, duplicate line 15522
+_mid_from_row: first line 18012, duplicate line 16106
+_f: first line 16755, duplicate line 17656
+_age: first line 11198, duplicate line 11389
+_runner: first line 16633, duplicate line 15659
+_wrap: first line 22386, duplicate line 22537

@@ -1,0 +1,12 @@
+Release Note - 2026-06-06
+
+Termux helper tooling was stabilized and verified successfully.
+termux_safe_apply_patch was upgraded to validated v2 and passed functional checks.
+A tooling freeze archive was created, checksummed, and exported.
+PATCHING_SOP.md was rewritten as a clean English-only document, verified, and exported.
+MILESTONE_20260606_TOOLING_AND_SOP.md was created, checksummed, verified, and exported.
+
+Status:
+TOOLING: LOCKED / VERIFIED / SNAPSHOTTED
+SOP: LOCKED / VERIFIED / EXPORTED
+MILESTONE: LOCKED / VERIFIED / EXPORTED

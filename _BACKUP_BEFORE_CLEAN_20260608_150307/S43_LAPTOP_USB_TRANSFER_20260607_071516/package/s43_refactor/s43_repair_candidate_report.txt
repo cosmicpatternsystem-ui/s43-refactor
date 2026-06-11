@@ -1,0 +1,125 @@
+====================================================================================================
+S43 REPAIR CANDIDATE GENERATOR - OPTION A
+====================================================================================================
+Source:       /data/data/com.termux/files/home/s43_refactor/s43.py
+Candidate:    /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate_output.py
+Diff:         /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate.diff
+Report:       /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate_report.txt
+Mode:         READ-ONLY with respect to s43.py
+Timestamp:    2026-05-29 08:34:04
+
+1) EXCHANGECLIENT BOUNDARY
+----------------------------------------------------------------------------------------------------
+ExchangeClient range: 740-2419
+
+2) CURRENT DIRECT EXCHANGECLIENT MEMBERS
+----------------------------------------------------------------------------------------------------
+  770-  864 FunctionDef        __init__
+ 1539- 1575 FunctionDef        _arzplus_detect_403_cause
+ 1471- 1537 FunctionDef        _arzplus_health_check_clock
+ 1577- 1626 FunctionDef        _arzplus_log_403
+ 2260- 2350 AsyncFunctionDef   _arzplus_market_snapshot
+ 2399- 2419 AsyncFunctionDef   _arzplus_symbol_stats
+ 2351- 2398 AsyncFunctionDef   _arzplus_symbols_meta
+ 2225- 2246 FunctionDef        _as_payload_number
+ 1665- 1708 FunctionDef        _build_headers
+ 1662- 1664 FunctionDef        _build_url
+ 1443- 1469 FunctionDef        _clock_drift_from_headers
+ 1811- 1816 FunctionDef        _decode_json
+  960- 1084 AsyncFunctionDef   _discover_depth_endpoint
+  865-  959 FunctionDef        _ensure_ready
+ 1628- 1654 FunctionDef        _extract_rate_limit_pause_sec
+ 1721- 1736 AsyncFunctionDef   _fetch_text
+ 1261- 1301 AsyncFunctionDef   _get_session
+ 1737- 1810 AsyncFunctionDef   _handle_http_errors
+ 1830- 1875 FunctionDef        _harden_request
+ 2255- 2259 FunctionDef        _is_arzplus
+ 1340- 1356 FunctionDef        _is_transient_for_breaker
+ 2248- 2254 FunctionDef        _norm_side
+ 1817- 1826 AsyncFunctionDef   _on_success
+ 1424- 1441 FunctionDef        _parse_http_date_to_ts
+ 1655- 1661 FunctionDef        _raise_if_breaker_open
+ 1827- 1829 FunctionDef        _record_failure_if_transient
+ 1944- 1954 AsyncFunctionDef   _request
+ 1877- 1932 AsyncFunctionDef   _request_impl
+ 1358- 1373 FunctionDef        _safe_body_for_log
+ 1376- 1395 FunctionDef        _sanitize_body_for_debug
+  746-  769 FunctionDef        _split_auth_token
+ 1709- 1720 FunctionDef        _update_network_metrics
+ 1398- 1421 FunctionDef        _waf_headers_subset
+ 1958- 2082 AsyncFunctionDef   get_all_tickers
+ 2083- 2210 AsyncFunctionDef   get_all_tickers_optimized
+ 2211- 2223 FunctionDef        get_current_age
+ 1110- 1260 AsyncFunctionDef   get_depth
+ 1955- 1957 AsyncFunctionDef   get_symbols
+ 1085- 1109 FunctionDef        invalidate_depth_endpoint
+ 1933- 1942 AsyncFunctionDef   request
+ 1335- 1336 AsyncFunctionDef   reset_http
+ 1337- 1338 AsyncFunctionDef   reset_network
+ 1302- 1334 AsyncFunctionDef   reset_session
+
+3) TARGET METHOD OWNERSHIP
+----------------------------------------------------------------------------------------------------
+get_market_snapshot          BROKEN    2719- 2852 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_market_snapshot          BROKEN    3588- 3646 owner=FunctionDef:_quantize_down@3566-3646
+get_last_update_age          BROKEN    2853- 2900 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_all_market_stats         BROKEN    2901- 2992 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_all_market_stats         BROKEN    3570- 3576 owner=FunctionDef:_quantize_down@3566-3646
+get_trades                   BROKEN    2993- 3011 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_trades                   BROKEN    3577- 3587 owner=FunctionDef:_quantize_down@3566-3646
+get_balance                  BROKEN    3012- 3065 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_balance                  BROKEN   14147-14148 owner=ClassDef:_FaultInjectExchange@14059-14148
+conn_check                   BROKEN    3066- 3183 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_order                  BROKEN    3184- 3335 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_order                  BROKEN   13927-13954 owner=ClassDef:_MockExchangeForStress@13901-13954
+place_order                  BROKEN   14114-14139 owner=ClassDef:_FaultInjectExchange@14059-14148
+place_limit                  BROKEN    3336- 3365 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_limit                  BROKEN   10489-10662 owner=ClassDef:ExecutionEngine@10438-11005
+place_market                 BROKEN    3367- 3395 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+cancel_all_orders            BROKEN    3396- 3459 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+list_orders                  BROKEN    3460- 3512 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+list_orders                  BROKEN   14141-14142 owner=ClassDef:_FaultInjectExchange@14059-14148
+cancel_order                 BROKEN    3513- 3557 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+
+4) SELECTED CANONICAL CANDIDATES FOR REINSERTION
+----------------------------------------------------------------------------------------------------
+get_market_snapshot          SELECT  2719- 2852 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+get_last_update_age          SELECT  2853- 2900 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+get_all_market_stats         SELECT  2901- 2992 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+get_trades                   SELECT  2993- 3011 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+get_balance                  SELECT  3012- 3065 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+conn_check                   SELECT  3066- 3183 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+place_order                  SELECT  3184- 3335 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+place_limit                  SELECT  3336- 3365 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+place_market                 SELECT  3367- 3395 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+cancel_all_orders            SELECT  3396- 3459 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+list_orders                  SELECT  3460- 3512 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.97
+cancel_order                 SELECT  3513- 3557 owner=AsyncFunctionDef:_arzplus_market_snapshot@2628-3557 score=1509.96
+
+5) INSERTION ANCHOR
+----------------------------------------------------------------------------------------------------
+Candidate insertion line: before source line 2420
+NOTE: This is a candidate diff only. Review class boundary before applying.
+
+6) OUTPUT FILES
+----------------------------------------------------------------------------------------------------
+Wrote candidate: /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate_output.py
+Wrote diff:      /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate.diff
+Wrote report:    /data/data/com.termux/files/home/s43_refactor/s43_repair_candidate_report.txt
+
+7) REVIEW COMMANDS
+----------------------------------------------------------------------------------------------------
+Inspect selected candidates:
+  grep -nE "SELECT|SKIP|NO CANDIDATE|BROKEN|INSERTION" s43_repair_candidate_report.txt
+
+Inspect diff summary:
+  grep -nE "^@@|REPAIR CANDIDATE|QUARANTINED|async def|get_market_snapshot|place_order|place_limit" s43_repair_candidate.diff | head -200
+
+Syntax-check candidate only:
+  python -m py_compile s43_repair_candidate_output.py
+
+IMPORTANT:
+  This script did NOT modify s43.py.
+  Candidate output is for review before Option B.
+
+DONE

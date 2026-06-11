@@ -1,0 +1,30 @@
+===== token env candidate scan: s43.py lines 14840-14930 =====
+14869: # s43 recovery: fallback get_arzplus_token
+14870: def get_arzplus_token(slot=None, default=""):
+14872: Fail-safe token resolver for ArzPlus accounts.
+14873: Reads token from environment variables and returns default/empty string if missing.
+14880: s = str(int(slot)).strip() if slot is not None else ""
+14882: s = str(slot).strip() if slot is not None else ""
+14886: ARZPLUS_TOKEN_{s}
+14887: ARZPLUS_TOKEN{s}
+14888: ARZ_PLUS_TOKEN_{s}
+14889: ARZ_PLUS_TOKEN{s}
+14890: ARZ_TOKEN_{s}
+14891: ARZ_TOKEN{s}
+14892: TOKEN_{s}
+14893: TOKEN{s}
+14896: # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+14900: ARZPLUS_TOKEN_{n+1}
+14901: ARZPLUS_TOKEN{n+1}
+14902: ARZ_PLUS_TOKEN_{n+1}
+14903: ARZ_PLUS_TOKEN{n+1}
+14904: ARZ_TOKEN_{n+1}
+14905: ARZ_TOKEN{n+1}
+14906: TOKEN_{n+1}
+14907: TOKEN{n+1}
+14913: ARZPLUS_TOKEN
+14914: ARZ_PLUS_TOKEN
+14915: ARZ_TOKEN
+14916: TOKEN
+14917: API_TOKEN
+14918: ACCESS_TOKEN

@@ -1,0 +1,487 @@
+
+====================================================================================================
+S43 STRUCTURAL PATCH PLAN - DIAGNOSTIC ONLY
+====================================================================================================
+FILE: /data/data/com.termux/files/home/s43_refactor/s43.py
+MODE: read-only / no file modification
+
+====================================================================================================
+1) CRITICAL STRUCTURE BOUNDARIES
+====================================================================================================
+ExchangeClient           ClassDef           740- 2419 owner: <module>
+MarketSpecsCache         ClassDef          3647- 3690 owner: <module>
+ExecutionEngine          ClassDef         10438-11005 owner: <module>
+
+====================================================================================================
+2) EXCHANGECLIENT BODY RANGE
+====================================================================================================
+ExchangeClient range: 740-2419
+
+----------------------------------------------------------------------------------------------------
+Direct members of ExchangeClient
+----------------------------------------------------------------------------------------------------
+  746-  769 FunctionDef      _split_auth_token
+  770-  864 FunctionDef      __init__
+  865-  959 FunctionDef      _ensure_ready
+  960- 1084 AsyncFunctionDef _discover_depth_endpoint
+ 1085- 1109 FunctionDef      invalidate_depth_endpoint
+ 1110- 1260 AsyncFunctionDef get_depth
+ 1261- 1301 AsyncFunctionDef _get_session
+ 1302- 1334 AsyncFunctionDef reset_session
+ 1335- 1336 AsyncFunctionDef reset_http
+ 1337- 1338 AsyncFunctionDef reset_network
+ 1340- 1356 FunctionDef      _is_transient_for_breaker
+ 1358- 1373 FunctionDef      _safe_body_for_log
+ 1376- 1395 FunctionDef      _sanitize_body_for_debug
+ 1398- 1421 FunctionDef      _waf_headers_subset
+ 1424- 1441 FunctionDef      _parse_http_date_to_ts
+ 1443- 1469 FunctionDef      _clock_drift_from_headers
+ 1471- 1537 FunctionDef      _arzplus_health_check_clock
+ 1539- 1575 FunctionDef      _arzplus_detect_403_cause
+ 1577- 1626 FunctionDef      _arzplus_log_403
+ 1628- 1654 FunctionDef      _extract_rate_limit_pause_sec
+ 1655- 1661 FunctionDef      _raise_if_breaker_open
+ 1662- 1664 FunctionDef      _build_url
+ 1665- 1708 FunctionDef      _build_headers
+ 1709- 1720 FunctionDef      _update_network_metrics
+ 1721- 1736 AsyncFunctionDef _fetch_text
+ 1737- 1810 AsyncFunctionDef _handle_http_errors
+ 1811- 1816 FunctionDef      _decode_json
+ 1817- 1826 AsyncFunctionDef _on_success
+ 1827- 1829 FunctionDef      _record_failure_if_transient
+ 1830- 1875 FunctionDef      _harden_request
+ 1877- 1932 AsyncFunctionDef _request_impl
+ 1933- 1942 AsyncFunctionDef request
+ 1944- 1954 AsyncFunctionDef _request
+ 1955- 1957 AsyncFunctionDef get_symbols
+ 1958- 2082 AsyncFunctionDef get_all_tickers
+ 2083- 2210 AsyncFunctionDef get_all_tickers_optimized
+ 2211- 2223 FunctionDef      get_current_age
+ 2225- 2246 FunctionDef      _as_payload_number
+ 2248- 2254 FunctionDef      _norm_side
+ 2255- 2259 FunctionDef      _is_arzplus
+ 2260- 2350 AsyncFunctionDef _arzplus_market_snapshot
+ 2351- 2398 AsyncFunctionDef _arzplus_symbols_meta
+ 2399- 2419 AsyncFunctionDef _arzplus_symbol_stats
+
+====================================================================================================
+3) TARGET METHOD OWNERSHIP
+====================================================================================================
+get_market_snapshot          BROKEN   2719- 2852 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_market_snapshot          BROKEN   3588- 3646 owner: FunctionDef:_quantize_down@3566-3646
+get_last_update_age          BROKEN   2853- 2900 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_all_market_stats         BROKEN   2901- 2992 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_all_market_stats         BROKEN   3570- 3576 owner: FunctionDef:_quantize_down@3566-3646
+get_trades                   BROKEN   2993- 3011 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_trades                   BROKEN   3577- 3587 owner: FunctionDef:_quantize_down@3566-3646
+get_balance                  BROKEN   3012- 3065 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+get_balance                  BROKEN  14147-14148 owner: ClassDef:_FaultInjectExchange@14059-14148
+conn_check                   BROKEN   3066- 3183 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_order                  BROKEN   3184- 3335 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_order                  BROKEN  13927-13954 owner: ClassDef:_MockExchangeForStress@13901-13954
+place_order                  BROKEN  14114-14139 owner: ClassDef:_FaultInjectExchange@14059-14148
+place_limit                  BROKEN   3336- 3365 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+place_limit                  BROKEN  10489-10662 owner: ClassDef:ExecutionEngine@10438-11005
+place_market                 BROKEN   3367- 3395 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+cancel_all_orders            BROKEN   3396- 3459 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+list_orders                  BROKEN   3460- 3512 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+list_orders                  BROKEN  14141-14142 owner: ClassDef:_FaultInjectExchange@14059-14148
+cancel_order                 BROKEN   3513- 3557 owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+
+====================================================================================================
+4) SUSPICIOUS TOP-LEVEL / NESTING REGIONS
+====================================================================================================
+_arzplus_last_trade_price        AsyncFunctionDef  2420- 2627 indent=0   owner: <module>
+_arzplus_market_snapshot         AsyncFunctionDef  2260- 2350 indent=4   owner: ClassDef:ExchangeClient@740-2419
+_arzplus_market_snapshot         AsyncFunctionDef  2628- 3557 indent=0   owner: <module>
+_first_num                       FunctionDef       3558- 3565 indent=0   owner: <module>
+_quantize_down                   FunctionDef       3566- 3646 indent=0   owner: <module>
+
+====================================================================================================
+5) BROKEN NESTED METHOD GROUPS
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+Owner: AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+----------------------------------------------------------------------------------------------------
+ 2719- 2852 indent=4   AsyncFunctionDef get_market_snapshot
+ 2853- 2900 indent=4   FunctionDef      get_last_update_age
+ 2901- 2992 indent=4   AsyncFunctionDef get_all_market_stats
+ 2993- 3011 indent=4   AsyncFunctionDef get_trades
+ 3012- 3065 indent=4   AsyncFunctionDef get_balance
+ 3066- 3183 indent=4   AsyncFunctionDef conn_check
+ 3184- 3335 indent=4   AsyncFunctionDef place_order
+ 3336- 3365 indent=4   AsyncFunctionDef place_limit
+ 3367- 3395 indent=4   AsyncFunctionDef place_market
+ 3396- 3459 indent=4   AsyncFunctionDef cancel_all_orders
+ 3460- 3512 indent=4   AsyncFunctionDef list_orders
+ 3513- 3557 indent=4   AsyncFunctionDef cancel_order
+
+----------------------------------------------------------------------------------------------------
+Owner: FunctionDef:_quantize_down@3566-3646
+----------------------------------------------------------------------------------------------------
+ 3570- 3576 indent=4   AsyncFunctionDef get_all_market_stats
+ 3577- 3587 indent=4   AsyncFunctionDef get_trades
+ 3588- 3646 indent=4   AsyncFunctionDef get_market_snapshot
+
+----------------------------------------------------------------------------------------------------
+Owner: ClassDef:_FaultInjectExchange@14059-14148
+----------------------------------------------------------------------------------------------------
+14114-14139 indent=4   AsyncFunctionDef place_order
+14141-14142 indent=4   AsyncFunctionDef list_orders
+14147-14148 indent=4   AsyncFunctionDef get_balance
+
+----------------------------------------------------------------------------------------------------
+Owner: ClassDef:_MockExchangeForStress@13901-13954
+----------------------------------------------------------------------------------------------------
+13927-13954 indent=4   AsyncFunctionDef place_order
+
+----------------------------------------------------------------------------------------------------
+Owner: ClassDef:ExecutionEngine@10438-11005
+----------------------------------------------------------------------------------------------------
+10489-10662 indent=4   AsyncFunctionDef place_limit
+
+====================================================================================================
+6) RAW SNIPPETS AROUND BROKEN TARGET METHODS
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+get_market_snapshot around lines 2716-2725
+----------------------------------------------------------------------------------------------------
+ 2716 ind=4   | '    except Exception:'
+ 2717 ind=8   | '        pass'
+ 2718 ind=4   | '    return snap'
+ 2719 ind=4   | '    async def get_market_snapshot(self) -> dict:'
+ 2720 ind=8   | '        now = time.time()'
+ 2721 ind=8   | '        last_err: Optional[Exception] = None'
+ 2722 ind=8   | '        if self._is_arzplus():'
+ 2723 ind=12  | '            try:'
+ 2724 ind=16  | '                snap = await self._arzplus_market_snapshot()'
+ 2725 ind=16  | '                by = snap.get("by_symbol") if isinstance(snap, dict) else None'
+
+----------------------------------------------------------------------------------------------------
+get_last_update_age around lines 2850-2859
+----------------------------------------------------------------------------------------------------
+ 2850 ind=12  | '            except Exception:'
+ 2851 ind=16  | '                pass'
+ 2852 ind=8   | '        return {}'
+ 2853 ind=4   | '    def get_last_update_age(self, now: float = None) -> float:'
+ 2854 ind=8   | '        """Return seconds since last successful public API update.'
+ 2855 ind=0   | ''
+ 2856 ind=8   | '        """'
+ 2857 ind=8   | '        try:'
+ 2858 ind=12  | '            now_epoch = float(_epoch_to_sec(time.time() if now is None else now))'
+ 2859 ind=8   | '        except Exception:'
+
+----------------------------------------------------------------------------------------------------
+get_all_market_stats around lines 2898-2907
+----------------------------------------------------------------------------------------------------
+ 2898 ind=8   | '        except Exception:'
+ 2899 ind=12  | '            pass'
+ 2900 ind=8   | '        return float("inf")'
+ 2901 ind=4   | '    async def get_all_market_stats(self) -> dict:'
+ 2902 ind=8   | '        if self._is_arzplus():'
+ 2903 ind=12  | '            try:'
+ 2904 ind=16  | '                snap = await self._arzplus_market_snapshot()'
+ 2905 ind=16  | '                by = snap.get("by_symbol") if isinstance(snap, dict) else None'
+ 2906 ind=16  | '                if not isinstance(by, dict):'
+ 2907 ind=20  | '                    by = snap if isinstance(snap, dict) else {}'
+
+----------------------------------------------------------------------------------------------------
+get_trades around lines 2990-2999
+----------------------------------------------------------------------------------------------------
+ 2990 ind=8   | '        if last_exc:'
+ 2991 ind=12  | '            raise last_exc'
+ 2992 ind=8   | '        return {}'
+ 2993 ind=4   | '    async def get_trades(self, symbol: str) -> dict:'
+ 2994 ind=8   | '        q = str(getattr(self.cfg, "quote", "") or "").upper().strip()'
+ 2995 ind=8   | '        try:'
+ 2996 ind=12  | '            sym = _canon_pair(symbol, default_quote=q)'
+ 2997 ind=8   | '        except Exception:'
+ 2998 ind=12  | '            try:'
+ 2999 ind=16  | '                sym = _canon_symbol(symbol)'
+
+----------------------------------------------------------------------------------------------------
+get_balance around lines 3009-3018
+----------------------------------------------------------------------------------------------------
+ 3009 ind=8   | '        if last_exc:'
+ 3010 ind=12  | '            raise last_exc'
+ 3011 ind=8   | '        return {}'
+ 3012 ind=4   | '    async def get_balance(self) -> dict:'
+ 3013 ind=8   | '        try:'
+ 3014 ind=12  | '            _s43_debug_print(f"[AUTHDBG_GETBAL] token_present={bool(getattr(self, \'_token\', None))} auth_scheme={getattr(self, \'_auth_scheme\', None)} cache_valid={self._balance_cache_valid() if hasattr(self, \'_balance_cache_valid\') else \'NA\'}")'
+ 3015 ind=12  | '            last_exc: Optional[Exception] = None'
+ 3016 ind=12  | '            for ep in ("/wallet/balance/", "/wallet/balance"):'
+ 3017 ind=16  | '                try:'
+ 3018 ind=20  | '                    try:'
+
+----------------------------------------------------------------------------------------------------
+conn_check around lines 3063-3072
+----------------------------------------------------------------------------------------------------
+ 3063 ind=8   | '        except Exception as e:'
+ 3064 ind=12  | '            print(f"GETBALDBG EXC {type(e).__name__}: {e}")'
+ 3065 ind=12  | '            raise'
+ 3066 ind=4   | '    async def conn_check(self, *, timeout_sec: Optional[float] = None) -> Tuple[bool, float, int]:'
+ 3067 ind=8   | '        """Lightweight connectivity check with DNS/path double-verify (Termux / mobile networks).'
+ 3068 ind=0   | ''
+ 3069 ind=8   | '        Returns: (ok, rtt_ms, http_status_code)'
+ 3070 ind=8   | '        Sets: self._conn_last_diag in {"OK","DNS_OR_PATH","TOTAL_DOWN","CONN_CHECK_FAIL"}'
+ 3071 ind=8   | '        """'
+ 3072 ind=8   | '        try:'
+
+----------------------------------------------------------------------------------------------------
+place_order around lines 3181-3190
+----------------------------------------------------------------------------------------------------
+ 3181 ind=8   | '        except Exception:'
+ 3182 ind=12  | '            pass'
+ 3183 ind=8   | '        return False, 0.0, int(last_code or 0)'
+ 3184 ind=4   | '    async def place_order('
+ 3185 ind=8   | '        self,'
+ 3186 ind=8   | '        symbol: str,'
+ 3187 ind=8   | '        side: str,'
+ 3188 ind=8   | '        amount: float,'
+ 3189 ind=8   | '        price: float,'
+ 3190 ind=8   | '        cid: Optional[str] = None,'
+
+----------------------------------------------------------------------------------------------------
+place_limit around lines 3333-3342
+----------------------------------------------------------------------------------------------------
+ 3333 ind=8   | '        if last_exc:'
+ 3334 ind=12  | '            raise last_exc'
+ 3335 ind=8   | '        return {}'
+ 3336 ind=4   | '    async def place_limit('
+ 3337 ind=8   | '        self,'
+ 3338 ind=8   | '        symbol: str,'
+ 3339 ind=8   | '        side: str,'
+ 3340 ind=8   | '        qty: float,'
+ 3341 ind=8   | '        price: float,'
+ 3342 ind=8   | '        cid: Optional[str] = None,'
+
+----------------------------------------------------------------------------------------------------
+place_market around lines 3364-3373
+----------------------------------------------------------------------------------------------------
+ 3364 ind=12  | '            **extra,'
+ 3365 ind=8   | '        )'
+ 3366 ind=0   | ''
+ 3367 ind=4   | '    async def place_market('
+ 3368 ind=8   | '        self,'
+ 3369 ind=8   | '        symbol: str,'
+ 3370 ind=8   | '        side: str,'
+ 3371 ind=8   | '        qty: float,'
+ 3372 ind=8   | '        cid: Optional[str] = None,'
+ 3373 ind=8   | '        *,'
+
+----------------------------------------------------------------------------------------------------
+cancel_all_orders around lines 3393-3402
+----------------------------------------------------------------------------------------------------
+ 3393 ind=12  | '            leverage=leverage,'
+ 3394 ind=12  | '            **extra,'
+ 3395 ind=8   | '        )'
+ 3396 ind=4   | '    async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:'
+ 3397 ind=8   | '        payload: Dict[str, Any] = {}'
+ 3398 ind=8   | '        try:'
+ 3399 ind=12  | '            if _termux_env_bool("TERMUX_MODE", False):'
+ 3400 ind=16  | '                _termux_mark_order_activity()'
+ 3401 ind=8   | '        except Exception:'
+ 3402 ind=12  | '            pass'
+
+----------------------------------------------------------------------------------------------------
+list_orders around lines 3457-3466
+----------------------------------------------------------------------------------------------------
+ 3457 ind=8   | '        if last_exc:'
+ 3458 ind=12  | '            raise last_exc'
+ 3459 ind=8   | '        return {"ok": False}'
+ 3460 ind=4   | '    async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:'
+ 3461 ind=8   | '        base_params: Dict[str, Any] = {}'
+ 3462 ind=8   | '        is_arz = _is_arzplus_client(self)'
+ 3463 ind=8   | '        if symbol:'
+ 3464 ind=12  | '            try:'
+ 3465 ind=16  | '                q = str(getattr(self.cfg, "quote", "") or "").upper().strip(); base_params["symbol"] = _canon_pair(symbol, default_quote=q)'
+ 3466 ind=12  | '            except Exception:'
+
+----------------------------------------------------------------------------------------------------
+cancel_order around lines 3510-3519
+----------------------------------------------------------------------------------------------------
+ 3510 ind=8   | '        if last_err:'
+ 3511 ind=12  | '            raise last_err'
+ 3512 ind=8   | '        return {}'
+ 3513 ind=4   | '    async def cancel_order(self, order_id) -> dict:'
+ 3514 ind=8   | '        oid = order_id'
+ 3515 ind=8   | '        try:'
+ 3516 ind=12  | '            oid = int(order_id)'
+ 3517 ind=8   | '        except Exception:'
+ 3518 ind=12  | '            oid = str(order_id)'
+ 3519 ind=8   | '        payload: Dict[str, Any] = {"order_id": oid, "id": oid}'
+
+----------------------------------------------------------------------------------------------------
+get_all_market_stats around lines 3567-3576
+----------------------------------------------------------------------------------------------------
+ 3567 ind=4   | '    if step <= 0:'
+ 3568 ind=8   | '        return float(x)'
+ 3569 ind=4   | '    return float(math.floor(float(x) / float(step)) * float(step))'
+ 3570 ind=4   | '    async def get_all_market_stats(self) -> dict:'
+ 3571 ind=8   | '        for ep in ("/market/symbols/", "/market/symbols"):'
+ 3572 ind=12  | '            try:'
+ 3573 ind=16  | '                return await self.request("GET", ep, auth=False)'
+ 3574 ind=12  | '            except Exception:'
+ 3575 ind=16  | '                continue'
+ 3576 ind=8   | '        return {}'
+
+----------------------------------------------------------------------------------------------------
+get_trades around lines 3574-3583
+----------------------------------------------------------------------------------------------------
+ 3574 ind=12  | '            except Exception:'
+ 3575 ind=16  | '                continue'
+ 3576 ind=8   | '        return {}'
+ 3577 ind=4   | '    async def get_trades(self, symbol: str) -> dict:'
+ 3578 ind=8   | '        try:'
+ 3579 ind=12  | '            sym = _canon_symbol(symbol)'
+ 3580 ind=8   | '        except Exception:'
+ 3581 ind=12  | '            sym = str(symbol or "")'
+ 3582 ind=8   | '        for ep in ("/market/trades/", "/market/trades"):'
+ 3583 ind=12  | '            try:'
+
+----------------------------------------------------------------------------------------------------
+get_market_snapshot around lines 3585-3594
+----------------------------------------------------------------------------------------------------
+ 3585 ind=12  | '            except Exception:'
+ 3586 ind=16  | '                continue'
+ 3587 ind=8   | '        return {}'
+ 3588 ind=4   | '    async def get_market_snapshot(self) -> dict:'
+ 3589 ind=8   | '        if self._is_arzplus():'
+ 3590 ind=12  | '            return await self._arzplus_market_snapshot()'
+ 3591 ind=8   | '        now = float(time.time())'
+ 3592 ind=8   | '        last_err = None'
+ 3593 ind=8   | '        for ep in ("/market/stats/", "/market/stats", "/market/summary/", "/market/summary", "/market/tickers/", "/market/tickers"):'
+ 3594 ind=12  | '            try:'
+
+----------------------------------------------------------------------------------------------------
+place_limit around lines 10486-10495
+----------------------------------------------------------------------------------------------------
+10486 ind=8   | '        except Exception:'
+10487 ind=12  | '            mult = 1.0'
+10488 ind=8   | '        return float(mult)'
+10489 ind=4   | '    async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:'
+10490 ind=8   | '        sym = _canon_symbol(symbol)'
+10491 ind=8   | '        try:'
+10492 ind=12  | '            side_l0 = str(side or "").lower()'
+10493 ind=12  | '            if side_l0.startswith("buy"):'
+10494 ind=16  | '                m = self._regime_multiplier(sym, float(notional_irt))'
+10495 ind=16  | '                m = float(clamp(float(m), 0.0, 1.0))'
+
+----------------------------------------------------------------------------------------------------
+place_order around lines 13924-13933
+----------------------------------------------------------------------------------------------------
+13924 ind=8   | '        if cid and self.support_idempotency:'
+13925 ind=12  | '            self._by_cid[str(cid)] = o'
+13926 ind=8   | '        return o'
+13927 ind=4   | '    async def place_order('
+13928 ind=8   | '        self,'
+13929 ind=8   | '        symbol: str,'
+13930 ind=8   | '        side: str,'
+13931 ind=8   | '        amount: float,'
+13932 ind=8   | '        price: float,'
+13933 ind=8   | '        cid: Optional[str] = None,'
+
+----------------------------------------------------------------------------------------------------
+place_order around lines 14111-14120
+----------------------------------------------------------------------------------------------------
+14111 ind=12  | '            **kwargs,'
+14112 ind=8   | '        )'
+14113 ind=0   | ''
+14114 ind=4   | '    async def place_order('
+14115 ind=8   | '        self,'
+14116 ind=8   | '        symbol: str,'
+14117 ind=8   | '        side: str,'
+14118 ind=8   | '        amount: float,'
+14119 ind=8   | '        price: float,'
+14120 ind=8   | '        cid: Optional[str] = None,'
+
+----------------------------------------------------------------------------------------------------
+list_orders around lines 14138-14147
+----------------------------------------------------------------------------------------------------
+14138 ind=12  | '            **kwargs,'
+14139 ind=8   | '        )'
+14140 ind=0   | ''
+14141 ind=4   | '    async def list_orders(self, symbol: Optional[str] = None, status: Optional[str] = None) -> dict:'
+14142 ind=8   | '        return await self._ex.list_orders(symbol=symbol, status=status)'
+14143 ind=0   | ''
+14144 ind=4   | '    async def get_depth(self, symbol: str) -> dict:'
+14145 ind=8   | '        return await self._ex.get_depth(symbol)'
+14146 ind=0   | ''
+14147 ind=4   | '    async def get_balance(self) -> dict:'
+
+----------------------------------------------------------------------------------------------------
+get_balance around lines 14144-14153
+----------------------------------------------------------------------------------------------------
+14144 ind=4   | '    async def get_depth(self, symbol: str) -> dict:'
+14145 ind=8   | '        return await self._ex.get_depth(symbol)'
+14146 ind=0   | ''
+14147 ind=4   | '    async def get_balance(self) -> dict:'
+14148 ind=8   | '        return await self._ex.get_balance()'
+14149 ind=0   | ''
+14150 ind=0   | 'class TradingBotOps:'
+14151 ind=4   | '    async def refresh_market_focus(self) -> List[str]:'
+14152 ind=8   | '        try:'
+14153 ind=12  | '            if bool(getattr(self, "_sniper_only", False)):'
+
+====================================================================================================
+7) PROPOSED REPAIR PLAN - NO CHANGES APPLIED
+====================================================================================================
+Current diagnosis:
+  BROKEN: some critical methods are not direct members of ExchangeClient.
+
+Recommended repair strategy:
+  1. Do NOT patch Phase4/gate logic yet.
+  2. First repair class structure and indentation.
+  3. Move/reinsert canonical target methods as direct members of ExchangeClient.
+  4. Remove or quarantine accidental nested duplicate blocks.
+  5. Re-run runtime introspection and require exists=True for all critical methods.
+  6. Only after that, test Phase4 enforcement paths.
+
+Candidate methods that should become direct ExchangeClient methods:
+  - get_market_snapshot
+  - get_last_update_age
+  - get_all_market_stats
+  - get_trades
+  - get_balance
+  - conn_check
+  - place_order
+  - place_limit
+  - place_market
+  - cancel_all_orders
+  - list_orders
+  - cancel_order
+
+Important detected ranges:
+  ExchangeClient current range: 740-2419
+  Broken group under AsyncFunctionDef:_arzplus_market_snapshot@2628-3557:
+    - get_market_snapshot: 2719-2852
+    - get_last_update_age: 2853-2900
+    - get_all_market_stats: 2901-2992
+    - get_trades: 2993-3011
+    - get_balance: 3012-3065
+    - conn_check: 3066-3183
+    - place_order: 3184-3335
+    - place_limit: 3336-3365
+    - place_market: 3367-3395
+    - cancel_all_orders: 3396-3459
+    - list_orders: 3460-3512
+    - cancel_order: 3513-3557
+  Broken group under FunctionDef:_quantize_down@3566-3646:
+    - get_all_market_stats: 3570-3576
+    - get_trades: 3577-3587
+    - get_market_snapshot: 3588-3646
+  Broken group under ClassDef:_FaultInjectExchange@14059-14148:
+    - place_order: 14114-14139
+    - list_orders: 14141-14142
+    - get_balance: 14147-14148
+  Broken group under ClassDef:_MockExchangeForStress@13901-13954:
+    - place_order: 13927-13954
+  Broken group under ClassDef:ExecutionEngine@10438-11005:
+    - place_limit: 10489-10662
+
+Suggested next command after manual/auto repair:
+  python s43_patch_plan.py
+
+DONE: diagnostic patch plan generated. s43.py was not modified.

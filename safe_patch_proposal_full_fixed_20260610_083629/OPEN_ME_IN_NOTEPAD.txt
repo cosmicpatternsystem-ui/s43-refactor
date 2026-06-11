@@ -1,0 +1,56 @@
+﻿OPEN THIS FILE IN NOTEPAD
+=========================
+
+SAFE PATCH PROPOSAL PACKAGE CREATED SUCCESSFULLY
+
+Date:
+  06/10/2026 08:37:00
+
+Output folder:
+  E:\اخباری\ssl\s43_refactor\safe_patch_proposal_full_fixed_20260610_083629
+
+Source files were NOT modified.
+
+Backups are here:
+  E:\اخباری\ssl\s43_refactor\safe_patch_proposal_full_fixed_20260610_083629\backup_main3
+
+Read these files in this order:
+
+1) PATCH_PROPOSAL.md
+   Main proposal and review plan
+
+2) PATCH_NOTES.txt
+   Human-readable notes and next steps
+
+3) PATCH_HITS.csv
+   Line-level scan evidence
+
+4) PATCH_HIT_SUMMARY.csv
+   Counts by file and keyword
+
+5) FILES_MANIFEST_SHA256.csv
+   Hashes for audit and reproducibility
+
+Main keywords scanned:
+  - _ai_trader
+  - AITrader
+  - AI_TRADER_ENABLE
+  - OPENAI_TRADE_ENABLE
+  - OPENAI_TRADE_ALLOW_ND
+  - autonomous_ai
+  - risk
+  - DAILY_RISK_LIMIT
+  - WEEKLY_RISK_LIMIT
+  - MACRO_EXTREME_OFF_TH
+  - kill
+  - drawdown
+  - parity
+  - gate
+  - safety
+
+Recommended future patch base:
+  s43_instrumented_LATEST.py
+
+Reminder:
+  This is evidence collection only
+  No live patch was applied

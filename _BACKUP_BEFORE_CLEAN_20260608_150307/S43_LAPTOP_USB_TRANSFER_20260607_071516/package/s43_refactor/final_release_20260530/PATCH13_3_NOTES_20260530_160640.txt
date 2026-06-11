@@ -1,0 +1,65 @@
+PATCH 13.3 NOTES
+================
+
+Status:
+- CLOSED / STABLE
+- File compiled successfully
+- Stable snapshot created: s43.py.stable_patch13_3
+
+Objective:
+- Reduce unintended full-engine TradingHalt events caused by wallet balance refresh failures.
+- Convert non-fatal balance refresh failures into degraded balance state.
+
+Main changes:
+1. Patched _refresh_balance_if_needed:
+   - Converted TradingHalt raises into return _balance_refresh_degraded(...)
+   - Affected balance failure paths:
+     - BALANCE_FETCH_FAILED: TRANSIENT
+     - BALANCE_FETCH_FAILED: HTTP_FAIL
+     - BALANCE_FETCH_FAILED: API_FAIL
+     - BALANCE_FETCH_FAILED: EXC
+     - BALANCE_FETCH_FAILED: ARZPLUS_FAST_PARSE_FAIL
+     - BALANCE_FETCH_FAILED: PARSE_OK_FALSE
+
+2. Added internal degraded helper:
+   - _balance_refresh_degraded(reason: str) -> float
+   - Sets:
+     - w.last_balance_ok = False
+     - w.last_balance_ts = now
+     - w.last_balance_err = reason[:300]
+   - Logs:
+     - event=BALANCE_REFRESH_DEGRADED
+   - Returns existing wallet cash value instead of halting the engine.
+
+3. Patched portfolio data fallback:
+   - BALANCE_FETCH_FAILED: DASH_PORTFOLIO_BALANCE now returns a safe zero portfolio dict instead of raising TradingHalt.
+
+Verification:
+- python3 -m py_compile s43.py: PASSED
+- python3 -m py_compile s43.py.stable_patch13_3: PASSED
+
+Remaining intentional TradingHalt balance markers:
+- Deep/internal path:
+  - BALANCE_FETCH_FAILED: PARSE_OK_FALSE around line 11689
+- Orch22 path:
+  - BALANCE_FETCH_FAILED: PARSE_OK_FALSE around line 29168
+
+Decision:
+- Do not patch remaining markers in Phase 13.
+- Enter freeze + live monitoring mode.
+- Revisit remaining markers only if they appear in runtime logs or cause unwanted halt.
+
+Monitoring focus:
+- BALANCE_REFRESH_DEGRADED
+- BALANCE_REFRESH_HTTP_FAIL
+- BALANCE_REFRESH_API_FAIL
+- BALANCE_REFRESH_TRANSIENT
+- BALANCE_REFRESH_FAIL
+- BALANCE_AUTH_FAIL
+- SAFE_CLEARED
+
+Rollback:
+- Restore from:
+  - s43.py.pre_patch13_3_rev2
+  or:
+  - s43.py.stable_patch12_5

@@ -1,0 +1,69 @@
+s43 repair manifest
+created_at=Fri May 29 14:11:15 +0330 2026
+manager_version=4.0.0
+base_dir=/data/data/com.termux/files/home/s43_refactor
+
+main_file=/data/data/com.termux/files/home/s43_refactor/s43.py
+editable_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+locked_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+manager=/data/data/com.termux/files/home/s43_refactor/s43_manager.sh
+backup_dir=/data/data/com.termux/files/home/s43_refactor/backups
+log_dir=/data/data/com.termux/files/home/s43_refactor/logs
+snapshot_dir=/data/data/com.termux/files/home/s43_refactor/snapshots
+
+status:
+- syntax: OK
+- doctor: OK
+- selftest: OK
+- parisa loader: HOT-ACTIVE
+- public API: OK
+- private API: token invalid / 403, requires valid token
+
+commands:
+- backup|save
+- check
+- verify
+- verify-manifest
+- restore [source.py]
+- restore-latest
+- snapshot
+- snapshot list
+- rollback <snapshot_dir>
+- rollback latest
+- lock
+- unlock
+- run <args...>
+- diff
+- doctor-log
+- selftest-log
+- logs
+- rotate-logs [keep]
+- manifest
+- status
+- help|--help|-h
+
+checksums:
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+96b90b1bd2b2da982b95f00bbfc204822afa9cfe82a5a02ec8fd055c3b1eb5a5  /data/data/com.termux/files/home/s43_refactor/s43_manager.sh
+
+latest_backups:
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_135247.py
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_131853.py
+/data/data/com.termux/files/home/s43_refactor/backups/s43_backup_20260529_131521.py
+
+latest_logs:
+/data/data/com.termux/files/home/s43_refactor/logs/selftest_20260529_141007.log
+/data/data/com.termux/files/home/s43_refactor/logs/trading_bot.log
+/data/data/com.termux/files/home/s43_refactor/logs/doctor_20260529_140935.log
+/data/data/com.termux/files/home/s43_refactor/logs/selftest_20260529_140716.log
+/data/data/com.termux/files/home/s43_refactor/logs/doctor_20260529_140643.log
+/data/data/com.termux/files/home/s43_refactor/logs/selftest_20260529_135359.log
+/data/data/com.termux/files/home/s43_refactor/logs/doctor_20260529_135301.log
+
+latest_snapshots:
+/data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140813
+/data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140642
+/data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159
+/data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140001

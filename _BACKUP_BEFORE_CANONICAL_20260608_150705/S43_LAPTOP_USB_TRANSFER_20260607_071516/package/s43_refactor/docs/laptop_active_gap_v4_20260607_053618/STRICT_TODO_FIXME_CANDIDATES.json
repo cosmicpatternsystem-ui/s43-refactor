@@ -1,0 +1,32 @@
+[
+  {
+    "file": "./README_RECOVERY.md",
+    "line": 65,
+    "text": "Remaining blocker: external API / HTTP 403"
+  },
+  {
+    "file": "./docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md",
+    "line": 120,
+    "text": "- Classification: [ ] none  [ ] minor documentation gap  [ ] review blocker  [ ] safety concern  [ ] runtime concern  [ ] unclear"
+  },
+  {
+    "file": "./tools/s43_laptop_active_gap_filter_v4.py",
+    "line": 29,
+    "text": "    r\"\\b(TODO|FIXME|XXX|HACK|WIP|TBD|PENDING_REVIEW|NEXT_ACTION|ACTION_REQUIRED|REVIEW_REQUIRED|FOLLOW_UP_REQUIRED|BLOCKER)\\b\","
+  },
+  {
+    "file": "./tools/s43_laptop_active_gap_filter_v4.py",
+    "line": 33,
+    "text": "    r\"\\b(roadmap|next action|next_action|milestone|backlog|phase plan|release plan|patch plan|implementation plan)\\b\","
+  },
+  {
+    "file": "./tools/s43_laptop_active_gap_filter_v4.py",
+    "line": 207,
+    "text": "    todo_text_lines = [\"STRICT TODO/FIXME CANDIDATES\", \"\"]"
+  },
+  {
+    "file": "./tools/s43_laptop_active_gap_filter_v4.py",
+    "line": 213,
+    "text": "    by_file_lines = [\"STRICT TODO/FIXME BY FILE\", \"\"]"
+  }
+]

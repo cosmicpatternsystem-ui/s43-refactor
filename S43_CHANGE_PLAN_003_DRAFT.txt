@@ -1,0 +1,158 @@
+﻿S43 CHANGE PLAN 003 DRAFT
+========================
+
+PLAN ID:
+S43_CHANGE_PLAN_003
+
+PLAN STATUS:
+DRAFT_ONLY / NOT_APPROVED / NO_CODE_MUTATION_YET
+
+PREREQUISITE STATE:
+S43_CHANGE_PLAN_002 FINALIZED
+S43 LOCK STATE VERIFIED
+ROADMAP STATUS = DIAMOND_READY / ROADMAP_LOCKED
+STRATEGIC ADDENDUM STATUS = HYPERCAR VALUE + AUTONOMY REGISTERED
+
+PRIMARY OBJECTIVE:
+Build the modular architecture scaffold for a premium, autonomous, AI-connected, safety-governed capital intelligence system without breaking the locked verified foundation.
+
+PATCH NAME:
+MODULAR_AUTONOMY_AI_SAFETY_ARCHITECTURE_SCAFFOLD
+
+WHY THIS PLAN EXISTS:
+S43 must not evolve through random patches.
+S43 must first gain a clean structural chassis before strategy expansion, exchange execution, or live automation.
+
+CORE DESIGN PRINCIPLE:
+Build the chassis first.
+Do not build unsafe speed before safety, auditability, modularity, and control.
+
+IN-SCOPE GOALS:
+- Define module boundaries.
+- Define safety-first architecture.
+- Define autonomy operating modes.
+- Define AI supervision interface.
+- Define portfolio intelligence skeleton.
+- Define exchange and wallet adapter abstraction.
+- Define audit receipt skeleton.
+- Define explainable decision receipt skeleton.
+- Define owner control and override boundaries.
+- Define product edition and customer profile placeholders.
+- Create testable interfaces for future implementation.
+
+TARGET ARCHITECTURE MODULES:
+- SafetyLawEngine
+- AutonomyModeManager
+- AISupervisorBridge
+- PortfolioBrain
+- MarketRegimeEngine
+- HiddenSignalEngine
+- InvisibleRiskEngine
+- AsymmetricOpportunityScorer
+- NoiseRejectionLayer
+- DiamondDecisionReceipt
+- AuditReceiptEngine
+- OwnerOverrideController
+- ExecutionApprovalPolicy
+- AdapterLayer
+- ProductEditionManager
+- CustomerProfileEngine
+
+EXPLICIT NON-GOALS FOR THIS PLAN:
+- No live trading execution.
+- No real capital movement.
+- No exchange write access.
+- No wallet withdrawal logic.
+- No fully autonomous real-money trading.
+- No uncontrolled AI action path.
+- No hidden source mutation.
+- No roadmap bypass.
+- No production credential embedding.
+- No direct unsafe patching of locked code.
+
+SAFETY REQUIREMENTS:
+- Safety law must be superior to strategy.
+- Capital preservation must be superior to opportunity capture.
+- AI advice must never override hard safety controls.
+- Low-confidence states must reduce risk or pause action.
+- Missing data, abnormal volatility, or suspicious liquidity must trigger defensive behavior.
+- Every meaningful decision path must be explainable and auditable.
+
+AUTONOMY MODEL REQUIREMENTS:
+- Standalone Autonomous Mode must remain viable without external AI.
+- Real-time AI-Connected Mode must enhance analysis, review, and explainability.
+- Emergency safety must not depend on AI availability.
+- Progressive autonomy levels must be definable and enforceable.
+
+COMMERCIAL ARCHITECTURE REQUIREMENTS:
+- Future editions must be supportable without core chaos.
+- Personal, pro, enterprise, and white-label paths must be structurally possible.
+- Licensing and deployment models must remain separable from core intelligence logic.
+
+IMPLEMENTATION STRATEGY:
+Phase 1:
+- Add architecture scaffolding only.
+- Add contracts, interfaces, placeholders, and boundaries.
+- Add configuration seams.
+- Add safety and audit skeletons.
+
+Phase 2:
+- Add non-live internal logic and validations.
+- Add test harnesses.
+- Add receipts and explainability flow.
+
+Phase 3:
+- Add adapters in read-only or simulated form first.
+- Add approval-gated execution concepts later.
+
+FILES THAT MAY BE CREATED IN A FUTURE APPROVED APPLY:
+- New architecture modules
+- New config/schema files
+- New audit/receipt helpers
+- New tests
+- New docs for module boundaries
+
+FILES THAT MUST BE TREATED AS PROTECTED UNTIL EXPLICIT APPROVAL:
+- Locked primary target file(s) from post-CP002 verified state
+- Existing lock-state files
+- Existing closure attestation files
+- Existing audit evidence files
+- Existing finalization receipts unless append-only documentation is required
+
+ACCEPTANCE CRITERIA FOR FUTURE APPROVAL:
+- No lock-state corruption
+- No py_compile regression
+- No hidden mutation outside approved scope
+- Clear module boundary creation
+- Clear safety-first structure
+- Clear audit receipt path
+- Clear rollback plan
+- Clear documentation of what changed and why
+
+MANDATORY TEST/VERIFY IDEAS FOR FUTURE APPLY:
+- py_compile pass
+- locked-state awareness check
+- module import sanity
+- no unintended file mutation check
+- receipt generation check
+- safe-mode fallback behavior tests
+- explainability object generation tests
+
+ROLLBACK PRINCIPLE:
+Every future apply under CP-003 must have:
+- file-level backup path
+- explicit touched-file list
+- restore procedure
+- post-apply verifier
+- failure-stop behavior
+
+APPROVAL GATE:
+This document does not authorize implementation.
+A separate explicit approval step is required before any code mutation.
+
+DRAFT CONCLUSION:
+S43_CHANGE_PLAN_003 exists to create the structural chassis for diamond-grade, hypercar-class, autonomous capital intelligence.
+No real execution, no unsafe automation, and no strategy rush shall occur before the scaffold is properly approved.
+
+CREATED_AT:
+2026-06-11T23:33:26.5224438+03:30

@@ -1,0 +1,25 @@
+09250:     async def _execute_trade(
+09251:         self,
+09252:         signal: FilteredSignal,
+09253:         position_size: Dict[str, Any]
+09254:     ):
+09255:         try:
+09256:             order_data = {
+09257:                 "symbol": signal.symbol,
+09258:                 "side": signal.action,
+09259:                 "amount": position_size["position_size"],
+09260:                 "price": 0,
+09261:                 "client_order_id": f"enhanced_{int(time.time() * 1000)}"
+09262:             }
+09263:             result = await self.api_client.request(
+09264:                 "POST",
+09265:                 "/market/orders/",
+09266:                 json=order_data
+09267:             )
+09268:             logging.info(
+09269:                 f"Executed {signal.action} order for {signal.symbol}: "
+09270:                 f"Size={position_size['position_size']:.2f}, "
+09271:                 f"Confidence={signal.filtered_confidence:.2f}"
+09272:             )
+09273:         except Exception as e:
+09274:             logging.error(f"Failed to execute trade for {signal.symbol}: {e}")

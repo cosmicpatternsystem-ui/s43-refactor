@@ -1,0 +1,132 @@
+S43_ENV_CHECK_REPORT
+timestamp=20260605_132210
+project_dir=/data/data/com.termux/files/home/s43_refactor
+
+== ALL MATCHING ENV VARS (MASKED) ==
+ACCESS_TOKEN=b6d***be7 len=40
+AI_API_KEY=sk-***hEE len=51
+API_TOKEN=b6d***be7 len=40
+ARZPLUS_TOKEN1=Tok***be7 len=46
+ARZPLUS_TOKEN2=Tok***be7 len=46
+ARZPLUS_TOKEN3=Tok***be7 len=46
+ARZPLUS_TOKEN=b6d***be7 len=40
+ARZPLUS_TOKEN_1=b6d***be7 len=40
+ARZPLUS_TOKEN_2=b6d***be7 len=40
+ARZPLUS_TOKEN_3=b6d***be7 len=40
+ARZ_PLUS_TOKEN=b6d***be7 len=40
+ARZ_PLUS_TOKEN_1=b6d***be7 len=40
+ARZ_PLUS_TOKEN_2=b6d***be7 len=40
+ARZ_PLUS_TOKEN_3=b6d***be7 len=40
+ARZ_TOKEN=b6d***be7 len=40
+ARZ_TOKEN_1=b6d***be7 len=40
+ARZ_TOKEN_2=b6d***be7 len=40
+ARZ_TOKEN_3=b6d***be7 len=40
+OPENAI_API_KEY=sk-***VGA len=51
+REAL_ARZ_TOKEN=b6d***be7 len=40
+S43_W1_TOKEN=b6d***be7 len=40
+TOKEN=b6d***be7 len=40
+TOKEN_1=b6d***be7 len=40
+TOKEN_2=b6d***be7 len=40
+TOKEN_3=b6d***be7 len=40
+W1_TOKEN=b6d***be7 len=40
+WALLET_2_TOKEN=8f9***f76 len=40
+
+all_matching_var_count=0
+
+== UNIQUE VALUE GROUPS ==
+fingerprint=1b47ad5143b4e92d1d56d2a5237002ae6c9fc4ffd76590fd6bda2aa226d549ef
+  var=OPENAI_API_KEY value=sk-***VGA len=51
+fingerprint=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  var=ACCESS_TOKEN value=b6d***be7 len=40
+  var=API_TOKEN value=b6d***be7 len=40
+  var=ARZPLUS_TOKEN value=b6d***be7 len=40
+  var=ARZPLUS_TOKEN_1 value=b6d***be7 len=40
+  var=ARZPLUS_TOKEN_2 value=b6d***be7 len=40
+  var=ARZPLUS_TOKEN_3 value=b6d***be7 len=40
+  var=ARZ_PLUS_TOKEN value=b6d***be7 len=40
+  var=ARZ_PLUS_TOKEN_1 value=b6d***be7 len=40
+  var=ARZ_PLUS_TOKEN_2 value=b6d***be7 len=40
+  var=ARZ_PLUS_TOKEN_3 value=b6d***be7 len=40
+  var=ARZ_TOKEN value=b6d***be7 len=40
+  var=ARZ_TOKEN_1 value=b6d***be7 len=40
+  var=ARZ_TOKEN_2 value=b6d***be7 len=40
+  var=ARZ_TOKEN_3 value=b6d***be7 len=40
+  var=REAL_ARZ_TOKEN value=b6d***be7 len=40
+  var=S43_W1_TOKEN value=b6d***be7 len=40
+  var=TOKEN value=b6d***be7 len=40
+  var=TOKEN_1 value=b6d***be7 len=40
+  var=TOKEN_2 value=b6d***be7 len=40
+  var=TOKEN_3 value=b6d***be7 len=40
+  var=W1_TOKEN value=b6d***be7 len=40
+fingerprint=950aac8efee04ce087fbaf13a1a7adbd1d8169c3b1e557c5ec745fafa74c2bcc
+  var=WALLET_2_TOKEN value=8f9***f76 len=40
+fingerprint=c9f31c2ac7f6dd7399752bbee03877465d7549595d860891e6ef4512b8ef8257
+  var=AI_API_KEY value=sk-***hEE len=51
+fingerprint=de596f7ad56f38c44a91d87f97d1b4b983ee66d6e85c3d988c4fe7e7a8952e62
+  var=ARZPLUS_TOKEN1 value=Tok***be7 len=46
+  var=ARZPLUS_TOKEN2 value=Tok***be7 len=46
+  var=ARZPLUS_TOKEN3 value=Tok***be7 len=46
+
+unique_value_groups=5
+
+== PRIORITY / WALLET VARS ==
+TOKEN=b6d***be7 len=40
+API_TOKEN=b6d***be7 len=40
+ACCESS_TOKEN=b6d***be7 len=40
+REAL_ARZ_TOKEN=b6d***be7 len=40
+ARZ_TOKEN=b6d***be7 len=40
+ARZPLUS_TOKEN=b6d***be7 len=40
+ARZ_PLUS_TOKEN=b6d***be7 len=40
+S43_W1_TOKEN=b6d***be7 len=40
+W1_TOKEN=b6d***be7 len=40
+TOKEN_1=b6d***be7 len=40
+TOKEN_2=b6d***be7 len=40
+TOKEN_3=b6d***be7 len=40
+ARZ_TOKEN_1=b6d***be7 len=40
+ARZ_TOKEN_2=b6d***be7 len=40
+ARZ_TOKEN_3=b6d***be7 len=40
+ARZPLUS_TOKEN_1=b6d***be7 len=40
+ARZPLUS_TOKEN_2=b6d***be7 len=40
+ARZPLUS_TOKEN_3=b6d***be7 len=40
+ARZ_PLUS_TOKEN_1=b6d***be7 len=40
+ARZ_PLUS_TOKEN_2=b6d***be7 len=40
+ARZ_PLUS_TOKEN_3=b6d***be7 len=40
+WALLET_2_TOKEN=8f9***f76 len=40
+priority_vars=NONE_FOUND
+
+== CONFLICT ANALYSIS ==
+base_group_unique_count=1
+wallet_group_unique_count=2
+-- base group --
+  TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  API_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ACCESS_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  REAL_ARZ_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZPLUS_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_PLUS_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  S43_W1_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  W1_TOKEN => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+-- wallet group --
+  TOKEN_1 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  TOKEN_2 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  TOKEN_3 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_TOKEN_1 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_TOKEN_2 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_TOKEN_3 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZPLUS_TOKEN_1 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZPLUS_TOKEN_2 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZPLUS_TOKEN_3 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_PLUS_TOKEN_1 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_PLUS_TOKEN_2 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  ARZ_PLUS_TOKEN_3 => b6d***be7 len=40 fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+  WALLET_2_TOKEN => 8f9***f76 len=40 fp=950aac8efee04ce087fbaf13a1a7adbd1d8169c3b1e557c5ec745fafa74c2bcc
+env_conflict_detected=1
+
+== VERDICT ==
+matching_env_var_count=27
+unique_secret_value_count=5
+ENV_CHECK_RESULT=ENV_CONFLICT_DETECTED
+ACTION=Many distinct secret values are present. Reduce env ambiguity, standardize token naming, and verify wallet-specific mapping.
+
+REPORT_SAVED=/data/data/com.termux/files/home/s43_refactor/reports/env_check_20260605_132210.txt

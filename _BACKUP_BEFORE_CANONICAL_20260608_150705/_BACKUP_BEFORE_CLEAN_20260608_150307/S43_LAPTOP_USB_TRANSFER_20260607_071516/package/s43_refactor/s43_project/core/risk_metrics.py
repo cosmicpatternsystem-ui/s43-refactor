@@ -1,0 +1,25 @@
+class RiskMetrics:
+    total_equity: float = 0.0
+    total_exposure: float = 0.0
+    cash_balance: float = 0.0
+    daily_pnl: float = 0.0
+    daily_return: float = 0.0
+    unrealized_pnl: float = 0.0
+    realized_pnl: float = 0.0
+    var_95: float = 0.0
+    expected_shortfall: float = 0.0
+    sharpe_ratio: float = 0.0
+    max_drawdown: float = 0.0
+    current_drawdown: float = 0.0
+    total_trades: int = 0
+    win_rate: float = 0.0
+    avg_win: float = 0.0
+    avg_loss: float = 0.0
+    profit_factor: float = 0.0
+    open_positions: int = 0
+    largest_position: float = 0.0
+    concentration_ratio: float = 0.0
+    system_health: float = 0.0
+    latency_ms: float = 0.0
+    error_rate: float = 0.0
+    timestamp: float = field(default_factory=time.time)

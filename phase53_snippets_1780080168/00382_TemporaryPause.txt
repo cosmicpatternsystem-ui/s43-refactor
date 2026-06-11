@@ -1,0 +1,2 @@
+00382:     class TemporaryPause(RuntimeError):
+00383:         pass

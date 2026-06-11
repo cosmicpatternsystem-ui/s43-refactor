@@ -1,0 +1,9 @@
+﻿E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:12733: if st not in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED"):
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:12743: st = st_exec if st_exec in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED") else st_full
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:20101: if getattr(self, "_ai_trader", None) is not None and bool(getattr(w.cfg, "autonomous_ai", False)) and bool(_env_bool("OPENAI_TRADE_ENABLE", False)) and bool(_env_bool("OPENAI_TRADE_ALLOW_ND", False)) and not bool(getattr(self, "_capital_kill_switch", False)) and not bool(getattr(w, "_kill_switch", False)) and not bool(getattr(w, "kill", False)) and not bool(getattr(w, "halted", False)) and not bool(getattr(w, "safety_locked", False)) and not bool(getattr(w, "drawdown_blocked", False)) and not bool(getattr(w, "risk_blocked", False)) and not getattr(self, "_daily_loss_reached", False) and not getattr(self, "_session_lock_active", False):
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:22882: if state not in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED"):
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:23262: state = "HALTED"
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:23301: safe_tag = "HALTED" if state == "HALTED" else str(want_exec or "OK")
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:23327: setattr(self, "_engine_halted", bool(state == "HALTED"))
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:23423: if state in ("DEGRADED", "CRITICAL", "HALTED") or safe_on:
+E:\اخباری\ssl\s43_refactor\s43_instrumented_LATEST.py:23436: elif state == "HALTED":

@@ -1,0 +1,29 @@
+﻿{
+  "paths": {
+    "logs_dir": "logs",
+    "state_dir": "state",
+    "exports_dir": "exports",
+    "tmp_dir": "tmp"
+  },
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "write_to_logs_dir": true,
+    "legacy_root_log_detection": true
+  },
+  "state": {
+    "enabled": true,
+    "prefer_state_dir": true,
+    "legacy_root_state_detection": true
+  },
+  "runtime": {
+    "standalone_mode": true,
+    "create_missing_directories": true,
+    "safe_startup_validation": true
+  },
+  "compatibility": {
+    "backward_aware": true,
+    "do_not_delete_legacy_files": true,
+    "report_legacy_artifacts": true
+  }
+}

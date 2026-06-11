@@ -1,0 +1,1894 @@
+
+==========================================================================================
+PHASE 3 AUDIT HEADER
+==========================================================================================
+file: s43.py
+generated_at: 2026-05-28T23:37:43.666014
+total_lines: 28623
+purpose:
+  - Runtime profile readiness: termux/server/dev
+  - AI independence: off/external/local
+  - Live trading arming gates
+  - Order normalization safety
+  - Request retry/timeout/idempotency safety
+  - Direct AI-to-order trace
+
+==========================================================================================
+SEARCH: AUTONOMOUS_AI
+==========================================================================================
+00190:     autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", True))
+09342:             return False, "AUTONOMOUS_AI_OFF"
+12203:             w_aut = _env_bool(f"WALLET_{slot}_AUTONOMOUS_AI", bool(getattr(cfg, "autonomous_ai", True)))
+
+==========================================================================================
+SEARCH: DZH_AI_RESCUES
+==========================================================================================
+00207:     dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES", True))
+00208:     dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+
+==========================================================================================
+SEARCH: DZH_AI_RESCUES_ARMED
+==========================================================================================
+00208:     dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+
+==========================================================================================
+SEARCH: ARZPLUS_LIVE_ARMED
+==========================================================================================
+00208:     dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+06319:             if os.environ.get("ARZPLUS_LIVE_ARMED") != "YES":
+12317:             "armed": (os.environ.get("ARZPLUS_LIVE_ARMED") == "YES"),
+
+==========================================================================================
+SEARCH: OPENAI_TRADE_ENABLE
+==========================================================================================
+18868:                 if getattr(self, "_ai_trader", None) is not None and bool(getattr(w.cfg, "autonomous_ai", True)) and bool(_env_bool("OPENAI_TRADE_ENABLE", False)) and bool(_env_bool("OPENAI_TRADE_ALLOW_ND", False)):
+
+==========================================================================================
+SEARCH: TERMUX_MODE
+==========================================================================================
+00173:     loop_interval_sec: float = field(default_factory=lambda: (_env_float("LOOP_INTERVAL_SEC", 8.0) if _env_bool("TERMUX_MODE", False) else _env_float("LOOP_INTERVAL_SEC", 2.0)))
+00205:     market_age_skip_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SKIP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+00206:     market_age_sleep_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SLEEP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+00997:             probe_to = float(os.environ.get("DEPTH_DISCOVER_TIMEOUT_SEC", "3.0" if _env_bool("TERMUX_MODE", False) else "2.0") or 2.0)
+01182:             timeout = float(os.getenv("DEPTH_REQ_TIMEOUT_SEC", "7.0" if _env_bool("TERMUX_MODE", False) else "5.0") or 5.0)
+01282:                 termux_force = bool(_env_bool("TERMUX_MODE", False))
+03192:             if _termux_env_bool("TERMUX_MODE", False):
+03365:             if _termux_env_bool("TERMUX_MODE", False):
+03487:             if _termux_env_bool("TERMUX_MODE", False):
+04260:                 per_to = float(os.getenv("DEPTH_REQ_TIMEOUT_SEC", os.getenv("DEPTH_TIMEOUT_SEC", "7.0" if _env_bool("TERMUX_MODE", False) else "5.0")) or 5.0)
+04264:                 retry_max = int(os.getenv("DEPTH_RETRY_MAX", "4" if _env_bool("TERMUX_MODE", False) else "3") or 3)
+04273:             retry_max = int(os.getenv("DEPTH_RETRY_MAX", "4" if _env_bool("TERMUX_MODE", False) else "3") or 3)
+04288:             hard_fail_ttl = float(os.getenv("DEPTH_HARD_FAIL_TTL_SEC", "3600" if _env_bool("TERMUX_MODE", False) else "1800") or 1800.0)
+04391:                     max_age = float(_env_float("DEPTH_DISK_CACHE_MAX_AGE_SEC", (90.0 if _env_bool("TERMUX_MODE", False) else 60.0)) or 0.0)
+09953:                 if bool(_env_bool("TERMUX_MODE", False)):
+11658:                     if bool(_env_bool("TERMUX_MODE", False)) and bool(_env_bool("TERMUX_ALLOW_ENTRY_DEGRADED", True)):
+14132:         termux = _env_bool("TERMUX_MODE", False)
+15594:             _always = bool(_env_bool("FOCUS_SCAN_ALWAYS_ON", _env_bool("TERMUX_MODE", False)))
+15596:             _always = bool(_env_bool("TERMUX_MODE", False))
+15604:         interval = float(_env_float("FOCUS_SCAN_INTERVAL_SEC", (60.0 if _env_bool("TERMUX_MODE", False) else 1800.0)))
+20691:         global TERMUX_MODE
+20693:             TERMUX_MODE = bool(os.environ.get("TERMUX_VERSION") or os.environ.get("TERMUX_MODE") == "1" or ("com.termux" in str(os.environ.get("PREFIX", ""))))
+20693:             TERMUX_MODE = bool(os.environ.get("TERMUX_VERSION") or os.environ.get("TERMUX_MODE") == "1" or ("com.termux" in str(os.environ.get("PREFIX", ""))))
+20695:             TERMUX_MODE = False
+21415:                 if bool(_env_bool("TERMUX_MODE", False)) and not (bool(_env_bool("HEALTH_WD_TOP8_ALLOW_STRICT", False)) and bool(_env_bool("HEALTH_WD_TOP8_ALLOW_STRICT_CONFIRM", False))):
+21421:                 if bool(_env_bool("TERMUX_MODE", False)) and not (bool(_env_bool("HEALTH_WD_ALLOW_STRICT", False)) and bool(_env_bool("HEALTH_WD_ALLOW_STRICT_CONFIRM", False))):
+21795:                     if bool(_env_bool("TERMUX_MODE", False)) and not bool(_env_bool("HEALTH_WD_TOP8_FORCE_EXEC", False)):
+23318:         _DASH_ASCII = bool(_env_bool("DASH_ASCII", True) or _env_bool("TERMUX_MODE", False))
+26194:                 dc_thr = float(_env_float("DEPTH_DISK_CACHE_MAX_AGE_SEC", (8.0 if _env_bool("TERMUX_MODE", False) else 4.0)) or 0.0)
+27146:                                     if bool(_env_bool("TERMUX_MODE", False)) and bool(_env_bool("TERMUX_ALLOW_ENTRY_DEGRADED", True)):
+
+==========================================================================================
+SEARCH: DRY_RUN/dry_run
+==========================================================================================
+00172:     dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+00172:     dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+10370:             if not self.cfg.dry_run:
+10467:         if self.cfg.dry_run:
+10468:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+10471:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+10472:             return {"ok": True, "dry_run": True}
+10485:                 if not bool(getattr(self.cfg, "dry_run", False)):
+10626:         if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+10691:         if bool(getattr(self.cfg, "dry_run", False)):
+12997:             if not bool(getattr(self.cfg, "dry_run", False)):
+13069:         if self.cfg.dry_run and (not _env_bool("FETCH_BALANCE_IN_DRY_RUN", True)):
+13069:         if self.cfg.dry_run and (not _env_bool("FETCH_BALANCE_IN_DRY_RUN", True)):
+13070:             w.cash_irt = float(_env_float("DRY_RUN_CASH_IRT", 100_000_000.0))
+13220:             if (not self.cfg.dry_run) and st in (401, 403):
+13264:             if (not self.cfg.dry_run) and (("HTTP 401" in msg) or ("HTTP 403" in msg)):
+13473:             os.environ["DRY_RUN"] = "0"
+13477:         if bool(getattr(args, "dry_run", False)):
+13478:             os.environ["DRY_RUN"] = "1"
+13521:             os.environ["DRY_RUN"] = "1"
+13994:     cfg = _dc.replace(cfg, orders_journal_path=str(getattr(args, "journal", "stress_orders_journal.json")), dry_run=False)
+15920:         if bool(getattr(self.cfg, 'dry_run', False)):
+19322:             if (not ok_resp) and (not bool(getattr(self.cfg, "dry_run", False))):
+19340:             if ok_resp or bool(getattr(self.cfg, "dry_run", False)):
+19342:                 if bool(getattr(self.cfg, "dry_run", False)):
+19678:             if (not ok_resp) and (not self.cfg.dry_run):
+19700:             if ok_resp or self.cfg.dry_run:
+19701:                 if self.cfg.dry_run:
+19832:         if (not self.cfg.dry_run) and (not bool(getattr(self.cfg, "global_exit_armed", False))):
+19864:         if not self.cfg.dry_run:
+19869:         if self.cfg.dry_run:
+19874:         return {"armed": bool(getattr(self.cfg, "global_exit_armed", False)) or self.cfg.dry_run, "attempted": attempted, "closed": closed, "details": details}
+19925:             if (not bool(getattr(self.cfg, 'dry_run', False))) and interval > 0.0:
+20471:             if (not bool(getattr(self.cfg, 'dry_run', False))) and interval > 0.0:
+20727:             "event=BOT_RUN_START live=%s dry_run=%s wallets=%s symbols=%s",
+20729:             str(bool(getattr(self.cfg, "dry_run", False))),
+25963:                 if bool(getattr(getattr(self.bot, "cfg", None), "dry_run", False)):
+26144:                 if bool(getattr(cfg, "dry_run", False)):
+26477:                 if bool(getattr(getattr(self.bot, "cfg", None), "dry_run", False)):
+
+==========================================================================================
+SEARCH: LIVE_TRADING
+==========================================================================================
+00172:     dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+12512:             "mode": ("LIVE" if _env_bool("LIVE_TRADING", True) else "PAPER"),
+13063:             if _env_bool("LIVE_TRADING", False):
+13440:     p.add_argument("--live", action="store_true", help="Enable live trading (LIVE_TRADING=1).")
+13472:             os.environ["LIVE_TRADING"] = "1"
+13479:             os.environ["LIVE_TRADING"] = "0"
+13522:             os.environ["LIVE_TRADING"] = "0"
+16005:                 if _env_bool("SAFE_RECONCILE", True) and _env_bool('LIVE_TRADING', False):
+19931:                     if unknown and _env_bool('LIVE_TRADING', False) and _env_bool("SAFE_RECONCILE", True):
+19948:             if _env_bool('LIVE_TRADING', False) and _env_bool("SAFE_RECONCILE", True) and _env_bool("SAFE_RECONCILE_STRICT", True) and _env_bool("GLOBAL_SAFE_ON_ORDER_DESYNC", False):
+20477:                     if unknown and _env_bool('LIVE_TRADING', False) and _env_bool("SAFE_RECONCILE", True):
+20728:             str(_env_bool("LIVE_TRADING", False)),
+26172:                 t.add_row("LIVE SWITCH                --live  (or export LIVE_TRADING=1)")
+
+==========================================================================================
+SEARCH: RUNTIME_PROFILE
+==========================================================================================
+NO MATCH
+
+==========================================================================================
+SEARCH: AI_MODE
+==========================================================================================
+NO MATCH
+
+==========================================================================================
+AST METHOD: OrderNormalizer.normalize hit 1 lines 3660-3685
+==========================================================================================
+03660:     async def normalize(self, symbol: str, qty: float, price: float) -> Tuple[float, float]:
+03661:         spec = await self._specs.get(symbol)
+03662:         if not spec:
+03663:             return float(qty), float(int(price))
+03664:         step = _first_num(spec, "step_size", "amount_step", "qty_step", "step", default=0.0)
+03665:         tick = _first_num(spec, "tick_size", "price_tick", "tick", default=1.0)
+03666:         min_qty = _first_num(spec, "min_amount", "min_qty", "minimum_quantity", default=0.0)
+03667:         max_qty = _first_num(spec, "max_amount", "max_qty", "maximum_quantity", default=0.0)
+03668:         min_price = _first_num(spec, "min_price", default=0.0)
+03669:         max_price = _first_num(spec, "max_price", default=0.0)
+03670:         q = float(qty)
+03671:         p = float(price)
+03672:         if step > 0:
+03673:             q = _quantize_down(q, step)
+03674:         if tick > 0:
+03675:             p = _quantize_down(p, tick)
+03676:         if min_qty > 0:
+03677:             q = max(q, float(min_qty))
+03678:         if max_qty > 0:
+03679:             q = min(q, float(max_qty))
+03680:         if min_price > 0:
+03681:             p = max(p, float(min_price))
+03682:         if max_price > 0:
+03683:             p = min(p, float(max_price))
+03684:         p = float(int(p))
+03685:         return float(q), float(p)
+
+==========================================================================================
+AST METHOD: ExchangeClient.__init__ hit 1 lines 764-858
+==========================================================================================
+00764:     def __init__(
+00765:         self,
+00766:         cfg: BotConfig,
+00767:         token: str,
+00768:         limiter: SharedAsyncRateLimiter,
+00769:         logger: logging.Logger,
+00770:         breaker: Optional[CircuitBreaker] = None,
+00771:     ):
+00772:         _s43_debug_print("### EXCHANGECLIENT_INIT_ENTER ###", flush=True)
+00773:         self.cfg = cfg
+00774:         self._auth_scheme, self._token = self._split_auth_token(token)
+00775:         if not self._token:
+00776:             self._auth_scheme = "Token"
+00777:             self._token = str(token or "").strip()
+00778:         try:
+00779:             if "arzplus" in str(getattr(cfg, "base_url", "") or "").lower():
+00780:                 self._auth_scheme = "Token"
+00781:         except Exception:
+00782:             pass
+00783:         self.api_key = self._token
+00784:         self._headers_public = {
+00785:             "Accept": "application/json",
+00786:             "Content-Type": "application/json",
+00787:         }
+00788:         self._headers_private = dict(self._headers_public)
+00789:         if self._token:
+00790:             self._headers_private["Authorization"] = f"{self._auth_scheme or 'Token'} {self._token}"
+00791:         self._headers = self._headers_private
+00792:         try:
+00793:             _tok = str(getattr(self, "_token", "") or "")
+00794:             _base = str(getattr(cfg, "base_url", "") or "")
+00795:             _scheme = str(getattr(self, "_auth_scheme", "") or "")
+00796:             _masked = (_tok[:4] + "..." + _tok[-4:]) if len(_tok) >= 8 else ("set" if _tok else "empty")
+00797:             _pref = "raw"
+00798:             if _tok.startswith("Token "):
+00799:                 _pref = "starts_with_Token_space"
+00800:             elif _tok.startswith("Bearer "):
+00801:                 _pref = "starts_with_Bearer_space"
+00802:             _msg = (
+00803:                 "event=ARZ_AUTH_DEBUG "
+00804:                 f"base={_base} scheme={_scheme} tok_len={len(_tok)} "
+00805:                 f"tok_mask={_masked} tok_prefix_state={_pref}"
+00806:             )
+00807:             if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+00808:                 try:
+00809:                     _lg = getattr(self, "_log", None)
+00810:                     if hasattr(_lg, "warning"):
+00811:                         _lg.warning(_msg)
+00812:                     elif callable(_lg):
+00813:                         _lg(_msg)
+00814:                     else:
+00815:                         print(_msg, flush=True)
+00816:                 except Exception:
+00817:                     print(_msg, flush=True)
+00818:         except Exception:
+00819:             pass
+00820:         self._limiter = limiter
+00821:         self._logger = logger
+00822:         self._breaker = breaker or CircuitBreaker(
+00823:             cfg.circuit_breaker_errors,
+00824:             cfg.circuit_breaker_cooldown_sec,
+00825:             logger,
+00826:         )
+00827:         self._sem = PrioritySemaphore(1)  #
+00828:         self._session: Optional[aiohttp.ClientSession] = None
+00829:         self._last_all_tickers_snapshot: Optional[dict] = None
+00830:         self.last_update_time: float = 0.0
+00831:         self._last_market_stats_snapshot: Optional[dict] = None
+00832:         self.last_latency_ms: Optional[float] = None
+00833:         self.jitter_ms: Optional[float] = None
+00834:         self._lat_hist = __import__("collections").deque(maxlen=30)
+00835:         self._working_depth_ep: Optional[str] = None
+00836:         self._working_depth_ep_map: Dict[str, str] = {}
+00837:         self._working_depth_symid_map: Dict[str, str] = {}
+00838:         self._depth_ep_lock = asyncio.Lock()
+00839:         self._depth_ep_last_sym: Optional[str] = None
+00840:         self._depth_ep_last_ok_ts: float = 0.0
+00841:         self._arz_meta_cache: Optional[List[dict]] = None
+00842:         self._arz_meta_ts: float = 0.0
+00843:         self._arz_universe: List[str] = []
+00844:         self._arz_universe_ts: float = 0.0
+00845:         self._arz_scan_cursor: int = 0
+00846:         self._arz_stats_cache: Dict[str, Tuple[float, dict]] = {}
+00847:         self._arz_stats_ttl_sec: float = max(10.0, float(_env_float("ARZPLUS_STATS_TTL_SEC", 45.0)))
+00848:         self._arz_hydrate_batch: int = max(6, int(_env_int("ARZPLUS_HYDRATE_BATCH", 14)))
+00849:         self._arz_universe_refresh_sec: float = max(30.0, float(_env_float("ARZPLUS_UNIVERSE_REFRESH_SEC", 600.0)))
+00850:         # ArzPlus auth/HTTP diagnostics state (no strategy impact)
+00851:         self._last_server_date_ts: float = 0.0
+00852:         self._last_clock_drift_s: float = 0.0
+00853:         self._last_clock_warn_ts: float = 0.0
+00854:         self._last_403_log_ts_by_ep: Dict[str, float] = {}
+00855:         # Auth signing clock offset (seconds) for minor server drift self-heal (ArzPlus).
+00856:         self._auth_time_offset_s: float = 0.0
+00857:         self._auth_time_offset_lock = threading.Lock()
+00858:         self._last_clock_selfheal_ts: float = 0.0
+
+==========================================================================================
+AST METHOD: ExchangeClient.request hit 1 lines 1927-1936
+==========================================================================================
+01927:     async def request(
+01928:         self,
+01929:         method: str,
+01930:         endpoint: str,
+01931:         payload: Optional[dict] = None,
+01932:         auth: bool = False,
+01933:         params: Optional[dict] = None,
+01934:         priority: bool = False,
+01935:     ) -> dict:
+01936:         return await self._request_impl(method, endpoint, payload=payload, auth=auth, params=params, priority=priority)
+
+==========================================================================================
+AST METHOD: ExchangeClient.place_order
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST METHOD: ExchangeClient.place_limit
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST METHOD: ExecutionEngine.place_limit hit 1 lines 10455-10628
+==========================================================================================
+10455:     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+10456:         sym = _canon_symbol(symbol)
+10457:         try:
+10458:             side_l0 = str(side or "").lower()
+10459:             if side_l0.startswith("buy"):
+10460:                 m = self._regime_multiplier(sym, float(notional_irt))
+10461:                 m = float(clamp(float(m), 0.0, 1.0))
+10462:                 if m != 1.0:
+10463:                     qty = float(qty) * float(m)
+10464:                     notional_irt = float(notional_irt) * float(m)
+10465:         except Exception:
+10466:             pass
+10467:         if self.cfg.dry_run:
+10468:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+10469:             if self._rec:
+10470:                 self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+10471:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+10472:             return {"ok": True, "dry_run": True}
+10473:         r = getattr(self, "_risk", None)
+10474:         if r is not None:
+10475:             try:
+10476:                 hb = getattr(r, "hard_blocks_all_orders", None)
+10477:                 side_lk = str(side or "").lower().strip()
+10478:                 if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+10479:                     reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+10480:                     self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+10481:                     raise TradingHalt(f"HARD_BLOCK:{reason}")
+10482:             except TradingHalt:
+10483:                 raise
+10484:             except Exception as e:
+10485:                 if not bool(getattr(self.cfg, "dry_run", False)):
+10486:                     raise TradingHalt(f"HARD_BLOCK:RISK_ERR:{type(e).__name__}") from e
+10487:         try:
+10488:             rd = None
+10489:             if r is not None:
+10490:                 g = getattr(r, "get_runtime_risk", None)
+10491:                 if callable(g):
+10492:                     rd = g(self._wallet, sym)
+10493:             side_l = str(side or "").lower()
+10494:             is_entry = side_l.startswith("buy")
+10495:             if rd is not None and is_entry:
+10496:                 if not bool(getattr(rd, "allow_entries", True)):
+10497:                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+10498:                 mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+10499:                 mult = float(clamp(mult, 0.0, 1.0))
+10500:                 _skip_mult = False
+10501:                 try:
+10502:                     _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+10503:                 except Exception:
+10504:                     _skip_mult = False
+10505:                 if (not _skip_mult) and mult < 0.999:
+10506:                     qty = float(qty) * mult
+10507:                     notional_irt = float(notional_irt) * mult
+10508:                     try:
+10509:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+10510:                                           self._wallet, sym, str(getattr(rd,'level','?')), mult)
+10511:                     except Exception:
+10512:                         pass
+10513:         except TemporaryPause:
+10514:             raise
+10515:         except Exception:
+10516:             pass
+10517:         if qty <= 0 or price <= 0:
+10518:             raise ValueError(f"Invalid order params qty={qty} price={price}")
+10519:         qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+10520:         if qty2 <= 0 or px2 <= 0:
+10521:             raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+10522:         cid: Optional[str] = None
+10523:         if self._oj is not None:
+10524:             cid = self._oj.new_cid(self._wallet, sym, side)
+10525:             self._oj.mark_pending(cid, wallet=self._wallet, symbol=sym, side=side,
+10526:                                  qty=float(qty2), price=float(px2), notional_irt=float(notional_irt))
+10527:             self._logger.info("event=ORDER_INTENT cid=%s wallet=%s side=%s sym=%s qty=%.8f px=%.0f",
+10528:                              cid, self._wallet, str(side).lower(), sym, float(qty2), float(px2))
+10529:         else:
+10530:             raise TradingHalt("ORDERS_JOURNAL_DISABLED")
+10531:         last_exc: Optional[Exception] = None
+10532:         for attempt in range(self.max_retries + 1):
+10533:             try:
+10534:                 async with self._submit_lock:
+10535:                     if attempt == 0:
+10536:                         order_key = f"{str(side).lower()}_{px2}_{qty2}_{sym}"
+10537:                         if getattr(self, "_last_order_key", None) == order_key and (time.time() - getattr(self, "_last_order_time", 0.0)) < 5.0:
+10538:                             try:
+10539:                                 self._logger.warning("Duplicate order prevented for %s", sym)
+10540:                             except Exception:
+10541:                                 pass
+10542:                             if self._oj is not None:
+10543:                                 try:
+10544:                                     self._oj.mark_resolved(cid, final_state="SKIPPED_DUP", note=str(order_key))
+10545:                                 except Exception:
+10546:                                     pass
+10547:                             return {"ok": False, "skipped": True, "reason": "DUPLICATE_PREVENTED", "cid": cid}
+10548:                         self._last_order_key = order_key
+10549:                         self._last_order_time = time.time()
+10550:                     order_kwargs = dict(kwargs)
+10551:                     order_kwargs.pop("cid", None)
+10552:                     order_kwargs.setdefault("notional_irt", float(notional_irt))
+10553:                     order_kwargs.setdefault("fill_type", "limit")
+10554:                     order_kwargs.setdefault("market", "spot")
+10555:                     order_kwargs.setdefault("reduce_only", str(side or "").lower().startswith("sell"))
+10556:                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+10557:                 if resp is None:
+10558:                     raise ApiError("Order submission returned None")
+10559:                 ok = bool(resp.get("ok")) or (resp.get("status") in (200, 201))
+10560:                 if ok:
+10561:                     oid = str(resp.get("order_id") or resp.get("id") or "")
+10562:                     if self._oj is not None:
+10563:                         try:
+10564:                             self._oj.mark_ack(cid, exchange_order_id=oid, raw=resp)
+10565:                         except Exception:
+10566:                             pass
+10567:                     if self._rec:
+10568:                         self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2),
+10569:                                                float(notional_irt), ok=True, order_id=oid, raw=resp)
+10570:                     try:
+10571:                         if isinstance(resp, dict) and cid:
+10572:                             if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+10573:                                 resp = dict(resp)
+10574:                                 resp["cid"] = str(cid)
+10575:                     except Exception:
+10576:                         pass
+10577:                     return resp
+10578:                 if self._oj is not None:
+10579:                     try:
+10580:                         self._oj.mark_resolved(cid, final_state="REJECTED", note=str(resp)[:300])
+10581:                     except Exception:
+10582:                         pass
+10583:                 try:
+10584:                     if isinstance(resp, dict) and cid:
+10585:                         if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+10586:                             resp = dict(resp)
+10587:                             resp["cid"] = str(cid)
+10588:                 except Exception:
+10589:                     pass
+10590:                 return resp
+10591:             except (TradingHalt, TemporaryPause):
+10592:                 raise
+10593:             except asyncio.TimeoutError as e:
+10594:                 last_exc = e
+10595:                 try:
+10596:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+10597:                 except Exception:
+10598:                     pass
+10599:                 if attempt < self.max_retries:
+10600:                     try:
+10601:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+10602:                     except Exception:
+10603:                         pass
+10604:                     continue
+10605:                 break
+10606:             except Exception as e:
+10607:                 last_exc = e
+10608:                 try:
+10609:                     self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+10610:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+10611:                 except Exception:
+10612:                     pass
+10613:                 if attempt < self.max_retries:
+10614:                     try:
+10615:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+10616:                     except Exception:
+10617:                         pass
+10618:         if self._rec:
+10619:             self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2), float(notional_irt),
+10620:                                    ok=False, order_id=None, raw={"error": str(last_exc), "cid": cid})
+10621:         if self._oj is not None:
+10622:             try:
+10623:                 self._oj.mark_uncertain(cid, err=str(last_exc))
+10624:             except Exception:
+10625:                 pass
+10626:         if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+10627:             raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+10628:         raise ApiError(f"Order failed after retries: {last_exc}")
+
+==========================================================================================
+AST FUNC: hard_blocks_all_orders hit 1 lines 10011-10040
+==========================================================================================
+10011:     def hard_blocks_all_orders(self, side: Optional[str] = None, reduce_only: bool = False) -> bool:
+10012:         if reduce_only or str(side or "").lower().strip() == "sell":
+10013:             return False
+10014:         if self.safe_level() != "HARD":
+10015:             return False
+10016:         r = str(self.safe_reason or "")
+10017:         try:
+10018:             grace = float(_env_float("SNIPER_GRACE_TRADE_DATA_AGE_SEC", 60.0) or 60.0)
+10019:         except Exception:
+10020:             grace = 60.0
+10021:         try:
+10022:             if (r.startswith("HEALTH_WD_") or r.startswith("HEALTH_SYS_")) and ("mkt=" in r or "top8=" in r):
+10023:                 try:
+10024:                     try:
+10025:                         import re as _re
+10026:                     except:
+10027:                         pass
+10028:                 except:
+10029:                     pass
+10030:                 def _age(tag: str):
+10031:                     m = _re.search(rf"{tag}([0-9]+(?:\.[0-9]+)?)s", r)
+10032:                     return float(m.group(1)) if m else None
+10033:                 mkt_age = _age("mkt=")
+10034:                 top8_age = _age("top8=")
+10035:                 net_bad = ("net=" in r) and any(k in r for k in ("ERR", "FAIL", "TIMEOUT", "DOWN"))
+10036:                 if (not net_bad) and (mkt_age is not None) and (top8_age is not None) and (mkt_age <= grace) and (top8_age <= grace):
+10037:                     return False
+10038:         except Exception:
+10039:             pass
+10040:         return r.startswith("BALANCE_AUTH_FAIL") or r.startswith("HEALTH_SYS_HALTED") or r.startswith("HEALTH_SYS_CRITICAL")
+
+==========================================================================================
+AST FUNC: normalize_order
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST FUNC: validate_order
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST FUNC: pre_trade
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST FUNC: risk_approval
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST FUNC: approve_order
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AST FUNC: risk_check
+==========================================================================================
+NOT FOUND
+
+==========================================================================================
+AI TO ORDER PROXIMITY TRACE
+==========================================================================================
+
+--- AI/ORDER PROXIMITY AROUND LINE 239 ---
+00229:     global_exit_armed: bool = field(default_factory=lambda: _env_bool("GLOBAL_EXIT_ARMED", False))
+00230:     wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+00231:     min_notional_irt: float = field(default_factory=lambda: _env_float("MIN_NOTIONAL_IRT", 200_000.0))
+00232:     max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("MAX_NOTIONAL_FRAC", 0.90), 0.05, 0.95))
+00233:     max_open_positions: int = field(default_factory=lambda: _env_int("MAX_OPEN_POSITIONS", 4))
+00234:     buy_threshold: float = field(default_factory=lambda: abs(_env_float("BUY_THRESHOLD", 0.20)))
+00235:     sell_threshold: float = field(default_factory=lambda: abs(_env_float("SELL_THRESHOLD", 0.20)))
+00236:     min_hold_sec: float = field(default_factory=lambda: _env_float("MIN_HOLD_SEC", 8.0))
+00237:     stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("STOP_LOSS_PCT", 0.02)))
+00238:     take_profit_pct: float = field(default_factory=lambda: abs(_env_float("TAKE_PROFIT_PCT", 0.03)))
+00239:     max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("MAX_DAILY_LOSS_PCT", 0.05)))
+00240:     rate_limit_per_min: int = field(default_factory=lambda: _env_int("RATE_LIMIT_PER_MIN", 100))
+00241:     circuit_breaker_errors: int = field(default_factory=lambda: _env_int("CB_ERRORS", 12))
+00242:     circuit_breaker_cooldown_sec: float = field(default_factory=lambda: _env_float("CB_COOLDOWN_SEC", 45.0))
+00243:     balance_refresh_sec: float = field(default_factory=lambda: _env_float("BALANCE_REFRESH_SEC", 8.0))
+00244:     orders_refresh_sec: float = field(default_factory=lambda: _env_float("ORDERS_REFRESH_SEC", 3.0))
+00245:     orders_reconcile_interval_sec: float = field(default_factory=lambda: _env_float("ORDERS_RECONCILE_INTERVAL_SEC", 30.0))
+00246:     depth_cache_ttl_sec: float = field(default_factory=lambda: _env_float("DEPTH_CACHE_TTL_SEC", 1.2))
+00247:     price_cache_path: str = field(default_factory=lambda: _env_str("PRICE_CACHE_PATH", "raz_price_cache.json"))
+00248:     price_cache_on_timeout: bool = field(default_factory=lambda: _env_bool("PRICE_CACHE_ON_TIMEOUT", True))
+00249:     state_path: str = field(default_factory=lambda: _env_str("STATE_PATH", "raz_state.json"))
+00250:     state_save_sec: float = field(default_factory=lambda: _env_float("STATE_SAVE_SEC", 30.0))
+00251:     risk_journal_path: str = field(default_factory=lambda: _env_str("RISK_JOURNAL_PATH", "raz_risk_journal.json"))
+00252:     risk_journal_fsync: bool = field(default_factory=lambda: _env_bool("RISK_JOURNAL_FSYNC", True))
+00253:     risk_journal_throttle_sec: float = field(default_factory=lambda: _env_float("RISK_JOURNAL_THROTTLE_SEC", 1.0))
+00254:     orders_journal_path: str = field(default_factory=lambda: _env_str("ORDERS_JOURNAL_PATH", "raz_orders_journal.json"))
+00255:     orders_journal_fsync: bool = field(default_factory=lambda: _env_bool("ORDERS_JOURNAL_FSYNC", True))
+00256:     orders_journal_throttle_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_THROTTLE_SEC", 0.25))
+00257:     orders_journal_pending_ttl_sec: float = field(default_factory=lambda: _env_float("ORDERS_JOURNAL_PENDING_TTL_SEC", 180.0))
+
+--- AI/ORDER PROXIMITY AROUND LINE 452 ---
+00442:             try:
+00443:                 msg = str(record.getMessage())
+00444:             except Exception:
+00445:                 msg = ""
+00446:         if not msg:
+00447:             return
+00448:         with self._lock:
+00449:             self._buf.append((int(record.levelno or 0), float(time.time()), msg))
+00450:     def last_important(self, n: int = 3) -> List[str]:
+00451:         n = max(1, min(12, int(n or 3)))
+00452:         sticky_sec = float(_env_float("RECLAIM_STICKY_SEC", 30.0) or 30.0)
+00453:         max_age_sec = float(_env_float("DASH_EVENT_MAX_AGE_SEC", 900.0) or 900.0)
+00454:         stale_tag_sec = float(_env_float("DASH_EVENT_STALE_TAG_SEC", 120.0) or 120.0)
+00455:         now = float(time.time())
+00456:         keys = (
+00457:             "ORDER", "BUY", "SELL", "FILLED", "REAL TRADING", "DAILY LOSS",
+00458:             "ERROR", "CRITICAL", "CANCEL", "LOCK", "SYNC",
+00459:             "[RECLAIM]", "[VOLTAGE]", "Radar set", "[JACKPOT]",
+00460:             "TOP8", "TOP8_SWAP", "FOCUS", "WHY_NO_TRADE", "VETO", "PHOENIX"
+00461:         )
+00462:         with self._lock:
+00463:             buf = list(self._buf)
+00464:         recent = [(lvl, ts, m) for (lvl, ts, m) in (buf or []) if (now - float(ts)) <= max_age_sec]
+00465:         if not recent:
+00466:             recent = buf[-max(1, n):] if buf else []
+00467:         sticky = []
+00468:         try:
+00469:             for (lvl, ts, m) in recent:
+00470:                 if "[RECLAIM]" in str(m) and (now - float(ts)) <= sticky_sec:
+
+--- AI/ORDER PROXIMITY AROUND LINE 457 ---
+00447:             return
+00448:         with self._lock:
+00449:             self._buf.append((int(record.levelno or 0), float(time.time()), msg))
+00450:     def last_important(self, n: int = 3) -> List[str]:
+00451:         n = max(1, min(12, int(n or 3)))
+00452:         sticky_sec = float(_env_float("RECLAIM_STICKY_SEC", 30.0) or 30.0)
+00453:         max_age_sec = float(_env_float("DASH_EVENT_MAX_AGE_SEC", 900.0) or 900.0)
+00454:         stale_tag_sec = float(_env_float("DASH_EVENT_STALE_TAG_SEC", 120.0) or 120.0)
+00455:         now = float(time.time())
+00456:         keys = (
+00457:             "ORDER", "BUY", "SELL", "FILLED", "REAL TRADING", "DAILY LOSS",
+00458:             "ERROR", "CRITICAL", "CANCEL", "LOCK", "SYNC",
+00459:             "[RECLAIM]", "[VOLTAGE]", "Radar set", "[JACKPOT]",
+00460:             "TOP8", "TOP8_SWAP", "FOCUS", "WHY_NO_TRADE", "VETO", "PHOENIX"
+00461:         )
+00462:         with self._lock:
+00463:             buf = list(self._buf)
+00464:         recent = [(lvl, ts, m) for (lvl, ts, m) in (buf or []) if (now - float(ts)) <= max_age_sec]
+00465:         if not recent:
+00466:             recent = buf[-max(1, n):] if buf else []
+00467:         sticky = []
+00468:         try:
+00469:             for (lvl, ts, m) in recent:
+00470:                 if "[RECLAIM]" in str(m) and (now - float(ts)) <= sticky_sec:
+00471:                     sticky.append((float(ts), str(m)))
+00472:         except Exception:
+00473:             sticky = []
+00474:         imp = []
+00475:         try:
+
+--- AI/ORDER PROXIMITY AROUND LINE 459 ---
+00449:             self._buf.append((int(record.levelno or 0), float(time.time()), msg))
+00450:     def last_important(self, n: int = 3) -> List[str]:
+00451:         n = max(1, min(12, int(n or 3)))
+00452:         sticky_sec = float(_env_float("RECLAIM_STICKY_SEC", 30.0) or 30.0)
+00453:         max_age_sec = float(_env_float("DASH_EVENT_MAX_AGE_SEC", 900.0) or 900.0)
+00454:         stale_tag_sec = float(_env_float("DASH_EVENT_STALE_TAG_SEC", 120.0) or 120.0)
+00455:         now = float(time.time())
+00456:         keys = (
+00457:             "ORDER", "BUY", "SELL", "FILLED", "REAL TRADING", "DAILY LOSS",
+00458:             "ERROR", "CRITICAL", "CANCEL", "LOCK", "SYNC",
+00459:             "[RECLAIM]", "[VOLTAGE]", "Radar set", "[JACKPOT]",
+00460:             "TOP8", "TOP8_SWAP", "FOCUS", "WHY_NO_TRADE", "VETO", "PHOENIX"
+00461:         )
+00462:         with self._lock:
+00463:             buf = list(self._buf)
+00464:         recent = [(lvl, ts, m) for (lvl, ts, m) in (buf or []) if (now - float(ts)) <= max_age_sec]
+00465:         if not recent:
+00466:             recent = buf[-max(1, n):] if buf else []
+00467:         sticky = []
+00468:         try:
+00469:             for (lvl, ts, m) in recent:
+00470:                 if "[RECLAIM]" in str(m) and (now - float(ts)) <= sticky_sec:
+00471:                     sticky.append((float(ts), str(m)))
+00472:         except Exception:
+00473:             sticky = []
+00474:         imp = []
+00475:         try:
+00476:             for (lvl, ts, m) in recent:
+00477:                 sm = str(m)
+
+--- AI/ORDER PROXIMITY AROUND LINE 538 ---
+00528:                 try:
+00529:                     if age >= 3600.0:
+00530:                         s = f"⏱️ {age/3600.0:.1f}h | " + s
+00531:                     elif age >= 60.0:
+00532:                         s = f"⏱️ {age/60.0:.0f}m | " + s
+00533:                     else:
+00534:                         s = f"⏱️ {age:.0f}s | " + s
+00535:                 except Exception:
+00536:                     pass
+00537:             u = s.upper()
+00538:             if "[RECLAIM]" in u and not s.lstrip().startswith(("♻️", "🔁", "↩️")):
+00539:                 s = "♻️ " + s
+00540:             elif ("[VOLTAGE]" in u or "RADAR SET" in u) and not s.lstrip().startswith("⚡"):
+00541:                 s = "⚡ " + s
+00542:             elif any(k in u for k in ("BUY", "SELL", "FILLED", "ORDER")) and not s.lstrip().startswith(("✅", "🟢", "🔴")):
+00543:                 s = "✅ " + s
+00544:             elif any(k in u for k in ("ERROR", "CRITICAL")) and not s.lstrip().startswith(("🛑", "❌")):
+00545:                 s = "🛑 " + s
+00546:             fixed.append(s)
+00547:         return fixed if fixed else ["(no events)"]
+00548: 
+00549: def _ensure_dir(path):
+00550:     """Ensure parent directory for a file path exists."""
+00551:     try:
+00552:         import os
+00553:         if not path:
+00554:             return path
+00555:         parent = os.path.dirname(path)
+00556:         if parent:
+
+--- AI/ORDER PROXIMITY AROUND LINE 1012 ---
+01002:             if not ep:
+01003:                 return []
+01004:             if "{sym}" in ep:
+01005:                 try:
+01006:                     return [(ep.format(sym=a), None)]
+01007:                 except Exception:
+01008:                     return []
+01009:             return [
+01010:                 (ep, {"symbol": a}),
+01011:                 (ep, {"market": a}),
+01012:                 (ep, {"pair": a}),
+01013:             ]
+01014:         def _looks_like_book(payload: Any) -> bool:
+01015:             try:
+01016:                 if payload is None:
+01017:                     return False
+01018:                 if isinstance(payload, dict):
+01019:                     d = payload.get("data") if isinstance(payload.get("data"), dict) else payload
+01020:                     return bool(
+01021:                         (isinstance(d, dict) and (("bids" in d) or ("asks" in d)))
+01022:                         or ("bids" in payload) or ("asks" in payload)
+01023:                         or ("orderbook" in payload) or ("orderBook" in payload) or ("order_book" in payload)
+01024:                     )
+01025:                 if isinstance(payload, list) and payload:
+01026:                     for x in payload[:2]:
+01027:                         if isinstance(x, dict) and _looks_like_book(x):
+01028:                             return True
+01029:                 return False
+01030:             except Exception:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3161 ---
+03151:                 last_err = str(e)
+03152:                 try:
+03153:                     if _dnsish(e):
+03154:                         dns_like = True
+03155:                 except Exception:
+03156:                     pass
+03157:                 continue
+03158:         diag = "CONN_CHECK_FAIL"
+03159:         try:
+03160:             if dns_like or _dnsish(Exception(last_err)):
+03161:                 ok_probe = await _tcp_probe_1111(timeout=min(1.6, max(0.8, tmo * 0.6)))
+03162:                 diag = "DNS_OR_PATH" if ok_probe else "TOTAL_DOWN"
+03163:             else:
+03164:                 ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+03165:                 if not ok_probe:
+03166:                     diag = "TOTAL_DOWN"
+03167:         except Exception:
+03168:             diag = "CONN_CHECK_FAIL"
+03169:         try:
+03170:             setattr(self, "_conn_last_diag", str(diag))
+03171:         except Exception:
+03172:             pass
+03173:         try:
+03174:             self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+03175:         except Exception:
+03176:             pass
+03177:         return False, 0.0, int(last_code or 0)
+03178:     async def place_order(
+03179:         self,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3164 ---
+03154:                         dns_like = True
+03155:                 except Exception:
+03156:                     pass
+03157:                 continue
+03158:         diag = "CONN_CHECK_FAIL"
+03159:         try:
+03160:             if dns_like or _dnsish(Exception(last_err)):
+03161:                 ok_probe = await _tcp_probe_1111(timeout=min(1.6, max(0.8, tmo * 0.6)))
+03162:                 diag = "DNS_OR_PATH" if ok_probe else "TOTAL_DOWN"
+03163:             else:
+03164:                 ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+03165:                 if not ok_probe:
+03166:                     diag = "TOTAL_DOWN"
+03167:         except Exception:
+03168:             diag = "CONN_CHECK_FAIL"
+03169:         try:
+03170:             setattr(self, "_conn_last_diag", str(diag))
+03171:         except Exception:
+03172:             pass
+03173:         try:
+03174:             self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+03175:         except Exception:
+03176:             pass
+03177:         return False, 0.0, int(last_code or 0)
+03178:     async def place_order(
+03179:         self,
+03180:         symbol: str,
+03181:         side: str,
+03182:         amount: float,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3168 ---
+03158:         diag = "CONN_CHECK_FAIL"
+03159:         try:
+03160:             if dns_like or _dnsish(Exception(last_err)):
+03161:                 ok_probe = await _tcp_probe_1111(timeout=min(1.6, max(0.8, tmo * 0.6)))
+03162:                 diag = "DNS_OR_PATH" if ok_probe else "TOTAL_DOWN"
+03163:             else:
+03164:                 ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+03165:                 if not ok_probe:
+03166:                     diag = "TOTAL_DOWN"
+03167:         except Exception:
+03168:             diag = "CONN_CHECK_FAIL"
+03169:         try:
+03170:             setattr(self, "_conn_last_diag", str(diag))
+03171:         except Exception:
+03172:             pass
+03173:         try:
+03174:             self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+03175:         except Exception:
+03176:             pass
+03177:         return False, 0.0, int(last_code or 0)
+03178:     async def place_order(
+03179:         self,
+03180:         symbol: str,
+03181:         side: str,
+03182:         amount: float,
+03183:         price: float,
+03184:         cid: Optional[str] = None,
+03185:         *,
+03186:         fill_type: str = "limit",
+
+--- AI/ORDER PROXIMITY AROUND LINE 3174 ---
+03164:                 ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+03165:                 if not ok_probe:
+03166:                     diag = "TOTAL_DOWN"
+03167:         except Exception:
+03168:             diag = "CONN_CHECK_FAIL"
+03169:         try:
+03170:             setattr(self, "_conn_last_diag", str(diag))
+03171:         except Exception:
+03172:             pass
+03173:         try:
+03174:             self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+03175:         except Exception:
+03176:             pass
+03177:         return False, 0.0, int(last_code or 0)
+03178:     async def place_order(
+03179:         self,
+03180:         symbol: str,
+03181:         side: str,
+03182:         amount: float,
+03183:         price: float,
+03184:         cid: Optional[str] = None,
+03185:         *,
+03186:         fill_type: str = "limit",
+03187:         market: str = "spot",
+03188:         reduce_only: Optional[bool] = None,
+03189:         **kwargs: Any,
+03190:     ) -> dict:
+03191:         try:
+03192:             if _termux_env_bool("TERMUX_MODE", False):
+
+--- AI/ORDER PROXIMITY AROUND LINE 3199 ---
+03189:         **kwargs: Any,
+03190:     ) -> dict:
+03191:         try:
+03192:             if _termux_env_bool("TERMUX_MODE", False):
+03193:                 _termux_mark_order_activity()
+03194:         except Exception:
+03195:             pass
+03196: 
+03197:         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+03198:         try:
+03199:             sym = _canon_pair(symbol, default_quote=q)
+03200:         except Exception:
+03201:             try:
+03202:                 sym = _canon_symbol(symbol)
+03203:             except Exception:
+03204:                 sym = str(symbol or "")
+03205: 
+03206:         market_raw = market
+03207:         market_norm = str(market or "spot").lower().strip()
+03208:         market_aliases = {
+03209:             "spot": "spot",
+03210:             "cash": "spot",
+03211:             "future": "futures",
+03212:             "futures": "futures",
+03213:             "perp": "futures",
+03214:             "perpetual": "futures",
+03215:             "swap": "futures",
+03216:         }
+03217:         market_norm = market_aliases.get(market_norm, market_norm)
+
+--- AI/ORDER PROXIMITY AROUND LINE 3220 ---
+03210:             "cash": "spot",
+03211:             "future": "futures",
+03212:             "futures": "futures",
+03213:             "perp": "futures",
+03214:             "perpetual": "futures",
+03215:             "swap": "futures",
+03216:         }
+03217:         market_norm = market_aliases.get(market_norm, market_norm)
+03218:         if market_norm not in ("spot", "futures"):
+03219:             self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
+03220:             raise ValueError(f"Unsupported market type: {market_raw}")
+03221: 
+03222:         fill_norm = str(fill_type or "limit").lower().strip()
+03223:         fill_aliases = {
+03224:             "limit": "limit",
+03225:             "lmt": "limit",
+03226:             "market": "market",
+03227:             "mkt": "market",
+03228:         }
+03229:         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+03230:         if fill_norm not in ("limit", "market"):
+03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
+03233: 
+03234:         if fill_norm == "limit" and price is None:
+03235:             raise ValueError("Price must be specified for LIMIT orders.")
+03236: 
+03237:         payload: Dict[str, Any] = {
+03238:             "symbol": sym,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3232 ---
+03222:         fill_norm = str(fill_type or "limit").lower().strip()
+03223:         fill_aliases = {
+03224:             "limit": "limit",
+03225:             "lmt": "limit",
+03226:             "market": "market",
+03227:             "mkt": "market",
+03228:         }
+03229:         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+03230:         if fill_norm not in ("limit", "market"):
+03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
+03233: 
+03234:         if fill_norm == "limit" and price is None:
+03235:             raise ValueError("Price must be specified for LIMIT orders.")
+03236: 
+03237:         payload: Dict[str, Any] = {
+03238:             "symbol": sym,
+03239:             "amount": self._as_payload_number(amount),
+03240:             "side": self._norm_side(side),
+03241:             "fill_type": fill_norm,
+03242:             "market": market_norm,
+03243:         }
+03244: 
+03245:         if price is not None:
+03246:             payload["price"] = self._as_payload_number(price)
+03247:         else:
+03248:             payload["price"] = None
+03249: 
+03250:         if cid:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3235 ---
+03225:             "lmt": "limit",
+03226:             "market": "market",
+03227:             "mkt": "market",
+03228:         }
+03229:         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+03230:         if fill_norm not in ("limit", "market"):
+03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
+03233: 
+03234:         if fill_norm == "limit" and price is None:
+03235:             raise ValueError("Price must be specified for LIMIT orders.")
+03236: 
+03237:         payload: Dict[str, Any] = {
+03238:             "symbol": sym,
+03239:             "amount": self._as_payload_number(amount),
+03240:             "side": self._norm_side(side),
+03241:             "fill_type": fill_norm,
+03242:             "market": market_norm,
+03243:         }
+03244: 
+03245:         if price is not None:
+03246:             payload["price"] = self._as_payload_number(price)
+03247:         else:
+03248:             payload["price"] = None
+03249: 
+03250:         if cid:
+03251:             payload["client_id"] = str(cid)
+03252: 
+03253:         extra: Dict[str, Any] = dict(kwargs or {})
+
+--- AI/ORDER PROXIMITY AROUND LINE 3278 ---
+03268:                 self._logger.warning("reduce_only=True ignored for spot order.")
+03269:             extra.pop("reduce_only", None)
+03270: 
+03271:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+03272:             extra.pop(protected_key, None)
+03273: 
+03274:         payload.update(extra)
+03275: 
+03276:         try:
+03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03278:                 ok, rtt_ms, code = await self.conn_check()
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+
+--- AI/ORDER PROXIMITY AROUND LINE 3281 ---
+03271:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+03272:             extra.pop(protected_key, None)
+03273: 
+03274:         payload.update(extra)
+03275: 
+03276:         try:
+03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03278:                 ok, rtt_ms, code = await self.conn_check()
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3283 ---
+03273: 
+03274:         payload.update(extra)
+03275: 
+03276:         try:
+03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03278:                 ok, rtt_ms, code = await self.conn_check()
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+
+--- AI/ORDER PROXIMITY AROUND LINE 3284 ---
+03274:         payload.update(extra)
+03275: 
+03276:         try:
+03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03278:                 ok, rtt_ms, code = await self.conn_check()
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+03302:     async def place_limit(
+
+--- AI/ORDER PROXIMITY AROUND LINE 3286 ---
+03276:         try:
+03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03278:                 ok, rtt_ms, code = await self.conn_check()
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+03302:     async def place_limit(
+03303:         self,
+03304:         symbol: str,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3289 ---
+03279:                 if not ok:
+03280:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03281:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03282:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03283:                         diag = "CONN_CHECK_FAIL"
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+03302:     async def place_limit(
+03303:         self,
+03304:         symbol: str,
+03305:         side: str,
+03306:         qty: float,
+03307:         price: float,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3294 ---
+03284:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03285:         except TemporaryPause:
+03286:             raise
+03287:         except Exception as e:
+03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+03302:     async def place_limit(
+03303:         self,
+03304:         symbol: str,
+03305:         side: str,
+03306:         qty: float,
+03307:         price: float,
+03308:         cid: Optional[str] = None,
+03309:         *,
+03310:         notional_irt: Optional[float] = None,
+03311:         market: str = "spot",
+03312:         reduce_only: Optional[bool] = None,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3300 ---
+03290: 
+03291:         last_exc: Optional[Exception] = None
+03292:         for ep in ("/market/orders/", "/market/orders"):
+03293:             try:
+03294:                 return await self.request("POST", ep, payload=payload, auth=True)
+03295:             except Exception as e:
+03296:                 last_exc = e
+03297:                 continue
+03298: 
+03299:         if last_exc:
+03300:             raise last_exc
+03301:         return {}
+03302:     async def place_limit(
+03303:         self,
+03304:         symbol: str,
+03305:         side: str,
+03306:         qty: float,
+03307:         price: float,
+03308:         cid: Optional[str] = None,
+03309:         *,
+03310:         notional_irt: Optional[float] = None,
+03311:         market: str = "spot",
+03312:         reduce_only: Optional[bool] = None,
+03313:         leverage: Optional[Union[int, float]] = None,
+03314:         **kwargs: Any,
+03315:     ) -> dict:
+03316:         extra: Dict[str, Any] = dict(kwargs or {})
+03317:         if notional_irt is not None and "notional_irt" not in extra:
+03318:             extra["notional_irt"] = notional_irt
+
+--- AI/ORDER PROXIMITY AROUND LINE 3320 ---
+03310:         notional_irt: Optional[float] = None,
+03311:         market: str = "spot",
+03312:         reduce_only: Optional[bool] = None,
+03313:         leverage: Optional[Union[int, float]] = None,
+03314:         **kwargs: Any,
+03315:     ) -> dict:
+03316:         extra: Dict[str, Any] = dict(kwargs or {})
+03317:         if notional_irt is not None and "notional_irt" not in extra:
+03318:             extra["notional_irt"] = notional_irt
+03319: 
+03320:         return await self.place_order(
+03321:             symbol=symbol,
+03322:             side=side,
+03323:             amount=qty,
+03324:             price=price,
+03325:             cid=cid,
+03326:             fill_type="limit",
+03327:             market=market,
+03328:             reduce_only=reduce_only,
+03329:             leverage=leverage,
+03330:             **extra,
+03331:         )
+03332: 
+03333:     async def place_market(
+03334:         self,
+03335:         symbol: str,
+03336:         side: str,
+03337:         qty: float,
+03338:         cid: Optional[str] = None,
+
+--- AI/ORDER PROXIMITY AROUND LINE 3350 ---
+03340:         notional_irt: Optional[float] = None,
+03341:         market: str = "spot",
+03342:         reduce_only: Optional[bool] = None,
+03343:         leverage: Optional[Union[int, float]] = None,
+03344:         **kwargs: Any,
+03345:     ) -> dict:
+03346:         extra: Dict[str, Any] = dict(kwargs or {})
+03347:         if notional_irt is not None and "notional_irt" not in extra:
+03348:             extra["notional_irt"] = notional_irt
+03349: 
+03350:         return await self.place_order(
+03351:             symbol=symbol,
+03352:             side=side,
+03353:             amount=qty,
+03354:             price=0.0,
+03355:             cid=cid,
+03356:             fill_type="market",
+03357:             market=market,
+03358:             reduce_only=reduce_only,
+03359:             leverage=leverage,
+03360:             **extra,
+03361:         )
+03362:     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+03363:         payload: Dict[str, Any] = {}
+03364:         try:
+03365:             if _termux_env_bool("TERMUX_MODE", False):
+03366:                 _termux_mark_order_activity()
+03367:         except Exception:
+03368:             pass
+
+--- AI/ORDER PROXIMITY AROUND LINE 3376 ---
+03366:                 _termux_mark_order_activity()
+03367:         except Exception:
+03368:             pass
+03369:         if symbol:
+03370:             try:
+03371:                 payload["symbol"] = _canon_symbol(symbol)
+03372:             except Exception:
+03373:                 payload["symbol"] = str(symbol or "")
+03374:         try:
+03375:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03376:                 ok, rtt_ms, code = await self.conn_check()
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+
+--- AI/ORDER PROXIMITY AROUND LINE 3379 ---
+03369:         if symbol:
+03370:             try:
+03371:                 payload["symbol"] = _canon_symbol(symbol)
+03372:             except Exception:
+03373:                 payload["symbol"] = str(symbol or "")
+03374:         try:
+03375:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03376:                 ok, rtt_ms, code = await self.conn_check()
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3381 ---
+03371:                 payload["symbol"] = _canon_symbol(symbol)
+03372:             except Exception:
+03373:                 payload["symbol"] = str(symbol or "")
+03374:         try:
+03375:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03376:                 ok, rtt_ms, code = await self.conn_check()
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+
+--- AI/ORDER PROXIMITY AROUND LINE 3382 ---
+03372:             except Exception:
+03373:                 payload["symbol"] = str(symbol or "")
+03374:         try:
+03375:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03376:                 ok, rtt_ms, code = await self.conn_check()
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+03400:         try:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3384 ---
+03374:         try:
+03375:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03376:                 ok, rtt_ms, code = await self.conn_check()
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+03400:         try:
+03401:             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+03402:             items = []
+
+--- AI/ORDER PROXIMITY AROUND LINE 3387 ---
+03377:                 if not ok:
+03378:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03379:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03380:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03381:                         diag = "CONN_CHECK_FAIL"
+03382:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03383:         except TemporaryPause:
+03384:             raise
+03385:         except Exception as e:
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+03400:         try:
+03401:             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+03402:             items = []
+03403:             if isinstance(r, dict):
+03404:                 v = r.get("data") or r.get("orders") or r.get("items") or r.get("result") or r.get("list") or []
+03405:                 if isinstance(v, list):
+
+--- AI/ORDER PROXIMITY AROUND LINE 3396 ---
+03386:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03387:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03388:         last_exc: Optional[Exception] = None
+03389:         for ep in (
+03390:             "/market/orders/cancel_all/",
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+03400:         try:
+03401:             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+03402:             items = []
+03403:             if isinstance(r, dict):
+03404:                 v = r.get("data") or r.get("orders") or r.get("items") or r.get("result") or r.get("list") or []
+03405:                 if isinstance(v, list):
+03406:                     items = [o for o in v if isinstance(o, dict)]
+03407:             max_n = int(_env_int("CANCEL_ALL_FALLBACK_MAX", 40) or 40)
+03408:             max_n = max(5, min(200, max_n))
+03409:             canceled = 0
+03410:             for o in (items or [])[:max_n]:
+03411:                 oid = o.get("id") or o.get("order_id") or o.get("orderId")
+03412:                 if oid is None:
+03413:                     continue
+03414:                 try:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3401 ---
+03391:             "/market/orders/cancel_all",
+03392:             "/market/orders/cancel-all/",
+03393:             "/market/orders/cancel-all",
+03394:         ):
+03395:             try:
+03396:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03397:             except Exception as e:
+03398:                 last_exc = e
+03399:                 continue
+03400:         try:
+03401:             r = await self.list_orders(symbol=symbol, status="open", limit=200, offset=0)
+03402:             items = []
+03403:             if isinstance(r, dict):
+03404:                 v = r.get("data") or r.get("orders") or r.get("items") or r.get("result") or r.get("list") or []
+03405:                 if isinstance(v, list):
+03406:                     items = [o for o in v if isinstance(o, dict)]
+03407:             max_n = int(_env_int("CANCEL_ALL_FALLBACK_MAX", 40) or 40)
+03408:             max_n = max(5, min(200, max_n))
+03409:             canceled = 0
+03410:             for o in (items or [])[:max_n]:
+03411:                 oid = o.get("id") or o.get("order_id") or o.get("orderId")
+03412:                 if oid is None:
+03413:                     continue
+03414:                 try:
+03415:                     await self.cancel_order(oid)
+03416:                     canceled += 1
+03417:                 except Exception as e:
+03418:                     last_exc = e
+03419:                     continue
+
+--- AI/ORDER PROXIMITY AROUND LINE 3415 ---
+03405:                 if isinstance(v, list):
+03406:                     items = [o for o in v if isinstance(o, dict)]
+03407:             max_n = int(_env_int("CANCEL_ALL_FALLBACK_MAX", 40) or 40)
+03408:             max_n = max(5, min(200, max_n))
+03409:             canceled = 0
+03410:             for o in (items or [])[:max_n]:
+03411:                 oid = o.get("id") or o.get("order_id") or o.get("orderId")
+03412:                 if oid is None:
+03413:                     continue
+03414:                 try:
+03415:                     await self.cancel_order(oid)
+03416:                     canceled += 1
+03417:                 except Exception as e:
+03418:                     last_exc = e
+03419:                     continue
+03420:             return {"ok": True, "canceled": int(canceled), "fallback": True}
+03421:         except Exception as e:
+03422:             last_exc = e
+03423:         if last_exc:
+03424:             raise last_exc
+03425:         return {"ok": False}
+03426:     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+03427:         base_params: Dict[str, Any] = {}
+03428:         is_arz = _is_arzplus_client(self)
+03429:         if symbol:
+03430:             try:
+03431:                 q = str(getattr(self.cfg, "quote", "") or "").upper().strip(); base_params["symbol"] = _canon_pair(symbol, default_quote=q)
+03432:             except Exception:
+03433:                 base_params["symbol"] = str(symbol)
+
+--- AI/ORDER PROXIMITY AROUND LINE 3424 ---
+03414:                 try:
+03415:                     await self.cancel_order(oid)
+03416:                     canceled += 1
+03417:                 except Exception as e:
+03418:                     last_exc = e
+03419:                     continue
+03420:             return {"ok": True, "canceled": int(canceled), "fallback": True}
+03421:         except Exception as e:
+03422:             last_exc = e
+03423:         if last_exc:
+03424:             raise last_exc
+03425:         return {"ok": False}
+03426:     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+03427:         base_params: Dict[str, Any] = {}
+03428:         is_arz = _is_arzplus_client(self)
+03429:         if symbol:
+03430:             try:
+03431:                 q = str(getattr(self.cfg, "quote", "") or "").upper().strip(); base_params["symbol"] = _canon_pair(symbol, default_quote=q)
+03432:             except Exception:
+03433:                 base_params["symbol"] = str(symbol)
+03434:         if not is_arz:
+03435:             try:
+03436:                 base_params["limit"] = int(limit) if limit is not None else 50
+03437:             except Exception:
+03438:                 base_params["limit"] = 50
+03439:             try:
+03440:                 base_params["offset"] = int(offset) if offset is not None else 0
+03441:             except Exception:
+03442:                 base_params["offset"] = 0
+
+--- AI/ORDER PROXIMITY AROUND LINE 3431 ---
+03421:         except Exception as e:
+03422:             last_exc = e
+03423:         if last_exc:
+03424:             raise last_exc
+03425:         return {"ok": False}
+03426:     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+03427:         base_params: Dict[str, Any] = {}
+03428:         is_arz = _is_arzplus_client(self)
+03429:         if symbol:
+03430:             try:
+03431:                 q = str(getattr(self.cfg, "quote", "") or "").upper().strip(); base_params["symbol"] = _canon_pair(symbol, default_quote=q)
+03432:             except Exception:
+03433:                 base_params["symbol"] = str(symbol)
+03434:         if not is_arz:
+03435:             try:
+03436:                 base_params["limit"] = int(limit) if limit is not None else 50
+03437:             except Exception:
+03438:                 base_params["limit"] = 50
+03439:             try:
+03440:                 base_params["offset"] = int(offset) if offset is not None else 0
+03441:             except Exception:
+03442:                 base_params["offset"] = 0
+03443:         st = None
+03444:         try:
+03445:             st = str(status).strip().lower() if status is not None else None
+03446:         except Exception:
+03447:             st = None
+03448:         if self._is_arzplus() and st in ("open", "opened", "active", "pending"):
+03449:             st = "new"
+
+--- AI/ORDER PROXIMITY AROUND LINE 3473 ---
+03463:             param_variants.append({})
+03464:         last_err = None
+03465:         for ep in eps:
+03466:             for pv in param_variants:
+03467:                 params = dict(base_params)
+03468:                 try:
+03469:                     params.update(pv or {})
+03470:                 except Exception:
+03471:                     pass
+03472:                 try:
+03473:                     return await self.request("GET", ep, auth=True, params=(params or None))
+03474:                 except Exception as e:
+03475:                     last_err = e
+03476:         if last_err:
+03477:             raise last_err
+03478:         return {}
+03479:     async def cancel_order(self, order_id) -> dict:
+03480:         oid = order_id
+03481:         try:
+03482:             oid = int(order_id)
+03483:         except Exception:
+03484:             oid = str(order_id)
+03485:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+03486:         try:
+03487:             if _termux_env_bool("TERMUX_MODE", False):
+03488:                 _termux_mark_order_activity()
+03489:         except Exception:
+03490:             pass
+03491:         try:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3477 ---
+03467:                 params = dict(base_params)
+03468:                 try:
+03469:                     params.update(pv or {})
+03470:                 except Exception:
+03471:                     pass
+03472:                 try:
+03473:                     return await self.request("GET", ep, auth=True, params=(params or None))
+03474:                 except Exception as e:
+03475:                     last_err = e
+03476:         if last_err:
+03477:             raise last_err
+03478:         return {}
+03479:     async def cancel_order(self, order_id) -> dict:
+03480:         oid = order_id
+03481:         try:
+03482:             oid = int(order_id)
+03483:         except Exception:
+03484:             oid = str(order_id)
+03485:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+03486:         try:
+03487:             if _termux_env_bool("TERMUX_MODE", False):
+03488:                 _termux_mark_order_activity()
+03489:         except Exception:
+03490:             pass
+03491:         try:
+03492:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03493:                 ok, rtt_ms, code = await self.conn_check()
+03494:                 if not ok:
+03495:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+
+--- AI/ORDER PROXIMITY AROUND LINE 3493 ---
+03483:         except Exception:
+03484:             oid = str(order_id)
+03485:         payload: Dict[str, Any] = {"order_id": oid, "id": oid}
+03486:         try:
+03487:             if _termux_env_bool("TERMUX_MODE", False):
+03488:                 _termux_mark_order_activity()
+03489:         except Exception:
+03490:             pass
+03491:         try:
+03492:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03493:                 ok, rtt_ms, code = await self.conn_check()
+03494:                 if not ok:
+03495:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03496:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03497:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03498:                         diag = "CONN_CHECK_FAIL"
+03499:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03500:         except TemporaryPause:
+03501:             raise
+03502:         except Exception as e:
+03503:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03504:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03505:         last_err = None
+03506:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03507:             try:
+03508:                 return await self.request("POST", ep, payload=None, auth=True)
+03509:             except Exception as e:
+03510:                 last_err = e
+03511:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+
+--- AI/ORDER PROXIMITY AROUND LINE 3496 ---
+03486:         try:
+03487:             if _termux_env_bool("TERMUX_MODE", False):
+03488:                 _termux_mark_order_activity()
+03489:         except Exception:
+03490:             pass
+03491:         try:
+03492:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03493:                 ok, rtt_ms, code = await self.conn_check()
+03494:                 if not ok:
+03495:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03496:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03497:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03498:                         diag = "CONN_CHECK_FAIL"
+03499:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03500:         except TemporaryPause:
+03501:             raise
+03502:         except Exception as e:
+03503:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03504:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03505:         last_err = None
+03506:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03507:             try:
+03508:                 return await self.request("POST", ep, payload=None, auth=True)
+03509:             except Exception as e:
+03510:                 last_err = e
+03511:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+03512:             try:
+03513:                 return await self.request("DELETE", ep, payload=None, auth=True)
+03514:             except Exception as e:
+
+--- AI/ORDER PROXIMITY AROUND LINE 3498 ---
+03488:                 _termux_mark_order_activity()
+03489:         except Exception:
+03490:             pass
+03491:         try:
+03492:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03493:                 ok, rtt_ms, code = await self.conn_check()
+03494:                 if not ok:
+03495:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03496:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03497:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03498:                         diag = "CONN_CHECK_FAIL"
+03499:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03500:         except TemporaryPause:
+03501:             raise
+03502:         except Exception as e:
+03503:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03504:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03505:         last_err = None
+03506:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03507:             try:
+03508:                 return await self.request("POST", ep, payload=None, auth=True)
+03509:             except Exception as e:
+03510:                 last_err = e
+03511:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+03512:             try:
+03513:                 return await self.request("DELETE", ep, payload=None, auth=True)
+03514:             except Exception as e:
+03515:                 last_err = e
+03516:         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+
+... truncated, total proximity hits: 361
+
+==========================================================================================
+STATIC RED FLAG CHECKS
+==========================================================================================
+AUTONOMOUS_AI default True: YES
+DZH_AI_RESCUES default True: YES
+AI_MODE exists: NO
+RUNTIME_PROFILE exists: NO
+LIVE_TRADING_ARMED exists: NO
+AI_LIVE_TRADING_ARMED exists: NO
+OrderIntent exists: NO
+PreTradePolicy exists: NO
+RiskApproval exists: NO
+min_notional mentioned: YES
+normalize uses quantize down: YES
+request mentions timeout: YES
+request mentions retry/backoff: YES
+idempotency/cid mentioned: YES
+
+==========================================================================================
+CALLSITE SEARCH: place_order(
+==========================================================================================
+03178:     async def place_order(
+03320:         return await self.place_order(
+03350:         return await self.place_order(
+06619:             raise RuntimeError("order_executor has no place_order()")
+10556:                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+13893:     async def place_order(
+13908:         res = await self._ex.place_order(
+14049:                     await self._ex.place_order(
+14067:         return await self._ex.place_order(
+14080:     async def place_order(
+
+==========================================================================================
+CALLSITE SEARCH: .place_order(
+==========================================================================================
+03320:         return await self.place_order(
+03350:         return await self.place_order(
+10556:                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+13908:         res = await self._ex.place_order(
+14049:                     await self._ex.place_order(
+14067:         return await self._ex.place_order(
+
+==========================================================================================
+CALLSITE SEARCH: place_limit(
+==========================================================================================
+03302:     async def place_limit(
+09783:             await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+10455:     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+10633:             return await self.place_limit(sym, side, qty, base_price, notional_irt)
+10645:             resp = await self.place_limit(sym, side, q_i, px_i, (notional_irt * (q_i / max(qty, 1e-12))))
+19260:                         resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+19622:                     resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+19856:                     w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+20041:                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+20537:                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+20676:                 await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+20682:                     await api.place_limit(sym, "buy", float(qty_each), float(tp))
+
+==========================================================================================
+CALLSITE SEARCH: .place_limit(
+==========================================================================================
+09783:             await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+10633:             return await self.place_limit(sym, side, qty, base_price, notional_irt)
+10645:             resp = await self.place_limit(sym, side, q_i, px_i, (notional_irt * (q_i / max(qty, 1e-12))))
+19260:                         resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+19622:                     resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+19856:                     w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+20041:                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+20537:                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+20676:                 await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+20682:                     await api.place_limit(sym, "buy", float(qty_each), float(tp))
+
+==========================================================================================
+NEXT PATCH PLAN - NOT APPLIED
+==========================================================================================
+Recommended future-proof patch order after human review:
+
+1) Introduce explicit AI_MODE:
+   AI_MODE=off|external|local
+   Default: off
+
+2) Make risky AI defaults safe:
+   AUTONOMOUS_AI default False
+   DZH_AI_RESCUES default False
+   DZH_AI_RESCUES_ARMED default False unless explicitly armed
+
+3) Add live gates:
+   DRY_RUN=true by default
+   LIVE_TRADING_ARMED=false by default
+   AI_LIVE_TRADING_ARMED=false by default
+
+4) Centralize order path:
+   SignalProvider -> OrderIntent -> PreTradePolicy -> RiskApproval -> OrderNormalizer -> ExecutionEngine
+
+5) Prevent direct AI-to-order:
+   AI may produce structured signal only.
+   It must not call ExchangeClient.place_order directly.
+
+6) Runtime profile:
+   RUNTIME_PROFILE=termux|server|dev
+   Use profile for logs, cache, DB path, heartbeat, retry behavior.
+
+7) Persistent idempotency:
+   Store cid/order intent hash in sqlite/jsonl to survive Termux/server restart.

@@ -1,0 +1,5 @@
+Running ArzPlus token healthcheck...
+PASS: ArzPlus token layout is healthy
+  slot 1 -> SET
+  slot 2 -> EMPTY
+  slot 3 -> SET

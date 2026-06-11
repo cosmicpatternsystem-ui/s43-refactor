@@ -1,0 +1,25 @@
+S43 SAFE VALIDATION REPORT
+GeneratedAt: 2026-06-08 20:59:12
+Root: E:\اخباری\ssl\s43_refactor
+DurationSeconds: 1.609
+Strict: False
+NoCompile: False
+ExitCode: 1
+
+RESULTS
+OK | Root | E:\اخباری\ssl\s43_refactor | Exists
+OK | DocsDir | E:\اخباری\ssl\s43_refactor\docs | Exists
+OK | RoadmapRoot | E:\اخباری\ssl\s43_refactor\S43_UPDATED_MASTER_ROADMAP.md | Exists
+OK | RoadmapDocs | E:\اخباری\ssl\s43_refactor\docs\S43_UPDATED_MASTER_ROADMAP.md | Exists
+OK | MainSource | E:\اخباری\ssl\s43_refactor\s43.py | Exists
+FAIL | FinalWorking | E:\اخباری\ssl\s43_refactor\s43.final_working.py | Missing required path
+FAIL | CheckpointSource | E:\اخباری\ssl\s43_refactor\CHECKPOINT_final_closed_stable_1779886244\s43.py | Missing required path
+WARN | HistoricalBackup | E:\اخباری\ssl\s43_refactor\BACKUP_BEFORE_CANONICAL | Missing optional path
+OK | Hash:RoadmapRoot | E:\اخباری\ssl\s43_refactor\S43_UPDATED_MASTER_ROADMAP.md | DFC09B4DC183B912FBD086C41E0177A8F99C658F10F7D3FEF121455E414FA7D5
+OK | Hash:RoadmapDocs | E:\اخباری\ssl\s43_refactor\docs\S43_UPDATED_MASTER_ROADMAP.md | DFC09B4DC183B912FBD086C41E0177A8F99C658F10F7D3FEF121455E414FA7D5
+OK | Hash:MainSource | E:\اخباری\ssl\s43_refactor\s43.py | 4EF9106735C466BA4C456C22238C5B4BD9915A37DAB7D48F0B1057C3D7F9AE80
+WARN | Hash:FinalWorking | E:\اخباری\ssl\s43_refactor\s43.final_working.py | Hash skipped; file not found
+WARN | Hash:CheckpointSource | E:\اخباری\ssl\s43_refactor\CHECKPOINT_final_closed_stable_1779886244\s43.py | Hash skipped; file not found
+OK | Compile:s43.py | E:\اخباری\ssl\s43_refactor\s43.py | Compile OK
+FAIL | Compile:s43.final_working.py | E:\اخباری\ssl\s43_refactor\s43.final_working.py | File not found
+FAIL | Compile:checkpoint\s43.py | E:\اخباری\ssl\s43_refactor\CHECKPOINT_final_closed_stable_1779886244\s43.py | File not found

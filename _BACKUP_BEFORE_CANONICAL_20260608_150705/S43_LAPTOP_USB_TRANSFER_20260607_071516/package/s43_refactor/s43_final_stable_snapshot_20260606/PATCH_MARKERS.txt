@@ -1,0 +1,4 @@
+13314:            # --- S43_PATCH: wallet_runtime_duplicate_registration_guard_20260606 ---
+13328:            # --- /S43_PATCH: wallet_runtime_duplicate_registration_guard_20260606 ---
+13330:            # --- S43_PATCH: wallet_runtime_post_register_audit_20260606 ---
+13341:            # --- /S43_PATCH: wallet_runtime_post_register_audit_20260606 ---

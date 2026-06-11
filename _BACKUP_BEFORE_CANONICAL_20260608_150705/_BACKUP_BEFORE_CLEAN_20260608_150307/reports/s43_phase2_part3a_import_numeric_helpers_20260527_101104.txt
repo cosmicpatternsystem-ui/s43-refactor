@@ -1,0 +1,39 @@
+===== S43 PHASE2 PART3A: IMPORT NUMERIC HELPERS =====
+TS=20260527_101104
+
+[STEP 1] BACKUP s43.py
+-rw-rw----. 1 root everybody 2572390 May 27 09:55 s43_before_phase2_part3a_numeric_helpers_20260527_101104.py
+
+[STEP 2] APPEND FUNCTIONS TO s43_core/helpers.py IF MISSING
+HELPERS_UPDATED= True
+HAS_FIRST_NUM= True
+HAS_QUANTIZE_DOWN= True
+HAS_IMPORT_MATH= True
+
+[STEP 3] ENSURE IMPORT LINE EXISTS IN s43.py
+IMPORT_UPDATED=1
+
+[STEP 4] VERIFY IMPORT / DEFINITIONS
+-- import line --
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down
+
+-- helpers defs --
+96:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+105:def _quantize_down(x: float, step: float) -> float:
+
+-- original defs still present in s43.py (expected for now) --
+3513:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+3521:def _quantize_down(x: float, step: float) -> float:
+
+[STEP 5] COMPILE CHECKS
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[STEP 6] HELP CHECK
+bash: /tmp/s43_help_part3a.txt: No such file or directory
+sed: can't read /tmp/s43_help_part3a.txt: No such file or directory
+
+[STEP 7] RUNTIME IMPORT SMOKE
+S43_IMPORT_OK
+_first_num source module: s43
+_quantize_down source module: s43

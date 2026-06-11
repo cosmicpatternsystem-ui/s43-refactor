@@ -1,0 +1,9 @@
+﻿AUTO SAFE PATCH BUNDLE
+Directory: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003
+Backups: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\backup
+Manifest: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\FILES_MANIFEST_SHA256.csv
+Hits: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\PATCH_HITS.csv
+Summary: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\PATCH_HIT_SUMMARY.csv
+Proposal: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\PATCH_PROPOSAL.md
+Diff Proposal: E:\اخباری\ssl\s43_refactor\auto_safe_patch_bundle_20260610_085003\FINAL_PATCH_PROPOSAL.diff
+Mode: No direct source changes

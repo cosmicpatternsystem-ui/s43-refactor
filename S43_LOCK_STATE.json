@@ -1,0 +1,19 @@
+﻿{
+    "status":  "LOCKED",
+    "marker":  "S43_LOCKED_AFTER_CHANGE_PLAN_002",
+    "locked_after_plan":  "S43_CHANGE_PLAN_002",
+    "locked_at":  "2026-06-11 22:19:50",
+    "root":  "E:\\اخباری\\ssl\\s43_refactor",
+    "target":  "E:\\اخباری\\ssl\\s43_refactor\\s43_instrumented_LATEST.py",
+    "target_sha256":  "20FB50643AA6A17D950DAAB821072E48132F15FBF6B82646B8BA1390FA237E0F",
+    "previous_sha256":  "C90E7358F4647C69505E7B5A33BDEC0F523763678533A90E54F263CD312264F3",
+    "removed_bytes_in_plan_002":  30,
+    "finalization_receipt":  "E:\\اخباری\\ssl\\s43_refactor\\S43_CHANGE_PLAN_002_FINALIZATION_RECEIPT.json",
+    "audit_ledger":  "E:\\اخباری\\ssl\\s43_refactor\\S43_AUDIT_LEDGER.txt",
+    "changelog":  "E:\\اخباری\\ssl\\s43_refactor\\S43_CHANGELOG.txt",
+    "closure_attestation":  "E:\\اخباری\\ssl\\s43_refactor\\S43_CHANGE_PLAN_002_CLOSURE_ATTESTATION.txt",
+    "syntax_verification":  "py_compile PASSED",
+    "final_project_state":  "ROADMAP_CONFORMANT_AUDIT_READY",
+    "mutation_policy":  "DO_NOT_PATCH_WITHOUT_NEW_PLAN",
+    "next_required_change_plan":  "S43_CHANGE_PLAN_003"
+}

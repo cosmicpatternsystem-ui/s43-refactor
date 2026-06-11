@@ -1,0 +1,33 @@
+Project Continuity Record
+
+Continue strictly from the latest versions of these three files:
+
+1. MY_S43_LATEST.py
+Role: Original Main / Baseline / Source of Truth
+
+2. s43_latest_refactor.py
+Role: Main Copy / Sandbox
+
+3. s43_instrumented_LATEST.py
+Role: Third Refactor Candidate / Primary Final Candidate
+
+Working rules:
+- Do not modify MY_S43_LATEST.py directly except for baseline comparison or reading.
+- Test uncertain or structural changes in s43_latest_refactor.py.
+- Use s43_instrumented_LATEST.py for safety-gate logging, API validation, parity check, and final-candidate evaluation.
+- Do not declare a canonical main before parity validation against MY_S43_LATEST.py.
+
+Immediate focus:
+- base_url = https://api.arzplus.net
+- Authorization format: Bearer vs Token
+- endpoint versioning: v1 vs v2
+- wallet/balance 403 issue
+- safety-gate logging visibility
+- live-path parity between baseline and instrumented candidate
+
+Current official status:
+- Baseline locked
+- Sandbox active
+- Instrumented candidate is the primary final candidate
+- Canonical main not selected yet
+- Next required step: parity validation

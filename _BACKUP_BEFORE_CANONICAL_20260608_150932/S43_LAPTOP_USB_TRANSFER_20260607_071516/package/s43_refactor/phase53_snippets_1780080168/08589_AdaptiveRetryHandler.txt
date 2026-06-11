@@ -1,0 +1,84 @@
+08589: class AdaptiveRetryHandler:
+08590:     def __init__(self):
+08591:         self.breakers: Dict[str, SmartCircuitBreaker] = {}
+08592:         self.retry_stats: Dict[str, Dict[str, int]] = defaultdict(
+08593:             lambda: {"success": 0, "failures": 0, "retries": 0}
+08594:         )
+08595:     def get_circuit_breaker(self, endpoint: str, config: RetryConfig) -> SmartCircuitBreaker:
+08596:         if endpoint not in self.breakers:
+08597:             self.breakers[endpoint] = SmartCircuitBreaker(endpoint, config)
+08598:         return self.breakers[endpoint]
+08599:     async def execute_with_retry(
+08600:         self,
+08601:         coro_func: Callable[..., Awaitable[Any]],
+08602:         endpoint: str,
+08603:         retry_config: RetryConfig,
+08604:         *args,
+08605:         **kwargs
+08606:     ) -> Any:
+08607:         breaker = self.get_circuit_breaker(endpoint, retry_config)
+08608:         for attempt in range(1, retry_config.max_attempts + 1):
+08609:             if not breaker.can_execute():
+08610:                 raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+08611:             try:
+08612:                 timeout = retry_config.base_delay * retry_config.timeout_multiplier
+08613:                 result = await asyncio.wait_for(
+08614:                     coro_func(*args, **kwargs),
+08615:                     timeout=timeout
+08616:                 )
+08617:                 breaker.record_success()
+08618:                 self.retry_stats[endpoint]["success"] += 1
+08619:                 return result
+08620:             except asyncio.TimeoutError:
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+08623:                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
+08624:                 )
+08625:             except aiohttp.ClientError as e:
+08626:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08627:                 logging.warning(
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08630:                 )
+08631:             except Exception as e:
+08632:                 self.retry_stats[endpoint]["failures"] += 1
+08633:                 breaker.record_failure()
+08634:                 logging.error(
+08635:                     f"Error on {endpoint}: {e} "
+08636:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+08639:                 delay = self._calculate_delay(attempt, retry_config)
+08640:                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
+08641:                 await asyncio.sleep(delay)
+08642:         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+08643:     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
+08644:         if config.strategy == RetryStrategy.IMMEDIATE:
+08645:             delay = 0.1
+08646:         elif config.strategy == RetryStrategy.EXPONENTIAL:
+08647:             delay = config.base_delay * (config.backoff_factor ** (attempt - 1))
+08648:         elif config.strategy == RetryStrategy.FIBONACCI:
+08649:             fib = [1, 1]
+08650:             for _ in range(attempt):
+08651:                 fib.append(fib[-1] + fib[-2])
+08652:             delay = config.base_delay * fib[attempt]
+08653:         elif config.strategy == RetryStrategy.FIXED:
+08654:             delay = config.base_delay
+08655:         else:
+08656:             delay = config.base_delay
+08657:         if config.jitter and _nd_allowed():
+08658:             jitter_amount = delay * 0.1
+08659:             delay += secrets.SystemRandom().uniform(-jitter_amount, jitter_amount)
+08660:         return min(max(0.1, delay), config.max_delay)
+08661:     def get_stats(self) -> Dict[str, Any]:
+08662:         return {
+08663:             "circuit_breakers": {
+08664:                 name: breaker.get_state()
+08665:                 for name, breaker in self.breakers.items()
+08666:             },
+08667:             "retry_stats": dict(self.retry_stats),
+08668:             "total_requests": sum(
+08669:                 stats["success"] + stats["failures"]
+08670:                 for stats in self.retry_stats.values()
+08671:             )
+08672:         }

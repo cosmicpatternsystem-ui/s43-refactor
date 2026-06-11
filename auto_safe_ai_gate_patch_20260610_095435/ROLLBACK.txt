@@ -1,0 +1,9 @@
+﻿Rollback commands:
+
+Copy-Item ".\auto_safe_ai_gate_patch_20260610_095435\s43_instrumented_LATEST.py.bak" ".\s43_instrumented_LATEST.py" -Force
+Copy-Item ".\auto_safe_ai_gate_patch_20260610_095435\translator_module.py.bak" ".\translator_module.py" -Force
+
+Then verify:
+
+python -m py_compile .\s43_instrumented_LATEST.py
+python -m py_compile .\translator_module.py

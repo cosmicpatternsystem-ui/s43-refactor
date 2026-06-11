@@ -1,0 +1,15 @@
+2884:    async def get_balance(self) -> dict:
+2888:            for ep in ("/wallet/balance/", "/wallet/balance"):
+3784:#     async def get_balance(self) -> dict:
+3788:#             for ep in ("/wallet/balance/", "/wallet/balance"):
+7394:    def __init__(self, balance_provider, order_executor, *, max_dd: float = 0.04,
+7397:        self.bp = balance_provider
+7472:        balance = float(await self.bp.get_balance())
+8699:            "/wallet/balance/": RetryConfig(
+9240:                "/wallet/balance/"
+11586:        bal = await self._ex.get_balance()
+13915:                        print(f"REFRESHDBG FALLBACK_REQ wallet={w.name} ep=/wallet/balance/")
+13996:                        bal = await req("GET", "/wallet/balance/", auth=True)
+14942:    async def get_balance(self) -> dict:
+14943:        return await self._ex.get_balance()
+29046:                bal = await self.client.get_balance()

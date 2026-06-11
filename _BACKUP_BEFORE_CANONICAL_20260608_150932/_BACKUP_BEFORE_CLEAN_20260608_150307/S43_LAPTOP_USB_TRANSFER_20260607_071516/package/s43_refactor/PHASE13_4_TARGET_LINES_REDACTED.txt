@@ -1,0 +1,384 @@
+===== s43.py =====
+--- lines 449-449 ---
+449:    keys = ("[STR]", "[STR]", "[STR]")
+
+--- lines 457-485 ---
+457:            tok = get_arzplus_token(slot)
+458:            if tok and (not [REDACTED](tok)):
+459:                setattr(mod, f"[STR]", tok)
+460:    except Exception:
+461:        pass
+462:    for fn in ("[STR]", "[STR]", "[STR]"):
+463:        if hasattr(mod, fn):
+464:            try:
+465:                getattr(mod, fn)()
+466:            except Exception as e:
+467:                _boot_logger().exception("[STR]", fn, e)
+468:                raise
+469:    try:
+470:        for k, v in prev_env.items():
+471:            if v and (not [REDACTED](v)):
+472:                cur = os.environ.get(k, "[STR]")
+473:                if [REDACTED](cur):
+474:                    os.environ[k] = v
+475:    except Exception:
+476:        pass
+477:    try:
+478:        if _env_bool("[STR]", False):
+479:            lg = _boot_logger()
+480:            for _slot in (1, 2, 3):
+481:                _tok = get_arzplus_token(_slot)
+482:                _src = [REDACTED].get(int(_slot), "[STR]")
+483:                _val = _strip_token_value(_tok)
+484:                lg.info(
+485:                    "[STR]",
+
+--- lines 13073-13115 ---
+13073:            token = get_arzplus_token(slot)
+13074:            wname = f"[STR]"
+13075:            if token:
+13076:                self._log.info("[STR]", wname, len(str(token)))
+13077:            else:
+13078:                self._log.warning("[STR]", wname)
+13079:            token_expiry_ts = 0
+13080:            try:
+13081:                token_expiry_ts = int([REDACTED](slot) or 0)
+13082:            except Exception:
+13083:                token_expiry_ts = 0
+13084:            wallet_disabled = False
+13085:            [REDACTED] = "[STR]"
+13086:            now_ts = float(time.time())
+13087:            if token_expiry_ts and float(token_expiry_ts) <= now_ts:
+13088:                wallet_disabled = True
+13089:                [REDACTED] = "[STR]"
+13090:                token = "[STR]"
+13091:            if not token:
+13092:                wallet_disabled = True
+13093:                [REDACTED] = [REDACTED] or "[STR]"
+13094:            if wallet_disabled:
+13095:                try:
+13096:                    self._log.warning("[STR]", wname, [REDACTED], str(token_expiry_ts))
+13097:                except Exception:
+13098:                    pass
+13099:            else:
+13100:                try:
+13101:                    self._log.info("[STR]", wname, str(token_expiry_ts))
+13102:                except Exception:
+13103:                    pass
+13104:            w_symbols_env = _env_str(f"[STR]", "[STR]")
+13105:            w_symbols = ([_canon_pair(s, cfg.quote) for s in w_symbols_env.split("[STR]") if str(s).strip()]
+13106:                         if w_symbols_env else list(cfg.symbols or []))
+13107:            w_pri_env = _env_str(f"[STR]", "[STR]")
+13108:            w_priority = ([_canon_pair(s, cfg.quote) for s in w_pri_env.split("[STR]") if str(s).strip()]
+13109:                          if w_pri_env else list(cfg.symbol_priority or []))
+13110:            w_max_pos = _env_int(f"[STR]", int(getattr(cfg, "[STR]", 0) or 0))
+13111:            w_max_frac = _env_float(f"[STR]", float(getattr(cfg, "[STR]", 0.0) or 0.0))
+13112:            w_min_profit = _env_float(f"[STR]", float(getattr(cfg, "[STR]", 0.0) or 0.0))
+13113:            w_ci = _env_bool(f"[STR]", bool(getattr(cfg, "[STR]", False)))
+13114:            w_aut = _env_bool(f"[STR]", bool(getattr(cfg, "[STR]", False)))
+13115:            w_idem_ttl = _env_float(f"[STR]", float(getattr(cfg, "[STR]", 0.0) or 0.0))
+
+--- lines 14044-14114 ---
+14044:                            _tok = getattr(_req_self, "[STR]", "[STR]") if _req_self is not None else "[STR]"
+14045:                            _scheme = getattr(_req_self, "[STR]", None) if _req_self is not None else None
+14046:                            _hp = getattr(_req_self, "[STR]", None) or {}
+14047:                            _authv = "[STR]"
+14048:                            try:
+14049:                                _authv = _hp.get("[STR]", "[STR]") if hasattr(_hp, "[STR]") else "[STR]"
+14050:                            except Exception:
+14051:                                _authv = "[STR]"
+14052:                            _base = "[STR]"
+14053:                            try:
+14054:                                _base = getattr(_req_self, "[STR]", None) or getattr(_req_self, "[STR]", None) or "[STR]"
+14055:                            except Exception:
+14056:                                _base = "[STR]"
+14057:                            _wn = None
+14058:                            try:
+14059:                                _wn = getattr(w, "[STR]", None)
+14060:                            except Exception:
+14061:                                _wn = None
+14062:                            _s43_debug_print(
+14063:                                f"[STR]"
+14064:                                f"[STR]"
+14065:                                f"[STR]"
+14066:                                f"[STR]"
+14067:                                f"[STR]"
+14068:                                f"[STR]"
+14069:                                f"[STR]"
+14070:                                f"[STR]",
+14071:                                flush=True,
+14072:                            )
+14073:                        except Exception as _fae:
+14074:                            _s43_debug_print(f"[STR]", flush=True)
+14075:                        # [REDACTED]
+14076:                        try:
+14077:                            import os as _s43_os
+14078:                            def _s43_mask_tok_ov(v):
+14079:                                v = str(v or "[STR]")
+14080:                                if not v:
+14081:                                    return "[STR]"
+14082:                                if len(v) <= 8:
+14083:                                    return v[:2] + "[STR]" + str(len(v))
+14084:                                return v[:4] + "[STR]" + v[-4:] + "[STR]" + str(len(v))
+14085:                            _req_self = getattr(req, "[STR]", None)
+14086:                            _wn = None
+14087:                            try:
+14088:                                _wn = str(getattr(w, "[STR]", "[STR]") or "[STR]").strip()
+14089:                            except Exception:
+14090:                                _wn = "[STR]"
+14091:                            _env_key = "[STR]" + _wn.upper() + "[STR]" if _wn else "[STR]"
+14092:                            _env_tok = _s43_os.environ.get(_env_key, "[STR]") if _env_key else "[STR]"
+14093:                            _old_tok = getattr(_req_self, "[STR]", "[STR]") if _req_self is not None else "[STR]"
+14094:                            if _req_self is not None and _env_tok:
+14095:                                _raw = str(_env_tok).strip()
+14096:                                _scheme = "[STR]"
+14097:                                _tok = _raw
+14098:                                if "[STR]" in _raw:
+14099:                                    _a, _b = _raw.split(None, 1)
+14100:                                    if _a.lower() in ("[STR]", "[STR]") and _b.strip():
+14101:                                        _scheme, _tok = _a, _b.strip()
+14102:                                setattr(_req_self, "[STR]", _scheme)
+14103:                                setattr(_req_self, "[STR]", _tok)
+14104:                                _hp = getattr(_req_self, "[STR]", None)
+14105:                                if not isinstance(_hp, dict):
+14106:                                    _hp = {}
+14107:                                    setattr(_req_self, "[STR]", _hp)
+14108:                                _hp["[STR]"] = f"[STR]"
+14109:                                _s43_debug_print(f"[STR]", flush=True)
+14110:                            else:
+14111:                                _s43_debug_print(f"[STR]", flush=True)
+14112:                        except Exception as _s43_toe:
+14113:                            _s43_debug_print(f"[STR]", flush=True)
+14114:                        bal = await req("[STR]", "[STR]", auth=True)
+
+--- lines 14886-14918 ---
+14886:            f"[STR]",
+14887:            f"[STR]",
+14888:            f"[STR]",
+14889:            f"[STR]",
+14890:            f"[STR]",
+14891:            f"[STR]",
+14892:            f"[STR]",
+14893:            f"[STR]",
+14894:        ])
+14895:
+14896:        # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+14897:        try:
+14898:            n = int(s)
+14899:            candidates.extend([
+14900:                f"[STR]",
+14901:                f"[STR]",
+14902:                f"[STR]",
+14903:                f"[STR]",
+14904:                f"[STR]",
+14905:                f"[STR]",
+14906:                f"[STR]",
+14907:                f"[STR]",
+14908:            ])
+14909:        except Exception:
+14910:            pass
+14911:
+14912:    candidates.extend([
+14913:        "[STR]",
+14914:        "[STR]",
+14915:        "[STR]",
+14916:        "[STR]",
+14917:        "[STR]",
+14918:        "[STR]",
+
+--- lines 14952-14963 ---
+14952:        wallet_name = str(getattr(args, "[STR]", "[STR]")).strip().upper()
+14953:        slot = 1
+14954:        try:
+14955:            if wallet_name.startswith("[STR]"):
+14956:                slot = int(wallet_name[1:])
+14957:        except Exception:
+14958:            slot = 1
+14959:        token = get_arzplus_token(slot)
+14960:        if not str(token or "[STR]").strip():
+14961:            raise SystemExit(f"[STR]")
+14962:        limiter = [REDACTED](cfg.rate_limit_per_min)
+14963:        real_ex = ExchangeClient(cfg, token, limiter, logger.log)
+
+--- lines 19815-19815 ---
+19815:                if getattr(self, "[STR]", None) is not None and bool(getattr(w.cfg, "[STR]", False)) and bool(_env_bool("[STR]", False)) and bool(_env_bool("[STR]", False)):
+
+--- lines 20969-20969 ---
+20969:            _msw = int(os.getenv("[STR]", "[STR]") or "[STR]")
+
+--- lines 24057-24057 ---
+24057:PARISA_B64_ZLIB = "[STR]""[STR]""[STR]"
+
+--- lines 29258-29408 ---
+29258:        slots = list(wallet_slots or getattr(cfg, "[STR]", []) or [])
+29259:        if not slots:
+29260:            slots = [1]
+29261:        self._wallet_slots = [int(x) for x in (slots or [])]
+29262:        self.wallets: Dict[str, Orch22WalletEngine] = {}
+29263:        for slot in slots:
+29264:            tok = get_arzplus_token(int(slot))
+29265:            wname = f"[STR]"
+29266:            cli = ExchangeClient(cfg, token=(tok or "[STR]"), limiter=limiter, logger=log, breaker=breaker)
+29267:            self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=cfg, log=log)
+29268:        self.state = Orch22SystemState.SAFE
+29269:        self.reason = "[STR]"
+29270:        self.started_ts = time.time()
+29271:        self._dash_task: Optional[asyncio.Task] = None
+29272:        self._wd_task: Optional[asyncio.Task] = None
+29273:    def stop(self) -> None:
+29274:        self._stop.set()
+29275:        self.radar.stop()
+29276:        for w in self.wallets.values():
+29277:            w.stop()
+29278:    async def _watchdog_loop(self) -> None:
+29279:        stage = 0
+29280:        stale_start: Optional[float] = None
+29281:        for _omega_guard in range(150000):
+29282:            try:
+29283:                await asyncio.wait_for(self._stop.wait(), timeout=max(1.0, float(self.heartbeat_sec)))
+29284:                break
+29285:            except asyncio.TimeoutError:
+29286:                pass
+29287:            except asyncio.CancelledError:
+29288:                raise
+29289:            except Exception:
+29290:                continue
+29291:            try:
+29292:                radar_age = float(self.radar.age())
+29293:            except Exception:
+29294:                radar_age = 0.0
+29295:            worst_wallet_age = 0.0
+29296:            try:
+29297:                for w in (self.wallets or {}).values():
+29298:                    try:
+29299:                        worst_wallet_age = max(worst_wallet_age, float(w.age()))
+29300:                    except Exception:
+29301:                        continue
+29302:            except Exception:
+29303:                worst_wallet_age = worst_wallet_age
+29304:            worst = max(float(radar_age), float(worst_wallet_age))
+29305:            warn = float(self.stale_warn_sec)
+29306:            crit = float(self.stale_crit_sec)
+29307:            if worst < warn:
+29308:                stale_start = None
+29309:                stage = 0
+29310:                continue
+29311:            if stale_start is None:
+29312:                stale_start = float(time.time())
+29313:            elapsed = float(time.time() - stale_start)
+29314:            if stage < 1 and elapsed >= warn:
+29315:                try:
+29316:                    _orch22_log(self._log, logging.WARNING, "[STR]", worst_age=worst, elapsed=elapsed)
+29317:                except Exception:
+29318:                    pass
+29319:                try:
+29320:                    await self._task_reset()
+29321:                except Exception:
+29322:                    pass
+29323:                stage = 1
+29324:                continue
+29325:            if stage < 2 and elapsed >= crit:
+29326:                try:
+29327:                    _orch22_log(self._log, logging.ERROR, "[STR]", worst_age=worst, elapsed=elapsed)
+29328:                except Exception:
+29329:                    pass
+29330:                try:
+29331:                    await self._hard_reset()
+29332:                except Exception:
+29333:                    pass
+29334:                stage = 2
+29335:                continue
+29336:            if stage >= 2 and elapsed >= (crit + max(30.0, warn)):
+29337:                try:
+29338:                    _orch22_log(self._log, logging.CRITICAL, "[STR]", worst_age=worst, elapsed=elapsed)
+29339:                except Exception:
+29340:                    pass
+29341:                try:
+29342:                    os.execv(sys.executable, [sys.executable] + list(sys.argv))
+29343:                except Exception:
+29344:                    pass
+29345:    async def _task_reset(self) -> None:
+29346:        try:
+29347:            if float(self.radar.age()) >= float(self.stale_warn_sec):
+29348:                old = self.radar
+29349:                try:
+29350:                    old.stop()
+29351:                except Exception:
+29352:                    pass
+29353:                try:
+29354:                    t = getattr(old, "[STR]", None)
+29355:                    if isinstance(t, asyncio.Task) and (not t.done()):
+29356:                        t.cancel()
+29357:                        with contextlib.suppress(Exception):
+29358:                            await t
+29359:                except Exception:
+29360:                    pass
+29361:                self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
+29362:                await self.radar.start()
+29363:        except Exception:
+29364:            pass
+29365:        for wname, w in list((self.wallets or {}).items()):
+29366:            try:
+29367:                if float(w.age()) < float(self.stale_warn_sec):
+29368:                    continue
+29369:            except Exception:
+29370:                continue
+29371:            try:
+29372:                old = w
+29373:                try:
+29374:                    old.stop()
+29375:                except Exception:
+29376:                    pass
+29377:                try:
+29378:                    t = getattr(old, "[STR]", None)
+29379:                    if isinstance(t, asyncio.Task) and (not t.done()):
+29380:                        t.cancel()
+29381:                        with contextlib.suppress(Exception):
+29382:                            await t
+29383:                except Exception:
+29384:                    pass
+29385:                self.wallets[wname] = Orch22WalletEngine(name=wname, client=old.client, cfg=self.cfg, log=self._log)
+29386:                await self.wallets[wname].start()
+29387:            except Exception:
+29388:                continue
+29389:    async def _hard_reset(self) -> None:
+29390:        with contextlib.suppress(Exception):
+29391:            await self.[REDACTED]()
+29392:        with contextlib.suppress(Exception):
+29393:            self.radar.stop()
+29394:        for w in (self.wallets or {}).values():
+29395:            with contextlib.suppress(Exception):
+29396:                w.stop()
+29397:        limiter = [REDACTED](self.cfg.rate_limit_per_min)
+29398:        breaker = CircuitBreaker(self.cfg.[REDACTED], self.cfg.[REDACTED], self._log)
+29399:        self.public = ExchangeClient(self.cfg, token="[STR]", limiter=limiter, logger=self._log, breaker=breaker)
+29400:        self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
+29401:        slots = list(getattr(self, "[STR]", []) or [])
+29402:        if not slots:
+29403:            slots = [1]
+29404:        self.wallets = {}
+29405:        for slot in slots:
+29406:            tok = get_arzplus_token(int(slot))
+29407:            wname = f"[STR]"
+29408:            cli = ExchangeClient(self.cfg, token=(tok or "[STR]"), limiter=limiter, logger=self._log, breaker=breaker)
+
+--- lines 29753-29753 ---
+29753:[REDACTED] = {}
+
+===== patch13_3.py =====
+--- lines 42-50 ---
+42:anchor = '[STR]''    async def [REDACTED](self, w) -> float:
+43:'[STR]''
+44:if anchor not in src:
+45:    raise SystemExit("[STR]")
+46:
+47:old2 = '[STR]''    async def [REDACTED](self, w) -> float:
+48:        now = time.time()
+49:'[STR]''
+50:new2 = '[STR]''    async def [REDACTED](self, w) -> float:
+
+===== patch13_3_rev1.py =====
+--- lines 42-43 ---
+42:anchor_pattern = r'[STR]'
+43:helper_code = '[STR]''    async def [REDACTED](self, w) -> float:
+

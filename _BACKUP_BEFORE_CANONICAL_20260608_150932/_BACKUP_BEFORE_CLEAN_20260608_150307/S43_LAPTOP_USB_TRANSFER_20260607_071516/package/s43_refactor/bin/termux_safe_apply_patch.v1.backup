@@ -1,0 +1,127 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+usage() {
+  echo "usage: termux_safe_apply_patch <target_file> <patch_file>" >&2
+  echo "" >&2
+  echo "example:" >&2
+  echo "  termux_safe_apply_patch ./s43.py ./fix.patch" >&2
+}
+
+if [ $# -ne 2 ]; then
+  usage
+  exit 2
+fi
+
+target="$1"
+patch_file="$2"
+
+if ! command -v patch >/dev/null 2>&1; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch command not found"
+  echo "hint: pkg install patch"
+  exit 1
+fi
+
+if [ ! -f "$target" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: target file not found or not regular file"
+  echo "target: $target"
+  exit 1
+fi
+
+if [ ! -f "$patch_file" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch file not found or not regular file"
+  echo "patch: $patch_file"
+  exit 1
+fi
+
+if [ ! -s "$patch_file" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch file is empty"
+  echo "patch: $patch_file"
+  exit 1
+fi
+
+target_abs="$(realpath "$target")"
+patch_abs="$(realpath "$patch_file")"
+target_dir="$(dirname "$target_abs")"
+target_base="$(basename "$target_abs")"
+ts="$(date +%Y%m%d_%H%M%S)"
+backup="${target_abs}.bak.safe_patch.${ts}"
+log_dir="$HOME/.tmp"
+mkdir -p "$log_dir"
+dryrun_log="$log_dir/termux_safe_patch_dryrun.log"
+apply_log="$log_dir/termux_safe_patch_apply.log"
+
+
+echo "SAFE PATCH: TARGET"
+echo "target: $target_abs"
+echo "patch:  $patch_abs"
+echo "backup: $backup"
+
+cp -p "$target_abs" "$backup"
+echo "backup: CREATED"
+
+rollback() {
+  echo "rollback: START"
+  if [ -f "$backup" ]; then
+    cp -p "$backup" "$target_abs"
+    echo "rollback: DONE"
+  else
+    echo "rollback: FAIL"
+    echo "reason: backup missing"
+  fi
+}
+
+echo "dry-run: START"
+if patch --dry-run "$target_abs" "$patch_abs" >"$dryrun_log" 2>&1; then
+  echo "dry-run: PASS"
+else
+  echo "dry-run: FAIL"
+  cat "$dryrun_log"
+  rollback
+  exit 1
+fi
+
+echo "apply: START"
+if patch "$target_abs" "$patch_abs" >"$apply_log" 2>&1; then
+  echo "apply: PASS"
+else
+  echo "apply: FAIL"
+  cat "$apply_log"
+  rollback
+  exit 1
+fi
+
+case "$target_abs" in
+  *.sh|*/bin/*)
+    echo "syntax-check: bash -n START"
+    if bash -n "$target_abs"; then
+      echo "syntax-check: PASS"
+    else
+      echo "syntax-check: FAIL"
+      rollback
+      exit 1
+    fi
+    ;;
+  *.py)
+    echo "syntax-check: python compile START"
+    if python -m py_compile "$target_abs"; then
+      echo "syntax-check: PASS"
+    else
+      echo "syntax-check: FAIL"
+      rollback
+      exit 1
+    fi
+    ;;
+  *)
+    echo "syntax-check: SKIP"
+    echo "reason: unsupported extension"
+    ;;
+esac
+
+echo "SAFE PATCH: PASS"
+echo "target: $target_abs"
+echo "backup: $backup"

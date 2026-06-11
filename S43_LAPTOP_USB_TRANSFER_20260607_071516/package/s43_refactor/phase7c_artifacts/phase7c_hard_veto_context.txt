@@ -1,0 +1,93 @@
+### s43.py hard veto context: lines 12120-12210
+
+ 12120	                cognitive_core: Any = None
+ 12121	                _dollar_defense: bool = False
+ 12122	            shim = _ShimBot()
+ 12123	            legacy_cls = getattr(mod, "LegacyIntelligenceManager", None)
+ 12124	            if legacy_cls is None:
+ 12125	                raise RuntimeError("LegacyIntelligenceManager not found in embedded Parisa module")
+ 12126	            self._legacy = legacy_cls(shim)
+ 12127	            self._parisa_mod = mod
+ 12128	            self._log.info("event=CORTEX_PARISA_READY status=OK")
+ 12129	        except Exception as e:
+ 12130	            self._load_err = str(e)
+ 12131	            self._log.warning("event=CORTEX_PARISA_DISABLED err=%s", e)
+ 12132	    def parisa_delta(self, symbol: str, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, List[Tuple[str, str]]]:
+ 12133	        if not bool(self.cfg.collective_intelligence):
+ 12134	            return 0.0, []
+ 12135	        self._ensure_parisa()
+ 12136	        if self._legacy is None:
+ 12137	            return 0.0, []
+ 12138	        sym = _canon_symbol(symbol)
+ 12139	        st = self._sym_state.setdefault(sym, {})
+ 12140	        try:
+ 12141	            delta, contrib = self._legacy.evaluate(sym, st, float(book.bid), float(book.ask), float(book.mid), depth_data)
+ 12142	            try:
+ 12143	                delta = float(delta)
+ 12144	            except Exception:
+ 12145	                delta = 0.0
+ 12146	            if not isinstance(contrib, list):
+ 12147	                contrib = []
+ 12148	            return delta, contrib
+ 12149	        except Exception:
+ 12150	            return 0.0, []
+ 12151	    def entry_multiplier(self, symbol: str, raz_signal: Signal, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, Dict[str, Any]]:
+ 12152	        meta: Dict[str, Any] = {"enabled": bool(self.cfg.collective_intelligence)}
+ 12153	        if not bool(self.cfg.collective_intelligence):
+ 12154	            return 1.0, meta
+ 12155	        if str(raz_signal.action).upper() != "BUY":
+ 12156	            return 1.0, meta
+ 12157	        if float(getattr(raz_signal, "confidence", 0.0) or 0.0) < float(self.cfg.collective_min_raz_conf):
+ 12158	            meta["raz_conf"] = float(getattr(raz_signal, "confidence", 0.0) or 0.0)
+ 12159	            return 1.0, meta
+ 12160	        delta, contrib = self.parisa_delta(symbol, book, depth_data=depth_data)
+ 12161	        meta["parisa_delta"] = float(delta)
+ 12162	        meta["parisa_vote_thr"] = float(self.cfg.parisa_vote_thr)
+ 12163	        veto_thr = float(getattr(self.cfg, "parisa_veto_thr", -0.35) or -0.35)
+ 12164	        meta["parisa_veto_thr"] = float(veto_thr)
+ 12165	        if float(delta) <= float(veto_thr):
+ 12166	            meta["veto"] = True
+ 12167	            try:
+ 12168	                meta["parisa_contrib"] = (contrib or [])[:4]
+ 12169	            except Exception:
+ 12170	                meta["parisa_contrib"] = []
+ 12171	            return 1.0, meta
+ 12172	        if float(delta) >= float(self.cfg.parisa_vote_thr):
+ 12173	            meta["boost"] = True
+ 12174	            meta["multiplier"] = float(self.cfg.collective_multiplier)
+ 12175	            try:
+ 12176	                meta["parisa_contrib"] = (contrib or [])[:4]
+ 12177	            except Exception:
+ 12178	                meta["parisa_contrib"] = []
+ 12179	            return float(self.cfg.collective_multiplier), meta
+ 12180	        meta["boost"] = False
+ 12181	        try:
+ 12182	            meta["parisa_contrib"] = (contrib or [])[:4]
+ 12183	        except Exception:
+ 12184	            meta["parisa_contrib"] = []
+ 12185	        return 1.0, meta
+ 12186	class GlobalExitGuard:
+ 12187	    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+ 12188	        self.cfg = cfg
+ 12189	        self._log = logger
+ 12190	        self._window = float(getattr(cfg, "flash_crash_window_sec", 30.0) or 30.0)
+ 12191	        self._pct = float(getattr(cfg, "flash_crash_pct", 0.05) or 0.05)
+ 12192	        self._q: Dict[str, collections.deque] = {}
+ 12193	        self._last_fire_ts: float = 0.0
+ 12194	    def observe(self, symbol: str, mid: float, ts: Optional[float] = None) -> None:
+ 12195	        ts = float(ts if ts is not None else time.time())
+ 12196	        sym = _canon_symbol(symbol)
+ 12197	        dq = self._q.get(sym)
+ 12198	        if dq is None:
+ 12199	            dq = collections.deque()
+ 12200	            self._q[sym] = dq
+ 12201	        dq.append((ts, float(mid)))
+ 12202	        cutoff = ts - self._window
+ 12203	        for _omega_guard in range(150000):
+ 12204	            dq.popleft()
+ 12205	    def check_symbol(self, symbol: str) -> Optional[dict]:
+ 12206	        sym = _canon_symbol(symbol)
+ 12207	        dq = self._q.get(sym)
+ 12208	        if not dq or len(dq) < 2:
+ 12209	            return None
+ 12210	        mids = [p for _, p in dq]

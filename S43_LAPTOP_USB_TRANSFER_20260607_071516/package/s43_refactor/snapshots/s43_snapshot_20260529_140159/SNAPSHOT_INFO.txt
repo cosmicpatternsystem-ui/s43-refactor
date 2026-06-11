@@ -1,0 +1,9 @@
+snapshot_created_at=Fri May 29 14:01:59 +0330 2026
+snapshot_dir=/data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159
+
+[checksums]
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159/s43.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py
+72c1a5e4507f488b7553b77899ccfabbbcee077739986c131cc2eeacb9cce0ef  /data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159/s43_repair_manifest.txt
+e91d7b0dbde5241e49cd993d5eacf6ac61fd30956e6dea61f0d9b735cbeb8aec  /data/data/com.termux/files/home/s43_refactor/snapshots/s43_snapshot_20260529_140159/s43_manager.sh

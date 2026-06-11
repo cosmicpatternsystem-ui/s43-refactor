@@ -1,0 +1,181 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+usage() {
+  echo "usage: termux_safe_apply_patch_v2 [--keep-backups=N] <target_file> <patch_file>" >&2
+  echo "" >&2
+  echo "examples:" >&2
+  echo "  termux_safe_apply_patch_v2 ./s43.py ./fix.patch" >&2
+  echo "  termux_safe_apply_patch_v2 --keep-backups=5 ./s43.py ./fix.patch" >&2
+}
+
+keep_backups=""
+
+case "${1:-}" in
+  --keep-backups=*)
+    keep_backups="${1#--keep-backups=}"
+    shift
+    ;;
+esac
+
+if [ $# -ne 2 ]; then
+  usage
+  exit 2
+fi
+
+target="$1"
+patch_file="$2"
+
+if [ -n "$keep_backups" ]; then
+  case "$keep_backups" in
+    ''|*[!0-9]*)
+      echo "SAFE PATCH: FAIL"
+      echo "reason: --keep-backups must be a non-negative integer"
+      exit 1
+      ;;
+  esac
+fi
+
+if ! command -v patch >/dev/null 2>&1; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch command not found"
+  echo "hint: pkg install patch"
+  exit 1
+fi
+
+if [ ! -f "$target" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: target file not found or not regular file"
+  echo "target: $target"
+  exit 1
+fi
+
+if [ ! -f "$patch_file" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch file not found or not regular file"
+  echo "patch: $patch_file"
+  exit 1
+fi
+
+if [ ! -s "$patch_file" ]; then
+  echo "SAFE PATCH: FAIL"
+  echo "reason: patch file is empty"
+  echo "patch: $patch_file"
+  exit 1
+fi
+
+target_abs="$(realpath "$target")"
+patch_abs="$(realpath "$patch_file")"
+target_dir="$(dirname "$target_abs")"
+target_base="$(basename "$target_abs")"
+ts="$(date +%Y%m%d_%H%M%S)"
+backup="${target_abs}.bak.safe_patch.${ts}"
+
+log_dir="$HOME/.tmp"
+mkdir -p "$log_dir"
+run_log="$log_dir/termux_safe_patch_${ts}.log"
+dryrun_log="$log_dir/termux_safe_patch_dryrun_${ts}.log"
+apply_log="$log_dir/termux_safe_patch_apply_${ts}.log"
+
+echo "SAFE PATCH: TARGET"
+echo "target: $target_abs"
+echo "patch:  $patch_abs"
+echo "backup: $backup"
+echo "runlog: $run_log"
+
+cp -p "$target_abs" "$backup"
+echo "backup: CREATED"
+
+log() {
+  echo "$*" | tee -a "$run_log"
+}
+
+rollback() {
+  log "rollback: START"
+  if [ -f "$backup" ]; then
+    cp -p "$backup" "$target_abs"
+    log "rollback: DONE"
+  else
+    log "rollback: FAIL"
+    log "reason: backup missing"
+  fi
+}
+
+detect_strip_level() {
+  local p
+  for p in 0 1 2; do
+    if patch --dry-run -p"$p" "$target_abs" "$patch_abs" >"$dryrun_log" 2>&1; then
+      echo "$p"
+      return 0
+    fi
+  done
+  return 1
+}
+
+log "dry-run: START"
+if strip_level="$(detect_strip_level)"; then
+  log "dry-run: PASS"
+  log "strip-level: -p${strip_level}"
+else
+  log "dry-run: FAIL"
+  cat "$dryrun_log"
+  rollback
+  exit 1
+fi
+
+log "apply: START"
+if patch -p"$strip_level" "$target_abs" "$patch_abs" >"$apply_log" 2>&1; then
+  log "apply: PASS"
+else
+  log "apply: FAIL"
+  cat "$apply_log"
+  rollback
+  exit 1
+fi
+
+case "$target_abs" in
+  *.sh|*/bin/*)
+    log "syntax-check: bash -n START"
+    if bash -n "$target_abs"; then
+      log "syntax-check: PASS"
+    else
+      log "syntax-check: FAIL"
+      rollback
+      exit 1
+    fi
+    ;;
+  *.py)
+    log "syntax-check: python compile START"
+    if python -m py_compile "$target_abs"; then
+      log "syntax-check: PASS"
+    else
+      log "syntax-check: FAIL"
+      rollback
+      exit 1
+    fi
+    ;;
+  *)
+    log "syntax-check: SKIP"
+    log "reason: unsupported extension"
+    ;;
+esac
+
+if [ -n "$keep_backups" ]; then
+  log "backup-retention: START"
+  mapfile -t backup_list < <(ls -1t "${target_abs}.bak.safe_patch."* 2>/dev/null || true)
+  count="${#backup_list[@]}"
+  if [ "$count" -gt "$keep_backups" ]; then
+    i="$keep_backups"
+    while [ "$i" -lt "$count" ]; do
+      rm -f -- "${backup_list[$i]}"
+      i=$((i+1))
+    done
+  fi
+  log "backup-retention: PASS"
+  log "backup-retention.keep: $keep_backups"
+fi
+
+log "SAFE PATCH: PASS"
+log "target: $target_abs"
+log "backup: $backup"
+log "runlog: $run_log"

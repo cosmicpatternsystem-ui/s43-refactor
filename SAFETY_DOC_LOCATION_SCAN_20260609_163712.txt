@@ -1,0 +1,1140 @@
+SAFETY DOC LOCATION SCAN
+Generated: 2026-06-09 16:37:12 +03:30
+Working Directory: E:\??????\ssl\s43_refactor
+Host: 5.1.19041.6456
+
+================================================================================
+ROOT ITEMS
+================================================================================
+
+Mode   Length  LastWriteTime        Name                                                        
+----   ------  -------------        ----                                                        
+d-----         6/4/2026 10:59:02 PM backups                                                     
+d-----         6/9/2026 10:25:36 AM cache                                                       
+d-----         6/8/2026 10:06:41 PM docs                                                        
+d-----         6/4/2026 10:59:03 PM final_release_20260530                                      
+d-----         6/8/2026 10:44:09 PM logs                                                        
+d-----         6/9/2026 8:16:14 AM  patch                                                       
+d-----         6/4/2026 10:59:04 PM phase2_reports                                              
+d-----         6/4/2026 10:59:05 PM phase53_snippets_1780080168                                 
+d-----         6/9/2026 12:33:14 PM project_meta                                                
+d-----         6/4/2026 10:59:06 PM reports                                                     
+d-----         6/4/2026 10:59:06 PM runtime_probes                                              
+d-----         6/7/2026 8:17:17 AM  S43_LAPTOP_USB_TRANSFER_20260607_071516                     
+d-----         6/9/2026 12:05:56 PM saead                                                       
+d-----         6/4/2026 10:59:07 PM snapshots                                                   
+d-----         6/8/2026 3:09:13 PM  _BACKUP_BEFORE_CANONICAL_20260608_150705                    
+d-----         6/8/2026 3:13:07 PM  _BACKUP_BEFORE_CANONICAL_20260608_150932                    
+d-----         6/8/2026 3:04:00 PM  _BACKUP_BEFORE_CLEAN_20260608_150307                        
+d-----         6/8/2026 8:59:12 PM  _VALIDATION_REPORTS                                         
+d-----         6/8/2026 9:07:41 PM  __pycache__                                                 
+-a---- 4393131 1/30/2026 4:26:44 PM 11029.py                                                    
+-a---- 4393131 1/30/2026 4:26:44 PM 11029.py.bak.20260609_105654                                
+-a---- 968     6/8/2026 3:55:13 PM  AI_DIFF_NOTES.md                                            
+-a---- 707     6/8/2026 3:55:13 PM  AI_NEXT_STEPS.md                                            
+-a---- 6426    6/8/2026 3:49:20 PM  AI_REFACTOR_CONTEXT.md                                      
+-a---- 603     6/8/2026 3:55:13 PM  AI_SAFETY_GUARDS.md                                         
+-a---- 697     5/30/2026 9:26:01 PM ARZPLUS_403_STATUS.md                                       
+-a---- 2666    5/30/2026 9:26:03 PM audit_targets.txt                                           
+-a---- 897     5/30/2026 9:26:01 PM balance_callsites_grep.txt                                  
+-a---- 6980    5/30/2026 9:26:07 PM balance_callsites_inspect.txt                               
+-a---- 1258    6/8/2026 5:09:41 PM  BASELINE_CHECK_REPORT.20260608_171119.bak.txt               
+-a---- 1258    6/8/2026 5:11:23 PM  BASELINE_CHECK_REPORT.txt                                   
+-a---- 0       6/9/2026 10:25:31 AM CANONICAL_LIVE_LOCK                                         
+-a---- 362     5/30/2026 9:26:00 PM compile_or_restore.sh                                       
+-a---- 0       5/30/2026 9:26:07 PM critical_audit.txt                                          
+-a---- 50702   5/30/2026 9:26:09 PM critical_only.txt                                           
+-a---- 1061    6/8/2026 5:08:03 PM  DIFF_MY_S43_vs_INSTRUMENTED.diff.txt                        
+-a---- 697     6/8/2026 4:35:04 PM  DIFF_MY_S43_vs_INSTRUMENTED.diff.txt.20260608_170800.bak    
+-a---- 424     6/8/2026 5:08:05 PM  DIFF_MY_S43_vs_INSTRUMENTED.summary.txt                     
+-a---- 371     6/8/2026 4:35:05 PM  DIFF_MY_S43_vs_INSTRUMENTED.summary.txt.20260608_170800.bak 
+-a---- 2249    5/30/2026 9:26:01 PM fix_botconfig_post_init.py                                  
+-a---- 7703    5/30/2026 9:26:03 PM fix_dashboard_core.py                                       
+-a---- 3012    5/30/2026 9:26:00 PM fix_dashring_fallback_parisa.py                             
+-a---- 0       5/30/2026 9:26:10 PM fix_debug_top.py                                            
+-a---- 10086   5/30/2026 9:26:07 PM fix_deep_prune_ghost_orders.py                              
+-a---- 1299    5/30/2026 9:26:09 PM fix_header.py                                               
+-a---- 850     5/30/2026 9:26:08 PM fix_literal_newline_separators_again.py                     
+-a---- 1881    5/30/2026 9:26:06 PM fix_optional_imports_top.py                                 
+-a---- 1608    5/30/2026 9:26:07 PM fix_parse_age.py                                            
+-a---- 1318    5/30/2026 9:26:01 PM fix_parse_hard_veto.py                                      
+-a---- 1486    5/30/2026 9:26:00 PM fix_phase54_audit.py                                        
+-a---- 1773    5/30/2026 9:26:01 PM fix_phase54_audit_after_global_newline.py                   
+-a---- 1740    5/30/2026 9:26:09 PM fix_phase54_audit_again.py                                  
+-a---- 4079    5/30/2026 9:26:09 PM fix_place_ladder.py                                         
+-a---- 6659    5/30/2026 9:26:09 PM fix_place_limit_head.py                                     
+-a---- 0       5/30/2026 9:26:10 PM fix_place_limit_retry_loop.py                               
+-a---- 2563    5/30/2026 9:26:03 PM fix_regime_multiplier.py                                    
+-a---- 2741    5/30/2026 9:26:07 PM fix_safe_callhandlers.py                                    
+-a---- 5196    6/8/2026 4:30:23 PM  IMPLEMENTATION_PLAN_NEXT.md                                 
+-a---- 937     5/30/2026 9:26:09 PM inspect_patch13_3_targets.py                                
+-a---- 345     5/30/2026 9:26:00 PM monitor_phase13_balance.sh                                  
+-a---- 2638078 6/5/2026 11:17:51 AM MY_S43_LATEST.py                                            
+-a---- 2638078 6/5/2026 11:17:51 AM MY_S43_LATEST.py.bak.20260609_105654                        
+-a---- 145     6/5/2026 11:17:51 AM MY_S43_LATEST.sha256                                        
+-a---- 2439281 6/5/2026 11:17:51 AM MY_S43_LATEST.tar.gz                                        
+-a---- 0       6/9/2026 10:25:31 AM ONLINE_STATUS_ACTIVE                                        
+-a---- 1094    5/30/2026 9:26:01 PM patch01_preorder_trace.py                                   
+-a---- 1570    5/30/2026 9:26:07 PM patch01_preorder_trace_v2.py                                
+-a---- 479     5/30/2026 9:26:01 PM PATCH12_5_NOTES.txt                                         
+-a---- 4292    5/30/2026 9:26:06 PM patch13_3.py                                                
+-a---- 2666    5/30/2026 9:26:01 PM PATCH13_3_NOTES.txt                                         
+-a---- 1997    5/30/2026 9:26:01 PM PATCH13_3_NOTES_20260530_160640.txt                         
+-a---- 4382    5/30/2026 9:26:00 PM patch13_3_rev1.py                                           
+-a---- 6768    5/30/2026 9:26:00 PM patch13_3_rev2.py                                           
+-a---- 456     5/30/2026 9:26:09 PM PHASE13_3_BASELINE_STATUS.txt                               
+-a---- 322     5/30/2026 9:26:00 PM PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt                        
+-a---- 17083   5/30/2026 9:26:07 PM PHASE13_4_ACTIVE_POSSIBLE_SECRET_ASSIGNMENTS_REDACTED.txt   
+-a---- 119     5/30/2026 9:26:00 PM PHASE13_4_ACTIVE_SECRET_FILES.txt                           
+-a---- 3074    5/30/2026 9:26:01 PM PHASE13_4_ACTIVE_SECRET_KEYWORD_HITS.txt                    
+-a---- 1280    5/30/2026 9:26:01 PM PHASE13_4_CALLSITE_CTX_A_REDACTED.txt                       
+-a---- 1858    5/30/2026 9:26:07 PM PHASE13_4_CALLSITE_CTX_B_REDACTED.txt                       
+-a---- 2611    5/30/2026 9:26:03 PM PHASE13_4_CALLSITE_CTX_C_REDACTED.txt                       
+-a---- 2660    5/30/2026 9:26:00 PM PHASE13_4_CREDENTIAL_REMEDIATION_PLAN.txt                   
+-a---- 487     5/30/2026 9:26:01 PM PHASE13_4_DYNAMIC_ENV_KEY_PATTERNS.txt                      
+-a---- 527     5/30/2026 9:26:00 PM PHASE13_4_DYNAMIC_ENV_KEY_PATTERNS_REDACTED.txt             
+-a---- 9311    5/30/2026 9:26:08 PM PHASE13_4_ENV_KEY_REFERENCES.txt                            
+-a---- 1690    5/30/2026 9:26:09 PM PHASE13_4_GET_ARZPLUS_TOKEN_BODY_REDACTED.txt               
+-a---- 352     5/30/2026 9:26:07 PM PHASE13_4_GET_ARZPLUS_TOKEN_CALLS.txt                       
+-a---- 52      5/30/2026 9:26:00 PM PHASE13_4_GET_ARZPLUS_TOKEN_DEF.txt                         
+-a---- 639     5/30/2026 9:26:08 PM PHASE13_4_OPENING_STATUS.txt                                
+-a---- 6165    5/30/2026 9:26:03 PM PHASE13_4_SECRET_FILE_TRIAGE.txt                            
+-a---- 555481  5/30/2026 9:26:03 PM PHASE13_4_SECRET_REFERENCES_REDACTED.txt                    
+-a---- 6307    5/30/2026 9:26:01 PM PHASE13_4_SECRET_REFERENCE_FILES.txt                        
+-a---- 379     5/30/2026 9:26:01 PM PHASE13_4_SLOT_2_3_TOKEN_PRESENCE_SAFE.txt                  
+-a---- 17856   5/30/2026 9:26:08 PM PHASE13_4_TARGET_LINES_REDACTED.txt                         
+-a---- 1014    5/30/2026 9:26:00 PM PHASE13_4_TOKEN_ENV_CANDIDATES_EXTRACTED.txt                
+-a---- 237     5/30/2026 9:26:00 PM PHASE13_4_TOKEN_ENV_EQUALITY_SAFE.txt                       
+-a---- 1914    5/30/2026 9:26:01 PM PHASE13_4_TOKEN_ENV_PRESENCE_SAFE.txt                       
+-a---- 620     5/30/2026 9:26:07 PM PHASE13_4_TOKEN_PARSE_BLOCK_REDACTED.txt                    
+-a---- 868     5/30/2026 9:26:09 PM PHASE13_4_TOKEN_RESOLVER_SELECTION_SAFE.txt                 
+-a---- 568     5/30/2026 9:26:07 PM PHASE13_4_TOKEN_RESOLVER_SELECTION_SAFE_V2.txt              
+-a---- 148     5/30/2026 9:26:01 PM PHASE13_4_TRIAGE_SUMMARY.txt                                
+-a---- 84      5/30/2026 9:26:01 PM PHASE13_4_WALLET_SLOTS_ENV_SAFE.txt                         
+-a---- 12738   5/30/2026 9:26:07 PM PHASE13_4_WALLET_SLOT_CONFIG_CTX_REDACTED.txt               
+-a---- 1109    5/30/2026 9:26:03 PM PHASE13_4_WALLET_SLOT_REFERENCES.txt                        
+-a---- 15954   5/30/2026 9:26:09 PM phase13_halt_surface_audit.txt                              
+-a---- 0       5/30/2026 9:26:10 PM phase53_auto_audit.py                                       
+-a---- 145672  5/30/2026 9:26:07 PM phase53_auto_audit_report_1780080168.txt                    
+-a---- 0       5/30/2026 9:26:10 PM phase54_auto_instrument.py                                  
+-a---- 1145    5/30/2026 9:26:01 PM phase54_context_extract.py                                  
+-a---- 40586   5/30/2026 9:26:00 PM phase54_context_extract_1780080827.txt                      
+-a---- 304     5/30/2026 9:26:03 PM phase54_instrument_report_1780080703.txt                    
+-a---- 2292    5/30/2026 9:26:09 PM phase54_runtime_audit.log                                   
+-a---- 1663    5/30/2026 9:26:00 PM quarantine_check.txt                                        
+-a---- 526     5/30/2026 9:26:00 PM quick_watch.log                                             
+-a---- 3432    6/8/2026 3:59:37 PM  ROADMAP_CONSOLIDATED.20260608_161152.bak.md                 
+-a---- 11518   6/8/2026 4:11:59 PM  ROADMAP_CONSOLIDATED.20260608_162204.bak.md                 
+-a---- 16535   6/8/2026 4:22:24 PM  ROADMAP_CONSOLIDATED.20260608_162547.enterprise.bak.md      
+-a---- 25604   6/8/2026 4:25:52 PM  ROADMAP_CONSOLIDATED.md                                     
+-a---- 526     5/30/2026 9:26:00 PM run_90s.log                                                 
+-a---- 2638078 6/5/2026 11:17:51 AM s43.py                                                      
+-a---- 2617826 5/30/2026 9:26:07 PM s43.py.bak.20260530_005957                                  
+-a---- 2617826 5/30/2026 9:26:08 PM s43.py.bak.exception_patch.20260530_010443                  
+-a---- 2618332 5/30/2026 9:26:09 PM s43.py.bak.full_sweep.20260530_012537                       
+-a---- 2617826 5/30/2026 9:26:04 PM s43.py.bak.place_harden.20260530_010757                     
+-a---- 2617812 5/30/2026 9:26:07 PM s43.py.bak.place_structural.20260530_011223                 
+-a---- 2617706 5/30/2026 9:26:01 PM s43.py.bak.place_temp_pause.20260530_010946                 
+-a---- 2618667 5/30/2026 9:26:00 PM s43.py.bak_auto_fix                                         
+-a---- 2611955 5/30/2026 9:26:09 PM s43.py.bak_dispatch_patch2_20260529_130317                  
+-a---- 2611955 5/30/2026 9:26:09 PM s43.py.bak_dispatch_patch_20260529_130021                   
+-a---- 2151330 5/30/2026 9:26:07 PM s43.py.bak_fix_423                                          
+-a---- 2037570 5/30/2026 9:26:00 PM s43.py.bak_fix_dashboard_core_1780114816                    
+-a---- 2042417 5/30/2026 9:26:00 PM s43.py.bak_fix_deep_prune_ghost_orders_1780114649           
+-a---- 2608179 5/30/2026 9:26:03 PM s43.py.bak_fix_extract_parisa                               
+-a---- 2037033 5/30/2026 9:26:09 PM s43.py.bak_fix_header                                       
+-a---- 2058620 5/30/2026 9:26:01 PM s43.py.bak_fix_literal_newline_separators_again_1780114948  
+-a---- 2038254 5/30/2026 9:26:01 PM s43.py.bak_fix_parse_age_1780113864                         
+-a---- 2038251 5/30/2026 9:26:07 PM s43.py.bak_fix_phase54_again_1780112774                     
+-a---- 2039642 5/30/2026 9:26:04 PM s43.py.bak_fix_phase54_audit_after_global_newline_1780115154
+-a---- 2042097 5/30/2026 9:26:07 PM s43.py.bak_fix_place_ladder_1780114522                      
+-a---- 2038303 5/30/2026 9:26:01 PM s43.py.bak_fix_place_limit_head_1780114207                  
+-a---- 2038798 5/30/2026 9:26:07 PM s43.py.bak_fix_place_limit_retry_loop_1780114400            
+-a---- 2038320 5/30/2026 9:26:07 PM s43.py.bak_fix_regime_multiplier_1780114037                 
+-a---- 2618132 5/30/2026 9:26:00 PM s43.py.bak_fix_syntax_r190                                  
+-a---- 2617930 5/30/2026 9:26:00 PM s43.py.bak_fix_telegram_import                              
+-a---- 2057042 5/30/2026 9:26:09 PM s43.py.bak_literal_newlines_1780112630                      
+-a---- 2607074 5/30/2026 9:26:01 PM s43.py.bak_loader_patch_20260529_115526                     
+-a---- 2577118 5/30/2026 9:26:00 PM s43.py.bak_optionB_20260529_084417                          
+-a---- 2612227 5/30/2026 9:26:09 PM s43.py.bak_patch01_v2                                       
+-a---- 2612997 5/30/2026 9:26:09 PM s43.py.bak_patch02_risk_trace                               
+-a---- 2613459 5/30/2026 9:26:00 PM s43.py.bak_patch03_balance_trace                            
+-a---- 2614152 5/30/2026 9:26:09 PM s43.py.bak_patch04_getbal_exc_enrich                        
+-a---- 2614305 5/30/2026 9:26:03 PM s43.py.bak_patch05_wallet_fail_isolation                    
+-a---- 2614305 5/30/2026 9:26:07 PM s43.py.bak_patch05_wallet_fail_isolation_v2                 
+-a---- 2614305 5/30/2026 9:26:01 PM s43.py.bak_patch06_callsite_wallet_isolation                
+-a---- 2617257 5/30/2026 9:26:00 PM s43.py.bak_patch07_runtime_catch_tradinghalt                
+-a---- 2617226 5/30/2026 9:26:00 PM s43.py.bak_patch08_cycle_wallet_isolation                   
+-a---- 2619061 5/30/2026 9:26:09 PM s43.py.bak_patch09_cycle_wallet_debugprint                  
+-a---- 2619329 5/30/2026 9:26:09 PM s43.py.bak_patch10_orch22_wallet_isolation                  
+-a---- 2621643 5/30/2026 9:26:01 PM s43.py.bak_patch11b_balance_callsite_isolation_regex        
+-a---- 2621643 5/30/2026 9:26:00 PM s43.py.bak_patch11_balance_callsite_isolation               
+-a---- 2624863 5/30/2026 9:26:01 PM s43.py.bak_patch12_1_empty_response_isolation               
+-a---- 2625472 5/30/2026 9:26:01 PM s43.py.bak_patch12_2_balance_cooldown_trace                 
+-a---- 2625700 5/30/2026 9:26:06 PM s43.py.bak_patch12_3_live_get_balance_trace                 
+-a---- 2626257 5/30/2026 9:26:00 PM s43.py.bak_patch12_4b_class_level_cooldown                  
+-a---- 0       5/30/2026 9:26:10 PM s43.py.bak_patch12_4_global_balance_cooldown                
+-a---- 2626437 5/30/2026 9:26:00 PM s43.py.bak_patch12_5_cleanup_trace                          
+-a---- 2623827 5/30/2026 9:26:00 PM s43.py.bak_patch12_global_get_balance_isolation             
+-a---- 0       5/30/2026 9:26:10 PM s43.py.bak_phase54_execute_trade                            
+-a---- 2618151 5/30/2026 9:26:01 PM s43.py.bak_rebuild_telegram_phase54_block                   
+-a---- 2618150 5/30/2026 9:26:01 PM s43.py.bak_remove_telegram_residue                          
+-a---- 2626674 5/30/2026 9:26:09 PM s43.py.before_parse_wallet_fix_20260530_191050              
+-a---- 2626674 5/30/2026 9:26:00 PM s43.py.before_safe_global_parser_patch_20260530_191502      
+-a---- 1865063 5/30/2026 9:26:09 PM s43.py.literal_n_bak                                        
+-a---- 2625668 5/30/2026 9:26:07 PM s43.py.pre_patch13_3                                        
+-a---- 2625668 5/30/2026 9:26:03 PM s43.py.pre_patch13_3_rev2                                   
+-a---- 2624863 5/30/2026 9:26:03 PM s43.py.stable_after_patch12_balance_isolation               
+-a---- 2625668 5/30/2026 9:26:07 PM s43.py.stable_patch12_5                                     
+-a---- 2626674 5/30/2026 9:26:00 PM s43.py.stable_patch13_3                                     
+-a---- 2626674 5/30/2026 9:26:01 PM s43.py.stable_patch13_3_20260530_160640                     
+-a---- 2630282 5/30/2026 9:26:03 PM s43.py.stable_patch13_3_parserfix_20260530_192948           
+-a---- 0       5/30/2026 9:26:10 PM s43_auth_context.txt                                        
+-a---- 2623033 5/30/2026 9:26:07 PM s43_before_quantize_cleanup_1780033269.py                   
+-a---- 2619746 5/30/2026 9:26:00 PM s43_before_remove_arzplus_top_level_block_1780034084.py     
+-a---- 0       5/30/2026 9:26:10 PM s43_before_remove_nested_quantize_block_1780033374.py       
+-a---- 0       5/30/2026 9:26:10 PM s43_broken_before_restore_20260530_113858.py                
+-a---- 23005   5/30/2026 9:26:09 PM s43_canonical_core_map.txt                                  
+-a---- 22107   5/30/2026 9:26:00 PM s43_execution_path_audit.txt                                
+-a---- 2439811 6/5/2026 9:48:53 AM  s43_export_20260604.tar.gz                                  
+-a---- 2022    5/30/2026 9:26:07 PM s43_extract_hotspots.sh                                     
+-a---- 2638688 6/5/2026 10:58:37 AM s43_instrumented_LATEST.py                                  
+-a---- 2638078 6/5/2026 10:58:37 AM s43_LATEST.py                                               
+-a---- 145     6/5/2026 10:58:37 AM s43_LATEST.sha256                                           
+-a---- 2439281 6/5/2026 10:58:37 AM s43_LATEST.tar.gz                                           
+-a---- 2626674 5/30/2026 9:26:08 PM s43_latest_refactor.py                                      
+-a---- 15901   5/30/2026 9:26:09 PM s43_manager.sh                                              
+-a---- 0       5/30/2026 9:26:10 PM s43_patch_plan.py                                           
+-a---- 0       5/30/2026 9:26:10 PM s43_patch_plan_report.txt                                   
+-a---- 1979    5/30/2026 9:26:09 PM s43_probe_runtime.sh                                        
+-a---- 122311  5/30/2026 9:26:03 PM s43_repair_candidate.diff                                   
+-a---- 16435   5/30/2026 9:26:06 PM s43_repair_candidate.py                                     
+-a---- 2623033 5/30/2026 9:26:09 PM s43_repair_candidate_output.py                              
+-a---- 8091    5/30/2026 9:26:01 PM s43_repair_candidate_report.txt                             
+-a---- 8091    5/30/2026 9:26:00 PM s43_repair_candidate_run.log                                
+-a---- 2806    5/30/2026 9:26:00 PM s43_repair_manifest.txt                                     
+-a---- 1371504 5/30/2026 9:26:07 PM s43_runtime_path_snippets.txt                               
+-a---- 53336   5/30/2026 9:26:07 PM s43_structural_map.txt                                      
+-a---- 12857   6/8/2026 8:41:51 PM  S43_UPDATED_MASTER_ROADMAP.md                               
+-a---- 312     6/9/2026 4:37:13 PM  SAFETY_DOC_LOCATION_SCAN_20260609_163712.txt                
+-a---- 6833265 6/8/2026 5:16:16 PM  SAFETY_GATE_MAPPING_PASS1.txt                               
+-a---- 299384  6/8/2026 5:19:12 PM  SAFETY_GATE_MAPPING_PASS2_TARGETED.txt                      
+-a---- 4189    6/8/2026 5:46:11 PM  SAFETY_PROTOCOL.md                                          
+-a---- 5530    6/8/2026 5:24:49 PM  SAFETY_PROTOCOL.md.bak_20260608_173229                      
+-a---- 5531    6/8/2026 5:32:54 PM  SAFETY_PROTOCOL.md.bak_20260608_173635                      
+-a---- 5531    6/8/2026 5:36:54 PM  SAFETY_PROTOCOL.md.bak_safe_20260608_174608                 
+-a---- 1210    6/8/2026 5:53:05 PM  SAFETY_PROTOCOL_FINAL_VERIFY_20260608_175301.txt            
+-a---- 825     6/8/2026 5:36:56 PM  SAFETY_PROTOCOL_HASH_REPORT_20260608_173635.txt             
+-a---- 842     6/8/2026 5:46:12 PM  SAFETY_PROTOCOL_SAFE_REPAIR_REPORT_20260608_174608.txt      
+-a---- 0       5/30/2026 9:26:10 PM safe_check.sh                                               
+-a---- 480     5/30/2026 9:26:01 PM smoke_5min.log                                              
+-a---- 480     5/30/2026 9:26:01 PM smoke_after_12_1.log                                        
+-a---- 480     5/30/2026 9:26:09 PM smoke_dry_run.log                                           
+-a---- 1757    5/30/2026 9:26:07 PM smoke_execute_trade.py                                      
+-a---- 3027    5/30/2026 9:26:09 PM smoke_execute_trade.py.bak.1780089251                       
+-a---- 480     5/30/2026 9:26:03 PM smoke_patch12_2_trace.log                                   
+-a---- 960     5/30/2026 9:26:07 PM smoke_patch12_3_trace.log                                   
+-a---- 758     5/30/2026 9:26:07 PM smoke_patch12_4b_class_cd.log                               
+-a---- 150     5/30/2026 9:26:07 PM smoke_patch12_4_global_cd.log                               
+-a---- 404     5/30/2026 9:26:08 PM smoke_patch12_5_cleanup.log                                 
+-a---- 2612227 5/30/2026 9:26:03 PM snap_before_patch_20260530_114727.py                        
+-a---- 2612227 5/30/2026 9:26:00 PM snap_before_patch_20260530_114854.py                        
+-a---- 2612227 5/30/2026 9:26:00 PM snap_before_patch_20260530_114941.py                        
+-a---- 2612227 5/30/2026 9:26:00 PM snap_before_patch_20260530_115231.py                        
+-a---- 0       5/30/2026 9:26:10 PM THREE_WALLETS_RUNTIME_PLAN.md                               
+-a---- 0       5/30/2026 9:26:07 PM trading_bot.log                                             
+-a---- 0       5/30/2026 9:26:10 PM wallets_runtime_status.md                                   
+
+
+
+
+================================================================================
+DOC-LIKE DIRECTORIES
+================================================================================
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+E:\??????\ssl\s43_refactor\_VALIDATION_REPORTS
+E:\??????\ssl\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\docs
+E:\??????\ssl\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\20260527_093330\audit_reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\audit_only_mode_20260603_174432
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\audit
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase1_reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase2_reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise\reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety
+
+================================================================================
+SAFETY / REPORT / SIGNOFF FILES
+================================================================================
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_20260531_201409
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_exact.20260531_202646
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_final.20260531_202151
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_rootfix.20260531_202855
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_skip_disabled.20260531_203055
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_v2_20260531_201527
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150705\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_20260603_173959
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\git_safety_shield_v2_20260603_174246
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_final_review_summary
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\evidence\stable-arzplus-reporting-20260531
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CANONICAL_20260608_150705\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_20260531_201409
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_exact.20260531_202646
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_final.20260531_202151
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_rootfix.20260531_202855
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_skip_disabled.20260531_203055
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_v2_20260531_201527
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CANONICAL_20260608_150932\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_20260531_201409
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_exact.20260531_202646
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_final.20260531_202151
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_rootfix.20260531_202855
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_skip_disabled.20260531_203055
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_v2_20260531_201527
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\_BACKUP_BEFORE_CLEAN_20260608_150307\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\AI_SAFETY_GUARDS.md
+E:\??????\ssl\s43_refactor\BASELINE_CHECK_REPORT.20260608_171119.bak.txt
+E:\??????\ssl\s43_refactor\BASELINE_CHECK_REPORT.txt
+E:\??????\ssl\s43_refactor\DIFF_MY_S43_vs_INSTRUMENTED.summary.txt
+E:\??????\ssl\s43_refactor\DIFF_MY_S43_vs_INSTRUMENTED.summary.txt.20260608_170800.bak
+E:\??????\ssl\s43_refactor\logs\safe_patch_report_20260608_224408.log
+E:\??????\ssl\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\phase53_auto_audit_report_1780080168.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\reports\s43_deep_audit_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_20260531_201409
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_exact.20260531_202646
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_final.20260531_202151
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_rootfix.20260531_202855
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_skip_disabled.20260531_203055
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\archive_packed_backup\archive_original_20260603_002512\snapshots\s43.py.bak.reporting_v2_20260531_201527
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_20260603-140308.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\BACKUP_VALIDATION_REPORT_V2_20260603-140739.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\s43.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\backups\test_status_observability_summary.py.phase5-observability-summary-test.20260531_221554
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\bin\termux_verify_script
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\commit_gate_20260603_173733\public_commit_gate_summary.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\decision_report_20260603_175042\decision_summary.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\hash_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\diagnostics\safe_audit_20260603_173427\secret_keyword_scan_summary.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_final_review_summary.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\handoff\phase11_readiness_gate_review.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\laptop_active_gap_v4_20260607_053618\SUMMARY_FOR_ASSISTANT.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\roadmap\TOP_LEVEL_READINESS_GATE.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_ENVIRONMENT_VARIABLES_SUMMARY.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\S43_STRICT_GAP_REVIEW_SIGNOFF.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_discovery\20260602-021509\phase9_checkpoint_verify.log
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025225\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_handoff_closure\20260602-025850\closure_verification_summary.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\docs\verification\phase11_roadmap_reconciliation\20260602-024614\roadmap_safety_inventory.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\final_audit_evidence\AUDIT_SIGNOFF_s43.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\FINAL_STATUS_REPORT.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\logs\cleanroom_verify_20260605_132832.log
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\merge_review_evidence_20260602T072024Z\change_impact_report.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\OFFICIAL_CLOSURE_SUMMARY.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE10_GUARD_VERIFY_NOTE.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_ACTIVE_KEYWORD_SUMMARY.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE13_4_TRIAGE_SUMMARY.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase13_human_audit_package_20260602T072359Z\latest_merge_review\change_impact_report.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase14_handoff_seal_20260602T072551Z\archive_verify_listing.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE17_18_FINAL_INTEGRITY_SEAL_REPORT.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.bak.20260602T084158Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.fmtfix.20260602T084310Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7final.20260602T084602Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7fix.20260602T084402Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7lines.20260602T084659Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE18_DRYRUN_SUMMARY_REPORT.md.sec7robust.20260602T084447Z
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE19_HUMAN_AUDIT_DECISION_GATE.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\PHASE20_SIMULATION_REPORT.md
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase54_instrument_report_1780080703.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\phase7c_artifacts\phase7c_execution_gate_grep.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\promote_report_20260605_131813.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\reports\s43_phase2_import_verify_20260527_095327.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_ast_inventory_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_deep_refactor_fast_report_20260603_010016.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_enterprise_report_20260603_004606.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_live_gate_finder.py
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_persian_full_report_20260603_003450.tsv
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\classes_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\reports\functions_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_project\safety\safety_coordinator.py
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_readonly_probe_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124123.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124317.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124454.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_124829.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125038.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125359.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125652.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_125855.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_131842.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\s43_verify_summary_20260605_132836.txt
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43.sh
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v2.sh
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\safe_verify_s43_v3.sh
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\scripts\phase9_checkpoint_verify.sh
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_reporting_summary_regression.py
+E:\??????\ssl\s43_refactor\S43_LAPTOP_USB_TRANSFER_20260607_071516\package\s43_refactor\test_status_observability_summary.py
+E:\??????\ssl\s43_refactor\s43_patch_plan_report.txt
+E:\??????\ssl\s43_refactor\s43_repair_candidate_report.txt
+E:\??????\ssl\s43_refactor\saead\SAFETY_GATE_MAPPING_PASS1.txt
+E:\??????\ssl\s43_refactor\saead\SAFETY_PROTOCOL.md
+E:\??????\ssl\s43_refactor\saead\SAFETY_PROTOCOL.md.bak_safe_20260608_174608
+E:\??????\ssl\s43_refactor\saead\SAFETY_PROTOCOL_FINAL_VERIFY_20260608_175301.txt
+E:\??????\ssl\s43_refactor\saead\SAFETY_PROTOCOL_HASH_REPORT_20260608_173635.txt
+E:\??????\ssl\s43_refactor\SAFETY_DOC_LOCATION_SCAN_20260609_163712.txt
+E:\??????\ssl\s43_refactor\SAFETY_GATE_MAPPING_PASS1.txt
+E:\??????\ssl\s43_refactor\SAFETY_GATE_MAPPING_PASS2_TARGETED.txt
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL.md
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL.md.bak_20260608_173229
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL.md.bak_20260608_173635
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL.md.bak_safe_20260608_174608
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL_FINAL_VERIFY_20260608_175301.txt
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL_HASH_REPORT_20260608_173635.txt
+E:\??????\ssl\s43_refactor\SAFETY_PROTOCOL_SAFE_REPAIR_REPORT_20260608_174608.txt
+
+================================================================================
+ARCHIVE FILES IN CURRENT DIRECTORY
+================================================================================
+MY_S43_LATEST.tar.gz
+s43_export_20260604.tar.gz
+s43_LATEST.tar.gz
+
+================================================================================
+ARCHIVE LISTING: MY_S43_LATEST.tar.gz
+================================================================================
+s43.py
+s43_instrumented.py
+
+================================================================================
+ARCHIVE DOC-LIKE MATCHES: MY_S43_LATEST.tar.gz
+================================================================================
+NO DOC-LIKE ENTRIES FOUND IN ARCHIVE
+
+================================================================================
+ARCHIVE LISTING: s43_export_20260604.tar.gz
+================================================================================
+s43_export_20260604/
+s43_export_20260604/s43_FROM_TERMUX_REFACTOR_LATEST_20260604_2336.py
+s43_export_20260604/s43_FROM_TERMUX_CONTROL_PLANE_20260604_0032.py
+
+================================================================================
+ARCHIVE DOC-LIKE MATCHES: s43_export_20260604.tar.gz
+================================================================================
+NO DOC-LIKE ENTRIES FOUND IN ARCHIVE
+
+================================================================================
+ARCHIVE LISTING: s43_LATEST.tar.gz
+================================================================================
+s43.py
+s43_instrumented.py
+
+================================================================================
+ARCHIVE DOC-LIKE MATCHES: s43_LATEST.tar.gz
+================================================================================
+NO DOC-LIKE ENTRIES FOUND IN ARCHIVE
+
+================================================================================
+CONCLUSION HINT
+================================================================================
+Project already contains documentation-like artifacts. Prefer placing new signoff files beside existing SAFETY_* documents unless archive structure proves a stronger canonical docs path.

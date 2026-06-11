@@ -1,0 +1,232 @@
+374:    TradingHalt
+376:    class TradingHalt(RuntimeError):
+399:        raise SystemExit(f"pathlib missing: {e}")
+413:        raise SystemExit(f"Failed to write embedded Parisa to {p}: {e}")
+1283:                raise last_err
+1816:            raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+1828:            raise ApiError("Missing API token for private endpoint.")
+1918:                raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+1921:                raise ApiError(f"Transient HTTP {st}: {body}")
+1933:                    raise TradingHalt(f"ARZPLUS_403_{cause}")
+1946:                raise ApiHttpError(
+1963:                raise ApiError(f"HTTP {s}: {body}")
+1971:            raise ApiError(f"Bad JSON: {e}: {body}")
+2003:            raise ApiError(f"Unsupported HTTP method: {method_u}")
+2006:            raise ApiError("Bad endpoint (CR/LF).")
+2009:            raise ApiError("Bad url (CR/LF).")
+2011:            raise ApiError("payload must be a dict (or None).")
+2013:            raise ApiError("params must be a dict (or None).")
+2015:            raise ApiError("headers must be a dict.")
+2021:                raise ApiError(f"Bad header value (CR/LF) for {str(k)[:32]}.")
+2023:            raise ApiError("Missing Authorization header for private request.")
+2028:                raise ApiError("Refusing to send request outside configured base_url.")
+2236:                raise last_err
+2504:            raise last_err
+2542:                raise last_err
+2573:            raise last_err
+2859:            raise last_exc
+2880:            raise last_exc
+2944:                raise last_exc
+3168:            raise ValueError(f"Unsupported market type: {market_raw}")
+3180:            raise ValueError(f"Unsupported fill_type: {fill_type}")
+3183:            raise ValueError("Price must be specified for LIMIT orders.")
+3232:                    raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+3237:            raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+3248:            raise last_exc
+3335:                    raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+3340:            raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+3377:            raise last_exc
+3432:            raise last_err
+3456:                    raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+3461:            raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+3479:            raise last_err
+3783:#             raise last_exc
+3811:#             raise last_exc
+3871:#                 raise last_exc
+3872:#             raise TradingHalt("BALANCE_FETCH_FAILED: EMPTY_RESPONSE")
+3874:#             print(f"GETBALDBG EXC {type(e).__name__}: {e}")
+4082:#             raise ValueError(f"Unsupported market type: {market_raw}")
+4094:#             raise ValueError(f"Unsupported fill_type: {fill_type}")
+4097:#             raise ValueError("Price must be specified for LIMIT orders.")
+4146:#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+4151:#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+4162:#             raise last_exc
+4271:#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+4276:#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+4313:#             raise last_exc
+4375:#             raise last_err
+4406:#                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+4411:#             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+4429:#             raise last_err
+4841:                        except TradingHalt:
+4900:            except TradingHalt:
+4954:            except TradingHalt:
+5134:                    raise ValueError("DEPTH_PARSE_FAIL")
+5168:            except (TradingHalt, TemporaryPause):
+5403:            except (TradingHalt, TemporaryPause):
+5409:            except (TradingHalt, TemporaryPause):
+5417:            except (TradingHalt, TemporaryPause):
+5449:            except (TradingHalt, TemporaryPause):
+5516:            if isinstance(r, TradingHalt):
+5517:                raise r
+5790:        skew_halt_s: float = 60.0,
+5804:        self.skew_halt_s = float(skew_halt_s)
+5817:        self._halt_since: Dict[str, float] = {}
+5933:            halt_cooldown = float(os.getenv("HALT_COOLDOWN_SEC", "60.0") or 60.0)
+5935:            halt_cooldown = 60.0
+5936:        halt_cooldown = float(max(10.0, min(600.0, halt_cooldown)))
+5937:        severe_halt = (k_s >= self.skew_halt_s) or (m >= m_thr * 6.0) or (b >= b_thr * 6.0)
+5938:        if severe_halt:
+5939:            hs = float(self._halt_since.get(symc, 0.0) or 0.0)
+5941:                self._halt_since[symc] = float(now)
+5942:                return TradeHealth("HALT", 0.0, sev, reasons)
+5943:            if (now - hs) >= halt_cooldown:
+5945:            return TradeHealth("HALT", 0.0, sev, reasons)
+5946:        self._halt_since[symc] = 0.0
+7153:                raise RuntimeError("ALERT SECURITY_BREACH: LIVE_MODE_NOT_ARMED")
+7421:            except TradingHalt:
+7452:            raise RuntimeError("order_executor has no place_order()")
+7513:            raise SystemExit("ALERT [KILL-SWITCH] Risk Threshold Exceeded.")
+8648:                raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+8680:        raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+8787:                        raise aiohttp.ClientError(
+8791:                        raise aiohttp.ClientError("Rate limited")
+8794:                        raise Exception(f"API error: {data.get('error', 'Unknown')}")
+9313:            raise TradingHalt("BALANCE_FETCH_FAILED: DASH_PORTFOLIO_BALANCE") from e
+9859:            except TradingHalt:
+9995:                wallet.sanity_halt = False
+10070:                        wallet.sanity_halt = True
+10093:                wallet.sanity_halt = True
+10099:                self._log.warning("event=SANITY_HALT wallet=%s sym=%s reason=%s mid=%.0f spot=%.0f spr_bps=%.1f liq=%.2f lat_ms=%.0f",
+10108:                        wallet.sanity_halt = False
+10117:                        wallet.sanity_halt = True
+10133:                    wallet.sanity_halt = False
+10146:                        wallet.sanity_halt = False
+10150:                        wallet.sanity_halt = True
+10157:            wallet.sanity_halt = False
+10762:        """Safe mode traffic control for halt_new_trades logs.
+10793:    def halt_new_trades(self, reason: str) -> None:
+10810:                if r.startswith("HEALTH_SYS_HALTED"):
+10853:            "HEALTH_SYS_HALTED",
+10899:        return r.startswith("BALANCE_AUTH_FAIL") or r.startswith("HEALTH_SYS_HALTED") or r.startswith("HEALTH_SYS_CRITICAL")
+10949:                raise ValueError("risk journal not a dict")
+11152:                self.halt_new_trades("MAX_DAILY_LOSS")
+11230:                raise RuntimeError("Refusing to trade: risk state load failed") from e
+11238:                self.halt_new_trades(str(reason or "SAFE_MODE"))
+11340:                    raise TradingHalt(f"HARD_BLOCK:{reason}")
+11341:            except TradingHalt:
+11345:                    raise TradingHalt(f"HARD_BLOCK:RISK_ERR:{type(e).__name__}") from e
+11356:                    raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+11377:            raise ValueError(f"Invalid order params qty={qty} price={price}")
+11380:            raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+11389:            raise TradingHalt("ORDERS_JOURNAL_DISABLED")
+11433:                    raise ApiError("Order submission returned None")
+11466:            except (TradingHalt, TemporaryPause):
+11502:            raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+11503:        raise ApiError(f"Order failed after retries: {last_exc}")
+11512:            raise ValueError(f"Invalid ladder params qty={qty} base_price={base_price}")
+11659:            raise TradingHalt("BALANCE_COOLDOWN")
+11678:        if not _ok: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
+11995:                raise RuntimeError("LegacyIntelligenceManager not found in embedded Parisa module")
+12230:    sanity_halt: bool = False
+12531:        if st not in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED"):
+12541:        st = st_exec if st_exec in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED") else st_full
+12543:            if bool(getattr(self.bot, "_engine_halted", False)):
+12545:                    return True, f"ALLOW_{a}_HALTED"
+12546:                return False, "DENY_ENGINE_HALTED"
+12571:            return True, f"ALLOW_{a}_HALTED"
+12572:        return False, "DENY_HALTED"
+13012:            raise ValueError("Only IRT quote is supported in this build.")
+13185:                skew_halt_s=float(getattr(cfg, "skew_halt_sec", 60.0) or 60.0),
+13635:            sanity_halt = False
+13639:                sanity_halt = bool(getattr(st, "sanity_halt", False))
+13688:                "sanity_halt": sanity_halt,
+13899:                    raise RuntimeError("Refusing to trade: state load failed") from last_err
+13900:                raise RuntimeError("Refusing to trade: state load failed")
+13964:                self.risk.halt_new_trades("STATE_SAVE_FAIL")
+14101:                    raise AttributeError("has no attribute 'get_balance'")
+14104:        except TradingHalt: raise
+14112:            raise TradingHalt(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}") from e
+14139:                # Fail-closed: halt trading on auth/permission blocks.
+14142:                    self.risk.halt_new_trades("BALANCE_AUTH_FAIL: Balance blocked by exchange – trading halted")
+14144:                    self.risk.halt_new_trades("BALANCE_AUTH_FAIL")
+14159:            raise TradingHalt(f"BALANCE_FETCH_FAILED: HTTP_FAIL: {type(e).__name__}:{e}") from e
+14181:                raise TradingHalt(f"BALANCE_FETCH_FAILED: TRANSIENT: {type(e).__name__}:{e}") from e
+14185:                self.risk.halt_new_trades(f"BALANCE_AUTH_FAIL: {msg[:300]}")
+14192:            raise TradingHalt(f"BALANCE_FETCH_FAILED: API_FAIL: {type(e).__name__}:{e}") from e
+14213:            raise TradingHalt("BALANCE_FETCH_FAILED: EXC") from e
+14225:            raise TradingHalt("BALANCE_FETCH_FAILED: ARZPLUS_FAST_PARSE_FAIL") from e
+14291:        else: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
+14634:                if bool(getattr(w, "sanity_halt", False)):
+14638:                        w.sanity_halt = False
+14670:                        w.sanity_halt = True
+14921:            raise SystemExit("Refusing --real stress without --allow-orders (safety).")
+14932:            raise SystemExit(f"Missing API token for slot={slot} (set ARZPLUS_WALLET_{slot}_TOKEN)")
+14983:            raise asyncio.TimeoutError("SIMULATED_RESPONSE_LOSS")
+15357:                    raise RuntimeError("REMOTE_DISABLED")
+15383:                    raise RuntimeError("REMOTE_DISABLED")
+16378:                                    raise StopIteration
+16882:                        raise AttributeError("has no attribute 'list_orders'")
+16897:                        raise AttributeError("has no attribute 'list_orders'")
+16924:                    w.sanity_halt = True
+16937:                        self.risk.halt_new_trades('ORDER_RECONCILE_FAIL')
+17237:            except TradingHalt:
+18414:            if r in ("LOW_SC","LOW_VOL","TREND_G","SPREAD","DYN_ADJ","NOTIONAL","PROFIT_GATE","MAX_POS","WAIT_X","DATA_HALT",
+18980:                if health_mode == "HALT":
+18982:                        w.last_event = f"{sym} DATA_HALT mkt={m_age:.1f}s book={b_age_f:.1f}s skew={skew:.1f}s"
+18985:                    await _rej("DATA_HALT", mkt_age=m_age, book_age=b_age_f, skew=skew)
+19242:            except (TradingHalt, TemporaryPause):
+19446:            if bool(getattr(w, "sanity_halt", False)):
+19453:                w.last_event = f"SANITY_HALT {sym}"
+19454:                _set_engine("Hold", f"SANITY_HALT:{str(getattr(w,'sanity_reason','') or '').strip() or 'ON'}", reject=True, meta={"sym": sym})
+20762:            self._log.critical("event=GLOBAL_EXIT_NOT_ARMED wallet=%s reason=%s (LIVE) -> HALT_ONLY", w.name, reason)
+20780:                    raise RuntimeError("no_book")
+20814:        self.risk.halt_new_trades(f"GLOBAL_EXIT:{reason}")
+20857:        except (TradingHalt, Exception) as e:
+20914:                        w.sanity_halt = True
+20924:                                self.risk.halt_new_trades(f'ORDER_RECONCILE_UNKNOWN:{unknown}')
+20932:                    self.risk.halt_new_trades('ORDER_RECONCILE_FAIL')
+21001:                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+21029:        except (TradingHalt, TemporaryPause):
+21050:                if bool(getattr(w, 'sanity_halt', False)):
+21054:            _halt_t = globals().get("TradingHalt")
+21060:                if bool(getattr(w, 'sanity_halt', False)):
+21094:                        if _halt_t is not None and isinstance(r, _halt_t):
+21095:                            raise r
+21097:                            raise r
+21159:                w.sanity_halt = True
+21179:                w.sanity_halt = True
+21207:            w.sanity_halt = True
+21460:                        w.sanity_halt = True
+21497:                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+21877:                        if bool(getattr(w, "sanity_halt", False)):
+21882:                            w.sanity_halt = False
+22544:            if state not in ("INIT", "OK", "DEGRADED", "CRITICAL", "HALTED"):
+22923:                    if state == "CRITICAL" and bool(_env_bool("HEALTH_WD_HALT_ON_CRIT", False)):
+22924:                        state = "HALTED"
+22963:                        safe_tag = "HALTED" if state == "HALTED" else str(want_exec or "OK")
+22989:                    setattr(self, "_engine_halted", bool(state == "HALTED"))
+23085:                if state in ("DEGRADED", "CRITICAL", "HALTED") or safe_on:
+23098:                        elif state == "HALTED":
+23218:            if isinstance(e, TradingHalt): raise
+23542:            if bool(getattr(self, "_engine_halted", False)):
+23582:        except (TradingHalt, Exception) as e:
+23750:            except TradingHalt:
+23969:        raise SystemExit(f"Unknown command: {cmd}")
+24307:            except TradingHalt:
+24891:                if bool(getattr(w, "sanity_halt", False)):
+24892:                    st = "HALT"
+24993:                if bool(getattr(w, "sanity_halt", False)):
+25142:                if bool(getattr(w, "sanity_halt", False)):
+25355:                    if bool(getattr(w, "sanity_halt", False)):
+25356:                        s = "[bold red]HALT[/]"
+25465:                    if bool(getattr(w, "sanity_halt", False)):
+25466:                        s = "[bold red]HALT[/]"
+26490:                        if bool(getattr(w, "sanity_halt", False)):
+26706:                if bool(safe_on) or bool(getattr(self.bot, "_engine_halted", False)):
+26708:                    why_now = "DENY_SAFE_OR_HALTED"
+27297:                sanity = bool(getattr(w, "sanity_halt", False)) or float(getattr(w, "sanity_until_ts", 0.0) or 0.0) > now_ts
+27784:                    if bool(getattr(w, "sanity_halt", False)) and float(getattr(w, "sanity_until_ts", 0.0) or 0.0) > time.time():
+29139:                if not ok: raise TradingHalt("BALANCE_FETCH_FAILED: PARSE_OK_FALSE")
+29159:            except (TradingHalt, Exception) as e:
+29617:            _pp200_report(e, tag="FATAL", ctx={"argv": (argv if argv is not None else sys.argv[1:])})

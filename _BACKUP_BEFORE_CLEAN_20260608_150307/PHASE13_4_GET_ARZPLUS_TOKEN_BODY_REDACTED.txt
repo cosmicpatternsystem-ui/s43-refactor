@@ -1,0 +1,56 @@
+14870:def get_arzplus_token(slot=None, default="[STR]"):
+14871:    "[STR]""
+14872:    Fail-safe token resolver for ArzPlus accounts.
+14873:    Reads token from environment variables and returns default/empty string if missing.
+14874:    "[STR]""
+14875:    import os
+14876:
+14877:    candidates = []
+14878:
+14879:    try:
+14880:        s = str(int(slot)).strip() if slot is not None else "[STR]"
+14881:    except Exception:
+14882:        s = str(slot).strip() if slot is not None else "[STR]"
+14883:
+14884:    if s:
+14885:        candidates.extend([
+14886:            f"[STR]",
+14887:            f"[STR]",
+14888:            f"[STR]",
+14889:            f"[STR]",
+14890:            f"[STR]",
+14891:            f"[STR]",
+14892:            f"[STR]",
+14893:            f"[STR]",
+14894:        ])
+14895:
+14896:        # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+14897:        try:
+14898:            n = int(s)
+14899:            candidates.extend([
+14900:                f"[STR]",
+14901:                f"[STR]",
+14902:                f"[STR]",
+14903:                f"[STR]",
+14904:                f"[STR]",
+14905:                f"[STR]",
+14906:                f"[STR]",
+14907:                f"[STR]",
+14908:            ])
+14909:        except Exception:
+14910:            pass
+14911:
+14912:    candidates.extend([
+14913:        "[STR]",
+14914:        "[STR]",
+14915:        "[STR]",
+14916:        "[STR]",
+14917:        "[STR]",
+14918:        "[STR]",
+14919:    ])
+14920:
+14921:    for key in candidates:
+14922:        try:
+14923:            val = os.getenv(key)
+14924:            if val:
+14925:                return str(val).strip()

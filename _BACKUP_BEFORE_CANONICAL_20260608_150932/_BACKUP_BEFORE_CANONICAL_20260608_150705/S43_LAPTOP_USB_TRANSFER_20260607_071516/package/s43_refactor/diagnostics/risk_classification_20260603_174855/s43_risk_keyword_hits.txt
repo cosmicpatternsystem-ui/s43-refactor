@@ -1,0 +1,102 @@
+16:+- Live order execution is disabled
+30:+# === S43 AUDIT-ONLY HARD STOP PATCH ===
+35:+        "AUDIT-ONLY HARD STOP: live trading / real-order execution is prohibited for s43.py"
+46:+    if str(_s43_audit_os.environ.get("ALLOW_ORDERS", "")).strip() in {"1", "true", "True", "yes", "YES"}:
+47:+        bad.append("ALLOW_ORDERS")
+56:+# === END S43 AUDIT-ONLY HARD STOP PATCH ===
+332:-# QUARANTINED BROKEN NESTED BLOCK: get_market_snapshot original lines 2719-2852, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+334:-# It is commented out to avoid duplicate/nested accidental definitions.
+339:-# QUARANTINED BROKEN NESTED BLOCK: get_last_update_age original lines 2853-2900, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+341:-# It is commented out to avoid duplicate/nested accidental definitions.
+346:-# QUARANTINED BROKEN NESTED BLOCK: get_all_market_stats original lines 2901-2992, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+348:-# It is commented out to avoid duplicate/nested accidental definitions.
+353:-# QUARANTINED BROKEN NESTED BLOCK: get_trades original lines 2993-3011, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+355:-# It is commented out to avoid duplicate/nested accidental definitions.
+360:-# QUARANTINED BROKEN NESTED BLOCK: get_balance original lines 3012-3065, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+362:-# It is commented out to avoid duplicate/nested accidental definitions.
+367:-# QUARANTINED BROKEN NESTED BLOCK: conn_check original lines 3066-3183, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+369:-# It is commented out to avoid duplicate/nested accidental definitions.
+374:-# QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+376:-# It is commented out to avoid duplicate/nested accidental definitions.
+381:-# QUARANTINED BROKEN NESTED BLOCK: place_limit original lines 3336-3365, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+383:-# It is commented out to avoid duplicate/nested accidental definitions.
+388:-# QUARANTINED BROKEN NESTED BLOCK: place_market original lines 3367-3395, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+390:-# It is commented out to avoid duplicate/nested accidental definitions.
+395:-# QUARANTINED BROKEN NESTED BLOCK: cancel_all_orders original lines 3396-3459, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+397:-# It is commented out to avoid duplicate/nested accidental definitions.
+402:-# QUARANTINED BROKEN NESTED BLOCK: list_orders original lines 3460-3512, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+404:-# It is commented out to avoid duplicate/nested accidental definitions.
+409:-# QUARANTINED BROKEN NESTED BLOCK: cancel_order original lines 3513-3557, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+411:-# It is commented out to avoid duplicate/nested accidental definitions.
+418:+    This class is intentionally minimal and does not modify any tokens, keys, secrets, BotConfig, or core logic.
+434:-            if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+435:+            if "401" in text or "403" in text or "Invalid token" in text or "invalid token" in low:
+606:-        def _wallet_coins_compact(w, max_items: int = 10) -> str:
+669:-        def wallet_summary_panel(wname: str, w):
+671:-                return Panel("NO WALLET", title=str(wname), box=box.SIMPLE, padding=(0, 1))
+672:-            ws = _wallet_ws(wname)
+674:-            ord_open_exch = int(getattr(w, "open_orders_exch", 0) or 0)
+677:-            equity_irt = _equity_from_wallet(w, assets_value_irt, cash_irt)
+687:-            age, st = _wallet_age_status(w)
+697:-                t.add_row("COINS", _short(_wallet_coins_compact(w, max_items=10), 60))
+706:-        def wallet_detail_panel(wname: str, w):
+708:-                return Panel("NO WALLET", title=str(wname), box=box.MINIMAL, padding=(0, 1))
+709:-            ws = _wallet_ws(wname)
+859:-                        line = f"{_short(v.wallet, 3)}/{_short(v.symbol, 10)} {v.source} { _short(v.reason, 24)} | dur {dur} | hits {int(v.hits)}"
+861:+                        line = f"{_run_short(v.wallet, 3)}/{_run_short(v.symbol, 10)} {v.source} { _run_short(v.reason, 24)} | dur {dur} | hits {int(v.hits)}"
+903:+                for w in getattr(self.bot, "wallets", {}).values():
+1079:-                for w in getattr(self.bot, "wallets", {}).values():
+1090:-            wallets = getattr(self.bot, "wallets", {}) or {}
+1110:-            for wname, w in sorted((wallets or {}).items(), key=lambda kv: str(kv[0])):
+1111:-                oo = int(getattr(w, "open_orders_exch", 0) or 0)
+1112:-                oo_age = float(getattr(w, "open_orders_oldest_age_sec", 0.0) or 0.0)
+1140:-            if not wallets:
+1144:-            elif all_blocked and wallets:
+1385:+# === S43 AUDIT-ONLY TAIL MONKEYPATCH ===
+1386:+def _s43_block_live_order_call(*args, **kwargs):
+1387:+    raise RuntimeError("AUDIT-ONLY BLOCK: place_order path disabled")
+1389:+async def _s43_block_live_order_call_async(*args, **kwargs):
+1390:+    raise RuntimeError("AUDIT-ONLY BLOCK: async place_order path disabled")
+1393:+    ExchangeClient.place_order = _s43_block_live_order_call_async
+1398:+    _FaultInjectExchange.place_order = _s43_block_live_order_call_async
+1403:+    _FaultInjectExchange._place_order_impl = _s43_block_live_order_call_async
+1406:+# === END S43 AUDIT-ONLY TAIL MONKEYPATCH ===
+1409:+# GLOBAL AUDIT KILL-SWITCH
+1413:+    raise RuntimeError("AUDIT-ONLY BLOCK: order execution disabled")
+1417:+        ExchangeClient.place_order = _audit_only_block
+1420:+        _FaultInjectExchange.place_order = _audit_only_block
+1423:+        if hasattr(ExchangeClient, "_place_order_impl"):
+1424:+            ExchangeClient._place_order_impl = _audit_only_block
+1427:+        if hasattr(_FaultInjectExchange, "_place_order_impl"):
+1428:+            _FaultInjectExchange._place_order_impl = _audit_only_block
+1430:+except Exception as _audit_patch_error:
+1431:+    print("AUDIT PATCH ERROR:", _audit_patch_error)
+1434:+# END AUDIT KILL-SWITCH
+1439:+# FINAL ORDER ENGINE SEAL
+1443:+    raise RuntimeError("AUDIT-ONLY BLOCK: order execution disabled")
+1448:+        ExchangeClient.place_order = _audit_only_block
+1449:+        if hasattr(ExchangeClient, "_place_order_impl"):
+1450:+            ExchangeClient._place_order_impl = _audit_only_block
+1453:+        _FaultInjectExchange.place_order = _audit_only_block
+1454:+        if hasattr(_FaultInjectExchange, "_place_order_impl"):
+1455:+            _FaultInjectExchange._place_order_impl = _audit_only_block
+1457:+    if "execute_order_v121" in globals():
+1458:+        execute_order_v121 = _audit_only_block
+1460:+except Exception as _audit_patch_error:
+1461:+    print("AUDIT PATCH ERROR:", _audit_patch_error)
+1496:+    If safety module is missing/broken, caller receives None and legacy
+1514:+            max_balance_staleness_sec=_s43_safety_float_env(
+1515:+                "SAFETY_MAX_BALANCE_STALENESS_SEC",
+1516:+                _s43_safety_float_env("BALANCE_REFRESH_SEC", 10.0),
+1518:+            max_balance_drift_ratio=_s43_safety_float_env("SAFETY_MAX_BALANCE_DRIFT_RATIO", 0.05),
+1519:+            halt_on_balance_mismatch=_s43_safety_env_bool("SAFETY_HALT_ON_BALANCE_MISMATCH", True),
+1671:+def _s43_balance_total_from_account_data(account_data):
+1673:+    Best-effort extraction of total account balance.
+1678:+      {"balances": [{"asset": "USDT", "free": "...", "locked": "..."}]}
+1694:+        balances = account_data.get("balances")
+1695:+        if isinstance(balances, list):
+1696:+            for b in balances:
+1745:+def _s43_balance_snapshot_for_guard(account_data, ts=None):
+1747:+        from s43_project.safety import BalanceSnapshot
+1749:+        total = _s43_balance_total_from_account_data(account_data)
+1753:+        return BalanceSnapshot(

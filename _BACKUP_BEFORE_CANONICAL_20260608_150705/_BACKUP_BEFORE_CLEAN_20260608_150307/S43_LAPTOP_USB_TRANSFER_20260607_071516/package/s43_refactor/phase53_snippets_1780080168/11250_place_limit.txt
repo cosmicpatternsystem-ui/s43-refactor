@@ -1,0 +1,174 @@
+11250:     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+11251:         sym = _canon_symbol(symbol)
+11252:         try:
+11253:             side_l0 = str(side or "").lower()
+11254:             if side_l0.startswith("buy"):
+11255:                 m = self._regime_multiplier(sym, float(notional_irt))
+11256:                 m = float(clamp(float(m), 0.0, 1.0))
+11257:                 if m != 1.0:
+11258:                     qty = float(qty) * float(m)
+11259:                     notional_irt = float(notional_irt) * float(m)
+11260:         except Exception:
+11261:             pass
+11262:         if self.cfg.dry_run:
+11263:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+11264:             if self._rec:
+11265:                 self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+11266:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+11267:             return {"ok": True, "dry_run": True}
+11268:         r = getattr(self, "_risk", None)
+11269:         if r is not None:
+11270:             try:
+11271:                 hb = getattr(r, "hard_blocks_all_orders", None)
+11272:                 side_lk = str(side or "").lower().strip()
+11273:                 if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+11274:                     reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+11275:                     self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+11276:                     raise TradingHalt(f"HARD_BLOCK:{reason}")
+11277:             except TradingHalt:
+11278:                 raise
+11279:             except Exception as e:
+11280:                 if not bool(getattr(self.cfg, "dry_run", False)):
+11281:                     raise TradingHalt(f"HARD_BLOCK:RISK_ERR:{type(e).__name__}") from e
+11282:         try:
+11283:             rd = None
+11284:             if r is not None:
+11285:                 g = getattr(r, "get_runtime_risk", None)
+11286:                 if callable(g):
+11287:                     rd = g(self._wallet, sym)
+11288:             side_l = str(side or "").lower()
+11289:             is_entry = side_l.startswith("buy")
+11290:             if rd is not None and is_entry:
+11291:                 if not bool(getattr(rd, "allow_entries", True)):
+11292:                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+11293:                 mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+11294:                 mult = float(clamp(mult, 0.0, 1.0))
+11295:                 _skip_mult = False
+11296:                 try:
+11297:                     _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+11298:                 except Exception:
+11299:                     _skip_mult = False
+11300:                 if (not _skip_mult) and mult < 0.999:
+11301:                     qty = float(qty) * mult
+11302:                     notional_irt = float(notional_irt) * mult
+11303:                     try:
+11304:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+11305:                                           self._wallet, sym, str(getattr(rd,'level','?')), mult)
+11306:                     except Exception:
+11307:                         pass
+11308:         except TemporaryPause:
+11309:             raise
+11310:         except Exception:
+11311:             pass
+11312:         if qty <= 0 or price <= 0:
+11313:             raise ValueError(f"Invalid order params qty={qty} price={price}")
+11314:         qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+11315:         if qty2 <= 0 or px2 <= 0:
+11316:             raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+11317:         cid: Optional[str] = None
+11318:         if self._oj is not None:
+11319:             cid = self._oj.new_cid(self._wallet, sym, side)
+11320:             self._oj.mark_pending(cid, wallet=self._wallet, symbol=sym, side=side,
+11321:                                  qty=float(qty2), price=float(px2), notional_irt=float(notional_irt))
+11322:             self._logger.info("event=ORDER_INTENT cid=%s wallet=%s side=%s sym=%s qty=%.8f px=%.0f",
+11323:                              cid, self._wallet, str(side).lower(), sym, float(qty2), float(px2))
+11324:         else:
+11325:             raise TradingHalt("ORDERS_JOURNAL_DISABLED")
+11326:         last_exc: Optional[Exception] = None
+11327:         for attempt in range(self.max_retries + 1):
+11328:             try:
+11329:                 async with self._submit_lock:
+11330:                     if attempt == 0:
+11331:                         order_key = f"{str(side).lower()}_{px2}_{qty2}_{sym}"
+11332:                         if getattr(self, "_last_order_key", None) == order_key and (time.time() - getattr(self, "_last_order_time", 0.0)) < 5.0:
+11333:                             try:
+11334:                                 self._logger.warning("Duplicate order prevented for %s", sym)
+11335:                             except Exception:
+11336:                                 pass
+11337:                             if self._oj is not None:
+11338:                                 try:
+11339:                                     self._oj.mark_resolved(cid, final_state="SKIPPED_DUP", note=str(order_key))
+11340:                                 except Exception:
+11341:                                     pass
+11342:                             return {"ok": False, "skipped": True, "reason": "DUPLICATE_PREVENTED", "cid": cid}
+11343:                         self._last_order_key = order_key
+11344:                         self._last_order_time = time.time()
+11345:                     order_kwargs = dict(kwargs)
+11346:                     order_kwargs.pop("cid", None)
+11347:                     order_kwargs.setdefault("notional_irt", float(notional_irt))
+11348:                     order_kwargs.setdefault("fill_type", "limit")
+11349:                     order_kwargs.setdefault("market", "spot")
+11350:                     order_kwargs.setdefault("reduce_only", str(side or "").lower().startswith("sell"))
+11351:                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+11352:                 if resp is None:
+11353:                     raise ApiError("Order submission returned None")
+11354:                 ok = bool(resp.get("ok")) or (resp.get("status") in (200, 201))
+11355:                 if ok:
+11356:                     oid = str(resp.get("order_id") or resp.get("id") or "")
+11357:                     if self._oj is not None:
+11358:                         try:
+11359:                             self._oj.mark_ack(cid, exchange_order_id=oid, raw=resp)
+11360:                         except Exception:
+11361:                             pass
+11362:                     if self._rec:
+11363:                         self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2),
+11364:                                                float(notional_irt), ok=True, order_id=oid, raw=resp)
+11365:                     try:
+11366:                         if isinstance(resp, dict) and cid:
+11367:                             if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+11368:                                 resp = dict(resp)
+11369:                                 resp["cid"] = str(cid)
+11370:                     except Exception:
+11371:                         pass
+11372:                     return resp
+11373:                 if self._oj is not None:
+11374:                     try:
+11375:                         self._oj.mark_resolved(cid, final_state="REJECTED", note=str(resp)[:300])
+11376:                     except Exception:
+11377:                         pass
+11378:                 try:
+11379:                     if isinstance(resp, dict) and cid:
+11380:                         if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+11381:                             resp = dict(resp)
+11382:                             resp["cid"] = str(cid)
+11383:                 except Exception:
+11384:                     pass
+11385:                 return resp
+11386:             except (TradingHalt, TemporaryPause):
+11387:                 raise
+11388:             except asyncio.TimeoutError as e:
+11389:                 last_exc = e
+11390:                 try:
+11391:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+11392:                 except Exception:
+11393:                     pass
+11394:                 if attempt < self.max_retries:
+11395:                     try:
+11396:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11397:                     except Exception:
+11398:                         pass
+11399:                     continue
+11400:                 break
+11401:             except Exception as e:
+11402:                 last_exc = e
+11403:                 try:
+11404:                     self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+11405:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+11406:                 except Exception:
+11407:                     pass
+11408:                 if attempt < self.max_retries:
+11409:                     try:
+11410:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11411:                     except Exception:
+11412:                         pass
+11413:         if self._rec:
+11414:             self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2), float(notional_irt),
+11415:                                    ok=False, order_id=None, raw={"error": str(last_exc), "cid": cid})
+11416:         if self._oj is not None:
+11417:             try:
+11418:                 self._oj.mark_uncertain(cid, err=str(last_exc))
+11419:             except Exception:
+11420:                 pass
+11421:         if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+11422:             raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+11423:         raise ApiError(f"Order failed after retries: {last_exc}")

@@ -1,0 +1,4 @@
+S43_TOUCHED=false
+GIT_ADD_DONE=false
+GIT_COMMIT_DONE=false
+GIT_PUSH_DONE=false

@@ -1,0 +1,5 @@
+line	category	old_text	new_text
+1254	string	"r""(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)"""	
+1255	string	"r""تا\s*(\d+(?:\.\d+)?)"""	
+14863	string	"""توکن نامعتبر"""	
+25762	string	"""٪"""	

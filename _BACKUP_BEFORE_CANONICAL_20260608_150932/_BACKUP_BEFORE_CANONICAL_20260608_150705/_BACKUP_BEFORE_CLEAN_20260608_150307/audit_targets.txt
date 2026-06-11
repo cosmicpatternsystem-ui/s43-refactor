@@ -1,0 +1,63 @@
+--- TARGET 1: _place method (Line 6270+) ---
+            h = max(mid, o)
+            l = min(mid, o)
+            hist.opens.append(float(o))
+            hist.highs.append(float(h))
+            hist.lows.append(float(l))
+            hist.closes.append(float(mid))
+            hist.volumes.append(float(vol))
+            hist.timestamps.append(float(now))
+        else:
+            try:
+                hist.highs[-1] = float(max(float(hist.highs[-1]), mid))
+                hist.lows[-1] = float(min(float(hist.lows[-1]), mid))
+                hist.closes[-1] = float(mid)
+                hist.volumes[-1] = float(max(0.0, float(hist.volumes[-1]) + float(vol)))
+            except Exception:
+                pass
+        try:
+            setattr(hist, "_last_spread_bps", float(spr_bps))
+        except Exception:
+            pass
+        return hist
+
+--- TARGET 2: submit_priority_task caller (Line 7980+) ---
+    calculation_time: float = 0.0
+    valid_until: float = 0.0
+class DynamicPositionSizer:
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        self.base_position_size = config.get("base_position_size", 0.1)
+        self.max_position_size = config.get("max_position_size", 0.25)
+        self.min_position_size = config.get("min_position_size", 0.01)
+        self.volatility_scaling = config.get("volatility_scaling", True)
+        self.volatility_lookback = config.get("volatility_lookback_days", 20)
+        self.max_daily_loss = config.get("max_daily_loss", 0.02)
+        self.target_risk_reward = config.get("target_risk_reward", 2.0)
+        self.kelly_fraction = config.get("kelly_fraction", 0.5)
+        self.position_history: Deque[Dict[str, Any]] = __import__("collections").deque(maxlen=1000)
+        self.volatility_cache: Dict[str, VolatilityMetrics] = {}
+        self._lock = _NoopLock()
+    def calculate_position_size(
+        self,
+        symbol: str,
+        capital: float,
+        volatility_metrics: VolatilityMetrics,
+
+--- TARGET 3: Core execution loop (Line 13460+) ---
+                        if float(until_ts or 0.0) > now:
+                            blocked_syms += 1
+                    except Exception:
+                        pass
+        except Exception:
+            blocked_syms = 0
+        out["risk"] = {
+            "safe_level": safe_level,
+            "daily_loss_irt": daily_loss,
+            "blocked_symbols": int(blocked_syms),
+        }
+        try:
+            syms_obj = getattr(self, "supported_symbols", {}) or {}
+            if isinstance(syms_obj, dict):
+                syms_list = list(syms_obj.keys())
+                weights = {k: float(v) for k, v in syms_obj.items()}

@@ -1,0 +1,3 @@
+S43_ACTIVE_WALLET=1
+RUNTIME_ENV=/data/data/com.termux/files/home/s43_refactor/reports/s43_runtime_wallet_1_20260605_161707.env
+NEXT=source "/data/data/com.termux/files/home/s43_refactor/reports/s43_runtime_wallet_1_20260605_161707.env"

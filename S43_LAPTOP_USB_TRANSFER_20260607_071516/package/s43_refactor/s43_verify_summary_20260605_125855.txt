@@ -1,0 +1,13 @@
+S43_TOOLKIT_VERIFY
+timestamp=20260605_125855
+run_rc=0
+backup=/data/data/com.termux/files/home/s43_refactor/s43_clean_compile_ok_20260605_125855.py
+logfile=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_125855.log
+compile_status=COMPILE_OK
+has_http_403=1
+has_invalid_token_text=1
+token_present=True
+auth_scheme=Token
+balance_ok=0
+balance_failed=3
+final_status=API_403_INVALID_TOKEN

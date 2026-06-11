@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+set -u
+
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REGISTRY="$PROJECT_DIR/config/s43_wallet_registry.env"
+REPORTS="$PROJECT_DIR/reports"
+mkdir -p "$REPORTS"
+
+ts() { date +"%Y%m%d_%H%M%S"; }
+
+mask_value() {
+  v="${1:-}"
+  n="${#v}"
+  if [ "$n" -le 0 ]; then
+    echo "<empty>"
+  elif [ "$n" -le 6 ]; then
+    echo "*** len=${n}"
+  else
+    first="$(printf "%s" "$v" | cut -c1-3)"
+    last="$(printf "%s" "$v" | rev | cut -c1-3 | rev)"
+    echo "${first}***${last} len=${n}"
+  fi
+}
+
+safe_hash() {
+  v="${1:-}"
+  if command -v sha256sum >/dev/null 2>&1; then
+    printf "%s" "$v" | sha256sum | awk '{print $1}'
+  elif command -v shasum >/dev/null 2>&1; then
+    printf "%s" "$v" | shasum -a 256 | awk '{print $1}'
+  else
+    printf "%s" "$v" | cksum | awk '{print $1}'
+  fi
+}
+
+days_left() {
+  exp="${1:-}"
+  if [ -z "$exp" ]; then
+    echo ""
+    return 0
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - "$exp" <<'PY'
+import sys
+from datetime import datetime, timezone
+exp = sys.argv[1].strip()
+try:
+    dt = datetime.strptime(exp, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    now = datetime.now(timezone.utc)
+    delta = dt - now
+    print(delta.days)
+except Exception:
+    print("")
+PY
+  else
+    echo ""
+  fi
+}
+
+wallet_report_row() {
+  idx="$1"
+  enabled_var="S43_WALLET_${idx}_ENABLED"
+  label_var="S43_WALLET_${idx}_LABEL"
+  role_var="S43_WALLET_${idx}_ROLE"
+  prio_var="S43_WALLET_${idx}_PRIORITY"
+  token_var="S43_WALLET_${idx}_TOKEN"
+  exp_var="S43_WALLET_${idx}_TOKEN_EXPIRES_AT"
+  notes_var="S43_WALLET_${idx}_NOTES"
+
+  enabled="$(eval "printf '%s' \"\${$enabled_var:-}\"")"
+  label="$(eval "printf '%s' \"\${$label_var:-}\"")"
+  role="$(eval "printf '%s' \"\${$role_var:-}\"")"
+  prio="$(eval "printf '%s' \"\${$prio_var:-}\"")"
+  token="$(eval "printf '%s' \"\${$token_var:-}\"")"
+  exp="$(eval "printf '%s' \"\${$exp_var:-}\"")"
+  notes="$(eval "printf '%s' \"\${$notes_var:-}\"")"
+
+  dleft="$(days_left "$exp")"
+
+  echo "wallet=$idx"
+  echo "enabled=$enabled"
+  echo "label=$label"
+  echo "role=$role"
+  echo "priority=$prio"
+  if [ -n "$token" ]; then
+    echo "token_present=YES"
+    echo "token_masked=$(mask_value "$token")"
+    echo "token_fp=$(safe_hash "$token")"
+  else
+    echo "token_present=NO"
+  fi
+  echo "token_expires_at=${exp:-}"
+  echo "days_left=${dleft:-}"
+  echo "notes=$notes"
+}
+
+select_wallet() {
+  requested="${1:-${S43_DEFAULT_WALLET:-1}}"
+  case "$requested" in
+    1|2|3) ;;
+    *) requested="${S43_DEFAULT_WALLET:-1}" ;;
+  esac
+  SELECTED_WALLET="$requested"
+}
+
+write_runtime_env() {
+  idx="$1"
+  token_var="S43_WALLET_${idx}_TOKEN"
+  token="$(eval "printf '%s' \"\${$token_var:-}\"")"
+
+  RUNTIME_ENV="$REPORTS/s43_runtime_wallet_${idx}_$STAMP.env"
+  cat > "$RUNTIME_ENV" <<EOF
+export S43_ACTIVE_WALLET="$idx"
+export TOKEN='${token}'
+export API_TOKEN='${token}'
+export ACCESS_TOKEN='${token}'
+export REAL_ARZ_TOKEN='${token}'
+export ARZ_TOKEN='${token}'
+export ARZPLUS_TOKEN='${token}'
+export ARZ_PLUS_TOKEN='${token}'
+export WALLET_${idx}_TOKEN='${token}'
+EOF
+}
+
+cmd_check() {
+  STAMP="$(ts)"
+  REPORT="$REPORTS/wallet_guard_$STAMP.txt"
+
+  if [ ! -f "$REGISTRY" ]; then
+    echo "Missing registry: $REGISTRY"
+    exit 1
+  fi
+
+  # shellcheck disable=SC1090
+  . "$REGISTRY"
+
+  {
+    echo "S43_WALLET_GUARD_REPORT"
+    echo "timestamp=$STAMP"
+    echo "registry=$REGISTRY"
+    echo
+
+    echo "== WALLET_1 =="
+    wallet_report_row 1
+    echo
+    echo "== WALLET_2 =="
+    wallet_report_row 2
+    echo
+    echo "== WALLET_3 =="
+    wallet_report_row 3
+    echo
+
+    warn_days="${S43_TOKEN_WARN_DAYS:-7}"
+    echo "warn_days=$warn_days"
+    echo "default_wallet=${S43_DEFAULT_WALLET:-1}"
+    echo
+
+    echo "== EXPIRY_WARNINGS =="
+    for i in 1 2 3; do
+      exp_var="S43_WALLET_${i}_TOKEN_EXPIRES_AT"
+      label_var="S43_WALLET_${i}_LABEL"
+      exp="$(eval "printf '%s' \"\${$exp_var:-}\"")"
+      label="$(eval "printf '%s' \"\${$label_var:-}\"")"
+      dl="$(days_left "$exp")"
+      if [ -n "$dl" ] && [ "$dl" -le "$warn_days" ]; then
+        echo "WARNING wallet=$i label=$label expires_in_days=$dl"
+      fi
+    done
+    echo
+
+    echo "== VERDICT =="
+    echo "WALLET_GUARD_RESULT=CHECK_COMPLETE"
+  } | tee "$REPORT"
+
+  echo "REPORT_SAVED=$REPORT"
+}
+
+cmd_use() {
+  idx="${2:-}"
+  if [ -z "$idx" ]; then
+    echo "Usage: ./s43_wallet_guard.sh use <1|2|3>"
+    exit 1
+  fi
+
+  if [ ! -f "$REGISTRY" ]; then
+    echo "Missing registry: $REGISTRY"
+    exit 1
+  fi
+
+  # shellcheck disable=SC1090
+  . "$REGISTRY"
+  STAMP="$(ts)"
+  select_wallet "$idx"
+  write_runtime_env "$SELECTED_WALLET"
+
+  echo "S43_ACTIVE_WALLET=$SELECTED_WALLET"
+  echo "RUNTIME_ENV=$RUNTIME_ENV"
+  echo "NEXT: source \"$RUNTIME_ENV\""
+}
+
+cmd_help() {
+  cat <<'EOF'
+S43 Wallet Guard
+
+Commands:
+  ./s43_wallet_guard.sh check
+  ./s43_wallet_guard.sh use 1
+  ./s43_wallet_guard.sh use 2
+  ./s43_wallet_guard.sh use 3
+
+Purpose:
+  - manage 3 independent wallets
+  - track per-wallet token expiry
+  - select a deterministic runtime wallet
+  - support future personal/team/company growth
+EOF
+}
+
+case "${1:-help}" in
+  check) cmd_check ;;
+  use) cmd_use "$@" ;;
+  help|-h|--help) cmd_help ;;
+  *) cmd_help; exit 1 ;;
+esac

@@ -1,0 +1,110 @@
+S43_AUTH_DOCTOR_REPORT
+timestamp=20260605_131211
+project_dir=/data/data/com.termux/files/home/s43_refactor
+target=/data/data/com.termux/files/home/s43_refactor/s43.py
+toolkit=/data/data/com.termux/files/home/s43_refactor/s43_toolkit.sh
+
+== FILE CHECK ==
+s43.py=FOUND
+s43_toolkit.sh=FOUND_EXECUTABLE
+
+== COMPILE CHECK ==
+compile_status=COMPILE_OK
+
+== LATEST ARTIFACTS ==
+latest_summary=/data/data/com.termux/files/home/s43_refactor/s43_verify_summary_20260605_124123.txt
+latest_log=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_123914.log
+
+== SUMMARY SIGNALS ==
+run_rc=0
+compile_status=COMPILE_OK
+has_http_403=1
+has_invalid_token_text=1
+token_present=True
+auth_scheme=Token
+balance_ok=0
+balance_failed=3
+final_status=EXCHANGE_OR_TOKEN_403
+
+== LOG SIGNALS ==
+-- 403 / invalid token lines --
+2:ISOCHK_GLOBAL phase=get_balance err=ApiHttpError:HTTP 403: {"detail":"توکن نامعتبر"} fail_count=1 token_present=True auth_scheme=Token base_url=None
+4:wallet=W1 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+5:ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780650695 fail_count=1 token_present=True auth_scheme=Token base_url=None
+7:wallet=W2 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+8:ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780650695 fail_count=1 token_present=True auth_scheme=Token base_url=None
+10:wallet=W3 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+11:summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+12:OBS event=wallet_reporting_summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+
+== ENV TOKEN/API/KEY CHECK MASKED ==
+NOTE=Values are masked. No secret is printed.
+ACCESS_TOKEN=b6d***be7 len=40
+AI_API_KEY=sk-***hEE len=51
+API_TOKEN=b6d***be7 len=40
+ARZPLUS_TOKEN1=Tok***be7 len=46
+ARZPLUS_TOKEN2=Tok***be7 len=46
+ARZPLUS_TOKEN3=Tok***be7 len=46
+ARZPLUS_TOKEN=b6d***be7 len=40
+ARZPLUS_TOKEN_1=b6d***be7 len=40
+ARZPLUS_TOKEN_2=b6d***be7 len=40
+ARZPLUS_TOKEN_3=b6d***be7 len=40
+ARZ_PLUS_TOKEN=b6d***be7 len=40
+ARZ_PLUS_TOKEN_1=b6d***be7 len=40
+ARZ_PLUS_TOKEN_2=b6d***be7 len=40
+ARZ_PLUS_TOKEN_3=b6d***be7 len=40
+ARZ_TOKEN=b6d***be7 len=40
+ARZ_TOKEN_1=b6d***be7 len=40
+ARZ_TOKEN_2=b6d***be7 len=40
+ARZ_TOKEN_3=b6d***be7 len=40
+OPENAI_API_KEY=sk-***VGA len=51
+REAL_ARZ_TOKEN=b6d***be7 len=40
+S43_W1_TOKEN=b6d***be7 len=40
+TOKEN=b6d***be7 len=40
+TOKEN_1=b6d***be7 len=40
+TOKEN_2=b6d***be7 len=40
+TOKEN_3=b6d***be7 len=40
+W1_TOKEN=b6d***be7 len=40
+WALLET_2_TOKEN=8f9***f76 len=40
+
+== TOOLKIT QUICK VIEW ==
+-- latest-summary --
+LATEST_SUMMARY=s43_verify_summary_20260605_125855.txt
+S43_TOOLKIT_VERIFY
+timestamp=20260605_125855
+run_rc=0
+backup=/data/data/com.termux/files/home/s43_refactor/s43_clean_compile_ok_20260605_125855.py
+logfile=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_125855.log
+compile_status=COMPILE_OK
+has_http_403=1
+has_invalid_token_text=1
+token_present=True
+auth_scheme=Token
+balance_ok=0
+balance_failed=3
+final_status=API_403_INVALID_TOKEN
+
+-- latest-log --
+LATEST_LOG=retry_after_exchange_fix_20260605_125855.log
+[SAFE-NO-TRADE] Empty argv detected; defaulting to --status instead of live trade.
+ISOCHK_GLOBAL phase=get_balance err=ApiHttpError:HTTP 403: {"detail":"توکن نامعتبر"} fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W1 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W1 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780651919 fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W2 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W2 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780651919 fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W3 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W3 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+OBS event=wallet_reporting_summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+
+== VERDICT ==
+has_http_403=1
+has_invalid_token_text=1
+has_compile_ok=1
+has_remote_auth_result=1
+AUTH_DOCTOR_RESULT=REMOTE_AUTH_OR_TOKEN_PROBLEM
+ACTION=Do not patch s43.py for this. Regenerate/check token, permission, IP whitelist, endpoint/base_url, and auth scheme.
+
+REPORT_SAVED=/data/data/com.termux/files/home/s43_refactor/reports/auth_doctor_20260605_131211.txt

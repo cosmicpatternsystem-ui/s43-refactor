@@ -1,0 +1,58 @@
+### Nearby defs/classes around hard veto
+
+ 12050	    def stop(self) -> None:
+ 12061	    async def _run(self) -> None:
+ 12063	    async def _run_fallback(self) -> None:
+ 12082	class _CortexNullLogger:
+ 12083	    def __init__(self) -> None:
+ 12085	    def info(self, *a, **k):
+ 12090	    def warning(self, *a, **k):
+ 12095	    def error(self, *a, **k):
+ 12100	    def exception(self, *a, **k):
+ 12105	class DecisionCortex:
+ 12106	    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+ 12113	    def _ensure_parisa(self) -> None:
+ 12118	            class _ShimBot:
+ 12132	    def parisa_delta(self, symbol: str, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, List[Tuple[str, str]]]:
+ 12134	            return 0.0, []
+ 12137	            return 0.0, []
+ 12141	            delta, contrib = self._legacy.evaluate(sym, st, float(book.bid), float(book.ask), float(book.mid), depth_data)
+ 12143	                delta = float(delta)
+ 12145	                delta = 0.0
+ 12148	            return delta, contrib
+ 12150	            return 0.0, []
+ 12151	    def entry_multiplier(self, symbol: str, raz_signal: Signal, book: OrderBookTop, depth_data: Any = None) -> Tuple[float, Dict[str, Any]]:
+ 12154	            return 1.0, meta
+ 12156	            return 1.0, meta
+ 12158	            meta["raz_conf"] = float(getattr(raz_signal, "confidence", 0.0) or 0.0)
+ 12159	            return 1.0, meta
+ 12160	        delta, contrib = self.parisa_delta(symbol, book, depth_data=depth_data)
+ 12161	        meta["parisa_delta"] = float(delta)
+ 12162	        meta["parisa_vote_thr"] = float(self.cfg.parisa_vote_thr)
+ 12163	        veto_thr = float(getattr(self.cfg, "parisa_veto_thr", -0.35) or -0.35)
+ 12164	        meta["parisa_veto_thr"] = float(veto_thr)
+ 12166	            meta["veto"] = True
+ 12168	                meta["parisa_contrib"] = (contrib or [])[:4]
+ 12170	                meta["parisa_contrib"] = []
+ 12171	            return 1.0, meta
+ 12173	            meta["boost"] = True
+ 12174	            meta["multiplier"] = float(self.cfg.collective_multiplier)
+ 12176	                meta["parisa_contrib"] = (contrib or [])[:4]
+ 12178	                meta["parisa_contrib"] = []
+ 12179	            return float(self.cfg.collective_multiplier), meta
+ 12180	        meta["boost"] = False
+ 12182	            meta["parisa_contrib"] = (contrib or [])[:4]
+ 12184	            meta["parisa_contrib"] = []
+ 12185	        return 1.0, meta
+ 12186	class GlobalExitGuard:
+ 12187	    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+ 12194	    def observe(self, symbol: str, mid: float, ts: Optional[float] = None) -> None:
+ 12205	    def check_symbol(self, symbol: str) -> Optional[dict]:
+ 12209	            return None
+ 12214	            return None
+ 12217	            return {"symbol": sym, "peak": float(peak), "last": float(last), "drop": float(drop), "window_sec": float(self._window)}
+ 12218	        return None
+ 12219	    def should_rate_limit(self) -> bool:
+ 12221	        return (time.time() - self._last_fire_ts) < cool
+ 12222	    def mark_fired(self) -> None:
+ 12227	def _obs_trace_deque() -> deque:

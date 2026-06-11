@@ -1,0 +1,8 @@
+STRICT TODO/FIXME CANDIDATES
+
+./README_RECOVERY.md:65:Remaining blocker: external API / HTTP 403
+./docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:120:- Classification: [ ] none  [ ] minor documentation gap  [ ] review blocker  [ ] safety concern  [ ] runtime concern  [ ] unclear
+./tools/s43_laptop_active_gap_filter_v4.py:29:    r"\b(TODO|FIXME|XXX|HACK|WIP|TBD|PENDING_REVIEW|NEXT_ACTION|ACTION_REQUIRED|REVIEW_REQUIRED|FOLLOW_UP_REQUIRED|BLOCKER)\b",
+./tools/s43_laptop_active_gap_filter_v4.py:33:    r"\b(roadmap|next action|next_action|milestone|backlog|phase plan|release plan|patch plan|implementation plan)\b",
+./tools/s43_laptop_active_gap_filter_v4.py:207:    todo_text_lines = ["STRICT TODO/FIXME CANDIDATES", ""]
+./tools/s43_laptop_active_gap_filter_v4.py:213:    by_file_lines = ["STRICT TODO/FIXME BY FILE", ""]

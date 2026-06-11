@@ -1,0 +1,75 @@
+### test_phase7b_signal_anchor_smoke.py
+
+     1	import unittest
+     2	from pathlib import Path
+     3	
+     4	
+     5	class TestPhase7BSignalAnchorSmoke(unittest.TestCase):
+     6	    @classmethod
+     7	    def setUpClass(cls):
+     8	        cls.src = Path("s43.py").read_text(encoding="utf-8", errors="ignore")
+     9	
+    10	    def test_has_signal_class_anchor(self):
+    11	        self.assertIn("class Signal:", self.src)
+    12	
+    13	    def test_has_signal_evaluate_anchor(self):
+    14	        self.assertIn(
+    15	            "def evaluate(self, symbol: str, book: OrderBookTop) -> Signal:",
+    16	            self.src,
+    17	        )
+    18	
+    19	    def test_has_veto_anchor(self):
+    20	        self.assertIn("if float(delta) <= float(veto_thr):", self.src)
+    21	        self.assertIn('meta["veto"] = True', self.src)
+    22	
+    23	    def test_has_risk_and_phoenix_anchors(self):
+    24	        anchors = [
+    25	            "class RiskDecision:",
+    26	            "class RiskEscalationLayer:",
+    27	            "class PhoenixDecision:",
+    28	            "class PhoenixEngine:",
+    29	        ]
+    30	        for anchor in anchors:
+    31	            with self.subTest(anchor=anchor):
+    32	                self.assertIn(anchor, self.src)
+    33	
+    34	
+    35	if __name__ == "__main__":
+    36	    unittest.main()
+
+### test_phase7a_status_smoke.py
+
+     1	import unittest
+     2	from pathlib import Path
+     3	
+     4	
+     5	class TestPhase7AStatusSmoke(unittest.TestCase):
+     6	    @classmethod
+     7	    def setUpClass(cls):
+     8	        cls.src = Path("s43.py").read_text(encoding="utf-8", errors="ignore")
+     9	
+    10	    def test_has_refresh_balance_anchor(self):
+    11	        self.assertIn(
+    12	            "async def _refresh_balance_if_needed(self, w: WalletRuntime) -> float:",
+    13	            self.src,
+    14	        )
+    15	
+    16	    def test_has_status_once_anchor(self):
+    17	        self.assertIn(
+    18	            "async def _status_once() -> None:",
+    19	            self.src,
+    20	        )
+    21	
+    22	    def test_status_related_tokens_exist(self):
+    23	        # smoke-level only; no production behavior change
+    24	        tokens = [
+    25	            "_refresh_balance_if_needed",
+    26	            "_status_once",
+    27	        ]
+    28	        for token in tokens:
+    29	            with self.subTest(token=token):
+    30	                self.assertIn(token, self.src)
+    31	
+    32	
+    33	if __name__ == "__main__":
+    34	    unittest.main()

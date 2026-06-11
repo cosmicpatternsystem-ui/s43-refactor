@@ -1,0 +1,250 @@
+﻿# S43 Safety Protocol
+
+## Purpose
+
+This document defines the current operational safety model of the S43 trading bot based on the existing implementation.
+
+It is intended to document safety gates, autonomous trading controls, AI execution guards, and risk-layer behavior without modifying the Python source code.
+
+## Current Safety Baseline
+
+As of the current baseline:
+
+- `MY_S43_LATEST.py` and `s43.py` are identical.
+- Python compilation passes for:
+  - `MY_S43_LATEST.py`
+  - `s43.py`
+  - `s43_instrumented_LATEST.py`
+- No code-level changes are introduced by this document.
+- This document is informational and operational.
+
+---
+
+## 1. Autonomous AI Gate
+
+The primary autonomous behavior gate is controlled by:
+```python
+AUTONOMOUS_AI
+
+Implementation reference:
+
+python
+autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", False))
+
+Source:
+
+- `MY_S43_LATEST.py`, line `323`
+
+### Safety Meaning
+
+`AUTONOMOUS_AI` is default-off.
+
+This means autonomous behavior is not enabled unless explicitly activated through environment configuration.
+
+### Operational Rule
+
+Production deployments must treat `AUTONOMOUS_AI=False` as the safe default.
+
+---
+
+## 2. AI Trade Execution Gate
+
+The AI trade execution path is protected by a multi-condition gate.
+
+Implementation reference:
+
+python
+if getattr(self, "_ai_trader", None) is not None and bool(getattr(w.cfg, "autonomous_ai", False)) and bool(_env_bool("OPENAI_TRADE_ENABLE", False)) and bool(_env_bool("OPENAI_TRADE_ALLOW_ND", False)):
+
+Source:
+
+- `MY_S43_LATEST.py`, lines `20003-20060`
+
+### Required Conditions
+
+AI-driven trade execution requires all of the following:
+
+1. `_ai_trader` must exist.
+2. Wallet/config-level `autonomous_ai` must be enabled.
+3. `OPENAI_TRADE_ENABLE` must be enabled.
+4. `OPENAI_TRADE_ALLOW_ND` must be enabled.
+
+### Safety Meaning
+
+This is a multi-layer execution gate.
+
+Failure of any condition prevents the AI trading path from activating.
+
+### Operational Rule
+
+For production operation, all AI trading environment variables must remain disabled unless the deployment has passed a separate live-trading approval process.
+
+---
+
+## 3. Risk Decision Layer
+
+The `RiskDecision` class is used as part of the risk-control layer.
+
+Source:
+
+- `MY_S43_LATEST.py`, line `5807`
+
+Known decision fields include:
+
+- `allow_entries`
+- `allow_exits`
+
+### Safety Meaning
+
+The risk layer can affect whether the system is allowed to enter or exit trades.
+
+### Related Controls
+
+The risk model uses mechanisms such as:
+
+- thresholds
+- weights
+- clamping
+- cooldown windows
+
+These mechanisms reduce impulsive or unstable behavior during abnormal market conditions.
+
+---
+
+## 4. Order Placement Path
+
+The function name `place_order` appears as a real order execution candidate.
+
+Known references:
+
+- `MY_S43_LATEST.py`, line `3230`
+- `MY_S43_LATEST.py`, line `15057`
+
+### Safety Meaning
+
+`place_order` should be treated as a critical execution boundary.
+
+### Operational Rule
+
+Any future code modification around `place_order` must be reviewed as high-risk and must not bypass:
+
+- autonomous gates
+- risk decisions
+- wallet-level permissions
+- environment-level execution flags
+
+---
+
+## 5. Emergency Stop / Kill Switch Status
+
+No explicit classic kill switch names were found in the current codebase, including:
+
+text
+kill_switch
+emergency_stop
+stop_trading
+trading_disabled
+disable_trading
+
+However, the code appears to implement safe-state behavior through several mechanisms:
+
+- `_ai_live_trading_armed`
+- `RISK_W_NET_PAUSE`
+- `PhoenixDecision`
+- `FLAT` state handling
+
+Sources:
+
+- `MY_S43_LATEST.py`, line `5829`
+- `MY_S43_LATEST.py`, line `7241`
+
+### Safety Meaning
+
+The system currently appears to rely on distributed safe-state logic rather than a single named emergency stop switch.
+
+### Product Recommendation
+
+A future release should introduce a clearly named and centrally documented kill switch, for example:
+
+text
+TRADING_GLOBAL_KILL_SWITCH
+
+or:
+
+text
+S43_EMERGENCY_STOP
+
+This should be planned, reviewed, and tested separately.
+
+---
+
+## 6. Missing Marker: READY_FOR_AUTONOMOUS_DECISION
+
+The marker:
+
+text
+READY_FOR_AUTONOMOUS_DECISION
+
+was not found in the current codebase.
+
+### Safety Meaning
+
+There is no explicit final readiness marker for autonomous decision execution.
+
+### Product Recommendation
+
+Future versions may introduce a formal readiness gate, but this should not be added without a dedicated implementation plan and test coverage.
+
+---
+
+## 7. Current Safety Interpretation
+
+The current safety model can be summarized as:
+
+text
+AI trading execution =
+_ai_trader exists
+AND autonomous_ai enabled
+AND OPENAI_TRADE_ENABLE enabled
+AND OPENAI_TRADE_ALLOW_ND enabled
+AND risk/order layers allow execution
+
+If any required layer fails, AI-driven trade execution should not proceed.
+
+---
+
+## 8. Review Requirements for Future Changes
+
+Any future change touching the following areas must be treated as high-risk:
+
+- `place_order`
+- `_ai_trader`
+- `AUTONOMOUS_AI`
+- `OPENAI_TRADE_ENABLE`
+- `OPENAI_TRADE_ALLOW_ND`
+- `RiskDecision`
+- `PhoenixDecision`
+- wallet execution configuration
+- live trading flags
+
+Required review steps:
+
+1. Update this document.
+2. Run baseline hash verification.
+3. Run `py_compile`.
+4. Review diff manually.
+5. Confirm default-off behavior remains unchanged.
+6. Confirm no execution path bypasses risk gates.
+
+---
+
+## Status
+
+This document is based on static review of the current baseline.
+
+It does not modify runtime behavior.
+
+Recommended status:
+
+text
+SAFETY DOCUMENTATION ONLY - NO CODE CHANGE

@@ -1,0 +1,86 @@
+import asyncio
+import importlib
+import sys
+
+def pick_symbol(signal):
+    # ensure we have something printable even if signal is a dict-like
+    return getattr(signal, "symbol", None) or (signal.get("symbol") if isinstance(signal, dict) else None) or "BTCIRT"
+
+async def main():
+    s43 = importlib.import_module("s43")
+
+    # Resolve classes/exceptions
+    CLS = getattr(s43, "RazTraderEnhanced", None)
+    if CLS is None:
+        raise SystemExit("FAIL: s43.RazTraderEnhanced not found")
+
+    TemporaryPause = getattr(s43, "TemporaryPause", None)
+    TradingHalt = getattr(s43, "TradingHalt", None)
+    if TemporaryPause is None or TradingHalt is None:
+        raise SystemExit("FAIL: TemporaryPause/TradingHalt not found in s43")
+
+    # Create a minimal instance without triggering heavy __init__
+    trader = CLS.__new__(CLS)
+
+    # Minimal signal/position_size
+    class Sig:
+        def __init__(self, symbol="BTCIRT"):
+            self.symbol = symbol
+
+    signal = Sig("BTCIRT")
+    position_size = 1
+
+    # Dummy API clients to simulate outcomes
+    class DummyAPIClientTransient:
+        async def place_order(self, *args, **kwargs):
+            raise TemporaryPause("SIMULATED_TRANSIENT", pause_sec=0.1)
+
+    class DummyAPIClientPermanent:
+        async def place_order(self, *args, **kwargs):
+            raise RuntimeError("SIMULATED_PERMANENT")
+
+    # We need to attach whatever attribute _execute_trade uses as its API/exchange client.
+    # In earlier work you used a dummy "api_client" style. We'll try common names.
+    def attach_client(obj, client):
+        for name in ("api_client", "_api", "client", "_client", "exchange", "_ex"):
+            setattr(obj, name, client)
+        return obj
+
+    # --- Test 1: transient preserves TemporaryPause
+    attach_client(trader, DummyAPIClientTransient())
+    try:
+        await CLS._execute_trade(trader, signal, position_size)
+        print("FAIL transient: expected TemporaryPause, got success")
+        return 2
+    except TemporaryPause as e:
+        print("PASS transient:", str(e))
+    except Exception as e:
+        print("FAIL transient: expected TemporaryPause, got:", type(e).__name__, str(e))
+        return 2
+
+    # --- Test 2: permanent converts to TradingHalt("ORDER_EXECUTION_FAILED")
+    attach_client(trader, DummyAPIClientPermanent())
+    try:
+        await CLS._execute_trade(trader, signal, position_size)
+        print("FAIL permanent: expected TradingHalt, got success")
+        return 3
+    except TradingHalt as e:
+        msg = str(e)
+        if "ORDER_EXECUTION_FAILED" in msg:
+            print("PASS permanent:", msg)
+        else:
+            print("FAIL permanent: TradingHalt but unexpected message:", msg)
+            return 3
+    except Exception as e:
+        print("FAIL permanent: expected TradingHalt, got:", type(e).__name__, str(e))
+        return 3
+
+    print("OVERALL: PASS")
+    return 0
+
+if __name__ == "__main__":
+    try:
+        rc = asyncio.run(main())
+    except KeyboardInterrupt:
+        rc = 130
+    sys.exit(rc)

@@ -1,0 +1,53 @@
+S43_WALLET_GUARD_REPORT
+timestamp=20260605_155026
+project_dir=/data/data/com.termux/files/home/s43_refactor
+registry=/data/data/com.termux/files/home/s43_refactor/config/s43_wallet_registry.env
+security_mode=strict
+language_policy=english_only
+
+== WALLET_1 ==
+wallet=1
+enabled=1
+label=core_alpha
+role=primary_high_efficiency
+priority=100
+token_present=YES
+token_masked=b6d5***fbe7 len=40
+token_fp=8cf1a8a543005d27d72eb7604c9cfa09dfd740380ec131d381eb7e3e0bdfd070
+token_expires_at=2026-07-05
+days_left=29
+notes=Highest efficiency, best quality assets, strict risk control
+
+== WALLET_2 ==
+wallet=2
+enabled=1
+label=capital_shield
+role=defensive_capital_preservation
+priority=70
+token_present=YES
+token_masked=8f9a***8f76 len=40
+token_fp=950aac8efee04ce087fbaf13a1a7adbd1d8169c3b1e557c5ec745fafa74c2bcc
+token_expires_at=2026-07-05
+days_left=29
+notes=Capital protection, reserve mode, lower risk allocation
+
+== WALLET_3 ==
+wallet=3
+enabled=1
+label=strategic_lab
+role=experimental_team_future
+priority=40
+token_present=YES
+token_masked=a0b0***f1b2 len=40
+token_fp=e9292eff140c99990a24b5e12cdb78fe6214c42e3c0a95a688be454427d3687b
+token_expires_at=2026-07-05
+days_left=29
+notes=Controlled experiments, team growth, future enterprise expansion
+
+warn_days=7
+default_wallet=1
+
+== EXPIRY_WARNINGS ==
+
+== VERDICT ==
+WALLET_GUARD_RESULT=CHECK_COMPLETE

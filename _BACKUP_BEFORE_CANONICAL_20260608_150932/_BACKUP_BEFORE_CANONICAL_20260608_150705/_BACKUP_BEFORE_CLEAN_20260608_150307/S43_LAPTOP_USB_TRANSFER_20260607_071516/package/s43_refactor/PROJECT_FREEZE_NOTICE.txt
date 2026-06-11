@@ -1,0 +1,26 @@
+PROJECT FREEZE NOTICE
+
+Baseline file:
+- s43.py
+
+Locked snapshot:
+- s43_FINAL_AUDIT_LOCKED_20260602_191733.py
+
+Evidence package:
+- final_audit_evidence/
+
+Development branch file:
+- s43_dev_next.py
+
+Freeze policy:
+- Do not modify s43.py
+- Do not modify the locked snapshot
+- Do not alter evidence artifacts
+- Perform all future work only in s43_dev_next.py or later dev copies
+
+Baseline integrity:
+- s43.py SHA256 = 0f690ed7321d8da02872e53d1990233370e5a02c1244c7282a846ad1b31361da
+- AUDIT_SIGNOFF_s43.txt SHA256 = c120904cce09108f4e6d491a5fd6004d0086867a37015ea00764cd6f2d5d7bbd
+
+Status:
+- SAFE-AUDIT-ONLY baseline preserved

@@ -1,0 +1,26 @@
+14875:     async def place_order(
+14876:         self,
+14877:         symbol: str,
+14878:         side: str,
+14879:         amount: float,
+14880:         price: float,
+14881:         cid: Optional[str] = None,
+14882:         *,
+14883:         notional_irt: Optional[float] = None,
+14884:         reduce_only: bool = False,
+14885:         fill_type: Optional[str] = None,
+14886:         market: Optional[str] = None,
+14887:         **kwargs,
+14888:     ) -> dict:
+14889:         return await self._place_order_impl(
+14890:             symbol,
+14891:             side,
+14892:             amount,
+14893:             price,
+14894:             cid=cid,
+14895:             notional_irt=notional_irt,
+14896:             reduce_only=reduce_only,
+14897:             fill_type=fill_type,
+14898:             market=market,
+14899:             **kwargs,
+14900:         )

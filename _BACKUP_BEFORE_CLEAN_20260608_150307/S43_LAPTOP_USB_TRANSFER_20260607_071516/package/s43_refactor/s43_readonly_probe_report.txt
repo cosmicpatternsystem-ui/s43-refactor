@@ -1,0 +1,228 @@
+S43 READONLY PROBE REPORT
+=========================
+status:                          STARTED
+time:                            2026-06-03 14:38:01
+working_directory:               /data/data/com.termux/files/home/s43_refactor
+target_file:                     s43.py
+report_file:                     s43_readonly_probe_report.txt
+tmp_dir:                         .s43_probe_tmp
+
+ENVIRONMENT
+-----------
+shell:                           /data/data/com.termux/files/usr/bin/bash
+uname:                           Linux localhost 4.4.111-21427293 #1 SMP PREEMPT Mon Jul 25 18:08:11 KST 2022 armv8l Android
+python3_available:               YES
+python_available:                YES
+sha256sum_available:             YES
+grep_available:                  YES
+awk_available:                   YES
+sed_available:                   YES
+
+TARGET FILE
+-----------
+exists:                          YES
+readable:                        YES
+writable:                        YES
+lines:                           29958
+bytes:                           2620287
+sha256:                          c5b0b5cf1e20dc253d91867d833cf5a02f53324b07f491f4acb891caad45b334
+
+PYTHON COMPILE CHECK
+--------------------
+python_command:                  python3
+py_compile:                      PASS
+
+PROJECT MARKERS
+---------------
+AUTOPATCH_STAGE1_MARKER_count:   1
+_s43_autopatch_probe_count:      1
+monkey_patch_mentions:           3
+official_patch_mentions:         10
+dataclass_frozen_mentions:       2
+
+FIRST MATCHES
+-------------
+AUTOPATCH_STAGE1_MARKER:
+15376:# AUTOPATCH_STAGE1_MARKER
+
+_s43_autopatch_probe:
+15377:def _s43_autopatch_probe():
+
+@dataclass(frozen=True):
+331:@dataclass(frozen=True)
+5977:@dataclass(frozen=True)
+
+STRUCTURE INVENTORY
+-------------------
+class_count:                     101
+def_count:                       54
+async_def_count:                 3
+import_count:                    23
+from_import_count:               6
+
+TOP LEVEL CLASSES
+-----------------
+175:class TemporaryPause(Exception):
+180:class ApiError(Exception):
+182:class ApiHttpError(ApiError):
+332:class BotConfig:
+528:class _DashRingHandler(logging.Handler):
+667:class _NoopLock:
+1087:class Logger:
+1133:class CircuitBreaker:
+1154:class SharedAsyncRateLimiter:
+1216:class PrioritySemaphore:
+1252:class ExchangeClient:
+4750:class MarketSpecsCache:
+4794:class OrderNormalizer:
+4823:class TickRecorder:
+5010:class OrderBookTop:
+5019:class Signal:
+5036:class Position:
+5041:class _DataFeedBase:
+5900:class _ClockArbiterBase:
+5970:class TradeHealth:
+5978:class RiskDecision:
+5986:class RiskEscalationLayer:
+6087:class TradeHealthController:
+6256:class OrderBookService:
+6328:class _SymbolState:
+6338:class EdgeModelV2:
+6426:class _NoopLock:
+6449:class AlphaModel:
+6767:class PriceHistory:
+6776:class _AnalyticsParsing:
+6814:class MultiTimeframeAnalyzer:
+6865:class PatternDetector:
+6970:class OrderBookAnalyzer:
+7025:class SentimentAnalyzer:
+7081:class LightMLPredictor:
+7130:class AdvancedAnalyticsEngine:
+7382:class TradingMemory:
+7412:class PhoenixDecision:
+7446:class SovereignEngine:
+7735:class SovereignCore:
+7843:class Priority(enum.IntEnum):
+7850:class PrioritizedItem:
+7854:class LatencyAwareEventLoop:
+7910:class AsyncRateLimiter:
+7972:class HealthMetric:
+8017:class SymbolHealthMonitor:
+8123:class GlobalHealthMonitor:
+8214:class VolatilityRegime(enum.Enum):
+8222:class VolatilityMetrics:
+8239:class DynamicPositionSizer:
+8514:class SignalConfidence(enum.Enum):
+8521:class FilteredSignal:
+8554:class HybridSignalFilter:
+8840:class RetryStrategy(enum.Enum):
+8846:class RetryConfig:
+8856:class CircuitBreakerState(enum.Enum):
+8860:class SmartCircuitBreaker:
+8931:class AdaptiveRetryHandler:
+9015:class ResilientAPIClient:
+9124:class RiskMetrics:
+9149:class DashboardRenderer:
+9221:class RiskMetricsCalculator:
+9346:class RazTraderEnhanced:
+9695:class PhoenixEngine:
+10158:class SanityStatus:
+10170:class SanityHaltController:
+10491:class _DzhBanIntegrityBase:
+10667:class ClockArbiter(_ClockArbiterBase):
+10718:class DataFeed(_DataFeedBase):
+10764:class DzhBanIntegrity(_DzhBanIntegrityBase):
+10973:class RiskManager:
+11591:class ExecutionEngine:
+12200:class DashboardManager:
+12280:class _CortexNullLogger:
+12303:class DecisionCortex:
+12384:class GlobalExitGuard:
+12434:class WalletRuntime:
+12580:class _VolatilityAnalyzer:
+12608:class SymbolSnapshot:
+12633:class MarketSnapshotStore:
+
+TOP LEVEL FUNCTIONS
+-------------------
+28:def _s43_audit_only_hardstop(*args, **kwargs):
+33:def _s43_audit_env_guard():
+58:def _parse_wallet_balance_response_v2(resp, quote="IRT"):
+195:def _parse_hard_veto_sources_env(default_sources=None):
+219:def _s43_debug_print_enabled() -> bool:
+228:def _s43_debug_print(*args, **kwargs):
+548:def _parisa_embedded_code_bytes() -> bytes:
+552:def _extract_parisa_to_file(out_path: str) -> str:
+578:def _load_parisa_module():
+609:def _parisa_preflight(mod) -> None:
+1049:def _temporary_argv(argv: list[str]):
+1067:def _ensure_dir(path):
+4737:def _first_num(d: dict, *keys: str, default: float = 0.0) -> float:
+4745:def _quantize_down(x: float, step: float) -> float:
+6795:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+12425:def _obs_trace_deque() -> deque:
+12901:def _record_why_no_trade(bot: Any, *, wallet: str = "", sym: str = "", status: str = "", reason: str = "", meta: dict | None = None) -> None:
+13002:def _dash_param_update(bot: Any, *, wallet: str, sym: str, fields: dict) -> None:
+14702:def build_parser() -> argparse.ArgumentParser:
+14720:def _run_coro_sync(coro):
+14731:def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
+15271:def get_arzplus_token(slot=None, default=""):
+15377:def _s43_autopatch_probe():
+24275:def _recorder_child_main(args: Any) -> None:
+24356:def _gc_freeze_after_init() -> None:
+24369:def run(argv: list[str] | None = None) -> None:
+28673:def _orch22_fmt_fields(fields: Dict[str, Any]) -> str:
+28688:def _orch22_log(log: logging.Logger, level: int, event: str, **fields: Any) -> None:
+29309:def _phoenix_selftests() -> None:
+29383:def main(argv: list[str] | None = None) -> None:
+29396:def _env_bool(name: str, default=False):
+29411:def _env_float(name: str, default: float = 0.0) -> float:
+29429:def _env_str(name: str, default: str | None = None) -> str:
+29444:def _canon_symbol(sym: str) -> str:
+29457:def _env_int(name: str, default: int = 0) -> int:
+29475:def clamp(x, lo, hi):
+29499:def _ai_runtime_enabled(cfg) -> bool:
+29508:def _live_trading_armed(cfg) -> bool:
+29511:def _ai_live_trading_armed(cfg) -> bool:
+29519:def _rt_now():
+29522:def _atomic_write_json(path, data, *, indent=2, ensure_ascii=False):
+29547:def _rt_stop_requested(stop_event):
+29563:def _sleep_or_stop(seconds, stop_event=None, *, interval=0.25):
+29582:def _s43_block_live_order_call(*args, **kwargs):
+29608:def _audit_only_block(*args, **kwargs):
+29638:def _audit_only_block(*args, **kwargs):
+29665:def _s43_safety_env_bool(name: str, default: bool = False) -> bool:
+29676:def _s43_safety_float_env(name: str, default: float) -> float:
+29687:def _s43_get_safety_coordinator(owner=None):
+29738:def _s43_first_market_row(snapshot):
+29784:def _s43_float_from_keys(row, keys, default=0.0):
+29803:def _s43_market_snapshot_for_guard(snapshot, local_ts=None, fallback_symbol="UNKNOWN"):
+29867:def _s43_balance_total_from_account_data(account_data):
+29941:def _s43_balance_snapshot_for_guard(account_data, ts=None):
+
+ASYNC TOP LEVEL FUNCTIONS
+-------------------------
+15344:async def _stress_idempotency(args: argparse.Namespace) -> None:
+29275:async def _run_orchestrator22_monitor(args: Any) -> None:
+29585:async def _s43_block_live_order_call_async(*args, **kwargs):
+
+RISK KEYWORDS SUMMARY
+---------------------
+eval_count:                      2
+exec_count:                      5
+subprocess_count:                7
+os_system_count:                 0
+pickle_count:                    0
+requests_count:                  9
+sqlite_count:                    9
+thread_count:                    2
+asyncio_count:                   251
+
+READONLY POLICY RESULT
+----------------------
+modified_target:                 NO
+restore_performed:               NO
+patch_performed:                 NO
+refactor_performed:              NO
+report_generated:                YES
+final_status:                    READONLY_PROBE_COMPLETE

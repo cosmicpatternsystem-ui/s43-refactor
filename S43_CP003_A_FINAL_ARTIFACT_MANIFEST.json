@@ -1,0 +1,54 @@
+﻿{
+    "document":  "S43_CP003_A_FINAL_ARTIFACT_MANIFEST.json",
+    "status":  "FINAL_ARCHIVAL_MANIFEST",
+    "project":  "S43",
+    "phase":  "CP-003-A",
+    "created_at":  "2026-06-12T00:42:41.1747052+03:30",
+    "autonomy_mode":  "OBSERVATION_ONLY",
+    "approval_mode":  "DENY_BY_DEFAULT",
+    "integration_authorized":  false,
+    "live_trading_authorized":  false,
+    "runtime_wiring_added":  false,
+    "baseline_files_touched":  false,
+    "artifact_count":  7,
+    "artifacts":  [
+                      {
+                          "path":  "cp003_scaffold\\__init__.py",
+                          "size_bytes":  160,
+                          "sha256":  "90B88A646E53437C73712D7F1ED9AC6B484F544E161C11646FCF202843992ED2"
+                      },
+                      {
+                          "path":  "cp003_scaffold\\contracts.py",
+                          "size_bytes":  1752,
+                          "sha256":  "118E74AC87BEAFC8DB6413C7112AA44D4176B76EED0635E60F78AC57ED32A9F1"
+                      },
+                      {
+                          "path":  "cp003_scaffold\\safety_law_engine.py",
+                          "size_bytes":  743,
+                          "sha256":  "1EE29AD8AED09DAF61C9B3AC5F48EB57785E44E0691E1302EA422FC480404F8C"
+                      },
+                      {
+                          "path":  "cp003_scaffold\\portfolio_brain.py",
+                          "size_bytes":  712,
+                          "sha256":  "C3C4DC8BD89C5903DF138BEB4B57B520C47156216D04408535B274A9D10C9891"
+                      },
+                      {
+                          "path":  "cp003_scaffold\\audit_receipt_engine.py",
+                          "size_bytes":  640,
+                          "sha256":  "9DE399B08AC4468F54D400B695F4C566F18A9B60A9DD043763A2C7369746D284"
+                      },
+                      {
+                          "path":  "S43_CP003_A_SCAFFOLD_ONLY_RECEIPT.json",
+                          "size_bytes":  2000,
+                          "sha256":  "AFDD0989B923010AA10B4BC054B65703C8C4629F4B596C9CD8FEF2C9877002E6"
+                      },
+                      {
+                          "path":  "S43_CP003_A_LOCK_CONFIRMATION.txt",
+                          "size_bytes":  1066,
+                          "sha256":  "0E1C548C1780CE3A328EA62C94D1461C41C9626191B0B71AEFB9DC11875C894C"
+                      }
+                  ],
+    "governing_receipt":  "S43_CP003_A_SCAFFOLD_ONLY_RECEIPT.json",
+    "governing_lock_confirmation":  "S43_CP003_A_LOCK_CONFIRMATION.txt",
+    "final_ruling":  "CP003-A scaffold-only completed; runtime integration remains unauthorized."
+}

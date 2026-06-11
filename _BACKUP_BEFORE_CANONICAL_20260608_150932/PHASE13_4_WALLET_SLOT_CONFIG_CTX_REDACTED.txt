@@ -1,0 +1,210 @@
+===== context around 220 =====
+206:    market_age_skip_sec: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", (6.0 if _env_bool("[STR]", False) else 2.0))))
+207:    market_age_sleep_sec: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", (6.0 if _env_bool("[STR]", False) else 2.0))))
+208:    dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("[STR]", False))
+209:
+210:    # Future-proof runtime / AI controls
+211:    ai_mode: str = field(default_factory=lambda: str(os.getenv("[STR]", "[STR]")).strip().lower())
+212:    runtime_profile: str = field(default_factory=lambda: str(os.getenv("[STR]", ("[STR]" if _env_bool("[STR]", False) else "[STR]"))).strip().lower())
+213:    live_trading_armed: bool = field(default_factory=lambda: _env_bool("[STR]", _env_bool("[STR]", False)))
+214:    ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("[STR]", False))
+215:    dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("[STR]", _env_bool("[STR]", _env_bool("[STR]", False))))
+216:    dzh_auto_tune: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+217:    dzh_dyn_tune: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+218:    dzh_safety_entry: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+219:    dzh_veto_htf: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+220:    dzh_net_alpha: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+221:    dzh_net_alpha_span: int = field(default_factory=lambda: max(10, _env_int("[STR]", 50)))
+222:    dzh_liquidity_min_irt: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", 25_000_000.0)))
+223:    dzh_spread_max_bps: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", 35.0)))
+224:    dzh_fake_breakout_bps: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", 8.0)))
+225:    dzh_htf_reject_thr: float = field(default_factory=lambda: float(_env_float("[STR]", 0.42)))
+226:    dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("[STR]", 0.35), 0.05, 1.0))
+227:    dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("[STR]", 1.0), 0.05, 2.0))
+228:    flash_crash_enabled: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+229:    flash_crash_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.05)))
+230:    flash_crash_window_sec: float = field(default_factory=lambda: _env_float("[STR]", 30.0))
+231:    flash_ref_symbols: List[str] = field(default_factory=lambda: [
+232:        _canon_symbol(s) for s in _env_str("[STR]", "[STR]").split("[STR]") if str(s).strip()
+233:    ])
+234:    flash_min_confirmations: int = field(default_factory=lambda: _env_int("[STR]", 1))
+===== context around 237 =====
+223:    dzh_spread_max_bps: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", 35.0)))
+224:    dzh_fake_breakout_bps: float = field(default_factory=lambda: max(0.0, _env_float("[STR]", 8.0)))
+225:    dzh_htf_reject_thr: float = field(default_factory=lambda: float(_env_float("[STR]", 0.42)))
+226:    dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("[STR]", 0.35), 0.05, 1.0))
+227:    dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("[STR]", 1.0), 0.05, 2.0))
+228:    flash_crash_enabled: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+229:    flash_crash_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.05)))
+230:    flash_crash_window_sec: float = field(default_factory=lambda: _env_float("[STR]", 30.0))
+231:    flash_ref_symbols: List[str] = field(default_factory=lambda: [
+232:        _canon_symbol(s) for s in _env_str("[STR]", "[STR]").split("[STR]") if str(s).strip()
+233:    ])
+234:    flash_min_confirmations: int = field(default_factory=lambda: _env_int("[STR]", 1))
+235:    [REDACTED]: float = field(default_factory=lambda: abs(_env_float("[STR]", 80.0)))
+236:    global_exit_armed: bool = field(default_factory=lambda: _env_bool("[STR]", False))
+237:    wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+238:    min_notional_irt: float = field(default_factory=lambda: _env_float("[STR]", 200_000.0))
+239:    max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("[STR]", 0.90), 0.05, 0.95))
+240:    max_open_positions: int = field(default_factory=lambda: _env_int("[STR]", 4))
+241:    buy_threshold: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.20)))
+242:    sell_threshold: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.20)))
+243:    min_hold_sec: float = field(default_factory=lambda: _env_float("[STR]", 8.0))
+244:    stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.02)))
+245:    take_profit_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.03)))
+246:    max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.05)))
+247:    rate_limit_per_min: int = field(default_factory=lambda: _env_int("[STR]", 100))
+248:    circuit_breaker_errors: int = field(default_factory=lambda: _env_int("[STR]", 12))
+249:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 45.0))
+250:    balance_refresh_sec: float = field(default_factory=lambda: _env_float("[STR]", 8.0))
+251:    orders_refresh_sec: float = field(default_factory=lambda: _env_float("[STR]", 3.0))
+===== context around 250 =====
+236:    global_exit_armed: bool = field(default_factory=lambda: _env_bool("[STR]", False))
+237:    wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+238:    min_notional_irt: float = field(default_factory=lambda: _env_float("[STR]", 200_000.0))
+239:    max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("[STR]", 0.90), 0.05, 0.95))
+240:    max_open_positions: int = field(default_factory=lambda: _env_int("[STR]", 4))
+241:    buy_threshold: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.20)))
+242:    sell_threshold: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.20)))
+243:    min_hold_sec: float = field(default_factory=lambda: _env_float("[STR]", 8.0))
+244:    stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.02)))
+245:    take_profit_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.03)))
+246:    max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("[STR]", 0.05)))
+247:    rate_limit_per_min: int = field(default_factory=lambda: _env_int("[STR]", 100))
+248:    circuit_breaker_errors: int = field(default_factory=lambda: _env_int("[STR]", 12))
+249:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 45.0))
+250:    balance_refresh_sec: float = field(default_factory=lambda: _env_float("[STR]", 8.0))
+251:    orders_refresh_sec: float = field(default_factory=lambda: _env_float("[STR]", 3.0))
+252:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 30.0))
+253:    depth_cache_ttl_sec: float = field(default_factory=lambda: _env_float("[STR]", 1.2))
+254:    price_cache_path: str = field(default_factory=lambda: _env_str("[STR]", "[STR]"))
+255:    price_cache_on_timeout: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+256:    state_path: str = field(default_factory=lambda: _env_str("[STR]", "[STR]"))
+257:    state_save_sec: float = field(default_factory=lambda: _env_float("[STR]", 30.0))
+258:    risk_journal_path: str = field(default_factory=lambda: _env_str("[STR]", "[STR]"))
+259:    risk_journal_fsync: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+260:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 1.0))
+261:    orders_journal_path: str = field(default_factory=lambda: _env_str("[STR]", "[STR]"))
+262:    orders_journal_fsync: bool = field(default_factory=lambda: _env_bool("[STR]", True))
+263:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 0.25))
+264:    [REDACTED]: float = field(default_factory=lambda: _env_float("[STR]", 180.0))
+===== context around 14436 =====
+14422:        pass
+14423:    try:
+14424:        if bool(getattr(args, "[STR]", False)):
+14425:            os.environ["[STR]"] = "[STR]"
+14426:            os.environ["[STR]"] = "[STR]"
+14427:    except Exception:
+14428:        pass
+14429:    try:
+14430:        syms = str(getattr(args, "[STR]", "[STR]") or "[STR]").strip()
+14431:        if syms:
+14432:            os.environ["[STR]"] = syms
+14433:    except Exception:
+14434:        pass
+14435:    try:
+14436:        wslots = str(getattr(args, "[STR]", "[STR]") or "[STR]").strip()
+14437:        if wslots:
+14438:            os.environ["[STR]"] = wslots.replace("[STR]", "[STR]")
+14439:    except Exception:
+14440:        pass
+14441:    try:
+14442:        if bool(getattr(args, "[STR]", False)):
+14443:            os.environ["[STR]"] = "[STR]"
+14444:            dbp = str(getattr(args, "[STR]", "[STR]") or "[STR]").strip()
+14445:            if dbp:
+14446:                os.environ["[STR]"] = dbp
+14447:    except Exception:
+14448:        pass
+14449:    try:
+14450:        if bool(getattr(args, "[STR]", False)):
+===== context around 29537 =====
+29523:                await asyncio.sleep(1.0)
+29524:        if self._dash_task:
+29525:            self._dash_task.cancel()
+29526:            with contextlib.suppress(Exception):
+29527:                await self._dash_task
+29528:        if self._wd_task:
+29529:            self._wd_task.cancel()
+29530:            with contextlib.suppress(Exception):
+29531:                await self._wd_task
+29532:async def [REDACTED](args: Any) -> None:
+29533:    cfg = BotConfig()
+29534:    log = Logger(cfg).log
+29535:    slots: Optional[List[int]] = None
+29536:    try:
+29537:        raw = getattr(args, "[STR]", None)
+29538:        if raw:
+29539:            slots = [int(x) for x in str(raw).replace("[STR]", "[STR]").split("[STR]") if x.strip().isdigit()]
+29540:    except Exception:
+29541:        slots = None
+29542:    warn = getattr(args, "[STR]", None)
+29543:    crit = getattr(args, "[STR]", None)
+29544:    hb = getattr(args, "[STR]", None)
+29545:    cancel_all = bool(getattr(args, "[STR]", False))
+29546:    orch = Orch22Orchestrator(
+29547:        cfg,
+29548:        log,
+29549:        wallet_slots=slots,
+29550:        stale_warn_sec=warn,
+29551:        stale_crit_sec=crit,
+===== context around 29549 =====
+29535:    slots: Optional[List[int]] = None
+29536:    try:
+29537:        raw = getattr(args, "[STR]", None)
+29538:        if raw:
+29539:            slots = [int(x) for x in str(raw).replace("[STR]", "[STR]").split("[STR]") if x.strip().isdigit()]
+29540:    except Exception:
+29541:        slots = None
+29542:    warn = getattr(args, "[STR]", None)
+29543:    crit = getattr(args, "[STR]", None)
+29544:    hb = getattr(args, "[STR]", None)
+29545:    cancel_all = bool(getattr(args, "[STR]", False))
+29546:    orch = Orch22Orchestrator(
+29547:        cfg,
+29548:        log,
+29549:        wallet_slots=slots,
+29550:        stale_warn_sec=warn,
+29551:        stale_crit_sec=crit,
+29552:        cancel_all_on_stale=cancel_all,
+29553:        heartbeat_sec=hb,
+29554:    )
+29555:    loop = asyncio.get_running_loop()
+29556:    def _sig(*_a: Any) -> None:
+29557:        orch.stop()
+29558:    for s in (signal.SIGINT, signal.SIGTERM):
+29559:        with contextlib.suppress(NotImplementedError):
+29560:            loop.add_signal_handler(s, _sig)
+29561:    _orch22_log(log, logging.INFO, "[STR]", base_url=cfg.base_url, wallet_slots=(slots or cfg.wallet_slots))
+29562:    try:
+29563:        await orch.run()
+===== context around 29561 =====
+29547:        cfg,
+29548:        log,
+29549:        wallet_slots=slots,
+29550:        stale_warn_sec=warn,
+29551:        stale_crit_sec=crit,
+29552:        cancel_all_on_stale=cancel_all,
+29553:        heartbeat_sec=hb,
+29554:    )
+29555:    loop = asyncio.get_running_loop()
+29556:    def _sig(*_a: Any) -> None:
+29557:        orch.stop()
+29558:    for s in (signal.SIGINT, signal.SIGTERM):
+29559:        with contextlib.suppress(NotImplementedError):
+29560:            loop.add_signal_handler(s, _sig)
+29561:    _orch22_log(log, logging.INFO, "[STR]", base_url=cfg.base_url, wallet_slots=(slots or cfg.wallet_slots))
+29562:    try:
+29563:        await orch.run()
+29564:    finally:
+29565:        orch.stop()
+29566:def _phoenix_selftests() -> None:
+29567:    try:
+29568:        if globals().get('[STR]', False):
+29569:            print('[STR]')
+29570:            return
+29571:    except Exception:
+29572:        return
+29573:    '[STR]''Run minimal truthfulness/ready-gating checks.
+29574:    Enable with: PHOENIX_SELFTEST=1 python x1.py
+29575:    '[STR]''

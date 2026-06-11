@@ -1,0 +1,12 @@
+===== resolver selection safe simulation =====
+slot=None selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=0 selected_key=ARZPLUS_TOKEN_1 SET len=46 has_space=False prefix=Token
+slot=1 selected_key=ARZPLUS_TOKEN_1 SET len=46 has_space=False prefix=Token
+slot=2 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=3 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=4 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=5 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=6 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=7 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=8 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token
+slot=9 selected_key=ARZPLUS_TOKEN SET len=46 has_space=False prefix=Token

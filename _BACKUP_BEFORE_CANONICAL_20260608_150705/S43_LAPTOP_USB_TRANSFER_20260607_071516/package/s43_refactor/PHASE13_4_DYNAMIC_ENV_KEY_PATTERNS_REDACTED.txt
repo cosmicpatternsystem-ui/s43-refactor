@@ -1,0 +1,6 @@
+14088:                                _wn = str(getattr(w, "[STR]", "[STR]") or "[STR]").strip()
+14089:                            except Exception:
+14090:                                _wn = "[STR]"
+14091:                            _env_key = "[STR]" + _wn.upper() + "[STR]" if _wn else "[STR]"
+14092:                            _env_tok = _s43_os.environ.get(_env_key, "[STR]") if _env_key else "[STR]"
+14093:                            _old_tok = getattr(_req_self, "[STR]", "[STR]") if _req_self is not None else "[STR]"

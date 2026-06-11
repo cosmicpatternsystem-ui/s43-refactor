@@ -1,0 +1,44 @@
+===== context around 29264 =====
+29254:        limiter = SharedAsyncRateLimiter(cfg.rate_limit_per_min)
+29255:        breaker = CircuitBreaker(cfg.circuit_breaker_errors, cfg.[REDACTED], log)
+29256:        self.public = ExchangeClient(cfg, token="[STR]", limiter=limiter, logger=log, breaker=breaker)
+29257:        self.radar = Orch22MarketRadar(public=self.public, cfg=cfg, log=log)
+29258:        slots = list(wallet_slots or getattr(cfg, "[STR]", []) or [])
+29259:        if not slots:
+29260:            slots = [1]
+29261:        self._wallet_slots = [int(x) for x in (slots or [])]
+29262:        self.wallets: Dict[str, Orch22WalletEngine] = {}
+29263:        for slot in slots:
+29264:            tok = get_arzplus_token(int(slot))
+29265:            wname = f"[STR]"
+29266:            cli = ExchangeClient(cfg, token=(tok or "[STR]"), limiter=limiter, logger=log, breaker=breaker)
+29267:            self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=cfg, log=log)
+29268:        self.state = Orch22SystemState.SAFE
+29269:        self.reason = "[STR]"
+29270:        self.started_ts = time.time()
+29271:        self._dash_task: Optional[asyncio.Task] = None
+29272:        self._wd_task: Optional[asyncio.Task] = None
+29273:    def stop(self) -> None:
+29274:        self._stop.set()
+===== context around 29406 =====
+29396:                w.stop()
+29397:        limiter = SharedAsyncRateLimiter(self.cfg.rate_limit_per_min)
+29398:        breaker = CircuitBreaker(self.cfg.circuit_breaker_errors, self.cfg.[REDACTED], self._log)
+29399:        self.public = ExchangeClient(self.cfg, token="[STR]", limiter=limiter, logger=self._log, breaker=breaker)
+29400:        self.radar = Orch22MarketRadar(public=self.public, cfg=self.cfg, log=self._log)
+29401:        slots = list(getattr(self, "[STR]", []) or [])
+29402:        if not slots:
+29403:            slots = [1]
+29404:        self.wallets = {}
+29405:        for slot in slots:
+29406:            tok = get_arzplus_token(int(slot))
+29407:            wname = f"[STR]"
+29408:            cli = ExchangeClient(self.cfg, token=(tok or "[STR]"), limiter=limiter, logger=self._log, breaker=breaker)
+29409:            self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=self.cfg, log=self._log)
+29410:        with contextlib.suppress(Exception):
+29411:            await self.radar.start()
+29412:        for w in (self.wallets or {}).values():
+29413:            with contextlib.suppress(Exception):
+29414:                await w.start()
+29415:    async def _cancel_all_fail_safe(self) -> None:
+29416:        if not self.cancel_all_on_stale:

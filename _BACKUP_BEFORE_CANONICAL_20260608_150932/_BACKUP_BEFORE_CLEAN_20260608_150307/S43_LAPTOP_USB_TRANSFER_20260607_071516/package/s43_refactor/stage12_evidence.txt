@@ -1,0 +1,2495 @@
+### A1 ENCLOSING_HEADERS
+### TARGET 10772
+CLASS: 10566|class DzhBanIntegrity(_DzhBanIntegrityBase):
+DEF:   10758|    async def maybe_ai_rescue(self, bot: "TradingBot", w: "WalletRuntime", sym: str, book: Any) -> None:
+
+### TARGET 20337
+CLASS: 15182|class TradingBotOps:
+DEF:   18555|        async def _rej(reason: str, **meta) -> None:
+
+### TARGET 20699
+CLASS: 15182|class TradingBotOps:
+DEF:   18555|        async def _rej(reason: str, **meta) -> None:
+
+### TARGET 20933
+CLASS: 15182|class TradingBotOps:
+DEF:   20908|    async def _liquidate_positions(self, w: WalletRuntime, reason: str) -> dict:
+
+### TARGET 21171
+CLASS: 15182|class TradingBotOps:
+DEF:   20982|    async def cycle_wallet(self, w: WalletRuntime) -> None:
+
+### TARGET 21667
+CLASS: 15182|class TradingBotOps:
+DEF:   21570|                    async def _locked_force_cancel() -> None:
+
+### TARGET 21806
+CLASS: 15182|class TradingBotOps:
+DEF:   21684|    async def execute_order_v121(
+
+### A2 CALL_SITE_WINDOWS_30
+### CALL_SITE: s43.py:10772
+ 10742	        except Exception:
+ 10743	            pass
+ 10744	        if has_nonfiat and assets_value_irt <= 0.0:
+ 10745	            if prev_assets > 0.0:
+ 10746	                assets_value_irt = prev_assets
+ 10747	            else:
+ 10748	                return
+ 10749	        eq = float(cash_av_irt + assets_value_irt)
+ 10750	        try:
+ 10751	            wallet.assets_value_irt = float(assets_value_irt)
+ 10752	        except Exception:
+ 10753	            pass
+ 10754	        try:
+ 10755	            wallet.equity_irt = float(eq if eq > 0.0 else (prev_eq if prev_eq > 0.0 else eq))
+ 10756	        except Exception:
+ 10757	            pass
+ 10758	    async def maybe_ai_rescue(self, bot: "TradingBot", w: "WalletRuntime", sym: str, book: Any) -> None:
+ 10759	        try:
+ 10760	            pos = (getattr(w, "positions", {}) or {}).get(sym)
+ 10761	            if not pos:
+ 10762	                return
+ 10763	            qty = float(getattr(pos, "qty", 0.0) or 0.0)
+ 10764	            if qty <= 0.0:
+ 10765	                return
+ 10766	            bid = float(getattr(book, "bid", 0.0) or 0.0)
+ 10767	            if bid <= 0.0:
+ 10768	                bid = float(getattr(book, "mid", 0.0) or 0.0)
+ 10769	            if bid <= 0.0:
+ 10770	                return
+ 10771	            notional = qty * bid
+ 10772	            await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+ 10773	        except Exception:
+ 10774	            return
+ 10775	class RiskManager:
+ 10776	    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+ 10777	        self.cfg = cfg
+ 10778	        self._logger = logger
+ 10779	        self.safe_mode = False
+ 10780	        self.safe_reason = ""
+ 10781	        self.safe_since_ts = 0.0
+ 10782	        self._last_safe_log: Dict[str, float] = {}
+ 10783	        self.memory = TradingMemory()
+ 10784	        self.daily_loss_irt = 0.0
+ 10785	        self._day_key = time.strftime("%Y-%m-%d")
+ 10786	        self.consecutive_losses: Dict[str, int] = {}
+ 10787	        self.blocked_until: Dict[str, float] = {}
+ 10788	        self._risk_journal_path = getattr(cfg, "risk_journal_path", "")
+ 10789	        self._risk_journal_last_write = 0.0
+ 10790	        _lrj = getattr(self, "_load_risk_journal", None)
+ 10791	        if callable(_lrj):
+ 10792	            _lrj()
+ 10793	        else:
+ 10794	            try:
+ 10795	                self._logger.warning("event=RISK_JOURNAL_LOAD ok=0 reason=missing_method action=skip")
+ 10796	            except Exception:
+ 10797	                pass
+ 10798	        self.escalation = RiskEscalationLayer()
+ 10799	        self._runtime_risk: Dict[str, RiskDecision] = {}
+ 10800	        self._runtime_risk_ts: Dict[str, float] = {}
+ 10801	        self._runtime_lock = _NoopLock()
+ 10802	        self._wallet_cash_total_irt: Dict[str, float] = {}
+
+### CALL_SITE: s43.py:20337
+ 20307	                                  "remain": float(max(0.0, float(re_cd - dt))), "cooldown": float(re_cd), "last_exit": float(last_exit)},
+ 20308	                        )
+ 20309	                        return
+ 20310	            if not self._idem_ok(w.name, sym, "buy", ttl_sec=w.cfg.idempotency_ttl_sec):
+ 20311	                try:
+ 20312	                    w.last_event = f"IDEMPOTENCY {sym}"
+ 20313	                except Exception:
+ 20314	                    pass
+ 20315	                _set_engine(
+ 20316	                    "Run",
+ 20317	                    "IDEMPOTENCY",
+ 20318	                    reject=True,
+ 20319	                    meta={"sym": sym, "entry_attempt": (not has_pos), "stage": "ENTRY", "ttl": float(getattr(w.cfg, "idempotency_ttl_sec", 0.0) or 0.0)},
+ 20320	                )
+ 20321	                return
+ 20322	            try:
+ 20323	                setattr(w, "_last_order_action_ts", float(time.time()))
+ 20324	            except Exception:
+ 20325	                pass
+ 20326	            try:
+ 20327	                _ctx_tok = None
+ 20328	                try:
+ 20329	                    if risk_decision is not None:
+ 20330	                        _ctx_tok = _CTX_SKIP_RUNTIME_RISK_MULT.set(True)
+ 20331	                except Exception:
+ 20332	                    _ctx_tok = None
+ 20333	                try:
+ 20334	                    if bool(getattr(w.cfg, "laddering", False)) and int(getattr(w.cfg, "ladder_steps", 1) or 1) > 1:
+ 20335	                        resp = await w.exec.place_ladder(sym, "buy", qty, book.ask, float(notional))
+ 20336	                    else:
+ 20337	                        resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+ 20338	                finally:
+ 20339	                    if _ctx_tok is not None:
+ 20340	                        try:
+ 20341	                            _CTX_SKIP_RUNTIME_RISK_MULT.reset(_ctx_tok)
+ 20342	                        except Exception:
+ 20343	                            pass
+ 20344	                try:
+ 20345	                    rhb = _hb_state.get(sym) or {}
+ 20346	                    if not isinstance(rhb, dict):
+ 20347	                        rhb = {}
+ 20348	                    cids = []
+ 20349	                    if isinstance(resp, dict) and resp.get("ladder") and isinstance(resp.get("children"), list):
+ 20350	                        for ch in (resp.get("children") or []):
+ 20351	                            if not isinstance(ch, dict):
+ 20352	                                continue
+ 20353	                            c = ch.get("cid") or ch.get("client_id") or ch.get("clientId") or ch.get("client_order_id") or ch.get("clientOrderId")
+ 20354	                            if c:
+ 20355	                                cids.append(str(c))
+ 20356	                    elif isinstance(resp, dict):
+ 20357	                        c = resp.get("cid") or resp.get("client_id") or resp.get("clientId") or resp.get("client_order_id") or resp.get("clientOrderId")
+ 20358	                        if c:
+ 20359	                            cids.append(str(c))
+ 20360	                    if cids:
+ 20361	                        rhb["last_buy_cid"] = str(cids[-1])
+ 20362	                        rhb["last_buy_cids"] = list(cids)
+ 20363	                        _hb_state[sym] = rhb
+ 20364	                except Exception:
+ 20365	                    pass
+ 20366	            except asyncio.CancelledError:
+ 20367	                raise
+
+### CALL_SITE: s43.py:20699
+ 20669	                if bool(getattr(book, "_stale", False)):
+ 20670	                    sell_px = float(getattr(book, "mid", sell_px) or sell_px)
+ 20671	                else:
+ 20672	                    src0 = str(getattr(book, "_source", "") or "").lower().strip()
+ 20673	                    if src0.startswith(("spot", "synth", "disk")):
+ 20674	                        sell_px = float(getattr(book, "mid", sell_px) or sell_px)
+ 20675	            except Exception:
+ 20676	                pass
+ 20677	            if (not math.isfinite(float(sell_px))) or float(sell_px) <= 0.0:
+ 20678	                try:
+ 20679	                    w.last_event = f"EXIT_NO_PX {sym}"
+ 20680	                except Exception:
+ 20681	                    pass
+ 20682	                _set_engine("Hold", "EXIT_NO_PX", reject=True, meta={"sym": sym, "entry_attempt": False, "stage": "EXIT"})
+ 20683	                return
+ 20684	            sell_notional = float(pos.qty) * float(sell_px)
+ 20685	            try:
+ 20686	                qm = float(quote_mult or 1.0)
+ 20687	                if math.isfinite(qm) and qm > 0.0:
+ 20688	                    sell_notional = float(sell_notional) * float(1.0 / qm)
+ 20689	            except Exception:
+ 20690	                pass
+ 20691	            try:
+ 20692	                setattr(w, "_last_order_action_ts", float(time.time()))
+ 20693	            except Exception:
+ 20694	                pass
+ 20695	            try:
+ 20696	                if bool(getattr(w.cfg, "laddering", False)) and int(getattr(w.cfg, "ladder_steps", 1) or 1) > 1:
+ 20697	                    resp = await w.exec.place_ladder(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+ 20698	                else:
+ 20699	                    resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+ 20700	            except asyncio.CancelledError:
+ 20701	                raise
+ 20702	            except Exception as e:
+ 20703	                try:
+ 20704	                    w.last_event = f"EXEC_ERROR {sym}"
+ 20705	                except Exception:
+ 20706	                    pass
+ 20707	                _set_engine(
+ 20708	                    "Hold",
+ 20709	                    "EXEC_ERROR",
+ 20710	                    reject=True,
+ 20711	                    meta={"sym": sym, "entry_attempt": False, "stage": "EXIT_EXEC", "err": str(e)[:180]},
+ 20712	                )
+ 20713	                try:
+ 20714	                    self._idem_forget(str(getattr(w, "name", "") or ""), sym, "sell")
+ 20715	                except Exception:
+ 20716	                    pass
+ 20717	                return
+ 20718	            try:
+ 20719	                rhb = _hb_state.get(sym) or {}
+ 20720	                if not isinstance(rhb, dict):
+ 20721	                    rhb = {}
+ 20722	                cids = []
+ 20723	                if isinstance(resp, dict) and resp.get("ladder") and isinstance(resp.get("children"), list):
+ 20724	                    for ch in (resp.get("children") or []):
+ 20725	                        if not isinstance(ch, dict):
+ 20726	                            continue
+ 20727	                        c = ch.get("cid") or ch.get("client_id") or ch.get("clientId") or ch.get("client_order_id") or ch.get("clientOrderId")
+ 20728	                        if c:
+ 20729	                            cids.append(str(c))
+
+### CALL_SITE: s43.py:20933
+ 20903	            except Exception:
+ 20904	                continue
+ 20905	        if canceled:
+ 20906	            self._log.warning("event=GLOBAL_EXIT_CANCELLED wallet=%s canceled=%d", w.name, canceled)
+ 20907	        return int(canceled)
+ 20908	    async def _liquidate_positions(self, w: WalletRuntime, reason: str) -> dict:
+ 20909	        if (not self.cfg.dry_run) and (not bool(getattr(self.cfg, "global_exit_armed", False))):
+ 20910	            self._log.critical("event=GLOBAL_EXIT_NOT_ARMED wallet=%s reason=%s (LIVE) -> HALT_ONLY", w.name, reason)
+ 20911	            return {"armed": False, "attempted": 0, "closed": 0}
+ 20912	        sl_bps = float(getattr(self.cfg, "global_exit_slippage_bps", 80.0) or 80.0)
+ 20913	        attempted = 0
+ 20914	        closed = 0
+ 20915	        details = []
+ 20916	        for sym, pos in list(w.positions.items()):
+ 20917	            sym = _canon_symbol(sym)
+ 20918	            qty = float(getattr(pos, "qty", 0.0) or 0.0)
+ 20919	            if qty <= 0:
+ 20920	                continue
+ 20921	            attempted += 1
+ 20922	            try:
+ 20923	                book = await asyncio.wait_for(
+ 20924	                    self.feed.fetch_depth(sym, use_disk_cache_on_timeout=w.cfg.price_cache_on_timeout),
+ 20925	                    timeout=min(1.2, float(w.cfg.symbol_timeout_sec)),
+ 20926	                )
+ 20927	                if not book or book.bid is None:
+ 20928	                    raise RuntimeError("no_book")
+ 20929	                bid = float(book.bid)
+ 20930	                px = max(1.0, bid * (1.0 - sl_bps / 10000.0))
+ 20931	                notion = float(qty) * float(px)
+ 20932	                await asyncio.wait_for(
+ 20933	                    w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+ 20934	                    timeout=3.5,
+ 20935	                )
+ 20936	                w.last_event = f"GLOBAL_EXIT:{reason}"
+ 20937	                details.append({"sym": sym, "qty": qty, "px": px, "ok": True})
+ 20938	            except Exception as e:
+ 20939	                details.append({"sym": sym, "qty": qty, "ok": False, "err": ExchangeClient._safe_body_for_log(f"{type(e).__name__}: {str(e) or repr(e)}", limit=120)})
+ 20940	                continue
+ 20941	        if not self.cfg.dry_run:
+ 20942	            try:
+ 20943	                await asyncio.sleep(0.4)
+ 20944	            except Exception:
+ 20945	                pass
+ 20946	        if self.cfg.dry_run:
+ 20947	            closed = attempted
+ 20948	            w.positions.clear()
+ 20949	        else:
+ 20950	            closed = 0
+ 20951	        return {"armed": bool(getattr(self.cfg, "global_exit_armed", False)) or self.cfg.dry_run, "attempted": attempted, "closed": closed, "details": details}
+ 20952	    async def _execute_global_exit(self, trigger: dict) -> None:
+ 20953	        if self._global_exit_fired:
+ 20954	            return
+ 20955	        self._global_exit_fired = True
+ 20956	        self.global_exit.mark_fired()
+ 20957	        sym = str(trigger.get("symbol", ""))
+ 20958	        peak = float(trigger.get("peak", 0.0) or 0.0)
+ 20959	        last = float(trigger.get("last", 0.0) or 0.0)
+ 20960	        drop = float(trigger.get("drop", 0.0) or 0.0) * 100.0
+ 20961	        reason = f"FLASH_CRASH drop>={float(getattr(self.cfg, 'flash_crash_pct', 0.05))*100:.1f}%"
+ 20962	        self.risk.halt_new_trades(f"GLOBAL_EXIT:{reason}")
+ 20963	        self._log.critical(
+
+### CALL_SITE: s43.py:21171
+ 21141	        except Exception:
+ 21142	            quality_syms = []
+ 21143	        try:
+ 21144	            if _env_bool("AUTO_UPGRADE_WALLETS", True) and quality_syms:
+ 21145	                min_iv = float(_env_float("UPGRADE_MIN_INTERVAL", 60.0) or 60.0)
+ 21146	                last_up = float(getattr(w, "last_upgrade_ts", 0.0) or 0.0)
+ 21147	                now_u = time.time()
+ 21148	                if (now_u - last_up) >= max(10.0, min_iv):
+ 21149	                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+ 21150	                        lows = []
+ 21151	                        for sym, pos in (getattr(w, "positions", {}) or {}).items():
+ 21152	                            s0 = _canon(sym)
+ 21153	                            if s0 and (s0 not in quality_syms):
+ 21154	                                lows.append((s0, pos))
+ 21155	                        if lows:
+ 21156	                            lows.sort(key=lambda it: float(getattr(it[1], "entry_ts", 0.0) or 0.0))
+ 21157	                            sym_low, pos_low = lows[0]
+ 21158	                            qty = float(getattr(pos_low, "qty", 0.0) or 0.0)
+ 21159	                            if qty > 0.0:
+ 21160	                                ob = None
+ 21161	                                try:
+ 21162	                                    ob = self.feed._cache.get(sym_low, (None, None))[1] if hasattr(self.feed, "_cache") else None
+ 21163	                                except Exception:
+ 21164	                                    ob = None
+ 21165	                                bid = float(getattr(ob, "bid", 0.0) or 0.0) if ob else 0.0
+ 21166	                                mid = float(getattr(ob, "mid", 0.0) or 0.0) if ob else 0.0
+ 21167	                                px0 = bid if bid > 0 else mid
+ 21168	                                if px0 > 0.0:
+ 21169	                                    slip_bps = float(_env_float("UPGRADE_SLIP_BPS", 12.0) or 12.0)
+ 21170	                                    px = float(px0 * (1.0 - max(0.0, slip_bps) / 10000.0))
+ 21171	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+ 21172	                                    w.last_upgrade_ts = float(now_u)
+ 21173	                                    try:
+ 21174	                                        w.last_event = "UPGRADE_SELL"
+ 21175	                                    except Exception:
+ 21176	                                        pass
+ 21177	        except (TradingHalt, TemporaryPause):
+ 21178	            raise
+ 21179	        except Exception:
+ 21180	            pass
+ 21181	        try:
+ 21182	            try:
+ 21183	                try:
+ 21184	                    import asyncio as _pp_asyncio
+ 21185	                except:
+ 21186	                    pass
+ 21187	            except:
+ 21188	                pass
+ 21189	        except Exception:
+ 21190	            _pp_asyncio = None
+ 21191	        max_conc = 1  #
+ 21192	        if _pp_asyncio is None:
+ 21193	            for sym in syms:
+ 21194	                if deadline is not None and time.time() >= deadline:
+ 21195	                    self._log.warning("event=HEARTBEAT_BUDGET_EXCEEDED wallet=%s budget=%.2f", w.name, budget)
+ 21196	                    break
+ 21197	                await self._process_symbol_heartbeat(w, sym, float(cash_irt) * self._focus_weight_for(sym))
+ 21198	                if bool(getattr(w, 'sanity_halt', False)):
+ 21199	                    break
+ 21200	        else:
+ 21201	            sem = _pp_asyncio.Semaphore(max_conc)
+
+### CALL_SITE: s43.py:21667
+ 21637	                self._quality_syms = ranked[: max(1, min(32, topn_q))]
+ 21638	                self._quality_last_ts = float(now_q)
+ 21639	            quality_syms = list(getattr(self, "_quality_syms", []) or [])
+ 21640	            if _env_bool("AUTO_UPGRADE_WALLETS", True) and quality_syms:
+ 21641	                min_iv = float(_env_float("UPGRADE_MIN_INTERVAL", 60.0) or 60.0)
+ 21642	                last_up = float(getattr(w, "last_upgrade_ts", 0.0) or 0.0)
+ 21643	                now_u = time.time()
+ 21644	                if (now_u - last_up) >= max(10.0, min_iv):
+ 21645	                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+ 21646	                        lows = []
+ 21647	                        for sym, pos in (getattr(w, "positions", {}) or {}).items():
+ 21648	                            s0 = _canon(sym)
+ 21649	                            if s0 and (s0 not in quality_syms):
+ 21650	                                lows.append((s0, pos))
+ 21651	                        if lows:
+ 21652	                            lows.sort(key=lambda it: float(getattr(it[1], "entry_ts", 0.0) or 0.0))
+ 21653	                            sym_low, pos_low = lows[0]
+ 21654	                            qty = float(getattr(pos_low, "qty", 0.0) or 0.0)
+ 21655	                            if qty > 0.0:
+ 21656	                                ob = None
+ 21657	                                try:
+ 21658	                                    ob = self.feed._cache.get(sym_low, (None, None))[1] if hasattr(self.feed, "_cache") else None
+ 21659	                                except Exception:
+ 21660	                                    ob = None
+ 21661	                                bid = float(getattr(ob, "bid", 0.0) or 0.0) if ob else 0.0
+ 21662	                                mid = float(getattr(ob, "mid", 0.0) or 0.0) if ob else 0.0
+ 21663	                                px0 = bid if bid > 0 else mid
+ 21664	                                if px0 > 0.0:
+ 21665	                                    slip_bps = float(_env_float("UPGRADE_SLIP_BPS", 12.0) or 12.0)
+ 21666	                                    px = float(px0 * (1.0 - max(0.0, slip_bps) / 10000.0))
+ 21667	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+ 21668	                                    w.last_upgrade_ts = float(now_u)
+ 21669	                                    try:
+ 21670	                                        w.last_event = "UPGRADE_SELL"
+ 21671	                                    except Exception:
+ 21672	                                        pass
+ 21673	        except Exception:
+ 21674	            pass
+ 21675	        await self._assert_ordpos_invariant(w, where="cleanup_post")
+ 21676	    async def cycle_wallet_dashboard(self, w: WalletRuntime) -> None:
+ 21677	        if bool(getattr(w, 'wallet_disabled', False)):
+ 21678	            return
+ 21679	        try:
+ 21680	            if hasattr(self, "dzh"):
+ 21681	                await self.dzh.update_wallet_metrics(self, w)
+ 21682	        except Exception:
+ 21683	            return
+ 21684	    async def execute_order_v121(
+ 21685	        self,
+ 21686	        current_price: float,
+ 21687	        balance: float,
+ 21688	        symbol: Optional[str] = None,
+ 21689	        wallet: Optional[str] = None,
+ 21690	        current_volume: Optional[float] = None,
+ 21691	        volume_history: Optional[List[float]] = None,
+ 21692	    ) -> None:
+ 21693	        if not hasattr(self, "sovereign") or getattr(self, "sovereign", None) is None:
+ 21694	            self.sovereign = SovereignEngine()
+ 21695	        if not hasattr(self, "analyzer") or getattr(self, "analyzer", None) is None:
+ 21696	            self.analyzer = _VolatilityAnalyzer()
+ 21697	        w = None
+
+### CALL_SITE: s43.py:21806
+ 21776	                whale_active = bool(self.sovereign.monitor.detect_whale_activity(float(cv), vh))
+ 21777	                self.sovereign.monitor.update_volume(float(cv))
+ 21778	        except Exception:
+ 21779	            whale_active = False
+ 21780	        effective_sigma = float(sigma) * 2.0 if whale_active else float(sigma)
+ 21781	        try:
+ 21782	            smart_ladder = list(self.sovereign.evolution.get_exponential_ladder(px, effective_sigma, side="buy", levels=5))
+ 21783	        except Exception:
+ 21784	            smart_ladder = [px * 0.995]
+ 21785	        if not smart_ladder:
+ 21786	            return
+ 21787	        try:
+ 21788	            safe_qty_total = float(self.sovereign.risk.calculate_kelly_size(float(balance), price=px))
+ 21789	        except Exception:
+ 21790	            safe_qty_total = max(0.0, float(balance) * 0.12 / px) if px > 0 else 0.0
+ 21791	        if safe_qty_total <= 0:
+ 21792	            return
+ 21793	        try:
+ 21794	            if abs(px - float(smart_ladder[0])) / px < 0.001:
+ 21795	                smart_ladder[0] = px
+ 21796	        except Exception:
+ 21797	            pass
+ 21798	        qty_each = safe_qty_total / float(len(smart_ladder))
+ 21799	        api = getattr(self, "api", None)
+ 21800	        for target_px in smart_ladder:
+ 21801	            tp = float(target_px)
+ 21802	            if tp <= 0:
+ 21803	                continue
+ 21804	            notional = float(qty_each) * float(tp)
+ 21805	            try:
+ 21806	                await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+ 21807	                continue
+ 21808	            except Exception:
+ 21809	                pass
+ 21810	            if api and hasattr(api, "place_limit") and callable(getattr(api, "place_limit")):
+ 21811	                try:
+ 21812	                    await api.place_limit(sym, "buy", float(qty_each), float(tp))
+ 21813	                    continue
+ 21814	                except Exception:
+ 21815	                    pass
+ 21816	        try:
+ 21817	            gc.collect()
+ 21818	        except Exception:
+ 21819	            pass
+ 21820	    async def run(self: "TradingBot") -> None:
+ 21821	        global TERMUX_MODE
+ 21822	        try:
+ 21823	            TERMUX_MODE = bool(os.environ.get("TERMUX_VERSION") or os.environ.get("TERMUX_MODE") == "1" or ("com.termux" in str(os.environ.get("PREFIX", ""))))
+ 21824	        except Exception:
+ 21825	            TERMUX_MODE = False
+ 21826	        try:
+ 21827	            os.nice(-10)
+ 21828	        except Exception:
+ 21829	            pass
+ 21830	        stop_ev = None
+ 21831	        try:
+ 21832	            stop_ev = GLOBAL_SHUTDOWN.bind_asyncio_event()
+ 21833	        except Exception:
+ 21834	            stop_ev = asyncio.Event()
+ 21835	        try:
+ 21836	            if not hasattr(self, "_cycle_count"):
+
+### A3 CALL_SITE_WINDOWS_WIDE
+### WIDE_BLOCK: s43.py:10772
+ 10712	                        last_known[s] = mid2
+ 10713	                        return mid2
+ 10714	            except Exception:
+ 10715	                pass
+ 10716	            try:
+ 10717	                px_last = _num(last_known.get(s, 0.0))
+ 10718	                if px_last > 0.0:
+ 10719	                    return px_last
+ 10720	            except Exception:
+ 10721	                pass
+ 10722	            return 0.0
+ 10723	        assets_value_irt = 0.0
+ 10724	        has_nonfiat = False
+ 10725	        for asset, amt in (holdings or {}).items():
+ 10726	            a = str(asset or "").upper().strip()
+ 10727	            q = _num(amt)
+ 10728	            if q <= 0.0:
+ 10729	                continue
+ 10730	            if a in {"IRT", "TMN"}:
+ 10731	                continue
+ 10732	            has_nonfiat = True
+ 10733	            sym = _canon_symbol(f"{a}IRT")
+ 10734	            bid = await _resolve_bid(sym)
+ 10735	            if bid > 0.0:
+ 10736	                assets_value_irt += q * bid
+ 10737	        prev_assets = 0.0
+ 10738	        prev_eq = 0.0
+ 10739	        try:
+ 10740	            prev_assets = _num(getattr(wallet, "assets_value_irt", 0.0))
+ 10741	            prev_eq = _num(getattr(wallet, "equity_irt", 0.0))
+ 10742	        except Exception:
+ 10743	            pass
+ 10744	        if has_nonfiat and assets_value_irt <= 0.0:
+ 10745	            if prev_assets > 0.0:
+ 10746	                assets_value_irt = prev_assets
+ 10747	            else:
+ 10748	                return
+ 10749	        eq = float(cash_av_irt + assets_value_irt)
+ 10750	        try:
+ 10751	            wallet.assets_value_irt = float(assets_value_irt)
+ 10752	        except Exception:
+ 10753	            pass
+ 10754	        try:
+ 10755	            wallet.equity_irt = float(eq if eq > 0.0 else (prev_eq if prev_eq > 0.0 else eq))
+ 10756	        except Exception:
+ 10757	            pass
+ 10758	    async def maybe_ai_rescue(self, bot: "TradingBot", w: "WalletRuntime", sym: str, book: Any) -> None:
+ 10759	        try:
+ 10760	            pos = (getattr(w, "positions", {}) or {}).get(sym)
+ 10761	            if not pos:
+ 10762	                return
+ 10763	            qty = float(getattr(pos, "qty", 0.0) or 0.0)
+ 10764	            if qty <= 0.0:
+ 10765	                return
+ 10766	            bid = float(getattr(book, "bid", 0.0) or 0.0)
+ 10767	            if bid <= 0.0:
+ 10768	                bid = float(getattr(book, "mid", 0.0) or 0.0)
+ 10769	            if bid <= 0.0:
+ 10770	                return
+ 10771	            notional = qty * bid
+ 10772	            await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+ 10773	        except Exception:
+ 10774	            return
+ 10775	class RiskManager:
+ 10776	    def __init__(self, cfg: BotConfig, logger: logging.Logger):
+ 10777	        self.cfg = cfg
+ 10778	        self._logger = logger
+ 10779	        self.safe_mode = False
+ 10780	        self.safe_reason = ""
+ 10781	        self.safe_since_ts = 0.0
+ 10782	        self._last_safe_log: Dict[str, float] = {}
+ 10783	        self.memory = TradingMemory()
+ 10784	        self.daily_loss_irt = 0.0
+ 10785	        self._day_key = time.strftime("%Y-%m-%d")
+ 10786	        self.consecutive_losses: Dict[str, int] = {}
+ 10787	        self.blocked_until: Dict[str, float] = {}
+ 10788	        self._risk_journal_path = getattr(cfg, "risk_journal_path", "")
+ 10789	        self._risk_journal_last_write = 0.0
+ 10790	        _lrj = getattr(self, "_load_risk_journal", None)
+ 10791	        if callable(_lrj):
+ 10792	            _lrj()
+ 10793	        else:
+ 10794	            try:
+ 10795	                self._logger.warning("event=RISK_JOURNAL_LOAD ok=0 reason=missing_method action=skip")
+ 10796	            except Exception:
+ 10797	                pass
+ 10798	        self.escalation = RiskEscalationLayer()
+ 10799	        self._runtime_risk: Dict[str, RiskDecision] = {}
+ 10800	        self._runtime_risk_ts: Dict[str, float] = {}
+ 10801	        self._runtime_lock = _NoopLock()
+ 10802	        self._wallet_cash_total_irt: Dict[str, float] = {}
+ 10803	        self._wallet_cash_free_irt: Dict[str, float] = {}
+ 10804	        self._wallet_balance_ok: Dict[str, bool] = {}
+ 10805	        self._wallet_balance_ts: Dict[str, float] = {}
+ 10806	    def _roll_day(self) -> None:
+ 10807	        day = time.strftime("%Y-%m-%d")
+ 10808	        if day != self._day_key:
+ 10809	            self._day_key = day
+ 10810	            self.daily_loss_irt = 0.0
+ 10811	            self.consecutive_losses.clear()
+ 10812	            self.blocked_until.clear()
+ 10813	            self.safe_mode = False
+ 10814	            self.safe_reason = ""
+ 10815	            self.safe_since_ts = 0.0
+ 10816	            self._logger.info("New trading day: counters reset.")
+ 10817	            self._save_risk_journal(force=True)
+ 10818	    def update_wallet_balance_snapshot(
+ 10819	        self,
+ 10820	        wallet: str,
+ 10821	        cash_free_irt: float,
+ 10822	        cash_total_irt: float,
+ 10823	        ok: bool,
+ 10824	        *,
+ 10825	        ts: Optional[float] = None,
+ 10826	    ) -> None:
+ 10827	        try:
+ 10828	            w = str(wallet or "").strip()
+ 10829	        except Exception:
+ 10830	            w = ""
+ 10831	        if not w:
+ 10832	            return
+ 10833	        try:
+ 10834	            t = float(time.time() if ts is None else ts)
+ 10835	        except Exception:
+ 10836	            t = float(time.time())
+ 10837	        try:
+ 10838	            cf = float(cash_free_irt or 0.0)
+ 10839	        except Exception:
+ 10840	            cf = 0.0
+ 10841	        try:
+ 10842	            ct = float(cash_total_irt or 0.0)
+ 10843	        except Exception:
+ 10844	            ct = 0.0
+ 10845	        if (not math.isfinite(cf)) or cf < 0.0:
+ 10846	            cf = 0.0
+ 10847	        if (not math.isfinite(ct)) or ct < 0.0:
+ 10848	            ct = 0.0
+ 10849	        if ct <= 0.0:
+ 10850	            ct = cf
+ 10851	        try:
+ 10852	            with self._runtime_lock:
+
+### WIDE_BLOCK: s43.py:20337
+ 20277	                        _set_engine("Run", "OPEN_BUY_EXISTS", reject=True, meta={"sym": sym, "stage": "ENTRY", "open_buy": int(rec.get("buy") or 0)})
+ 20278	                        return
+ 20279	            except Exception:
+ 20280	                pass
+ 20281	            if _pending_guard("buy", stage="ENTRY"):
+ 20282	                return
+ 20283	            try:
+ 20284	                re_cd = float(getattr(getattr(w, "cfg", None), "min_hold_sec", None) or getattr(self.cfg, "min_hold_sec", 0.0) or 0.0)
+ 20285	            except Exception:
+ 20286	                re_cd = 0.0
+ 20287	            if re_cd > 0.0:
+ 20288	                try:
+ 20289	                    m0 = getattr(w, "_last_exit_ts_by_sym", None)
+ 20290	                    if not isinstance(m0, dict):
+ 20291	                        m0 = {}
+ 20292	                    last_exit = float(m0.get(sym, 0.0) or 0.0)
+ 20293	                except Exception:
+ 20294	                    last_exit = 0.0
+ 20295	                if last_exit > 0.0:
+ 20296	                    dt = float(time.time() - float(last_exit))
+ 20297	                    if dt >= 0.0 and dt < float(re_cd):
+ 20298	                        try:
+ 20299	                            w.last_event = f"REENTRY_COOLDOWN {sym}"
+ 20300	                        except Exception:
+ 20301	                            pass
+ 20302	                        _set_engine(
+ 20303	                            "Run",
+ 20304	                            "REENTRY_COOLDOWN",
+ 20305	                            reject=True,
+ 20306	                            meta={"sym": sym, "entry_attempt": (not has_pos), "stage": "ENTRY",
+ 20307	                                  "remain": float(max(0.0, float(re_cd - dt))), "cooldown": float(re_cd), "last_exit": float(last_exit)},
+ 20308	                        )
+ 20309	                        return
+ 20310	            if not self._idem_ok(w.name, sym, "buy", ttl_sec=w.cfg.idempotency_ttl_sec):
+ 20311	                try:
+ 20312	                    w.last_event = f"IDEMPOTENCY {sym}"
+ 20313	                except Exception:
+ 20314	                    pass
+ 20315	                _set_engine(
+ 20316	                    "Run",
+ 20317	                    "IDEMPOTENCY",
+ 20318	                    reject=True,
+ 20319	                    meta={"sym": sym, "entry_attempt": (not has_pos), "stage": "ENTRY", "ttl": float(getattr(w.cfg, "idempotency_ttl_sec", 0.0) or 0.0)},
+ 20320	                )
+ 20321	                return
+ 20322	            try:
+ 20323	                setattr(w, "_last_order_action_ts", float(time.time()))
+ 20324	            except Exception:
+ 20325	                pass
+ 20326	            try:
+ 20327	                _ctx_tok = None
+ 20328	                try:
+ 20329	                    if risk_decision is not None:
+ 20330	                        _ctx_tok = _CTX_SKIP_RUNTIME_RISK_MULT.set(True)
+ 20331	                except Exception:
+ 20332	                    _ctx_tok = None
+ 20333	                try:
+ 20334	                    if bool(getattr(w.cfg, "laddering", False)) and int(getattr(w.cfg, "ladder_steps", 1) or 1) > 1:
+ 20335	                        resp = await w.exec.place_ladder(sym, "buy", qty, book.ask, float(notional))
+ 20336	                    else:
+ 20337	                        resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+ 20338	                finally:
+ 20339	                    if _ctx_tok is not None:
+ 20340	                        try:
+ 20341	                            _CTX_SKIP_RUNTIME_RISK_MULT.reset(_ctx_tok)
+ 20342	                        except Exception:
+ 20343	                            pass
+ 20344	                try:
+ 20345	                    rhb = _hb_state.get(sym) or {}
+ 20346	                    if not isinstance(rhb, dict):
+ 20347	                        rhb = {}
+ 20348	                    cids = []
+ 20349	                    if isinstance(resp, dict) and resp.get("ladder") and isinstance(resp.get("children"), list):
+ 20350	                        for ch in (resp.get("children") or []):
+ 20351	                            if not isinstance(ch, dict):
+ 20352	                                continue
+ 20353	                            c = ch.get("cid") or ch.get("client_id") or ch.get("clientId") or ch.get("client_order_id") or ch.get("clientOrderId")
+ 20354	                            if c:
+ 20355	                                cids.append(str(c))
+ 20356	                    elif isinstance(resp, dict):
+ 20357	                        c = resp.get("cid") or resp.get("client_id") or resp.get("clientId") or resp.get("client_order_id") or resp.get("clientOrderId")
+ 20358	                        if c:
+ 20359	                            cids.append(str(c))
+ 20360	                    if cids:
+ 20361	                        rhb["last_buy_cid"] = str(cids[-1])
+ 20362	                        rhb["last_buy_cids"] = list(cids)
+ 20363	                        _hb_state[sym] = rhb
+ 20364	                except Exception:
+ 20365	                    pass
+ 20366	            except asyncio.CancelledError:
+ 20367	                raise
+ 20368	            except Exception as e:
+ 20369	                try:
+ 20370	                    w.last_event = f"EXEC_ERROR {sym}"
+ 20371	                except Exception:
+ 20372	                    pass
+ 20373	                _set_engine(
+ 20374	                    "Hold",
+ 20375	                    "EXEC_ERROR",
+ 20376	                    reject=True,
+ 20377	                    meta={"sym": sym, "entry_attempt": (not has_pos), "stage": "EXEC", "err": str(e)[:180]},
+ 20378	                )
+ 20379	                try:
+ 20380	                    self._idem_forget(str(getattr(w, "name", "") or ""), sym, "buy")
+ 20381	                except Exception:
+ 20382	                    pass
+ 20383	                return
+ 20384	            ok_resp = False
+ 20385	            if isinstance(resp, dict):
+ 20386	                ok_resp = bool(resp.get("ok"))
+ 20387	                if not ok_resp:
+ 20388	                    try:
+ 20389	                        ok_resp = int(float(resp.get("status") or resp.get("code") or 0)) in (200, 201)
+ 20390	                    except Exception:
+ 20391	                        ok_resp = False
+ 20392	            if isinstance(resp, dict) and resp.get("skipped") and str(resp.get("reason") or "").upper() == "DUPLICATE_PREVENTED":
+ 20393	                try:
+ 20394	                    w.last_event = f"DUPLICATE_SKIPPED {sym}"
+ 20395	                except Exception:
+ 20396	                    pass
+ 20397	                _set_engine("Run", "DUPLICATE_SKIPPED", reject=False, meta={"sym": sym, "stage": "EXEC", "entry_attempt": (not has_pos)})
+ 20398	                return
+ 20399	            if (not ok_resp) and (not bool(getattr(self.cfg, "dry_run", False))):
+ 20400	                try:
+ 20401	                    w.last_event = f"ORDER_REJECT {sym}"
+ 20402	                except Exception:
+ 20403	                    pass
+ 20404	                meta_r = {"sym": sym, "entry_attempt": (not has_pos), "stage": "EXEC", "ok": False}
+ 20405	                try:
+ 20406	                    if isinstance(resp, dict):
+ 20407	                        for k in ("status", "code", "error", "message", "msg", "reason", "detail"):
+ 20408	                            if resp.get(k) is not None:
+ 20409	                                meta_r[k] = resp.get(k)
+ 20410	                        oid = resp.get("order_id") or resp.get("orderId") or resp.get("id")
+ 20411	                        if oid is not None:
+ 20412	                            meta_r["order_id"] = oid
+ 20413	                except Exception:
+ 20414	                    pass
+ 20415	                _set_engine("Run", "ORDER_REJECT", reject=True, meta=meta_r)
+ 20416	                return
+ 20417	            if ok_resp or bool(getattr(self.cfg, "dry_run", False)):
+
+### WIDE_BLOCK: s43.py:20699
+ 20639	                if isinstance(obm, dict):
+ 20640	                    rec = obm.get(sym)
+ 20641	                    if isinstance(rec, dict) and (rec.get("sell") or 0) > 0:
+ 20642	                        try:
+ 20643	                            w.last_event = f"OPEN_SELL_EXISTS {sym}"
+ 20644	                        except Exception:
+ 20645	                            pass
+ 20646	                        _set_engine("Run", "OPEN_SELL_EXISTS", reject=True,
+ 20647	                                    meta={"sym": sym, "entry_attempt": False, "stage": "EXIT", "open_sell": int(rec.get("sell") or 0)})
+ 20648	                        return
+ 20649	            except Exception:
+ 20650	                pass
+ 20651	
+ 20652	            if _pending_guard("sell", stage="EXIT"):
+ 20653	                return
+ 20654	            if not self._idem_ok(w.name, sym, "sell", ttl_sec=w.cfg.idempotency_ttl_sec):
+ 20655	                try:
+ 20656	                    w.last_event = f"IDEMPOTENCY {sym}"
+ 20657	                except Exception:
+ 20658	                    pass
+ 20659	                _set_engine(
+ 20660	                    "Run",
+ 20661	                    "IDEMPOTENCY",
+ 20662	                    reject=True,
+ 20663	                    meta={"sym": sym, "entry_attempt": False, "stage": "EXIT", "ttl": float(getattr(w.cfg, "idempotency_ttl_sec", 0.0) or 0.0)},
+ 20664	                )
+ 20665	                return
+ 20666	            # Use an execution price consistent with the exit decision price (stale/spot books use mid).
+ 20667	            sell_px = float(getattr(book, "bid", 0.0) or 0.0)
+ 20668	            try:
+ 20669	                if bool(getattr(book, "_stale", False)):
+ 20670	                    sell_px = float(getattr(book, "mid", sell_px) or sell_px)
+ 20671	                else:
+ 20672	                    src0 = str(getattr(book, "_source", "") or "").lower().strip()
+ 20673	                    if src0.startswith(("spot", "synth", "disk")):
+ 20674	                        sell_px = float(getattr(book, "mid", sell_px) or sell_px)
+ 20675	            except Exception:
+ 20676	                pass
+ 20677	            if (not math.isfinite(float(sell_px))) or float(sell_px) <= 0.0:
+ 20678	                try:
+ 20679	                    w.last_event = f"EXIT_NO_PX {sym}"
+ 20680	                except Exception:
+ 20681	                    pass
+ 20682	                _set_engine("Hold", "EXIT_NO_PX", reject=True, meta={"sym": sym, "entry_attempt": False, "stage": "EXIT"})
+ 20683	                return
+ 20684	            sell_notional = float(pos.qty) * float(sell_px)
+ 20685	            try:
+ 20686	                qm = float(quote_mult or 1.0)
+ 20687	                if math.isfinite(qm) and qm > 0.0:
+ 20688	                    sell_notional = float(sell_notional) * float(1.0 / qm)
+ 20689	            except Exception:
+ 20690	                pass
+ 20691	            try:
+ 20692	                setattr(w, "_last_order_action_ts", float(time.time()))
+ 20693	            except Exception:
+ 20694	                pass
+ 20695	            try:
+ 20696	                if bool(getattr(w.cfg, "laddering", False)) and int(getattr(w.cfg, "ladder_steps", 1) or 1) > 1:
+ 20697	                    resp = await w.exec.place_ladder(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+ 20698	                else:
+ 20699	                    resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+ 20700	            except asyncio.CancelledError:
+ 20701	                raise
+ 20702	            except Exception as e:
+ 20703	                try:
+ 20704	                    w.last_event = f"EXEC_ERROR {sym}"
+ 20705	                except Exception:
+ 20706	                    pass
+ 20707	                _set_engine(
+ 20708	                    "Hold",
+ 20709	                    "EXEC_ERROR",
+ 20710	                    reject=True,
+ 20711	                    meta={"sym": sym, "entry_attempt": False, "stage": "EXIT_EXEC", "err": str(e)[:180]},
+ 20712	                )
+ 20713	                try:
+ 20714	                    self._idem_forget(str(getattr(w, "name", "") or ""), sym, "sell")
+ 20715	                except Exception:
+ 20716	                    pass
+ 20717	                return
+ 20718	            try:
+ 20719	                rhb = _hb_state.get(sym) or {}
+ 20720	                if not isinstance(rhb, dict):
+ 20721	                    rhb = {}
+ 20722	                cids = []
+ 20723	                if isinstance(resp, dict) and resp.get("ladder") and isinstance(resp.get("children"), list):
+ 20724	                    for ch in (resp.get("children") or []):
+ 20725	                        if not isinstance(ch, dict):
+ 20726	                            continue
+ 20727	                        c = ch.get("cid") or ch.get("client_id") or ch.get("clientId") or ch.get("client_order_id") or ch.get("clientOrderId")
+ 20728	                        if c:
+ 20729	                            cids.append(str(c))
+ 20730	                elif isinstance(resp, dict):
+ 20731	                    c = resp.get("cid") or resp.get("client_id") or resp.get("clientId") or resp.get("client_order_id") or resp.get("clientOrderId")
+ 20732	                    if c:
+ 20733	                        cids.append(str(c))
+ 20734	                if cids:
+ 20735	                    rhb["last_sell_cid"] = str(cids[-1])
+ 20736	                    rhb["last_sell_cids"] = list(cids)
+ 20737	                    _hb_state[sym] = rhb
+ 20738	            except Exception:
+ 20739	                pass
+ 20740	            ok_resp = False
+ 20741	            if isinstance(resp, dict):
+ 20742	                ok_resp = bool(resp.get("ok"))
+ 20743	                if not ok_resp:
+ 20744	                    try:
+ 20745	                        ok_resp = int(float(resp.get("status") or resp.get("code") or 0)) in (200, 201)
+ 20746	                    except Exception:
+ 20747	                        ok_resp = False
+ 20748	            if isinstance(resp, dict) and resp.get("skipped") and str(resp.get("reason") or "").upper() == "DUPLICATE_PREVENTED":
+ 20749	                try:
+ 20750	                    w.last_event = f"DUPLICATE_SKIPPED {sym}"
+ 20751	                except Exception:
+ 20752	                    pass
+ 20753	                _set_engine("Run", "DUPLICATE_SKIPPED", reject=False, meta={"sym": sym, "stage": "EXIT", "entry_attempt": False})
+ 20754	                return
+ 20755	            if (not ok_resp) and (not self.cfg.dry_run):
+ 20756	                try:
+ 20757	                    w.last_event = f"ORDER_REJECT {sym}"
+ 20758	                except Exception:
+ 20759	                    pass
+ 20760	                meta_r = {"sym": sym, "entry_attempt": False, "stage": "EXIT", "ok": False}
+ 20761	                try:
+ 20762	                    if isinstance(resp, dict):
+ 20763	                        for k in ("status", "code", "error", "message", "msg", "reason", "detail"):
+ 20764	                            if resp.get(k) is not None:
+ 20765	                                meta_r[k] = resp.get(k)
+ 20766	                        oid = resp.get("order_id") or resp.get("orderId") or resp.get("id")
+ 20767	                        if oid is not None:
+ 20768	                            meta_r["order_id"] = oid
+ 20769	                except Exception:
+ 20770	                    pass
+ 20771	                _set_engine("Run", "ORDER_REJECT", reject=True, meta=meta_r)
+ 20772	                try:
+ 20773	                    self._idem_forget(str(getattr(w, "name", "") or ""), sym, "sell")
+ 20774	                except Exception:
+ 20775	                    pass
+ 20776	                return
+ 20777	            if ok_resp or self.cfg.dry_run:
+ 20778	                if self.cfg.dry_run:
+ 20779	                    pnl_quote = (float(sell_px) - pos.entry_px) * pos.qty
+
+### WIDE_BLOCK: s43.py:20933
+ 20873	            worst["confirmations"] = int(confirm)
+ 20874	            worst["confirm_need"] = int(confirm_need)
+ 20875	            return worst
+ 20876	        return None
+ 20877	    async def _cancel_open_orders(self, w: WalletRuntime) -> int:
+ 20878	        try:
+ 20879	            resp = await w.ex.list_orders()
+ 20880	            orders = OrderJournal._extract_orders(resp)
+ 20881	        except Exception as e:
+ 20882	            self._log.warning("event=GLOBAL_EXIT_LIST_ORDERS_FAIL wallet=%s err=%s", w.name, e)
+ 20883	            return 0
+ 20884	        canceled = 0
+ 20885	        for o in orders:
+ 20886	            try:
+ 20887	                st = OrderJournal._order_status(o)
+ 20888	                if OrderJournal._is_terminal_status(st):
+ 20889	                    continue
+ 20890	                oid = OrderJournal._order_id(o)
+ 20891	                if not oid:
+ 20892	                    continue
+ 20893	                c_to = max(2.5, float(getattr(self.cfg, "low_priority_timeout_sec", 0.8) or 0.8))
+ 20894	                for _try in range(2):
+ 20895	                    try:
+ 20896	                        await asyncio.wait_for(w.ex.cancel_order(oid), timeout=c_to)
+ 20897	                        canceled += 1
+ 20898	                        break
+ 20899	                    except Exception:
+ 20900	                        if _try == 0:
+ 20901	                            await asyncio.sleep(0.25)
+ 20902	                        continue
+ 20903	            except Exception:
+ 20904	                continue
+ 20905	        if canceled:
+ 20906	            self._log.warning("event=GLOBAL_EXIT_CANCELLED wallet=%s canceled=%d", w.name, canceled)
+ 20907	        return int(canceled)
+ 20908	    async def _liquidate_positions(self, w: WalletRuntime, reason: str) -> dict:
+ 20909	        if (not self.cfg.dry_run) and (not bool(getattr(self.cfg, "global_exit_armed", False))):
+ 20910	            self._log.critical("event=GLOBAL_EXIT_NOT_ARMED wallet=%s reason=%s (LIVE) -> HALT_ONLY", w.name, reason)
+ 20911	            return {"armed": False, "attempted": 0, "closed": 0}
+ 20912	        sl_bps = float(getattr(self.cfg, "global_exit_slippage_bps", 80.0) or 80.0)
+ 20913	        attempted = 0
+ 20914	        closed = 0
+ 20915	        details = []
+ 20916	        for sym, pos in list(w.positions.items()):
+ 20917	            sym = _canon_symbol(sym)
+ 20918	            qty = float(getattr(pos, "qty", 0.0) or 0.0)
+ 20919	            if qty <= 0:
+ 20920	                continue
+ 20921	            attempted += 1
+ 20922	            try:
+ 20923	                book = await asyncio.wait_for(
+ 20924	                    self.feed.fetch_depth(sym, use_disk_cache_on_timeout=w.cfg.price_cache_on_timeout),
+ 20925	                    timeout=min(1.2, float(w.cfg.symbol_timeout_sec)),
+ 20926	                )
+ 20927	                if not book or book.bid is None:
+ 20928	                    raise RuntimeError("no_book")
+ 20929	                bid = float(book.bid)
+ 20930	                px = max(1.0, bid * (1.0 - sl_bps / 10000.0))
+ 20931	                notion = float(qty) * float(px)
+ 20932	                await asyncio.wait_for(
+ 20933	                    w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+ 20934	                    timeout=3.5,
+ 20935	                )
+ 20936	                w.last_event = f"GLOBAL_EXIT:{reason}"
+ 20937	                details.append({"sym": sym, "qty": qty, "px": px, "ok": True})
+ 20938	            except Exception as e:
+ 20939	                details.append({"sym": sym, "qty": qty, "ok": False, "err": ExchangeClient._safe_body_for_log(f"{type(e).__name__}: {str(e) or repr(e)}", limit=120)})
+ 20940	                continue
+ 20941	        if not self.cfg.dry_run:
+ 20942	            try:
+ 20943	                await asyncio.sleep(0.4)
+ 20944	            except Exception:
+ 20945	                pass
+ 20946	        if self.cfg.dry_run:
+ 20947	            closed = attempted
+ 20948	            w.positions.clear()
+ 20949	        else:
+ 20950	            closed = 0
+ 20951	        return {"armed": bool(getattr(self.cfg, "global_exit_armed", False)) or self.cfg.dry_run, "attempted": attempted, "closed": closed, "details": details}
+ 20952	    async def _execute_global_exit(self, trigger: dict) -> None:
+ 20953	        if self._global_exit_fired:
+ 20954	            return
+ 20955	        self._global_exit_fired = True
+ 20956	        self.global_exit.mark_fired()
+ 20957	        sym = str(trigger.get("symbol", ""))
+ 20958	        peak = float(trigger.get("peak", 0.0) or 0.0)
+ 20959	        last = float(trigger.get("last", 0.0) or 0.0)
+ 20960	        drop = float(trigger.get("drop", 0.0) or 0.0) * 100.0
+ 20961	        reason = f"FLASH_CRASH drop>={float(getattr(self.cfg, 'flash_crash_pct', 0.05))*100:.1f}%"
+ 20962	        self.risk.halt_new_trades(f"GLOBAL_EXIT:{reason}")
+ 20963	        self._log.critical(
+ 20964	            "event=GLOBAL_EXIT_FIRED reason=%s ref=%s drop_pct=%.2f peak=%.0f last=%.0f confirmations=%s/%s",
+ 20965	            reason, sym, drop, peak, last, str(trigger.get("confirmations")), str(trigger.get("confirm_need")),
+ 20966	        )
+ 20967	        for w in self.wallets.values():
+ 20968	            try:
+ 20969	                await self._cancel_open_orders(w)
+ 20970	            except Exception:
+ 20971	                pass
+ 20972	            try:
+ 20973	                out = await self._liquidate_positions(w, reason="FLASH_CRASH")
+ 20974	                self._log.critical("event=GLOBAL_EXIT_WALLET wallet=%s attempted=%s closed=%s armed=%s",
+ 20975	                                   w.name, str(out.get("attempted")), str(out.get("closed")), str(out.get("armed")))
+ 20976	            except Exception as e:
+ 20977	                self._log.critical("event=GLOBAL_EXIT_WALLET_FAIL wallet=%s err=%s", w.name, e)
+ 20978	        try:
+ 20979	            self._save_state_if_needed(force=True)
+ 20980	        except Exception:
+ 20981	            pass
+ 20982	    async def cycle_wallet(self, w: WalletRuntime) -> None:
+ 20983	        try:
+ 20984	            _wdu = float(getattr(w, "_balance_disabled_until", 0.0) or 0.0)
+ 20985	            _now = time.time()
+ 20986	            if _wdu > _now:
+ 20987	                try:
+ 20988	                    self._log.warning(
+ 20989	                        "event=WALLET_BALANCE_COOLDOWN wallet=%s phase=cycle_wallet retry_in=%.1f fail_count=%s",
+ 20990	                        getattr(w, "name", "?"),
+ 20991	                        float(_wdu - _now),
+ 20992	                        int(getattr(w, "_balance_fail_count", 0) or 0),
+ 20993	                    )
+ 20994	                except Exception:
+ 20995	                    pass
+ 20996	                return
+ 20997	            cash_irt = float(await self._refresh_balance_if_needed(w))
+ 20998	            try:
+ 20999	                setattr(w, "_balance_fail_count", 0)
+ 21000	                setattr(w, "_balance_disabled_until", 0.0)
+ 21001	            except Exception:
+ 21002	                pass
+ 21003	        except asyncio.CancelledError:
+ 21004	            raise
+ 21005	        except (TradingHalt, Exception) as e:
+ 21006	            try:
+ 21007	                _fc = int(getattr(w, "_balance_fail_count", 0) or 0) + 1
+ 21008	                setattr(w, "_balance_fail_count", _fc)
+ 21009	                setattr(w, "_balance_disabled_until", time.time() + 120.0)
+ 21010	            except Exception:
+ 21011	                _fc = int(getattr(w, "_balance_fail_count", 0) or 0)
+ 21012	            try:
+ 21013	                self._log.warning(
+
+### WIDE_BLOCK: s43.py:21171
+ 21111	                        off = int(self._rr_sym_offset.get(w.name, 0) or 0)
+ 21112	                        start = off % len(rest)
+ 21113	                        rotated = rest[start:] + rest[:start]
+ 21114	                        syms = fixed + rotated[:take]
+ 21115	                        self._rr_sym_offset[w.name] = (off + take) % max(1, len(rest))
+ 21116	                    else:
+ 21117	                        syms = fixed
+ 21118	        except Exception:
+ 21119	            syms = syms_all
+ 21120	        try:
+ 21121	            topn_q = int(_env_int("QUALITY_TOPN", 9) or 9)
+ 21122	            ttl_q = float(_env_float("QUALITY_REFRESH_SEC", 20.0) or 20.0)
+ 21123	            now_q = time.time()
+ 21124	            last_q = float(getattr(self, "_quality_last_ts", 0.0) or 0.0)
+ 21125	            if (now_q - last_q) >= max(5.0, ttl_q) or not getattr(self, "_quality_syms", None):
+ 21126	                ranked = []
+ 21127	                try:
+ 21128	                    for r in (self.get_top8_snapshot() or []):
+ 21129	                        s0 = _canon(str((r or {}).get("symbol") or ""))
+ 21130	                        if s0 and s0 not in ranked:
+ 21131	                            ranked.append(s0)
+ 21132	                except Exception:
+ 21133	                    pass
+ 21134	                for s in (syms_all or []):
+ 21135	                    s0 = _canon(s)
+ 21136	                    if s0 and s0 not in ranked:
+ 21137	                        ranked.append(s0)
+ 21138	                self._quality_syms = ranked[: max(1, min(32, topn_q))]
+ 21139	                self._quality_last_ts = float(now_q)
+ 21140	            quality_syms = list(getattr(self, "_quality_syms", []) or [])
+ 21141	        except Exception:
+ 21142	            quality_syms = []
+ 21143	        try:
+ 21144	            if _env_bool("AUTO_UPGRADE_WALLETS", True) and quality_syms:
+ 21145	                min_iv = float(_env_float("UPGRADE_MIN_INTERVAL", 60.0) or 60.0)
+ 21146	                last_up = float(getattr(w, "last_upgrade_ts", 0.0) or 0.0)
+ 21147	                now_u = time.time()
+ 21148	                if (now_u - last_up) >= max(10.0, min_iv):
+ 21149	                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+ 21150	                        lows = []
+ 21151	                        for sym, pos in (getattr(w, "positions", {}) or {}).items():
+ 21152	                            s0 = _canon(sym)
+ 21153	                            if s0 and (s0 not in quality_syms):
+ 21154	                                lows.append((s0, pos))
+ 21155	                        if lows:
+ 21156	                            lows.sort(key=lambda it: float(getattr(it[1], "entry_ts", 0.0) or 0.0))
+ 21157	                            sym_low, pos_low = lows[0]
+ 21158	                            qty = float(getattr(pos_low, "qty", 0.0) or 0.0)
+ 21159	                            if qty > 0.0:
+ 21160	                                ob = None
+ 21161	                                try:
+ 21162	                                    ob = self.feed._cache.get(sym_low, (None, None))[1] if hasattr(self.feed, "_cache") else None
+ 21163	                                except Exception:
+ 21164	                                    ob = None
+ 21165	                                bid = float(getattr(ob, "bid", 0.0) or 0.0) if ob else 0.0
+ 21166	                                mid = float(getattr(ob, "mid", 0.0) or 0.0) if ob else 0.0
+ 21167	                                px0 = bid if bid > 0 else mid
+ 21168	                                if px0 > 0.0:
+ 21169	                                    slip_bps = float(_env_float("UPGRADE_SLIP_BPS", 12.0) or 12.0)
+ 21170	                                    px = float(px0 * (1.0 - max(0.0, slip_bps) / 10000.0))
+ 21171	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+ 21172	                                    w.last_upgrade_ts = float(now_u)
+ 21173	                                    try:
+ 21174	                                        w.last_event = "UPGRADE_SELL"
+ 21175	                                    except Exception:
+ 21176	                                        pass
+ 21177	        except (TradingHalt, TemporaryPause):
+ 21178	            raise
+ 21179	        except Exception:
+ 21180	            pass
+ 21181	        try:
+ 21182	            try:
+ 21183	                try:
+ 21184	                    import asyncio as _pp_asyncio
+ 21185	                except:
+ 21186	                    pass
+ 21187	            except:
+ 21188	                pass
+ 21189	        except Exception:
+ 21190	            _pp_asyncio = None
+ 21191	        max_conc = 1  #
+ 21192	        if _pp_asyncio is None:
+ 21193	            for sym in syms:
+ 21194	                if deadline is not None and time.time() >= deadline:
+ 21195	                    self._log.warning("event=HEARTBEAT_BUDGET_EXCEEDED wallet=%s budget=%.2f", w.name, budget)
+ 21196	                    break
+ 21197	                await self._process_symbol_heartbeat(w, sym, float(cash_irt) * self._focus_weight_for(sym))
+ 21198	                if bool(getattr(w, 'sanity_halt', False)):
+ 21199	                    break
+ 21200	        else:
+ 21201	            sem = _pp_asyncio.Semaphore(max_conc)
+ 21202	            _halt_t = globals().get("TradingHalt")
+ 21203	            _pause_t = globals().get("TemporaryPause")
+ 21204	            async def _hb_one(_sym: str):
+ 21205	                async with sem:
+ 21206	                    return await self._process_symbol_heartbeat(w, _sym, float(cash_irt) * self._focus_weight_for(_sym))
+ 21207	            for i in range(0, len(syms), max_conc):
+ 21208	                if bool(getattr(w, 'sanity_halt', False)):
+ 21209	                    break
+ 21210	                if deadline is not None:
+ 21211	                    remaining = float(deadline - time.time())
+ 21212	                    if remaining <= 0.0:
+ 21213	                        self._log.warning("event=HEARTBEAT_BUDGET_EXCEEDED wallet=%s budget=%.2f", w.name, budget)
+ 21214	                        break
+ 21215	                else:
+ 21216	                    remaining = None
+ 21217	                batch = syms[i:i + max_conc]
+ 21218	                tasks = [_pp_asyncio.create_task(_hb_one(s)) for s in batch]
+ 21219	                try:
+ 21220	                    if remaining is not None:
+ 21221	                        results = await _pp_asyncio.wait_for(
+ 21222	                            _pp_asyncio.gather(*tasks, return_exceptions=True),
+ 21223	                            timeout=max(0.05, remaining),
+ 21224	                        )
+ 21225	                    else:
+ 21226	                        results = await _pp_asyncio.gather(*tasks, return_exceptions=True)
+ 21227	                except _pp_asyncio.TimeoutError:
+ 21228	                    self._log.warning("event=HEARTBEAT_BUDGET_EXCEEDED wallet=%s budget=%.2f", w.name, budget)
+ 21229	                    for t in tasks:
+ 21230	                        try:
+ 21231	                            if not t.done():
+ 21232	                                t.cancel()
+ 21233	                        except Exception:
+ 21234	                            pass
+ 21235	                    try:
+ 21236	                        await _pp_asyncio.wait_for(_pp_asyncio.gather(*tasks, return_exceptions=True), timeout=0.2)
+ 21237	                    except Exception:
+ 21238	                        pass
+ 21239	                    break
+ 21240	                try:
+ 21241	                    for r in results:
+ 21242	                        if _halt_t is not None and isinstance(r, _halt_t):
+ 21243	                            raise r
+ 21244	                        if _pause_t is not None and isinstance(r, _pause_t):
+ 21245	                            raise r
+ 21246	                except Exception:
+ 21247	                    raise
+ 21248	        try:
+ 21249	            if hasattr(self, "dzh"):
+ 21250	                await self.dzh.update_wallet_metrics(self, w)
+ 21251	        except Exception:
+
+### WIDE_BLOCK: s43.py:21667
+ 21607	                    if unknown and _env_bool('LIVE_TRADING', False) and _env_bool("SAFE_RECONCILE", True):
+ 21608	                        w.sanity_halt = True
+ 21609	                        w.sanity_reason = f'ORDER_DESYNC unknown={unknown}'
+ 21610	                        try:
+ 21611	                            hold = float(getattr(self.cfg, 'sanity_hold_sec', 8.0) or 8.0)
+ 21612	                            w.sanity_until_ts = float(now + max(2.0, hold))
+ 21613	                        except Exception:
+ 21614	                            w.sanity_until_ts = float(now + 8.0)
+ 21615	                        _obs_trace(w, "ORDERS_RECONCILE_UNKNOWN", reason=str(unknown), meta={})
+ 21616	        except Exception:
+ 21617	            pass
+ 21618	        try:
+ 21619	            syms_all = list(self._symbols_priority_order(w.cfg, w))
+ 21620	            topn_q = int(_env_int("QUALITY_TOPN", 9) or 9)
+ 21621	            ttl_q = float(_env_float("QUALITY_REFRESH_SEC", 20.0) or 20.0)
+ 21622	            now_q = time.time()
+ 21623	            last_q = float(getattr(self, "_quality_last_ts", 0.0) or 0.0)
+ 21624	            if (now_q - last_q) >= max(5.0, ttl_q) or not getattr(self, "_quality_syms", None):
+ 21625	                ranked = []
+ 21626	                try:
+ 21627	                    for r in (self.get_top8_snapshot() or []):
+ 21628	                        s0 = _canon(str((r or {}).get("symbol") or ""))
+ 21629	                        if s0 and s0 not in ranked:
+ 21630	                            ranked.append(s0)
+ 21631	                except Exception:
+ 21632	                    pass
+ 21633	                for s0 in (syms_all or []):
+ 21634	                    ss = _canon(s0)
+ 21635	                    if ss and ss not in ranked:
+ 21636	                        ranked.append(ss)
+ 21637	                self._quality_syms = ranked[: max(1, min(32, topn_q))]
+ 21638	                self._quality_last_ts = float(now_q)
+ 21639	            quality_syms = list(getattr(self, "_quality_syms", []) or [])
+ 21640	            if _env_bool("AUTO_UPGRADE_WALLETS", True) and quality_syms:
+ 21641	                min_iv = float(_env_float("UPGRADE_MIN_INTERVAL", 60.0) or 60.0)
+ 21642	                last_up = float(getattr(w, "last_upgrade_ts", 0.0) or 0.0)
+ 21643	                now_u = time.time()
+ 21644	                if (now_u - last_up) >= max(10.0, min_iv):
+ 21645	                    if int(getattr(w, "open_orders_exch", 0) or 0) == 0 and not bool(getattr(w, "sanity_halt", False)):
+ 21646	                        lows = []
+ 21647	                        for sym, pos in (getattr(w, "positions", {}) or {}).items():
+ 21648	                            s0 = _canon(sym)
+ 21649	                            if s0 and (s0 not in quality_syms):
+ 21650	                                lows.append((s0, pos))
+ 21651	                        if lows:
+ 21652	                            lows.sort(key=lambda it: float(getattr(it[1], "entry_ts", 0.0) or 0.0))
+ 21653	                            sym_low, pos_low = lows[0]
+ 21654	                            qty = float(getattr(pos_low, "qty", 0.0) or 0.0)
+ 21655	                            if qty > 0.0:
+ 21656	                                ob = None
+ 21657	                                try:
+ 21658	                                    ob = self.feed._cache.get(sym_low, (None, None))[1] if hasattr(self.feed, "_cache") else None
+ 21659	                                except Exception:
+ 21660	                                    ob = None
+ 21661	                                bid = float(getattr(ob, "bid", 0.0) or 0.0) if ob else 0.0
+ 21662	                                mid = float(getattr(ob, "mid", 0.0) or 0.0) if ob else 0.0
+ 21663	                                px0 = bid if bid > 0 else mid
+ 21664	                                if px0 > 0.0:
+ 21665	                                    slip_bps = float(_env_float("UPGRADE_SLIP_BPS", 12.0) or 12.0)
+ 21666	                                    px = float(px0 * (1.0 - max(0.0, slip_bps) / 10000.0))
+ 21667	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+ 21668	                                    w.last_upgrade_ts = float(now_u)
+ 21669	                                    try:
+ 21670	                                        w.last_event = "UPGRADE_SELL"
+ 21671	                                    except Exception:
+ 21672	                                        pass
+ 21673	        except Exception:
+ 21674	            pass
+ 21675	        await self._assert_ordpos_invariant(w, where="cleanup_post")
+ 21676	    async def cycle_wallet_dashboard(self, w: WalletRuntime) -> None:
+ 21677	        if bool(getattr(w, 'wallet_disabled', False)):
+ 21678	            return
+ 21679	        try:
+ 21680	            if hasattr(self, "dzh"):
+ 21681	                await self.dzh.update_wallet_metrics(self, w)
+ 21682	        except Exception:
+ 21683	            return
+ 21684	    async def execute_order_v121(
+ 21685	        self,
+ 21686	        current_price: float,
+ 21687	        balance: float,
+ 21688	        symbol: Optional[str] = None,
+ 21689	        wallet: Optional[str] = None,
+ 21690	        current_volume: Optional[float] = None,
+ 21691	        volume_history: Optional[List[float]] = None,
+ 21692	    ) -> None:
+ 21693	        if not hasattr(self, "sovereign") or getattr(self, "sovereign", None) is None:
+ 21694	            self.sovereign = SovereignEngine()
+ 21695	        if not hasattr(self, "analyzer") or getattr(self, "analyzer", None) is None:
+ 21696	            self.analyzer = _VolatilityAnalyzer()
+ 21697	        w = None
+ 21698	        if wallet:
+ 21699	            w = (getattr(self, "wallets", {}) or {}).get(str(wallet))
+ 21700	        if w is None:
+ 21701	            w = next(iter((getattr(self, "wallets", {}) or {}).values()), None)
+ 21702	        if w is None:
+ 21703	            return
+ 21704	        sym = _canon_symbol(symbol or "")
+ 21705	        if not sym:
+ 21706	            try:
+ 21707	                pri = list(getattr(w.cfg, "symbol_priority", []) or [])
+ 21708	                sym = _canon_symbol(pri[0]) if pri else ""
+ 21709	            except Exception:
+ 21710	                sym = ""
+ 21711	        if not sym:
+ 21712	            try:
+ 21713	                syms = list(getattr(w.cfg, "symbols", []) or [])
+ 21714	                sym = _canon_symbol(syms[0]) if syms else ""
+ 21715	            except Exception:
+ 21716	                sym = ""
+ 21717	        if not sym:
+ 21718	            return
+ 21719	        px = float(current_price or 0.0)
+ 21720	        if px <= 0:
+ 21721	            return
+ 21722	        ts_ms = None
+ 21723	        for attr in (
+ 21724	            "last_exchange_ts_ms",
+ 21725	            "last_tick_ts_ms",
+ 21726	            "last_market_ts_ms",
+ 21727	            "last_ts_ms",
+ 21728	            "exchange_ts_ms",
+ 21729	        ):
+ 21730	            v = getattr(self, attr, None)
+ 21731	            if isinstance(v, (int, float)) and float(v) > 0:
+ 21732	                ts_ms = float(v)
+ 21733	                break
+ 21734	        if ts_ms is None:
+ 21735	            ts_ms = time.time() * 1000.0
+ 21736	        ok, _lag = self.sovereign.monitor.check_lag(ts_ms)
+ 21737	        if not ok:
+ 21738	            return
+ 21739	        try:
+ 21740	            self.analyzer.update(sym, px)
+ 21741	        except Exception:
+ 21742	            pass
+ 21743	        try:
+ 21744	            sigma = float(getattr(self.analyzer, "get_sigma", self.analyzer.get_volatility)(sym))
+ 21745	        except Exception:
+ 21746	            try:
+ 21747	                sigma = float(self.analyzer.get_volatility(sym))
+
+### WIDE_BLOCK: s43.py:21806
+ 21746	            try:
+ 21747	                sigma = float(self.analyzer.get_volatility(sym))
+ 21748	            except Exception:
+ 21749	                sigma = 0.001
+ 21750	        whale_active = False
+ 21751	        try:
+ 21752	            cv = None
+ 21753	            if current_volume is not None:
+ 21754	                cv = float(current_volume)
+ 21755	            else:
+ 21756	                for attr in ("last_volume", "last_tick_volume", "last_trade_volume", "current_volume", "volume"):
+ 21757	                    v = getattr(self, attr, None)
+ 21758	                    if isinstance(v, dict):
+ 21759	                        v = v.get(sym) or v.get(str(sym))
+ 21760	                    if isinstance(v, (int, float)) and float(v) > 0:
+ 21761	                        cv = float(v)
+ 21762	                        break
+ 21763	            vh = volume_history
+ 21764	            if vh is None:
+ 21765	                for attr in ("volume_history", "vol_hist", "volumes", "volume_window", "volume_deque"):
+ 21766	                    v = getattr(self, attr, None)
+ 21767	                    if isinstance(v, dict):
+ 21768	                        v = v.get(sym) or v.get(str(sym))
+ 21769	                    if v is not None and hasattr(v, "__iter__"):
+ 21770	                        try:
+ 21771	                            vh = list(v)
+ 21772	                            break
+ 21773	                        except Exception:
+ 21774	                            pass
+ 21775	            if cv is not None and float(cv) > 0:
+ 21776	                whale_active = bool(self.sovereign.monitor.detect_whale_activity(float(cv), vh))
+ 21777	                self.sovereign.monitor.update_volume(float(cv))
+ 21778	        except Exception:
+ 21779	            whale_active = False
+ 21780	        effective_sigma = float(sigma) * 2.0 if whale_active else float(sigma)
+ 21781	        try:
+ 21782	            smart_ladder = list(self.sovereign.evolution.get_exponential_ladder(px, effective_sigma, side="buy", levels=5))
+ 21783	        except Exception:
+ 21784	            smart_ladder = [px * 0.995]
+ 21785	        if not smart_ladder:
+ 21786	            return
+ 21787	        try:
+ 21788	            safe_qty_total = float(self.sovereign.risk.calculate_kelly_size(float(balance), price=px))
+ 21789	        except Exception:
+ 21790	            safe_qty_total = max(0.0, float(balance) * 0.12 / px) if px > 0 else 0.0
+ 21791	        if safe_qty_total <= 0:
+ 21792	            return
+ 21793	        try:
+ 21794	            if abs(px - float(smart_ladder[0])) / px < 0.001:
+ 21795	                smart_ladder[0] = px
+ 21796	        except Exception:
+ 21797	            pass
+ 21798	        qty_each = safe_qty_total / float(len(smart_ladder))
+ 21799	        api = getattr(self, "api", None)
+ 21800	        for target_px in smart_ladder:
+ 21801	            tp = float(target_px)
+ 21802	            if tp <= 0:
+ 21803	                continue
+ 21804	            notional = float(qty_each) * float(tp)
+ 21805	            try:
+ 21806	                await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+ 21807	                continue
+ 21808	            except Exception:
+ 21809	                pass
+ 21810	            if api and hasattr(api, "place_limit") and callable(getattr(api, "place_limit")):
+ 21811	                try:
+ 21812	                    await api.place_limit(sym, "buy", float(qty_each), float(tp))
+ 21813	                    continue
+ 21814	                except Exception:
+ 21815	                    pass
+ 21816	        try:
+ 21817	            gc.collect()
+ 21818	        except Exception:
+ 21819	            pass
+ 21820	    async def run(self: "TradingBot") -> None:
+ 21821	        global TERMUX_MODE
+ 21822	        try:
+ 21823	            TERMUX_MODE = bool(os.environ.get("TERMUX_VERSION") or os.environ.get("TERMUX_MODE") == "1" or ("com.termux" in str(os.environ.get("PREFIX", ""))))
+ 21824	        except Exception:
+ 21825	            TERMUX_MODE = False
+ 21826	        try:
+ 21827	            os.nice(-10)
+ 21828	        except Exception:
+ 21829	            pass
+ 21830	        stop_ev = None
+ 21831	        try:
+ 21832	            stop_ev = GLOBAL_SHUTDOWN.bind_asyncio_event()
+ 21833	        except Exception:
+ 21834	            stop_ev = asyncio.Event()
+ 21835	        try:
+ 21836	            if not hasattr(self, "_cycle_count"):
+ 21837	                self._cycle_count = 0
+ 21838	            if not hasattr(self, "_cycle_best_conf"):
+ 21839	                self._cycle_best_conf = 0.0
+ 21840	        except Exception:
+ 21841	            pass
+ 21842	        try:
+ 21843	            try:
+ 21844	                loop = asyncio.get_running_loop()
+ 21845	                def _pp200_asyncio_handler(_loop, context):
+ 21846	                    try:
+ 21847	                        exc = context.get("exception") or Exception(context.get("message", "asyncio"))
+ 21848	                        _pp200_report(exc, tag="ASYNCIO", ctx={"message": str(context.get("message", ""))[:200]}, logger=getattr(self, "_log", None))
+ 21849	                    except Exception:
+ 21850	                        pass
+ 21851	                loop.set_exception_handler(_pp200_asyncio_handler)
+ 21852	            except Exception:
+ 21853	                pass
+ 21854	        except Exception:
+ 21855	            pass
+ 21856	        self._log.info(
+ 21857	            "event=BOT_RUN_START live=%s dry_run=%s wallets=%s symbols=%s",
+ 21858	            str(_env_bool("LIVE_TRADING", False)),
+ 21859	            str(bool(getattr(self.cfg, "dry_run", False))),
+ 21860	            str(len(getattr(self, "wallets", {}) or {})),
+ 21861	            ",".join(list(getattr(self.cfg, "symbols", []) or [])[:12]),
+ 21862	        )
+ 21863	        try:
+ 21864	            if not hasattr(self, "_rtp_boot_ts") or float(getattr(self, "_rtp_boot_ts", 0.0) or 0.0) <= 0.0:
+ 21865	                setattr(self, "_rtp_boot_ts", float(time.time()))
+ 21866	        except Exception:
+ 21867	            pass
+ 21868	        try:
+ 21869	            if not hasattr(self, "_boot_ts") or float(getattr(self, "_boot_ts", 0.0) or 0.0) <= 0.0:
+ 21870	                setattr(self, "_boot_ts", float(getattr(self, "_rtp_boot_ts", time.time()) or time.time()))
+ 21871	        except Exception:
+ 21872	            pass
+ 21873	        try:
+ 21874	            asyncio.create_task(self._refresh_market_snapshot_if_needed(), name="prime_snapshot")
+ 21875	        except Exception:
+ 21876	            pass
+ 21877	        try:
+ 21878	            asyncio.create_task(self._refresh_market_focus_if_needed(), name="prime_focus")
+ 21879	        except Exception:
+ 21880	            pass
+ 21881	        try:
+ 21882	            asyncio.create_task(self._refresh_top8_if_needed(), name="prime_top8")
+ 21883	        except Exception:
+ 21884	            pass
+ 21885	        dash = None
+ 21886	        try:
+
+### A4 ALL_W_EXEC_PLACE_LIMIT
+10772: 10772	            await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+20337: 20337	                        resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+20699: 20699	                    resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+20933: 20933	                    w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+21171: 21171	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+21667: 21667	                                    await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+21806: 21806	                await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+### B EXECUTIONENGINE_PLACE_LIMIT
+ 11390	                self._save_risk_journal()
+ 11391	            except Exception:
+ 11392	                pass
+ 11393	class ExecutionEngine:
+ 11394	    def __init__(self, cfg: BotConfig, ex: ExchangeClient, normalizer: OrderNormalizer, logger: logging.Logger,
+ 11395	                 recorder: Optional[TickRecorder] = None, wallet_name: str = "W1", order_journal: Optional['OrderJournal'] = None):
+ 11396	        self.cfg = cfg
+ 11397	        self._ex = ex
+ 11398	        self._norm = normalizer
+ 11399	        self._logger = logger
+ 11400	        self._rec = recorder
+ 11401	        self._wallet = wallet_name
+ 11402	        self._oj = order_journal
+ 11403	        self._submit_lock = asyncio.Lock()
+ 11404	        self.max_retries = _env_int("ORDER_MAX_RETRIES", 2)
+ 11405	        self.base_backoff = _env_float("ORDER_BACKOFF_SEC", 0.5)
+ 11406	        self.ghost_order_count: int = 0
+ 11407	        self._last_deep_prune_ts: float = 0.0
+ 11408	    def _regime_multiplier(self, symbol: str, notional_irt: float) -> float:
+ 11409	        sym = _canon_symbol(symbol)
+ 11410	        reg = AlphaModel.get_regime(sym)
+ 11411	        st = str(reg.get("state") or "").upper()
+ 11412	        strength = float(reg.get("strength") or 0.0)
+ 11413	        mult = 1.0
+ 11414	        if st == "VOLATILE":
+ 11415	            mult *= 0.50
+ 11416	        elif st == "RANGING":
+ 11417	            mult *= 0.85
+ 11418	        elif st == "TRENDING":
+ 11419	            if strength >= 0.55:
+ 11420	                try:
+ 11421	                    kf = 1.0
+ 11422	                    r = getattr(self, "_risk", None)
+ 11423	                    mem = getattr(r, "memory", None) if r is not None else None
+ 11424	                    if mem is not None and hasattr(mem, "kelly_fraction"):
+ 11425	                        kf = float(mem.kelly_fraction())
+ 11426	                    kf = float(clamp(kf, 0.25, 1.25))
+ 11427	                    damp = float(0.55 + 0.45 * kf)
+ 11428	                    full = float(kf)
+ 11429	                    mult *= float(clamp(full / max(1e-9, damp), 0.70, 1.30))
+ 11430	                except Exception:
+ 11431	                    pass
+ 11432	        try:
+ 11433	            spr = float(reg.get("spread_bps") or 0.0)
+ 11434	            max_spr = float(getattr(self.cfg, "alpha_max_spread_bps", 35.0) or 35.0)
+ 11435	            if spr > max_spr * 0.75:
+ 11436	                mult *= 0.85
+ 11437	        except Exception:
+ 11438	            pass
+ 11439	        try:
+ 11440	            mult = float(clamp(mult, 0.30, 1.35))
+ 11441	        except Exception:
+ 11442	            mult = 1.0
+ 11443	        return float(mult)
+ 11444	    async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+ 11445	        sym = _canon_symbol(symbol)
+ 11446	        try:
+ 11447	            side_l0 = str(side or "").lower()
+ 11448	            if side_l0.startswith("buy"):
+ 11449	                m = self._regime_multiplier(sym, float(notional_irt))
+ 11450	                m = float(clamp(float(m), 0.0, 1.0))
+ 11451	                if m != 1.0:
+ 11452	                    qty = float(qty) * float(m)
+ 11453	                    notional_irt = float(notional_irt) * float(m)
+ 11454	        except Exception:
+ 11455	            pass
+ 11456	        if self.cfg.dry_run:
+ 11457	            self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+ 11458	            if self._rec:
+ 11459	                self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+ 11460	                                       ok=True, order_id="DRY", raw={"dry_run": True})
+ 11461	            return {"ok": True, "dry_run": True}
+ 11462	        r = getattr(self, "_risk", None)
+ 11463	        if r is not None:
+ 11464	            try:
+ 11465	                hb = getattr(r, "hard_blocks_all_orders", None)
+ 11466	                side_lk = str(side or "").lower().strip()
+ 11467	                if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+ 11468	                    reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+ 11469	                    self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+ 11470	                    raise TradingHalt(f"HARD_BLOCK:{reason}")
+ 11471	            except TradingHalt:
+ 11472	                raise
+ 11473	            except Exception as e:
+ 11474	                if not bool(getattr(self.cfg, "dry_run", False)):
+ 11475	                    raise TradingHalt(f"HARD_BLOCK:RISK_ERR:{type(e).__name__}") from e
+ 11476	        try:
+ 11477	            rd = None
+ 11478	            if r is not None:
+ 11479	                g = getattr(r, "get_runtime_risk", None)
+ 11480	                if callable(g):
+ 11481	                    rd = g(self._wallet, sym)
+ 11482	            side_l = str(side or "").lower()
+ 11483	            is_entry = side_l.startswith("buy")
+ 11484	            if rd is not None and is_entry:
+ 11485	                if not bool(getattr(rd, "allow_entries", True)):
+ 11486	                    raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+ 11487	                mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+ 11488	                mult = float(clamp(mult, 0.0, 1.0))
+ 11489	                _skip_mult = False
+ 11490	                try:
+ 11491	                    _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+ 11492	                except Exception:
+ 11493	                    _skip_mult = False
+ 11494	                if (not _skip_mult) and mult < 0.999:
+ 11495	                    qty = float(qty) * mult
+ 11496	                    notional_irt = float(notional_irt) * mult
+ 11497	                    try:
+ 11498	                        self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+ 11499	                                          self._wallet, sym, str(getattr(rd,'level','?')), mult)
+ 11500	                    except Exception:
+ 11501	                        pass
+ 11502	        except TemporaryPause:
+ 11503	            raise
+ 11504	        except Exception:
+ 11505	            pass
+ 11506	        if qty <= 0 or price <= 0:
+ 11507	            raise ValueError(f"Invalid order params qty={qty} price={price}")
+ 11508	        qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+ 11509	        if qty2 <= 0 or px2 <= 0:
+ 11510	            raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+ 11511	        cid: Optional[str] = None
+ 11512	        if self._oj is not None:
+ 11513	            cid = self._oj.new_cid(self._wallet, sym, side)
+ 11514	            self._oj.mark_pending(cid, wallet=self._wallet, symbol=sym, side=side,
+ 11515	                                 qty=float(qty2), price=float(px2), notional_irt=float(notional_irt))
+ 11516	            self._logger.info("event=ORDER_INTENT cid=%s wallet=%s side=%s sym=%s qty=%.8f px=%.0f",
+ 11517	                             cid, self._wallet, str(side).lower(), sym, float(qty2), float(px2))
+ 11518	        else:
+ 11519	            raise TradingHalt("ORDERS_JOURNAL_DISABLED")
+ 11520	        last_exc: Optional[Exception] = None
+ 11521	        for attempt in range(self.max_retries + 1):
+ 11522	            try:
+ 11523	                async with self._submit_lock:
+ 11524	                    if attempt == 0:
+ 11525	                        order_key = f"{str(side).lower()}_{px2}_{qty2}_{sym}"
+ 11526	                        if getattr(self, "_last_order_key", None) == order_key and (time.time() - getattr(self, "_last_order_time", 0.0)) < 5.0:
+ 11527	                            try:
+ 11528	                                self._logger.warning("Duplicate order prevented for %s", sym)
+ 11529	                            except Exception:
+ 11530	                                pass
+ 11531	                            if self._oj is not None:
+ 11532	                                try:
+ 11533	                                    self._oj.mark_resolved(cid, final_state="SKIPPED_DUP", note=str(order_key))
+ 11534	                                except Exception:
+ 11535	                                    pass
+ 11536	                            return {"ok": False, "skipped": True, "reason": "DUPLICATE_PREVENTED", "cid": cid}
+ 11537	                        self._last_order_key = order_key
+ 11538	                        self._last_order_time = time.time()
+ 11539	                    order_kwargs = dict(kwargs)
+ 11540	                    order_kwargs.pop("cid", None)
+ 11541	                    order_kwargs.setdefault("notional_irt", float(notional_irt))
+ 11542	                    order_kwargs.setdefault("fill_type", "limit")
+ 11543	                    order_kwargs.setdefault("market", "spot")
+ 11544	                    order_kwargs.setdefault("reduce_only", str(side or "").lower().startswith("sell"))
+ 11545	                    try:
+ 11546	                        self._logger.info(
+ 11547	                            "event=PRE_ORDER_TRACE wallet=%s sym=%s side=%s qty=%.12f px=%.12f notional=%.2f dry_run=%s reduce_only=%s attempt=%s cid=%s",
+ 11548	                            self._wallet,
+ 11549	                            sym,
+ 11550	                            str(side).lower(),
+ 11551	                            float(qty2),
+ 11552	                            float(px2),
+ 11553	                            float(notional_irt),
+ 11554	                            bool(getattr(self.cfg, "dry_run", False)),
+ 11555	                            order_kwargs.get("reduce_only"),
+ 11556	                            attempt,
+ 11557	                            cid,
+ 11558	                        )
+ 11559	                    except Exception:
+ 11560	                        pass
+ 11561	                    resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+ 11562	                if resp is None:
+ 11563	                    raise ApiError("Order submission returned None")
+ 11564	                ok = bool(resp.get("ok")) or (resp.get("status") in (200, 201))
+ 11565	                if ok:
+ 11566	                    oid = str(resp.get("order_id") or resp.get("id") or "")
+ 11567	                    if self._oj is not None:
+ 11568	                        try:
+ 11569	                            self._oj.mark_ack(cid, exchange_order_id=oid, raw=resp)
+ 11570	                        except Exception:
+ 11571	                            pass
+ 11572	                    if self._rec:
+ 11573	                        self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2),
+ 11574	                                               float(notional_irt), ok=True, order_id=oid, raw=resp)
+ 11575	                    try:
+ 11576	                        if isinstance(resp, dict) and cid:
+ 11577	                            if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+ 11578	                                resp = dict(resp)
+ 11579	                                resp["cid"] = str(cid)
+ 11580	                    except Exception:
+ 11581	                        pass
+ 11582	                    return resp
+ 11583	                if self._oj is not None:
+ 11584	                    try:
+ 11585	                        self._oj.mark_resolved(cid, final_state="REJECTED", note=str(resp)[:300])
+ 11586	                    except Exception:
+ 11587	                        pass
+ 11588	                try:
+ 11589	                    if isinstance(resp, dict) and cid:
+ 11590	                        if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+ 11591	                            resp = dict(resp)
+ 11592	                            resp["cid"] = str(cid)
+ 11593	                except Exception:
+ 11594	                    pass
+ 11595	                return resp
+ 11596	            except (TradingHalt, TemporaryPause):
+ 11597	                raise
+ 11598	            except asyncio.TimeoutError as e:
+ 11599	                last_exc = e
+ 11600	                try:
+ 11601	                    self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+ 11602	                except Exception:
+ 11603	                    pass
+ 11604	                if attempt < self.max_retries:
+ 11605	                    try:
+ 11606	                        await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+ 11607	                    except Exception:
+ 11608	                        pass
+ 11609	                    continue
+ 11610	                break
+ 11611	            except Exception as e:
+ 11612	                last_exc = e
+ 11613	                try:
+ 11614	                    self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+ 11615	                                       side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+ 11616	                except Exception:
+ 11617	                    pass
+ 11618	                if attempt < self.max_retries:
+ 11619	                    try:
+ 11620	                        await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+ 11621	                    except Exception:
+ 11622	                        pass
+ 11623	        if self._rec:
+ 11624	            self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2), float(notional_irt),
+ 11625	                                   ok=False, order_id=None, raw={"error": str(last_exc), "cid": cid})
+ 11626	        if self._oj is not None:
+ 11627	            try:
+ 11628	                self._oj.mark_uncertain(cid, err=str(last_exc))
+ 11629	            except Exception:
+ 11630	                pass
+ 11631	        if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+ 11632	            raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+ 11633	        raise ApiError(f"Order failed after retries: {last_exc}")
+ 11634	    async def place_ladder(self, symbol: str, side: str, qty: float, base_price: float, notional_irt: float) -> dict:
+ 11635	        sym = _canon_symbol(symbol)
+ 11636	        steps = int(getattr(self.cfg, "ladder_steps", 1) or 1)
+ 11637	        if not bool(getattr(self.cfg, "laddering", False)) or steps <= 1:
+ 11638	            return await self.place_limit(sym, side, qty, base_price, notional_irt)
+ 11639	        bps = float(getattr(self.cfg, "ladder_bps", 0.0) or 0.0)
+ 11640	        pause_ms = int(getattr(self.cfg, "ladder_pause_ms", 0) or 0)
+ 11641	        if qty <= 0 or base_price <= 0:
+ 11642	            raise ValueError(f"Invalid ladder params qty={qty} base_price={base_price}")
+ 11643	        child_orders = []
+ 11644	        remaining = float(qty)
+ 11645	        for i in range(steps):
+ 11646	            q_i = remaining if i == steps - 1 else remaining / float(steps - i)
+ 11647	            remaining -= q_i
+ 11648	            step_bps = (bps * float(i)) / 10000.0
+ 11649	            px_i = base_price * (1.0 - step_bps) if str(side).lower() == "buy" else base_price * (1.0 + step_bps)
+ 11650	            resp = await self.place_limit(sym, side, q_i, px_i, (notional_irt * (q_i / max(qty, 1e-12))))
+ 11651	            child_orders.append(resp)
+ 11652	            if pause_ms > 0 and i < steps - 1:
+ 11653	                await asyncio.sleep(pause_ms / 1000.0)
+ 11654	        any_sent = False
+ 11655	        all_good = True
+ 11656	        all_dup = True
+ 11657	        for o in (child_orders or []):
+ 11658	            if not isinstance(o, dict):
+ 11659	                all_good = False
+ 11660	                all_dup = False
+ 11661	                continue
+ 11662	            ok0 = bool(o.get("ok"))
+ 11663	            if not ok0:
+ 11664	                try:
+ 11665	                    ok0 = int(float(o.get("status") or o.get("code") or 0)) in (200, 201)
+ 11666	                except Exception:
+ 11667	                    ok0 = False
+ 11668	            dup0 = bool(o.get("skipped")) and str(o.get("reason") or "").upper() == "DUPLICATE_PREVENTED"
+ 11669	            if ok0:
+ 11670	                any_sent = True
+ 11671	                all_dup = False
+ 11672	            elif dup0:
+ 11673	                pass
+ 11674	            else:
+ 11675	                all_good = False
+ 11676	                all_dup = False
+ 11677	        if child_orders and all_dup:
+ 11678	            return {"ok": False, "skipped": True, "reason": "DUPLICATE_PREVENTED", "ladder": True, "steps": steps, "children": child_orders}
+ 11679	        ok = bool(all_good and any_sent)
+ 11680	        return {"ok": ok, "ladder": True, "steps": steps, "children": child_orders}
+ 11681	    async def deep_prune_ghost_orders(self, positions: Optional[Dict[str, 'Position']] = None, *, force: bool = False) -> int:
+ 11682	        """Aggressive ghost/orphan order pruning (Termux-safe).
+ 11683	
+ 11684	        Strategy:
+ 11685	        - Fetch open orders from exchange.
+ 11686	        - Identify bot-owned orders by CID prefixes / wallet tag.
+ 11687	        - Cross-check against local OrderJournal pending records and WalletState totals.
+ 11688	        - Cancel orders that are clearly orphaned or too old/far from book.
+ 11689	        - Persist first_seen/last_seen so Android throttling doesn't 'forget' ghosts.
+ 11690	        """
+ 11691	        now = float(time.time())
+ 11692	        positions = positions or {}
+ 11693	        if (not force) and (now - float(getattr(self, "_last_deep_prune_ts", 0.0) or 0.0)) < float(_env_float("DEEP_PRUNE_INTERVAL_SEC", 600.0) or 600.0):
+ 11694	            return 0
+ 11695	        self._last_deep_prune_ts = float(now)
+ 11696	        if bool(getattr(self.cfg, "dry_run", False)):
+ 11697	            self.ghost_order_count = 0
+ 11698	            return 0
+ 11699	        try:
+ 11700	            if not isinstance(getattr(self, "_ghost_seen", None), dict):
+ 11701	                setattr(self, "_ghost_seen", {})
+ 11702	            if not bool(getattr(self, "_ghost_state_loaded", False)):
+ 11703	                base = str(getattr(self.cfg, "state_path", "") or "").strip()
+ 11704	                if base:
+ 11705	                    path = f"{base}.{str(self._wallet or 'W1')}.ghost.json"
+ 11706	                else:
+ 11707	                    path = f"ghost_orders_{str(self._wallet or 'W1')}.json"
+ 11708	                setattr(self, "_ghost_state_path", path)
+ 11709	                try:
+ 11710	                    if os.path.isfile(path):
+ 11711	                        with open(path, "r", encoding="utf-8") as f:
+ 11712	                            obj = json.load(f)
+ 11713	                        if isinstance(obj, dict) and isinstance(obj.get("orders"), dict):
+ 11714	                            setattr(self, "_ghost_seen", dict(obj.get("orders") or {}))
+ 11715	                except Exception:
+ 11716	                    pass
+ 11717	                setattr(self, "_ghost_state_loaded", True)
+ 11718	        except Exception:
+ 11719	            pass
+ 11720	        ghost_seen: Dict[str, dict] = getattr(self, "_ghost_seen", {}) or {}
+ 11721	        known_oids: set = set()
+ 11722	        known_cids: set = set()
+ 11723	        try:
+ 11724	            if self._oj is not None:
+ 11725	                pend = self._oj.pending() or {}
+ 11726	                for _cid, rec in (pend or {}).items():
+ 11727	                    if _cid:
+ 11728	                        known_cids.add(str(_cid))
+ 11729	                    if not isinstance(rec, dict):
+ 11730	                        continue
+ 11731	                    oid = rec.get("exchange_order_id") or rec.get("order_id") or rec.get("id")
+ 11732	                    if oid:
+ 11733	                        known_oids.add(str(oid))
+ 11734	        except Exception:
+ 11735	            pass
+ 11736	        resps = []
+ 11737	        try:
+ 11738	            for st in ("open", "new", "active"):
+ 11739	                try:
+ 11740	                    r = await self._ex.list_orders(status=st)
+ 11741	                    if r is not None:
+ 11742	                        resps.append(r)
+ 11743	                except Exception:
+ 11744	                    pass
+ 11745	            if not resps:
+ 11746	                try:
+ 11747	                    r = await self._ex.list_orders()
+ 11748	                    if r is not None:
+ 11749	                        resps.append(r)
+ 11750	                except Exception:
+ 11751	                    pass
+ 11752	        except Exception:
+ 11753	            resps = []
+ 11754	        orders: List[dict] = []
+ 11755	        try:
+ 11756	            for r in (resps or []):
+ 11757	                orders.extend(OrderJournal._extract_orders(r))
+ 11758	        except Exception:
+ 11759	            orders = []
+ 11760	        seen = set()
+### C EXCHANGECLIENT_PLACE_ORDER
+  3180	                        setattr(self, "_conn_last_rtt_ms", float(rtt_ms))
+  3181	                        setattr(self, "_conn_last_code", int(last_code))
+  3182	                        setattr(self, "_conn_last_diag", "OK")
+  3183	                    except Exception:
+  3184	                        pass
+  3185	                    if 200 <= int(last_code) < 500:
+  3186	                        return True, float(rtt_ms), int(last_code)
+  3187	            except Exception as e:
+  3188	                last_err = str(e)
+  3189	                try:
+  3190	                    if _dnsish(e):
+  3191	                        dns_like = True
+  3192	                except Exception:
+  3193	                    pass
+  3194	                continue
+  3195	        diag = "CONN_CHECK_FAIL"
+  3196	        try:
+  3197	            if dns_like or _dnsish(Exception(last_err)):
+  3198	                ok_probe = await _tcp_probe_1111(timeout=min(1.6, max(0.8, tmo * 0.6)))
+  3199	                diag = "DNS_OR_PATH" if ok_probe else "TOTAL_DOWN"
+  3200	            else:
+  3201	                ok_probe = await _tcp_probe_1111(timeout=min(1.2, max(0.6, tmo * 0.45)))
+  3202	                if not ok_probe:
+  3203	                    diag = "TOTAL_DOWN"
+  3204	        except Exception:
+  3205	            diag = "CONN_CHECK_FAIL"
+  3206	        try:
+  3207	            setattr(self, "_conn_last_diag", str(diag))
+  3208	        except Exception:
+  3209	            pass
+  3210	        try:
+  3211	            self._logger.debug("event=CONN_CHECK_FAIL code=%s diag=%s err=%s", str(last_code), str(diag), _short(last_err, 120))
+  3212	        except Exception:
+  3213	            pass
+  3214	        return False, 0.0, int(last_code or 0)
+  3215	
+  3216	    # ---- repaired candidate method: place_order from lines 3184-3335 ----
+  3217	    async def place_order(
+  3218	        self,
+  3219	        symbol: str,
+  3220	        side: str,
+  3221	        amount: float,
+  3222	        price: float,
+  3223	        cid: Optional[str] = None,
+  3224	        *,
+  3225	        fill_type: str = "limit",
+  3226	        market: str = "spot",
+  3227	        reduce_only: Optional[bool] = None,
+  3228	        **kwargs: Any,
+  3229	    ) -> dict:
+  3230	        try:
+  3231	            if _termux_env_bool("TERMUX_MODE", False):
+  3232	                _termux_mark_order_activity()
+  3233	        except Exception:
+  3234	            pass
+  3235	
+  3236	        # PHASE4_ORDER_GATE_MAIN
+  3237	        if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+  3238	            try:
+  3239	                _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+  3240	                if hasattr(_gate_log, "warning"):
+  3241	                    _gate_log.warning(
+  3242	                        "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+  3243	                        symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+  3244	                    )
+  3245	            except Exception:
+  3246	                pass
+  3247	            return {}
+  3248	
+  3249	        if (
+  3250	            not bool(getattr(self, "_ai_live_trading_armed", False))
+  3251	            and bool(getattr(getattr(self, "_cfg", getattr(self, "cfg", None)), "autonomous_ai", False))
+  3252	        ):
+  3253	            try:
+  3254	                _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+  3255	                if hasattr(_gate_log, "warning"):
+  3256	                    _gate_log.warning(
+  3257	                        "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+  3258	                        symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+  3259	                    )
+  3260	            except Exception:
+  3261	                pass
+  3262	            return {}
+  3263	
+  3264	        q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+  3265	        try:
+  3266	            sym = _canon_pair(symbol, default_quote=q)
+  3267	        except Exception:
+  3268	            try:
+  3269	                sym = _canon_symbol(symbol)
+  3270	            except Exception:
+  3271	                sym = str(symbol or "")
+  3272	
+  3273	        market_raw = market
+  3274	        market_norm = str(market or "spot").lower().strip()
+  3275	        market_aliases = {
+  3276	            "spot": "spot",
+  3277	            "cash": "spot",
+  3278	            "future": "futures",
+  3279	            "futures": "futures",
+  3280	            "perp": "futures",
+  3281	            "perpetual": "futures",
+  3282	            "swap": "futures",
+  3283	        }
+  3284	        market_norm = market_aliases.get(market_norm, market_norm)
+  3285	        if market_norm not in ("spot", "futures"):
+  3286	            self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
+  3287	            raise ValueError(f"Unsupported market type: {market_raw}")
+  3288	
+  3289	        fill_norm = str(fill_type or "limit").lower().strip()
+  3290	        fill_aliases = {
+  3291	            "limit": "limit",
+  3292	            "lmt": "limit",
+  3293	            "market": "market",
+  3294	            "mkt": "market",
+  3295	        }
+  3296	        fill_norm = fill_aliases.get(fill_norm, fill_norm)
+  3297	        if fill_norm not in ("limit", "market"):
+  3298	            self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+  3299	            raise ValueError(f"Unsupported fill_type: {fill_type}")
+  3300	
+  3301	        if fill_norm == "limit" and price is None:
+  3302	            raise ValueError("Price must be specified for LIMIT orders.")
+  3303	
+  3304	        payload: Dict[str, Any] = {
+  3305	            "symbol": sym,
+  3306	            "amount": self._as_payload_number(amount),
+  3307	            "side": self._norm_side(side),
+  3308	            "fill_type": fill_norm,
+  3309	            "market": market_norm,
+  3310	        }
+  3311	
+  3312	        if price is not None:
+  3313	            payload["price"] = self._as_payload_number(price)
+  3314	        else:
+  3315	            payload["price"] = None
+  3316	
+  3317	        if cid:
+  3318	            payload["client_id"] = str(cid)
+  3319	
+  3320	        extra: Dict[str, Any] = dict(kwargs or {})
+  3321	
+  3322	        if reduce_only is not None:
+  3323	            extra["reduce_only"] = bool(reduce_only)
+  3324	
+  3325	        if market_norm == "futures":
+  3326	            extra["reduce_only"] = bool(extra.get("reduce_only", False))
+  3327	            if "leverage" in extra and extra.get("leverage") is not None:
+  3328	                try:
+  3329	                    extra["leverage"] = float(extra.get("leverage"))
+  3330	                except (TypeError, ValueError):
+  3331	                    self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+  3332	                    extra.pop("leverage", None)
+  3333	        else:
+  3334	            if bool(extra.get("reduce_only", False)):
+  3335	                self._logger.warning("reduce_only=True ignored for spot order.")
+  3336	            extra.pop("reduce_only", None)
+  3337	
+  3338	        for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+  3339	            extra.pop(protected_key, None)
+  3340	
+  3341	        payload.update(extra)
+  3342	
+  3343	        try:
+  3344	            if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3345	                ok, rtt_ms, code = await self.conn_check()
+### D1 WRAPPER_RANGE_3330_3455
+  3330	                except (TypeError, ValueError):
+  3331	                    self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+  3332	                    extra.pop("leverage", None)
+  3333	        else:
+  3334	            if bool(extra.get("reduce_only", False)):
+  3335	                self._logger.warning("reduce_only=True ignored for spot order.")
+  3336	            extra.pop("reduce_only", None)
+  3337	
+  3338	        for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+  3339	            extra.pop(protected_key, None)
+  3340	
+  3341	        payload.update(extra)
+  3342	
+  3343	        try:
+  3344	            if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3345	                ok, rtt_ms, code = await self.conn_check()
+  3346	                if not ok:
+  3347	                    pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+  3348	                    diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+  3349	                    if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+  3350	                        diag = "CONN_CHECK_FAIL"
+  3351	                    raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+  3352	        except TemporaryPause:
+  3353	            raise
+  3354	        except Exception as e:
+  3355	            pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+  3356	            raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+  3357	
+  3358	        last_exc: Optional[Exception] = None
+  3359	        for ep in ("/market/orders/", "/market/orders"):
+  3360	            try:
+  3361	                return await self.request("POST", ep, payload=payload, auth=True)
+  3362	            except Exception as e:
+  3363	                last_exc = e
+  3364	                continue
+  3365	
+  3366	        if last_exc:
+  3367	            raise last_exc
+  3368	        return {}
+  3369	
+  3370	    # ---- repaired candidate method: place_limit from lines 3336-3365 ----
+  3371	    async def place_limit(
+  3372	        self,
+  3373	        symbol: str,
+  3374	        side: str,
+  3375	        qty: float,
+  3376	        price: float,
+  3377	        cid: Optional[str] = None,
+  3378	        *,
+  3379	        notional_irt: Optional[float] = None,
+  3380	        market: str = "spot",
+  3381	        reduce_only: Optional[bool] = None,
+  3382	        leverage: Optional[Union[int, float]] = None,
+  3383	        **kwargs: Any,
+  3384	    ) -> dict:
+  3385	        extra: Dict[str, Any] = dict(kwargs or {})
+  3386	        if notional_irt is not None and "notional_irt" not in extra:
+  3387	            extra["notional_irt"] = notional_irt
+  3388	
+  3389	        return await self.place_order(
+  3390	            symbol=symbol,
+  3391	            side=side,
+  3392	            amount=qty,
+  3393	            price=price,
+  3394	            cid=cid,
+  3395	            fill_type="limit",
+  3396	            market=market,
+  3397	            reduce_only=reduce_only,
+  3398	            leverage=leverage,
+  3399	            **extra,
+  3400	        )
+  3401	
+  3402	    # ---- repaired candidate method: place_market from lines 3367-3395 ----
+  3403	    async def place_market(
+  3404	        self,
+  3405	        symbol: str,
+  3406	        side: str,
+  3407	        qty: float,
+  3408	        cid: Optional[str] = None,
+  3409	        *,
+  3410	        notional_irt: Optional[float] = None,
+  3411	        market: str = "spot",
+  3412	        reduce_only: Optional[bool] = None,
+  3413	        leverage: Optional[Union[int, float]] = None,
+  3414	        **kwargs: Any,
+  3415	    ) -> dict:
+  3416	        extra: Dict[str, Any] = dict(kwargs or {})
+  3417	        if notional_irt is not None and "notional_irt" not in extra:
+  3418	            extra["notional_irt"] = notional_irt
+  3419	
+  3420	        return await self.place_order(
+  3421	            symbol=symbol,
+  3422	            side=side,
+  3423	            amount=qty,
+  3424	            price=0.0,
+  3425	            cid=cid,
+  3426	            fill_type="market",
+  3427	            market=market,
+  3428	            reduce_only=reduce_only,
+  3429	            leverage=leverage,
+  3430	            **extra,
+  3431	        )
+  3432	
+  3433	    # ---- repaired candidate method: cancel_all_orders from lines 3396-3459 ----
+  3434	    async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+  3435	        payload: Dict[str, Any] = {}
+  3436	        try:
+  3437	            if _termux_env_bool("TERMUX_MODE", False):
+  3438	                _termux_mark_order_activity()
+  3439	        except Exception:
+  3440	            pass
+  3441	        if symbol:
+  3442	            try:
+  3443	                payload["symbol"] = _canon_symbol(symbol)
+  3444	            except Exception:
+  3445	                payload["symbol"] = str(symbol or "")
+  3446	        try:
+  3447	            if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+  3448	                ok, rtt_ms, code = await self.conn_check()
+  3449	                if not ok:
+  3450	                    pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+  3451	                    diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+  3452	                    if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+  3453	                        diag = "CONN_CHECK_FAIL"
+  3454	                    raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+  3455	        except TemporaryPause:
+### D2 WRAPPER_RANGE_14880_15210
+ 14880	                                if isinstance(v, list):
+ 14881	                                    orders.extend([o for o in v if isinstance(o, dict)])
+ 14882	                            elif isinstance(r, list):
+ 14883	                                orders.extend([o for o in r if isinstance(o, dict)])
+ 14884	                    except Exception:
+ 14885	                        continue
+ 14886	            def _is_bot(o) -> bool:
+ 14887	                try:
+ 14888	                    cid = str(o.get("client_id") or o.get("clientId") or o.get("cid") or "").strip().upper()
+ 14889	                except Exception:
+ 14890	                    cid = ""
+ 14891	                if not cid:
+ 14892	                    return False
+ 14893	                for p in (prefixes or ()):
+ 14894	                    if cid.startswith(p):
+ 14895	                        return True
+ 14896	                return False
+ 14897	            def _oid(o) -> str | None:
+ 14898	                try:
+ 14899	                    return str(o.get("id") or o.get("order_id") or o.get("orderId") or o.get("uuid") or "").strip() or None
+ 14900	                except Exception:
+ 14901	                    return None
+ 14902	            bot_first = [o for o in orders if _is_bot(o)]
+ 14903	            rest = [o for o in orders if o not in bot_first]
+ 14904	            ordered = bot_first + rest
+ 14905	            for o in ordered:
+ 14906	                oid = _oid(o)
+ 14907	                if not oid:
+ 14908	                    continue
+ 14909	                try:
+ 14910	                    await asyncio.wait_for(w.ex.cancel_order(oid), timeout=10.0)
+ 14911	                except Exception:
+ 14912	                    continue
+ 14913	            try:
+ 14914	                w.open_orders_exch = 0
+ 14915	            except Exception:
+ 14916	                pass
+ 14917	            try:
+ 14918	                w.locked_since_ts = 0.0
+ 14919	            except Exception:
+ 14920	                pass
+ 14921	            try:
+ 14922	                setattr(w, "_locked_since_ts", 0.0)
+ 14923	            except Exception:
+ 14924	                pass
+ 14925	            try:
+ 14926	                _obs_trace(w, "JANITOR_CANCEL_DONE", reason=str(reason or ""), meta={"wallet": str(getattr(w,'name',''))})
+ 14927	            except Exception:
+ 14928	                pass
+ 14929	        except asyncio.CancelledError:
+ 14930	            raise
+ 14931	        except Exception:
+ 14932	            return
+ 14933	class _MockExchangeForStress:
+ 14934	    def __init__(self, *, offline_sec: float, support_idempotency: bool = True):
+ 14935	        self._t0 = float(time.time())
+ 14936	        self._offline_until = self._t0 + float(max(0.0, offline_sec))
+ 14937	        self.support_idempotency = bool(support_idempotency)
+ 14938	        self._next_id = 1000
+ 14939	        self._orders: List[dict] = []
+ 14940	        self._by_cid: Dict[str, dict] = {}
+ 14941	    def _new_order(self, symbol: str, side: str, amount: float, price: float, cid: Optional[str]) -> dict:
+ 14942	        oid = str(self._next_id)
+ 14943	        self._next_id += 1
+ 14944	        o = {
+ 14945	            "id": oid,
+ 14946	            "order_id": oid,
+ 14947	            "symbol": _canon_symbol(symbol),
+ 14948	            "side": str(side).lower(),
+ 14949	            "amount": float(amount),
+ 14950	            "price": float(price),
+ 14951	            "status": "open",
+ 14952	        }
+ 14953	        if cid:
+ 14954	            o["client_order_id"] = str(cid)
+ 14955	        self._orders.append(o)
+ 14956	        if cid and self.support_idempotency:
+ 14957	            self._by_cid[str(cid)] = o
+ 14958	        return o
+ 14959	    async def place_order(
+ 14960	        self,
+ 14961	        symbol: str,
+ 14962	        side: str,
+ 14963	        amount: float,
+ 14964	        price: float,
+ 14965	        cid: Optional[str] = None,
+ 14966	        *,
+ 14967	        fill_type: str = "limit",
+ 14968	        market: str = "spot",
+ 14969	        notional_irt: Optional[float] = None,
+ 14970	        reduce_only: Optional[bool] = None,
+ 14971	        **kwargs: Any,
+ 14972	    ) -> dict:
+ 14973	        sym = _canon_symbol(symbol)
+ 14974	        res = await self._ex.place_order(
+ 14975	            symbol=sym,
+ 14976	            side=side,
+ 14977	            amount=amount,
+ 14978	            price=price,
+ 14979	            cid=cid,
+ 14980	            fill_type=fill_type,
+ 14981	            market=market,
+ 14982	            notional_irt=notional_irt,
+ 14983	            reduce_only=reduce_only,
+ 14984	            **kwargs,
+ 14985	        )
+ 14986	        return res
+ 14987	
+ 14988	# s43 recovery: fallback get_arzplus_token
+ 14989	def get_arzplus_token(slot=None, default=""):
+ 14990	    """
+ 14991	    Fail-safe token resolver for ArzPlus accounts.
+ 14992	    Reads token from environment variables and returns default/empty string if missing.
+ 14993	    """
+ 14994	    import os
+ 14995	
+ 14996	    candidates = []
+ 14997	
+ 14998	    try:
+ 14999	        s = str(int(slot)).strip() if slot is not None else ""
+ 15000	    except Exception:
+ 15001	        s = str(slot).strip() if slot is not None else ""
+ 15002	
+ 15003	    if s:
+ 15004	        candidates.extend([
+ 15005	            f"ARZPLUS_TOKEN_{s}",
+ 15006	            f"ARZPLUS_TOKEN{s}",
+ 15007	            f"ARZ_PLUS_TOKEN_{s}",
+ 15008	            f"ARZ_PLUS_TOKEN{s}",
+ 15009	            f"ARZ_TOKEN_{s}",
+ 15010	            f"ARZ_TOKEN{s}",
+ 15011	            f"TOKEN_{s}",
+ 15012	            f"TOKEN{s}",
+ 15013	        ])
+ 15014	
+ 15015	        # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+ 15016	        try:
+ 15017	            n = int(s)
+ 15018	            candidates.extend([
+ 15019	                f"ARZPLUS_TOKEN_{n+1}",
+ 15020	                f"ARZPLUS_TOKEN{n+1}",
+ 15021	                f"ARZ_PLUS_TOKEN_{n+1}",
+ 15022	                f"ARZ_PLUS_TOKEN{n+1}",
+ 15023	                f"ARZ_TOKEN_{n+1}",
+ 15024	                f"ARZ_TOKEN{n+1}",
+ 15025	                f"TOKEN_{n+1}",
+ 15026	                f"TOKEN{n+1}",
+ 15027	            ])
+ 15028	        except Exception:
+ 15029	            pass
+ 15030	
+ 15031	    candidates.extend([
+ 15032	        "ARZPLUS_TOKEN",
+ 15033	        "ARZ_PLUS_TOKEN",
+ 15034	        "ARZ_TOKEN",
+ 15035	        "TOKEN",
+ 15036	        "API_TOKEN",
+ 15037	        "ACCESS_TOKEN",
+ 15038	    ])
+ 15039	
+ 15040	    for key in candidates:
+ 15041	        try:
+ 15042	            val = os.getenv(key)
+ 15043	            if val:
+ 15044	                return str(val).strip()
+ 15045	        except Exception:
+ 15046	            pass
+ 15047	
+ 15048	    return default or ""
+ 15049	
+ 15050	
+ 15051	async def _stress_idempotency(args: argparse.Namespace) -> None:
+ 15052	    try:
+ 15053	        try:
+ 15054	            import dataclasses as _dc
+ 15055	        except:
+ 15056	            pass
+ 15057	    except:
+ 15058	        pass
+ 15059	    cfg = BotConfig()
+ 15060	    cfg = _dc.replace(cfg, orders_journal_path=str(getattr(args, "journal", "stress_orders_journal.json")), dry_run=False)
+ 15061	    if getattr(args, "reset_journal", False) and os.path.isfile(cfg.orders_journal_path):
+ 15062	        pass
+ 15063	    logger = Logger(cfg)
+ 15064	    oj = OrderJournal(cfg, logger.log)
+ 15065	    offline_sec = float(getattr(args, "offline_sec", 30.0))
+ 15066	    use_real = bool(getattr(args, "real", False))
+ 15067	    if use_real:
+ 15068	        if not bool(getattr(args, "allow_orders", False)):
+ 15069	            raise SystemExit("Refusing --real stress without --allow-orders (safety).")
+ 15070	        _ensure_live_gating(True)
+ 15071	        wallet_name = str(getattr(args, "wallet", "W1")).strip().upper()
+ 15072	        slot = 1
+ 15073	        try:
+ 15074	            if wallet_name.startswith("W"):
+ 15075	                slot = int(wallet_name[1:])
+ 15076	        except Exception:
+ 15077	            slot = 1
+ 15078	        token = get_arzplus_token(slot)
+ 15079	        if not str(token or "").strip():
+ 15080	            raise SystemExit(f"Missing API token for slot={slot} (set ARZPLUS_WALLET_{slot}_TOKEN)")
+ 15081	        limiter = SharedAsyncRateLimiter(cfg.rate_limit_per_min)
+ 15082	        real_ex = ExchangeClient(cfg, token, limiter, logger.log)
+ 15083	# AUTOPATCH_STAGE1_MARKER
+ 15084	def _s43_autopatch_probe():
+ 15085	    """
+ 15086	    Auto-patch probe helper for Termux.
+ 15087	    Harmless and callable from future diagnostics.
+ 15088	    """
+ 15089	    return {"ok": True, "tag": "termux_autopatch_stage2"}
+ 15090	
+ 15091	class _FaultInjectExchange:
+ 15092	    def __init__(self, ex: ExchangeClient, offline_sec: float, log: logging.Logger):
+ 15093	        self._ex = ex
+ 15094	        self._offline_sec = offline_sec
+ 15095	        self._log = log
+ 15096	        self._in_outage = lambda: time.time() < offline_sec
+ 15097	
+ 15098	    async def _place_order_impl(
+ 15099	        self,
+ 15100	        symbol: str,
+ 15101	        side: str,
+ 15102	        amount: float,
+ 15103	        price: float,
+ 15104	        cid: Optional[str] = None,
+ 15105	        *,
+ 15106	        notional_irt: Optional[float] = None,
+ 15107	        reduce_only: bool = False,
+ 15108	        fill_type: Optional[str] = None,
+ 15109	        market: Optional[str] = None,
+ 15110	        **kwargs,
+ 15111	    ) -> dict:
+ 15112	        if self._in_outage():
+ 15113	            async def _bg_send():
+ 15114	                try:
+ 15115	                    await self._ex.place_order(
+ 15116	                        symbol,
+ 15117	                        side,
+ 15118	                        amount,
+ 15119	                        price,
+ 15120	                        cid=cid,
+ 15121	                        notional_irt=notional_irt,
+ 15122	                        reduce_only=reduce_only,
+ 15123	                        fill_type=fill_type,
+ 15124	                        market=market,
+ 15125	                        **kwargs,
+ 15126	                    )
+ 15127	                except Exception as e:
+ 15128	                    self._log.error("FaultInjectExchange _bg_send error: %s", e)
+ 15129	
+ 15130	            asyncio.create_task(_bg_send())
+ 15131	            raise asyncio.TimeoutError("SIMULATED_RESPONSE_LOSS")
+ 15132	
+ 15133	        return await self._ex.place_order(
+ 15134	            symbol,
+ 15135	            side,
+ 15136	            amount,
+ 15137	            price,
+ 15138	            cid=cid,
+ 15139	            notional_irt=notional_irt,
+ 15140	            reduce_only=reduce_only,
+ 15141	            fill_type=fill_type,
+ 15142	            market=market,
+ 15143	            **kwargs,
+ 15144	        )
+ 15145	
+ 15146	    async def place_order(
+ 15147	        self,
+ 15148	        symbol: str,
+ 15149	        side: str,
+ 15150	        amount: float,
+ 15151	        price: float,
+ 15152	        cid: Optional[str] = None,
+ 15153	        *,
+ 15154	        notional_irt: Optional[float] = None,
+ 15155	        reduce_only: bool = False,
+ 15156	        fill_type: Optional[str] = None,
+ 15157	        market: Optional[str] = None,
+ 15158	        **kwargs,
+ 15159	    ) -> dict:
+ 15160	        return await self._place_order_impl(
+ 15161	            symbol,
+ 15162	            side,
+ 15163	            amount,
+ 15164	            price,
+ 15165	            cid=cid,
+ 15166	            notional_irt=notional_irt,
+ 15167	            reduce_only=reduce_only,
+ 15168	            fill_type=fill_type,
+ 15169	            market=market,
+ 15170	            **kwargs,
+ 15171	        )
+ 15172	
+ 15173	    async def list_orders(self, symbol: Optional[str] = None, status: Optional[str] = None) -> dict:
+ 15174	        return await self._ex.list_orders(symbol=symbol, status=status)
+ 15175	
+ 15176	    async def get_depth(self, symbol: str) -> dict:
+ 15177	        return await self._ex.get_depth(symbol)
+ 15178	
+ 15179	    async def get_balance(self) -> dict:
+ 15180	        return await self._ex.get_balance()
+ 15181	
+ 15182	class TradingBotOps:
+ 15183	    async def refresh_market_focus(self) -> List[str]:
+ 15184	        try:
+ 15185	            if bool(getattr(self, "_sniper_only", False)):
+ 15186	                majors = ["BTCIRT", "ETHIRT", "USDTIRT", "PAXGIRT", "BNBIRT", "SOLIRT", "XRPIRT"]
+ 15187	                base = list(getattr(getattr(self, "cfg", None), "symbols", None) or []) + majors
+ 15188	                out: List[str] = []
+ 15189	                seen: Set[str] = set()
+ 15190	                for s in base:
+ 15191	                    cs = _canon_symbol(s)
+ 15192	                    if cs and cs not in seen:
+ 15193	                        seen.add(cs)
+ 15194	                        out.append(cs)
+ 15195	                return out
+ 15196	        except Exception:
+ 15197	            pass
+ 15198	        termux = _env_bool("TERMUX_MODE", False)
+ 15199	        use_momentum = bool(termux and _env_bool("TERMUX_MOMENTUM_SCANNER", True))
+ 15200	        try:
+ 15201	            min_vol = float(os.environ.get("TERMUX_MIN_VOL_24H_IRT", "20000000" if use_momentum else "50000000"))
+ 15202	        except Exception:
+ 15203	            min_vol = 20_000_000.0 if use_momentum else 50_000_000.0
+ 15204	        candidates: List[dict] = []
+ 15205	        if use_momentum:
+ 15206	            try:
+ 15207	                raw_data = {}
+ 15208	                try:
+ 15209	                    internal = getattr(self, "_market_snapshot", None)
+ 15210	                    its = float(getattr(self, "_market_snapshot_local_ts", 0.0) or 0.0)
+### D3 PLACE_LIMIT_PLACE_ORDER_DEFS_CALLS
+3217:  3217	    async def place_order(
+3371:  3371	    async def place_limit(
+3389:  3389	        return await self.place_order(
+3420:  3420	        return await self.place_order(
+4131:  4131	#     async def place_order(
+4292:  4292	#     async def place_limit(
+4310:  4310	#         return await self.place_order(
+4349:  4349	#         return await self.place_order(
+11444: 11444	    async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+11561: 11561	                    resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+14959: 14959	    async def place_order(
+14974: 14974	        res = await self._ex.place_order(
+15115: 15115	                    await self._ex.place_order(
+15133: 15133	        return await self._ex.place_order(
+15146: 15146	    async def place_order(

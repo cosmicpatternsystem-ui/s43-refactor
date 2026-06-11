@@ -1,0 +1,13 @@
+Phase 13.3 baseline
+- s43.py patch status: frozen/stable
+- Main trading bot: offline
+- Auto patch scripts: stopped
+- Suspended stale python processes: cleaned
+- Data/model pipeline: online
+- Active pipeline processes:
+  - s43_core.data_phase8f_watchdog
+  - s43_core.data_phase8b_trigger
+- Known blocker for live trading:
+  - ArzPlus auth/token issue remains unresolved
+- Policy:
+  - No new code patch unless TradingHalt recurs after credential remediation

@@ -1,0 +1,12 @@
+3594:# QUARANTINED BROKEN NESTED BLOCK: get_market_snapshot original lines 2719-2852, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+3737:# QUARANTINED BROKEN NESTED BLOCK: get_last_update_age original lines 2853-2900, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+3794:# QUARANTINED BROKEN NESTED BLOCK: get_all_market_stats original lines 2901-2992, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+3895:# QUARANTINED BROKEN NESTED BLOCK: get_trades original lines 2993-3011, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+3923:# QUARANTINED BROKEN NESTED BLOCK: get_balance original lines 3012-3065, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+3986:# QUARANTINED BROKEN NESTED BLOCK: conn_check original lines 3066-3183, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4113:# QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4274:# QUARANTINED BROKEN NESTED BLOCK: place_limit original lines 3336-3365, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4314:# QUARANTINED BROKEN NESTED BLOCK: place_market original lines 3367-3395, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4352:# QUARANTINED BROKEN NESTED BLOCK: cancel_all_orders original lines 3396-3459, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4425:# QUARANTINED BROKEN NESTED BLOCK: list_orders original lines 3460-3512, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+4487:# QUARANTINED BROKEN NESTED BLOCK: cancel_order original lines 3513-3557, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557

@@ -1,0 +1,11 @@
+Patch 12.5 final state:
+- get_balance HTTP/API exceptions are isolated and return {}
+- empty balance response is non-fatal and returns {}
+- global class-level cooldown prevents repeated balance API calls for 120s
+- temporary debug traces ISOCHK_BAL_ENTRY and ISOCHK_BAL_SET_COOLDOWN removed
+- retained production isolation logs:
+  - ISOCHK_GLOBAL
+  - ISOCHK_GLOBAL_COOLDOWN
+  - ISOCHK_GLOBAL_EMPTY
+- py_compile passed
+- smoke test confirmed no TradingHalt / BALANCE_FETCH_FAILED

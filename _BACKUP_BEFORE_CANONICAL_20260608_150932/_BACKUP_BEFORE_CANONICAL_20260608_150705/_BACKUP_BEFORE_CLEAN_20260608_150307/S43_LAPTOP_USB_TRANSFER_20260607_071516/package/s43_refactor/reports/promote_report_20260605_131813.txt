@@ -1,0 +1,59 @@
+PROMOTE_START timestamp=20260605_131813
+TARGET=/data/data/com.termux/files/home/s43_refactor/s43.py
+CANDIDATE=candidates/s43_candidate_20260605_131312.py
+BACKUP=/data/data/com.termux/files/home/s43_refactor/backups/s43_before_promote_20260605_131813.py
+DIFF=/data/data/com.termux/files/home/s43_refactor/patches/promote_diff_20260605_131813.patch
+POST_PROMOTE_COMPILE_OK
+RUN_TOOLKIT_VERIFY
+========================================
+ S43 TOOLKIT VERIFY
+========================================
+PROJECT_DIR=/data/data/com.termux/files/home/s43_refactor
+TARGET=/data/data/com.termux/files/home/s43_refactor/s43.py
+LOGFILE=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_131842.log
+SUMMARY=/data/data/com.termux/files/home/s43_refactor/s43_verify_summary_20260605_131842.txt
+========================================
+BACKUP_OK: /data/data/com.termux/files/home/s43_refactor/s43_clean_compile_ok_20260605_131842.py
+COMPILE_OK
+[SAFE-NO-TRADE] Empty argv detected; defaulting to --status instead of live trade.
+ISOCHK_GLOBAL phase=get_balance err=ApiHttpError:HTTP 403: {"detail":"توکن نامعتبر"} fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W1 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W1 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780653079 fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W2 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W2 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780653079 fail_count=1 token_present=True auth_scheme=Token base_url=None
+OBS event=wallet_balance_error wallet=W3 error_type=BalanceStatusError error_class=balance_status_failed disabled=False
+wallet=W3 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+OBS event=wallet_reporting_summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+----------------------------------------
+2:ISOCHK_GLOBAL phase=get_balance err=ApiHttpError:HTTP 403: {"detail":"توکن نامعتبر"} fail_count=1 token_present=True auth_scheme=Token base_url=None
+4:wallet=W1 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+5:ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780653079 fail_count=1 token_present=True auth_scheme=Token base_url=None
+7:wallet=W2 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+8:ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780653079 fail_count=1 token_present=True auth_scheme=Token base_url=None
+10:wallet=W3 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+11:summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+12:OBS event=wallet_reporting_summary wallets=3 disabled=0 balance_ok=0 balance_failed=3
+----------------------------------------
+========================================
+S43_TOOLKIT_VERIFY
+timestamp=20260605_131842
+run_rc=0
+backup=/data/data/com.termux/files/home/s43_refactor/s43_clean_compile_ok_20260605_131842.py
+logfile=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_131842.log
+compile_status=COMPILE_OK
+has_http_403=1
+has_invalid_token_text=1
+token_present=True
+auth_scheme=Token
+balance_ok=0
+balance_failed=3
+final_status=API_403_INVALID_TOKEN
+========================================
+RESULT: FAIL_REMOTE_AUTH
+LOGFILE=/data/data/com.termux/files/home/s43_refactor/retry_after_exchange_fix_20260605_131842.log
+SUMMARY=/data/data/com.termux/files/home/s43_refactor/s43_verify_summary_20260605_131842.txt
+PROMOTE_RESULT=REMOTE_AUTH_FAIL_BUT_CODE_OK
+NOTE=Keeping promoted code because failure is remote auth, not compile/runtime syntax.

@@ -1,0 +1,3 @@
+01982:     def _record_failure_if_transient(self, exc: Exception) -> None:
+01983:         if self._is_transient_for_breaker(exc):
+01984:             self._breaker.record_failure(exc)

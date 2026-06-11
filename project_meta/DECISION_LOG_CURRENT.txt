@@ -1,0 +1,82 @@
+DECISION LOG + CONTINUITY RECORD + NEXT STEP
+
+Project: S43 Safety-Gated Refactor and Canonical Selection
+Date: 2026-06-09
+Status: Active
+
+OFFICIAL THREE-FILE MODEL
+
+1. MY_S43_LATEST.py
+Role: Original Main / Baseline / Source of Truth
+Purpose: Reference behavior, parity baseline, risk-threshold comparison
+Rule: Do not modify directly except for reading or comparison.
+
+2. s43_latest_refactor.py
+Role: Main Copy / Sandbox
+Purpose: Safe environment for structural refactor, patching, and uncertain changes
+Rule: Use for experiments and intermediate fixes before promotion.
+
+3. s43_instrumented_LATEST.py
+Role: Third Refactor Candidate / Instrumented Final Candidate
+Purpose: Safety-gate logging, API validation, parity check, and canonical selection
+Rule: Primary validation target and final-candidate track.
+
+GOVERNING REFERENCES
+
+- SAFETY_PROTOCOL.md
+- SAFETY_GATE_MAPPING_PASS1.txt
+- SAFETY_PROTOCOL_FINAL_VERIFY_20260608_175301.txt
+
+OFFICIAL RULES
+
+- Baseline is MY_S43_LATEST.py.
+- Sandbox is s43_latest_refactor.py.
+- Primary final candidate is s43_instrumented_LATEST.py.
+- No canonical selection before parity validation.
+- All decisions must respect safety-gate visibility and API compatibility.
+
+KNOWN TECHNICAL FOCUS
+
+- base_url must align with https://api.arzplus.net.
+- Verify Authorization format: Bearer vs Token.
+- Verify endpoint versioning: v1 vs v2.
+- Investigate wallet/balance 403.
+- Confirm safety-gate logging and checkpoint visibility.
+- Compare live execution behavior with baseline.
+
+CURRENT STATUS
+
+- Phase 0 Baseline Lock: completed
+- Phase 1 Sandbox Refactor: active
+- Phase 2 Instrumented Validation: active
+- Phase 3 Parity Validation: pending
+- Phase 4 Canonical Selection: not allowed yet
+
+NEW CHAT CONTINUITY RULE
+
+Any new chat with no prior context must immediately adopt this three-file model and continue only from the latest versions of:
+
+- MY_S43_LATEST.py
+- s43_latest_refactor.py
+- s43_instrumented_LATEST.py
+
+NEXT REQUIRED STEP
+
+Run parity validation between:
+
+- MY_S43_LATEST.py
+- s43_instrumented_LATEST.py
+
+Validate:
+
+- base_url
+- Authorization handling
+- endpoint mapping and versioning
+- wallet/balance path and 403 cause
+- safety-gate logging
+- live execution flow
+- error handling parity
+
+CANONICAL SELECTION CONDITION
+
+No file may be declared canonical until parity validation and safety/API review are complete.

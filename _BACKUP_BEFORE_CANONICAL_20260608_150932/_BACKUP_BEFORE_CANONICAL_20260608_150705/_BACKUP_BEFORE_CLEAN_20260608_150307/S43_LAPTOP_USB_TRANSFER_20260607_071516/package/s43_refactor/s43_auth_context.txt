@@ -1,0 +1,668 @@
+=== BotConfig around base_url and wallet_slots ===
+except Exception:
+    types = None
+
+try:
+    from telegram import Update
+except Exception:
+    Update = None
+
+try:
+    from telegram.ext import (
+        Application,
+        ApplicationBuilder,
+        CommandHandler,
+        MessageHandler,
+        CallbackQueryHandler,
+        ContextTypes,
+        filters,
+    )
+except Exception:
+    Application = None
+    ApplicationBuilder = None
+    CommandHandler = None
+    MessageHandler = None
+    CallbackQueryHandler = None
+    ContextTypes = None
+    filters = None
+
+@dataclass(frozen=True)
+class BotConfig:
+    base_url: str = "https://api.arzplus.net/api/v1"
+    user_agent: str = "RazTraderPlus/1.0"
+    request_timeout_sec: float = field(default_factory=lambda: _env_float("REQ_TIMEOUT_SEC", 15.0))
+    dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+    loop_interval_sec: float = field(default_factory=lambda: (_env_float("LOOP_INTERVAL_SEC", 8.0) if _env_bool("TERMUX_MODE", False) else _env_float("LOOP_INTERVAL_SEC", 2.0)))
+    quote: str = field(default_factory=lambda: _env_str("QUOTE", "IRT").upper())
+    symbols: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("PP_SYMBOLS", "PAXGIRT,USDTIRT,BTCIRT,ETHIRT").split(",") if str(s).strip()
+    ])
+    symbol_timeout_sec: float = field(default_factory=lambda: _env_float("SYMBOL_TIMEOUT_SEC", 3.2))
+    cycle_budget_sec: float = field(default_factory=lambda: _env_float("CYCLE_BUDGET_SEC", 25.0))
+    low_priority_timeout_sec: float = field(default_factory=lambda: _env_float("LOW_PRIORITY_TIMEOUT_SEC", 1.2))
+    symbol_priority: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("SYMBOL_PRIORITY", "").split(",") if str(s).strip()
+    ])
+    collective_intelligence: bool = field(default_factory=lambda: _env_bool("COLLECTIVE_INTELLIGENCE", True))
+    collective_multiplier: float = field(default_factory=lambda: _env_float("COLLECTIVE_MULTIPLIER", 2.0))
+    collective_min_raz_conf: float = field(default_factory=lambda: _env_float("COLLECTIVE_MIN_RAZ_CONF", 0.78))
+    parisa_vote_thr: float = field(default_factory=lambda: _env_float("PARISA_VOTE_THR", 0.22))
+    parisa_veto_thr: float = field(default_factory=lambda: _env_float("PARISA_VETO_THR", -0.35))
+    collective_max_notional_frac: float = field(default_factory=lambda: _env_float("COLLECTIVE_MAX_NOTIONAL_FRAC", 0.25))
+    autonomous_ai: bool = field(default_factory=lambda: _env_bool("AUTONOMOUS_AI", False))
+    jitter_proxy: bool = field(default_factory=lambda: _env_bool("JITTER_PROXY", False))
+    jitter_ttl_mult: float = field(default_factory=lambda: _env_float("JITTER_TTL_MULT", 2.0))
+    jitter_samples: int = field(default_factory=lambda: max(1, _env_int("JITTER_SAMPLES", 5)))
+    laddering: bool = field(default_factory=lambda: _env_bool("LADDERING", False))
+    ladder_steps: int = field(default_factory=lambda: max(1, _env_int("LADDER_STEPS", 3)))
+    ladder_bps: float = field(default_factory=lambda: max(0.0, _env_float("LADDER_BPS", 2.0)))
+    ladder_pause_ms: int = field(default_factory=lambda: max(0, _env_int("LADDER_PAUSE_MS", 150)))
+    top8_enabled: bool = field(default_factory=lambda: _env_bool("TOP8", True))
+    top8_use_for_selection: bool = field(default_factory=lambda: _env_bool("TOP8_USE_FOR_SELECTION", True))
+    top8_refresh_sec: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_REFRESH_SEC", 12.0)))
+    top8_trades_lookback_sec: float = field(default_factory=lambda: max(10.0, _env_float("TOP8_TRADES_LOOKBACK_SEC", 300.0)))
+    top8_depth_bps: float = field(default_factory=lambda: max(1.0, _env_float("TOP8_DEPTH_BPS", 10.0)))
+    batch_tickers_enabled: bool = field(default_factory=lambda: _env_bool("BATCH_TICKERS", True))
+    batch_tickers_min_interval_sec: float = field(default_factory=lambda: max(0.25, _env_float("BATCH_TICKERS_MIN_INTERVAL_SEC", 1.0)))
+    market_age_skip_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SKIP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+    market_age_sleep_sec: float = field(default_factory=lambda: max(0.0, _env_float("MARKET_AGE_SLEEP_SEC", (6.0 if _env_bool("TERMUX_MODE", False) else 2.0))))
+    dzh_ai_rescues: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES", False))
+
+    # Future-proof runtime / AI controls
+    ai_mode: str = field(default_factory=lambda: str(os.getenv("AI_MODE", "off")).strip().lower())
+    runtime_profile: str = field(default_factory=lambda: str(os.getenv("RUNTIME_PROFILE", ("termux" if _env_bool("TERMUX_MODE", False) else "server"))).strip().lower())
+    live_trading_armed: bool = field(default_factory=lambda: _env_bool("LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+    ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("AI_LIVE_TRADING_ARMED", False))
+    dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("AI_LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+    dzh_auto_tune: bool = field(default_factory=lambda: _env_bool("DZH_AUTO_TUNE", True))
+    dzh_dyn_tune: bool = field(default_factory=lambda: _env_bool("DZH_DYN_TUNE", True))
+    dzh_safety_entry: bool = field(default_factory=lambda: _env_bool("DZH_SAFETY_ENTRY", True))
+    dzh_veto_htf: bool = field(default_factory=lambda: _env_bool("DZH_VETO_HTF", True))
+    dzh_net_alpha: bool = field(default_factory=lambda: _env_bool("DZH_NET_ALPHA", True))
+    dzh_net_alpha_span: int = field(default_factory=lambda: max(10, _env_int("DZH_NET_ALPHA_SPAN", 50)))
+    dzh_liquidity_min_irt: float = field(default_factory=lambda: max(0.0, _env_float("DZH_LIQ_MIN_IRT", 25_000_000.0)))
+    dzh_spread_max_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_SPREAD_MAX_BPS", 35.0)))
+    dzh_fake_breakout_bps: float = field(default_factory=lambda: max(0.0, _env_float("DZH_FAKE_BREAKOUT_BPS", 8.0)))
+    dzh_htf_reject_thr: float = field(default_factory=lambda: float(_env_float("DZH_HTF_REJECT_THR", 0.42)))
+    dzh_risk_scale_min: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MIN", 0.35), 0.05, 1.0))
+    dzh_risk_scale_max: float = field(default_factory=lambda: clamp(_env_float("DZH_RISK_SCALE_MAX", 1.0), 0.05, 2.0))
+    flash_crash_enabled: bool = field(default_factory=lambda: _env_bool("FLASH_CRASH_EXIT", True))
+    flash_crash_pct: float = field(default_factory=lambda: abs(_env_float("FLASH_CRASH_PCT", 0.05)))
+    flash_crash_window_sec: float = field(default_factory=lambda: _env_float("FLASH_CRASH_WINDOW_SEC", 30.0))
+    flash_ref_symbols: List[str] = field(default_factory=lambda: [
+        _canon_symbol(s) for s in _env_str("FLASH_REF_SYMBOLS", "").split(",") if str(s).strip()
+    ])
+    flash_min_confirmations: int = field(default_factory=lambda: _env_int("FLASH_MIN_CONFIRMATIONS", 1))
+    global_exit_slippage_bps: float = field(default_factory=lambda: abs(_env_float("GLOBAL_EXIT_SLIPPAGE_BPS", 80.0)))
+    global_exit_armed: bool = field(default_factory=lambda: _env_bool("GLOBAL_EXIT_ARMED", False))
+    wallet_slots: List[int] = field(default_factory=lambda: [1, 2, 3])
+    min_notional_irt: float = field(default_factory=lambda: _env_float("MIN_NOTIONAL_IRT", 200_000.0))
+    max_notional_frac: float = field(default_factory=lambda: clamp(_env_float("MAX_NOTIONAL_FRAC", 0.90), 0.05, 0.95))
+    max_open_positions: int = field(default_factory=lambda: _env_int("MAX_OPEN_POSITIONS", 4))
+    buy_threshold: float = field(default_factory=lambda: abs(_env_float("BUY_THRESHOLD", 0.20)))
+    sell_threshold: float = field(default_factory=lambda: abs(_env_float("SELL_THRESHOLD", 0.20)))
+    min_hold_sec: float = field(default_factory=lambda: _env_float("MIN_HOLD_SEC", 8.0))
+    stop_loss_pct: float = field(default_factory=lambda: abs(_env_float("STOP_LOSS_PCT", 0.02)))
+    take_profit_pct: float = field(default_factory=lambda: abs(_env_float("TAKE_PROFIT_PCT", 0.03)))
+    max_daily_loss_pct: float = field(default_factory=lambda: abs(_env_float("MAX_DAILY_LOSS_PCT", 0.05)))
+    rate_limit_per_min: int = field(default_factory=lambda: _env_int("RATE_LIMIT_PER_MIN", 100))
+    circuit_breaker_errors: int = field(default_factory=lambda: _env_int("CB_ERRORS", 12))
+    circuit_breaker_cooldown_sec: float = field(default_factory=lambda: _env_float("CB_COOLDOWN_SEC", 45.0))
+    balance_refresh_sec: float = field(default_factory=lambda: _env_float("BALANCE_REFRESH_SEC", 8.0))
+    orders_refresh_sec: float = field(default_factory=lambda: _env_float("ORDERS_REFRESH_SEC", 3.0))
+    orders_reconcile_interval_sec: float = field(default_factory=lambda: _env_float("ORDERS_RECONCILE_INTERVAL_SEC", 30.0))
+    depth_cache_ttl_sec: float = field(default_factory=lambda: _env_float("DEPTH_CACHE_TTL_SEC", 1.2))
+    price_cache_path: str = field(default_factory=lambda: _env_str("PRICE_CACHE_PATH", "raz_price_cache.json"))
+    price_cache_on_timeout: bool = field(default_factory=lambda: _env_bool("PRICE_CACHE_ON_TIMEOUT", True))
+    state_path: str = field(default_factory=lambda: _env_str("STATE_PATH", "raz_state.json"))
+    state_save_sec: float = field(default_factory=lambda: _env_float("STATE_SAVE_SEC", 30.0))
+    risk_journal_path: str = field(default_factory=lambda: _env_str("RISK_JOURNAL_PATH", "raz_risk_journal.json"))
+    risk_journal_fsync: bool = field(default_factory=lambda: _env_bool("RISK_JOURNAL_FSYNC", True))
+    risk_journal_throttle_sec: float = field(default_factory=lambda: _env_float("RISK_JOURNAL_THROTTLE_SEC", 1.0))
+    orders_journal_path: str = field(default_factory=lambda: _env_str("ORDERS_JOURNAL_PATH", "raz_orders_journal.json"))
+
+=== Api client init / split auth / headers ===
+        try:
+            return self._sem.locked()
+        except Exception:
+            return False
+
+    async def __aenter__(self):
+        await self.acquire()
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        self.release()
+        return False
+
+
+class ExchangeClient:
+    _RE_AUTH_SCHEME = re.compile(r"^(token|bearer|jwt)\s+(.+)$", re.IGNORECASE)
+    _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+    _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+    _PERSIAN_DIGITS = str.maketrans("\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9", "0123456789")
+    @staticmethod
+    def _split_auth_token(raw: str) -> Tuple[str, str]:
+        t = str(raw or "").strip()
+        if (t.startswith("'") and t.endswith("'")) or (t.startswith('"') and t.endswith('"')):
+            t = t[1:-1].strip()
+        try:
+            t = re.sub(r"^authorization\s*:\s*", "", t, flags=re.IGNORECASE).strip()
+        except Exception:
+            t = t.strip()
+        scheme = "Token"
+        m = ExchangeClient._RE_AUTH_SCHEME.match(t)
+        if m:
+            scheme = str(m.group(1)).title()
+            t = str(m.group(2)).strip()
+        else:
+            try:
+                if t.count(".") == 2 and len(t) > 20:
+                    scheme = "Bearer"
+            except Exception:
+                pass
+        try:
+            t = re.sub(r"\s+", "", t)
+        except Exception:
+            t = t.replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "")
+        return scheme, t
+    def __init__(
+        self,
+        cfg: BotConfig,
+        token: str,
+        limiter: SharedAsyncRateLimiter,
+        logger: logging.Logger,
+        breaker: Optional[CircuitBreaker] = None,
+    ):
+        _s43_debug_print("### EXCHANGECLIENT_INIT_ENTER ###", flush=True)
+        self.cfg = cfg
+        self._auth_scheme, self._token = self._split_auth_token(token)
+        if not self._token:
+            self._auth_scheme = "Token"
+            self._token = str(token or "").strip()
+        try:
+            if "arzplus" in str(getattr(cfg, "base_url", "") or "").lower():
+                self._auth_scheme = "Token"
+        except Exception:
+            pass
+        self.api_key = self._token
+        self._headers_public = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+        self._headers_private = dict(self._headers_public)
+        if self._token:
+            self._headers_private["Authorization"] = f"{self._auth_scheme or 'Token'} {self._token}"
+        self._headers = self._headers_private
+        try:
+            _tok = str(getattr(self, "_token", "") or "")
+            _base = str(getattr(cfg, "base_url", "") or "")
+            _scheme = str(getattr(self, "_auth_scheme", "") or "")
+            _masked = (_tok[:4] + "..." + _tok[-4:]) if len(_tok) >= 8 else ("set" if _tok else "empty")
+            _pref = "raw"
+            if _tok.startswith("Token "):
+                _pref = "starts_with_Token_space"
+            elif _tok.startswith("Bearer "):
+                _pref = "starts_with_Bearer_space"
+            _msg = (
+                "event=ARZ_AUTH_DEBUG "
+                f"base={_base} scheme={_scheme} tok_len={len(_tok)} "
+                f"tok_mask={_masked} tok_prefix_state={_pref}"
+            )
+            if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+                try:
+                    _lg = getattr(self, "_log", None)
+                    if hasattr(_lg, "warning"):
+                        _lg.warning(_msg)
+                    elif callable(_lg):
+                        _lg(_msg)
+                    else:
+                        print(_msg, flush=True)
+                except Exception:
+                    print(_msg, flush=True)
+        except Exception:
+            pass
+        self._limiter = limiter
+        self._logger = logger
+        self._breaker = breaker or CircuitBreaker(
+            cfg.circuit_breaker_errors,
+            cfg.circuit_breaker_cooldown_sec,
+            logger,
+        )
+        self._sem = PrioritySemaphore(1)  #
+        self._session: Optional[aiohttp.ClientSession] = None
+        self._last_all_tickers_snapshot: Optional[dict] = None
+        self.last_update_time: float = 0.0
+        self._last_market_stats_snapshot: Optional[dict] = None
+        self.last_latency_ms: Optional[float] = None
+        self.jitter_ms: Optional[float] = None
+        self._lat_hist = __import__("collections").deque(maxlen=30)
+        self._working_depth_ep: Optional[str] = None
+        self._working_depth_ep_map: Dict[str, str] = {}
+        self._working_depth_symid_map: Dict[str, str] = {}
+        self._depth_ep_lock = asyncio.Lock()
+        self._depth_ep_last_sym: Optional[str] = None
+        self._depth_ep_last_ok_ts: float = 0.0
+        self._arz_meta_cache: Optional[List[dict]] = None
+        self._arz_meta_ts: float = 0.0
+        self._arz_universe: List[str] = []
+        self._arz_universe_ts: float = 0.0
+        self._arz_scan_cursor: int = 0
+        self._arz_stats_cache: Dict[str, Tuple[float, dict]] = {}
+        self._arz_stats_ttl_sec: float = max(10.0, float(_env_float("ARZPLUS_STATS_TTL_SEC", 45.0)))
+        self._arz_hydrate_batch: int = max(6, int(_env_int("ARZPLUS_HYDRATE_BATCH", 14)))
+        self._arz_universe_refresh_sec: float = max(30.0, float(_env_float("ARZPLUS_UNIVERSE_REFRESH_SEC", 600.0)))
+        # ArzPlus auth/HTTP diagnostics state (no strategy impact)
+        self._last_server_date_ts: float = 0.0
+        self._last_clock_drift_s: float = 0.0
+        self._last_clock_warn_ts: float = 0.0
+        self._last_403_log_ts_by_ep: Dict[str, float] = {}
+        # Auth signing clock offset (seconds) for minor server drift self-heal (ArzPlus).
+        self._auth_time_offset_s: float = 0.0
+        self._auth_time_offset_lock = threading.Lock()
+        self._last_clock_selfheal_ts: float = 0.0
+    def _ensure_ready(self) -> None:
+        'Self-heal missing runtime attributes (defensive, keeps bot one-piece).'
+        try:
+            cfg = getattr(self, "cfg", None)
+            if cfg is None:
+                return
+        except Exception:
+            return
+        try:
+            if not hasattr(self, "_token") or getattr(self, "_token", None) is None:
+                raw = getattr(self, "api_key", "") or ""
+                scheme, tok = self._split_auth_token(str(raw))
+                self._auth_scheme, self._token = scheme, tok or str(raw or "").strip()
+        except Exception:
+            pass
+        try:
+            if not getattr(self, "_auth_scheme", None):
+                if "arzplus" in str(getattr(self.cfg, "base_url", "") or "").lower():
+                    self._auth_scheme = "Token"
+                else:
+                    self._auth_scheme = "Bearer"
+        except Exception:
+            pass
+        try:
+            hp = getattr(self, "_headers_public", None)
+            if not isinstance(hp, dict):
+                self._headers_public = {"Accept": "application/json", "Content-Type": "application/json"}
+        except Exception:
+            self._headers_public = {"Accept": "application/json", "Content-Type": "application/json"}
+        try:
+            hv = getattr(self, "_headers_private", None)
+            if not isinstance(hv, dict):
+                self._headers_private = dict(getattr(self, "_headers_public", {}) or {})
+            if getattr(self, "_token", "") and "Authorization" not in self._headers_private:
+                self._headers_private["Authorization"] = f"{getattr(self, '_auth_scheme', 'Token') or 'Token'} {getattr(self, '_token', '')}"
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_headers") or not isinstance(getattr(self, "_headers", None), dict):
+                self._headers = getattr(self, "_headers_private", None) or getattr(self, "_headers_public", None) or {}
+        except Exception:
+            pass
+        try:
+            if not hasattr(self, "_limiter") or getattr(self, "_limiter", None) is None:
+                rpm = int(getattr(cfg, "rate_limit_per_min", 100) or 100)
+                self._limiter = SharedAsyncRateLimiter(max(10, rpm))
+        except Exception:
+
+=== URL builder / request auth section ===
+            v = float(m.group(1))
+        except Exception:
+            return float(default)
+        return float(max(0.5, min(10.0, v)))
+    def _raise_if_breaker_open(self) -> None:
+        if self._breaker.is_open():
+            try:
+                rem = float(self._breaker.remaining_sec())
+            except Exception:
+                rem = 0.0
+            raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+    def _build_url(self, endpoint: str) -> str:
+        ep = str(endpoint or "").strip()
+        return f"{self.cfg.base_url}{ep if ep.startswith('/') else '/' + ep}"
+    def _build_headers(self, auth: bool) -> dict:
+        headers: dict = {
+            "Accept": "application/json",
+            "User-Agent": str(getattr(self.cfg, "user_agent", "PhoenixBot/1.0") or "PhoenixBot/1.0"),
+        }
+        if not auth:
+            return headers
+        if not self._token:
+            raise ApiError("Missing API token for private endpoint.")
+        try:
+            hp = getattr(self, "_headers_private", None)
+            if isinstance(hp, dict):
+                headers.update(hp)
+        except Exception:
+            pass
+        if "Authorization" not in headers:
+            auth_value = f"{getattr(self, '_auth_scheme', 'Token') or 'Token'} {self._token}"
+            _s43_debug_print(f"[AUTHDBG_HEADER] present={bool(auth_value)} scheme={str(auth_value).split()[0] if str(auth_value).split() else ''} len={len(str(auth_value))}")
+            headers["Authorization"] = auth_value
+        # Include Date header for ArzPlus private requests using self-healed signing time offset.
+        try:
+            if self._is_arzplus():
+                if ("Date" not in headers) and ("date" not in headers):
+                    try:
+                        try:
+                            from email.utils import formatdate
+                        except:
+
+=== Private request safety around base_url ===
+            raise ApiError("payload must be a dict (or None).")
+        if params is not None and (not isinstance(params, dict)):
+            raise ApiError("params must be a dict (or None).")
+        if not isinstance(headers, dict):
+            raise ApiError("headers must be a dict.")
+        for k, v in list(headers.items()):
+            if v is None:
+                continue
+            sv = str(v)
+            if "\r" in sv or "\n" in sv:
+                raise ApiError(f"Bad header value (CR/LF) for {str(k)[:32]}.")
+        if bool(auth) and "Authorization" not in headers:
+            raise ApiError("Missing Authorization header for private request.")
+        # Ensure we never drift outside the configured base_url.
+        try:
+            base = str(getattr(self.cfg, "base_url", "") or "")
+            if base and (not u.startswith(base)):
+                raise ApiError("Refusing to send request outside configured base_url.")
+        except Exception:
+            pass
+
+    async def _request_impl(
+        self,
+        method: str,
+        endpoint: str,
+        payload: Optional[dict] = None,
+        auth: bool = False,
+        params: Optional[dict] = None,
+        priority: bool = False,
+    ) -> dict:
+        max_tries = 3
+
+=== get_balance diagnostics and request path ===
+                sym = str(symbol or "")
+        last_exc: Optional[Exception] = None
+        for ep in ("/market/trades/", "/market/trades"):
+            try:
+                return await self.request("GET", ep, params={"symbol": sym}, auth=False)
+            except Exception as e:
+                last_exc = e
+                continue
+        if last_exc:
+            raise last_exc
+        return {}
+
+    # ---- repaired candidate method: get_balance from lines 3012-3065 ----
+    async def get_balance(self) -> dict:
+        try:
+            _cls = type(self)
+            _wdu = float(getattr(_cls, "_balance_disabled_until_global", 0.0) or 0.0)
+        except Exception:
+            _wdu = 0.0
+        if _wdu > time.time():
+            try:
+                print(f"ISOCHK_GLOBAL_COOLDOWN phase=get_balance until={int(_wdu)} fail_count={int(getattr(type(self), '_balance_fail_count_global', 0) or 0)} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
+        try:
+            _s43_debug_print(f"[AUTHDBG_GETBAL] token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} cache_valid={self._balance_cache_valid() if hasattr(self, '_balance_cache_valid') else 'NA'}")
+            last_exc: Optional[Exception] = None
+            for ep in ("/wallet/balance/", "/wallet/balance"):
+                try:
+                    try:
+                        def _s43_mask_authdbg(v):
+                            v = str(v or "")
+                            if len(v) <= 0:
+                                return "<EMPTY>"
+                            if len(v) <= 12:
+                                return v[:2] + "...len=" + str(len(v))
+                            return v[:6] + "..." + v[-4:] + ":len=" + str(len(v))
+                        _hp = getattr(self, "_headers_private", None) or {}
+                        _authv = ""
+                        try:
+                            _authv = _hp.get("Authorization", "") if hasattr(_hp, "get") else ""
+                        except Exception:
+                            _authv = ""
+                        _tok = getattr(self, "_token", "")
+                        _scheme = getattr(self, "_auth_scheme", None)
+                        _w = (
+                            getattr(self, "wallet_name", None)
+                            or getattr(self, "_wallet_name", None)
+                            or getattr(self, "name", None)
+                            or getattr(self, "_name", None)
+                            or getattr(self, "label", None)
+                            or getattr(self, "_label", None)
+                            or "UNKNOWN"
+                        )
+                        _base = getattr(self, "base_url", None) or getattr(self, "_base_url", None) or ""
+                        _s43_debug_print(
+                            f"AUTHDBG_BALANCE_V1 wallet={_w} ep={ep} "
+                            f"scheme={_scheme} "
+                            f"token={_s43_mask_authdbg(_tok)} "
+                            f"auth={_s43_mask_authdbg(_authv)} "
+                            f"token_len={len(str(_tok or ''))} "
+                            f"auth_len={len(str(_authv or ''))} "
+                            f"base={_base}",
+                            flush=True,
+                        )
+                    except Exception as _authdbg_e:
+                        _s43_debug_print(f"AUTHDBG_BALANCE_V1_FAIL err={type(_authdbg_e).__name__}:{_authdbg_e}", flush=True)
+                    return await self.request("GET", ep, auth=True)
+                except Exception as e:
+                    last_exc = e
+                    continue
+            if last_exc:
+                raise last_exc
+            try:
+                _fc = int(getattr(type(self), "_balance_fail_count_global", 0) or 0) + 1
+            except Exception:
+                _fc = 1
+            try:
+                _du_new = time.time() + 120.0
+                setattr(type(self), "_balance_fail_count_global", _fc)
+                setattr(type(self), "_balance_disabled_until_global", _du_new)
+            except Exception:
+                pass
+            try:
+                print(f"ISOCHK_GLOBAL_EMPTY phase=get_balance fail_count={_fc} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
+        except Exception as e:
+            try:
+                _fc = int(getattr(type(self), "_balance_fail_count_global", 0) or 0) + 1
+            except Exception:
+                _fc = 1
+            try:
+                _du_new = time.time() + 120.0
+                setattr(type(self), "_balance_fail_count_global", _fc)
+                setattr(type(self), "_balance_disabled_until_global", _du_new)
+            except Exception:
+                pass
+            try:
+                print(f"ISOCHK_GLOBAL phase=get_balance err={type(e).__name__}:{e} fail_count={_fc} token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} base_url={getattr(self, 'base_url', None)}", flush=True)
+            except Exception:
+                pass
+            return {}
+
+    # ---- repaired candidate method: conn_check from lines 3066-3183 ----
+    async def conn_check(self, *, timeout_sec: Optional[float] = None) -> Tuple[bool, float, int]:
+        """Lightweight connectivity check with DNS/path double-verify (Termux / mobile networks).
+
+        Returns: (ok, rtt_ms, http_status_code)
+        Sets: self._conn_last_diag in {"OK","DNS_OR_PATH","TOTAL_DOWN","CONN_CHECK_FAIL"}
+        """
+        try:
+            now = float(time.time())
+        except Exception:
+
+=== get_arzplus_token resolver ===
+            fill_type=fill_type,
+            market=market,
+            notional_irt=notional_irt,
+            reduce_only=reduce_only,
+            **kwargs,
+        )
+        return res
+
+# s43 recovery: fallback get_arzplus_token
+def get_arzplus_token(slot=None, default=""):
+    """
+    Fail-safe token resolver for ArzPlus accounts.
+    Reads token from environment variables and returns default/empty string if missing.
+    """
+    import os
+
+    candidates = []
+
+    try:
+        s = str(int(slot)).strip() if slot is not None else ""
+    except Exception:
+        s = str(slot).strip() if slot is not None else ""
+
+    if s:
+        candidates.extend([
+            f"ARZPLUS_TOKEN_{s}",
+            f"ARZPLUS_TOKEN{s}",
+            f"ARZ_PLUS_TOKEN_{s}",
+            f"ARZ_PLUS_TOKEN{s}",
+            f"ARZ_TOKEN_{s}",
+            f"ARZ_TOKEN{s}",
+            f"TOKEN_{s}",
+            f"TOKEN{s}",
+        ])
+
+        # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+        try:
+            n = int(s)
+            candidates.extend([
+                f"ARZPLUS_TOKEN_{n+1}",
+                f"ARZPLUS_TOKEN{n+1}",
+                f"ARZ_PLUS_TOKEN_{n+1}",
+                f"ARZ_PLUS_TOKEN{n+1}",
+                f"ARZ_TOKEN_{n+1}",
+                f"ARZ_TOKEN{n+1}",
+                f"TOKEN_{n+1}",
+                f"TOKEN{n+1}",
+            ])
+        except Exception:
+            pass
+
+    candidates.extend([
+        "ARZPLUS_TOKEN",
+        "ARZ_PLUS_TOKEN",
+        "ARZ_TOKEN",
+        "TOKEN",
+        "API_TOKEN",
+        "ACCESS_TOKEN",
+    ])
+
+    for key in candidates:
+        try:
+            val = os.getenv(key)
+            if val:
+                return str(val).strip()
+        except Exception:
+
+=== wallet construction slots ===
+    @classmethod
+    def update_market_state(cls, st: Orch22MarketState) -> None:
+        cls._market_state = st
+    def __init__(self, cfg: "BotConfig", log: logging.Logger, *, wallet_slots: Optional[List[int]] = None,
+                 stale_warn_sec: Optional[float] = None, stale_crit_sec: Optional[float] = None,
+                 cancel_all_on_stale: bool = False, heartbeat_sec: Optional[float] = None) -> None:
+        self.cfg = cfg
+        self._log = log
+        self._stop = asyncio.Event()
+        self.stale_warn_sec = float(stale_warn_sec if stale_warn_sec is not None else _env_float("ORCH22_STALE_WARN_SEC", 120.0))
+        self.stale_crit_sec = float(stale_crit_sec if stale_crit_sec is not None else _env_float("ORCH22_STALE_CRIT_SEC", 240.0))
+        self.cancel_all_on_stale = bool(cancel_all_on_stale or _env_bool("ORCH22_CANCEL_ALL_ON_STALE", False))
+        self.heartbeat_sec = float(heartbeat_sec if heartbeat_sec is not None else _env_float("ORCH22_HEARTBEAT_SEC", 5.0))
+        limiter = SharedAsyncRateLimiter(cfg.rate_limit_per_min)
+        breaker = CircuitBreaker(cfg.circuit_breaker_errors, cfg.circuit_breaker_cooldown_sec, log)
+        self.public = ExchangeClient(cfg, token="", limiter=limiter, logger=log, breaker=breaker)
+        self.radar = Orch22MarketRadar(public=self.public, cfg=cfg, log=log)
+        slots = list(wallet_slots or getattr(cfg, "wallet_slots", []) or [])
+        if not slots:
+            slots = [1]
+        self._wallet_slots = [int(x) for x in (slots or [])]
+        self.wallets: Dict[str, Orch22WalletEngine] = {}
+        for slot in slots:
+            tok = get_arzplus_token(int(slot))
+            wname = f"W{int(slot)}"
+            cli = ExchangeClient(cfg, token=(tok or ""), limiter=limiter, logger=log, breaker=breaker)
+            self.wallets[wname] = Orch22WalletEngine(name=wname, client=cli, cfg=cfg, log=log)
+        self.state = Orch22SystemState.SAFE
+        self.reason = ""
+        self.started_ts = time.time()
+        self._dash_task: Optional[asyncio.Task] = None
+        self._wd_task: Optional[asyncio.Task] = None
+    def stop(self) -> None:
+        self._stop.set()
+        self.radar.stop()
+        for w in self.wallets.values():
+            w.stop()
+    async def _watchdog_loop(self) -> None:
+        stage = 0
+        stale_start: Optional[float] = None
+        for _omega_guard in range(150000):
+            try:
+                await asyncio.wait_for(self._stop.wait(), timeout=max(1.0, float(self.heartbeat_sec)))
+                break
+            except asyncio.TimeoutError:
+                pass
+            except asyncio.CancelledError:
+                raise
+            except Exception:
+                continue
+            try:
+
+=== main args wallet slots / boot ===
+                await self._wd_task
+async def _run_orchestrator22_monitor(args: Any) -> None:
+    cfg = BotConfig()
+    log = Logger(cfg).log
+    slots: Optional[List[int]] = None
+    try:
+        raw = getattr(args, "wallet_slots", None)
+        if raw:
+            slots = [int(x) for x in str(raw).replace(" ", "").split(",") if x.strip().isdigit()]
+    except Exception:
+        slots = None
+    warn = getattr(args, "warn_sec", None)
+    crit = getattr(args, "crit_sec", None)
+    hb = getattr(args, "heartbeat_sec", None)
+    cancel_all = bool(getattr(args, "cancel_all_on_stale", False))
+    orch = Orch22Orchestrator(
+        cfg,
+        log,
+        wallet_slots=slots,
+        stale_warn_sec=warn,
+        stale_crit_sec=crit,
+        cancel_all_on_stale=cancel_all,
+        heartbeat_sec=hb,
+    )
+    loop = asyncio.get_running_loop()
+    def _sig(*_a: Any) -> None:
+        orch.stop()
+    for s in (signal.SIGINT, signal.SIGTERM):
+        with contextlib.suppress(NotImplementedError):
+            loop.add_signal_handler(s, _sig)
+    _orch22_log(log, logging.INFO, "BOOT", base_url=cfg.base_url, wallet_slots=(slots or cfg.wallet_slots))
+    try:
+        await orch.run()
+    finally:
+        orch.stop()
+def _phoenix_selftests() -> None:
+    try:
+        if globals().get('S43_FALLBACK_MODE', False):
+            print('[SAFE-NO-TRADE] Skipping _phoenix_selftests in fallback mode')
+            return
+    except Exception:

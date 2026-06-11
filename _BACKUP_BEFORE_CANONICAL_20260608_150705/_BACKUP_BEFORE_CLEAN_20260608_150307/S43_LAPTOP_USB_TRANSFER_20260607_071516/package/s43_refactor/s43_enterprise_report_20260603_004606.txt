@@ -1,0 +1,1249 @@
+patch13_3_rev1.py:8 [unicode:persian_arabic] # استفاده از regex برای پیدا کردن بلاک بدون حساسیت به فضاهای خالی انتهای خط
+patch13_3_rev1.py:41 [unicode:persian_arabic] # جستجوی منعطف‌تر برای شروع تابع
+patch13_3_rev1.py:41 [unicode:zero_width] # جستجوی منعطف‌تر برای شروع تابع
+patch13_3_rev1.py:87 [unicode:persian_arabic] # استفاده از strip برای جلوگیری از حساسیت به فضای خالی ابتدای خط در جستجو
+refactor_top8_compact_termux.py:6 [unicode:persian_arabic] SRC = "s43.py"   # اگر فایل اصلی‌ات s43_dev_next.py است، این را عوض کن
+refactor_top8_compact_termux.py:6 [unicode:zero_width] SRC = "s43.py"   # اگر فایل اصلی‌ات s43_dev_next.py است، این را عوض کن
+refactor_top8_compact_termux.py:23 [unicode:persian_arabic] # 1) پیدا کردن nested def
+refactor_top8_compact_termux.py:40 [unicode:persian_arabic] # 2) انتهای تابع nested
+refactor_top8_compact_termux.py:55 [unicode:persian_arabic] # 3) dedent بدنه و ساخت متد جدید کلاس
+refactor_top8_compact_termux.py:72 [unicode:persian_arabic] # 4) پیدا کردن انتهای _run برای درج متد جدید بعد از آن
+refactor_top8_compact_termux.py:94 [unicode:persian_arabic] # 5) حذف nested function از _run
+refactor_top8_compact_termux.py:97 [unicode:persian_arabic] # تنظیم run_end_idx بعد از حذف
+refactor_top8_compact_termux.py:102 [unicode:persian_arabic] # 6) جایگزینی call site
+refactor_top8_compact_termux.py:108 [unicode:persian_arabic] # فقط فراخوانی ساده با یک آرگومان را جایگزین می‌کنیم
+refactor_top8_compact_termux.py:108 [unicode:zero_width] # فقط فراخوانی ساده با یک آرگومان را جایگزین می‌کنیم
+refactor_top8_compact_termux.py:121 [unicode:persian_arabic] # 7) درج متد جدید بعد از _run
+refactor_top8_compact_termux.py:122 [unicode:persian_arabic] # run_end_idx را دوباره روی نسخه جدید محاسبه می‌کنیم
+refactor_top8_compact_termux.py:122 [unicode:zero_width] # run_end_idx را دوباره روی نسخه جدید محاسبه می‌کنیم
+refactor_top8_compact_termux_v3.py:28 [unicode:persian_arabic] # 1) پیدا کردن nested def top8_compact_panel
+refactor_top8_compact_termux_v3.py:50 [unicode:persian_arabic] # 2) پیدا کردن تابع/متد والد واقعی
+refactor_top8_compact_termux_v3.py:51 [unicode:persian_arabic] #    نزدیک‌ترین def/async def قبلی با indent کمتر
+refactor_top8_compact_termux_v3.py:51 [unicode:zero_width] #    نزدیک‌ترین def/async def قبلی با indent کمتر
+refactor_top8_compact_termux_v3.py:77 [unicode:persian_arabic] # 3) پیدا کردن انتهای parent
+refactor_top8_compact_termux_v3.py:97 [unicode:persian_arabic] # 4) پیدا کردن انتهای nested top8_compact_panel
+refactor_top8_compact_termux_v3.py:117 [unicode:persian_arabic] # 5) ساخت متد جدید کلاس
+refactor_top8_compact_termux_v3.py:118 [unicode:persian_arabic] #    nested indent معمولاً 8 است، متد کلاس باید 4 باشد
+refactor_top8_compact_termux_v3.py:119 [unicode:persian_arabic] #    پس یک سطح، یعنی 4 space، کم می‌کنیم.
+refactor_top8_compact_termux_v3.py:119 [unicode:zero_width] #    پس یک سطح، یعنی 4 space، کم می‌کنیم.
+refactor_top8_compact_termux_v3.py:140 [unicode:persian_arabic] # 6) حذف nested function از parent
+refactor_top8_compact_termux_v3.py:149 [unicode:persian_arabic] # 7) جایگزینی call site داخل parent
+refactor_top8_compact_termux_v3.py:155 [unicode:persian_arabic] # حالت ساده: top8_compact_panel(symbols)
+refactor_top8_compact_termux_v3.py:162 [unicode:persian_arabic] # حالت بازتر: top8_compact_panel(expr بدون پرانتز تو در تو)
+refactor_top8_compact_termux_v3.py:183 [unicode:persian_arabic] # 8) پیدا کردن دوباره parent و انتهای آن بعد از تغییر
+refactor_top8_compact_termux_v3.py:188 [unicode:persian_arabic] # با همان نام parent، از حوالی قبلی پیدا کن
+refactor_top8_compact_termux_v3.py:212 [unicode:persian_arabic] # 9) درج متد جدید بعد از parent
+refactor_top8_compact_termux_v2.py:29 [unicode:persian_arabic] # 1) پیدا کردن nested def top8_compact_panel
+refactor_top8_compact_termux_v2.py:51 [unicode:persian_arabic] # 2) پیدا کردن انتهای تابع nested
+refactor_top8_compact_termux_v2.py:71 [unicode:persian_arabic] # 3) ساخت متد جدید کلاس
+refactor_top8_compact_termux_v2.py:72 [unicode:persian_arabic] #    یک سطح indent کم می‌کنیم
+refactor_top8_compact_termux_v2.py:72 [unicode:zero_width] #    یک سطح indent کم می‌کنیم
+refactor_top8_compact_termux_v2.py:77 [unicode:persian_arabic] # حفظ indent کلاس: nested_indent - 4
+refactor_top8_compact_termux_v2.py:92 [unicode:persian_arabic] # 4) پیدا کردن _run
+refactor_top8_compact_termux_v2.py:93 [unicode:persian_arabic] #    پشتیبانی از def و async def
+refactor_top8_compact_termux_v2.py:115 [unicode:persian_arabic] # 5) پیدا کردن انتهای _run
+refactor_top8_compact_termux_v2.py:128 [unicode:persian_arabic] # sanity: تابع compact باید داخل _run باشد
+refactor_top8_compact_termux_v2.py:136 [unicode:persian_arabic] # 6) حذف nested function
+refactor_top8_compact_termux_v2.py:145 [unicode:persian_arabic] # 7) جایگزینی call site داخل _run
+refactor_top8_compact_termux_v2.py:151 [unicode:persian_arabic] # حالت ساده: top8_compact_panel(symbols)
+refactor_top8_compact_termux_v2.py:158 [unicode:persian_arabic] # حالت کمی بازتر: top8_compact_panel(anything_without_nested_paren)
+refactor_top8_compact_termux_v2.py:159 [unicode:persian_arabic] # اگر هنوز چیزی باقی مانده بود، تلاش دوم
+refactor_top8_compact_termux_v2.py:176 [unicode:persian_arabic] # 8) پیدا کردن انتهای _run دوباره
+refactor_top8_compact_termux_v2.py:201 [unicode:persian_arabic] # 9) درج متد جدید بعد از _run
+s43_restored_compile_ready_20260530_114625.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+s43_restored_compile_ready_20260530_114625.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+s43_restored_compile_ready_20260530_114625.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+s43_restored_compile_ready_20260530_114625.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+s43_restored_compile_ready_20260530_114625.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+s43_restored_compile_ready_20260530_114625.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+s43_restored_compile_ready_20260530_114625.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+s43_restored_compile_ready_20260530_114625.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+s43_restored_compile_ready_20260530_114625.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+s43_restored_compile_ready_20260530_114625.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+s43_restored_compile_ready_20260530_114625.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+s43_restored_compile_ready_20260530_114625.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+s43_restored_compile_ready_20260530_114625.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+s43_restored_compile_ready_20260530_114625.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+s43_restored_compile_ready_20260530_114625.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+s43_restored_compile_ready_20260530_114625.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+s43_restored_compile_ready_20260530_114625.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+s43.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+smoke_execute_trade.py:29 [unicode:persian_arabic] # اصلاح ورودی به دیکشنری مطابق خط 9356
+s43_repair_candidate_output.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+s43_repair_candidate_output.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+s43_repair_candidate_output.py:6306 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+s43_repair_candidate_output.py:6306 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+s43_repair_candidate_output.py:6307 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+s43_repair_candidate_output.py:6307 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+s43_repair_candidate_output.py:14581 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+s43_repair_candidate_output.py:14964 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+s43_repair_candidate_output.py:14964 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+s43_repair_candidate_output.py:24048 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+s43_repair_candidate_output.py:24048 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+s43_repair_candidate_output.py:24049 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+s43_repair_candidate_output.py:24049 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+s43_repair_candidate_output.py:24069 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+s43_repair_candidate_output.py:25544 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+s43_repair_candidate_output.py:27096 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+s43_repair_candidate_output.py:27440 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+s43_auto_patch_nested_short.py:71 [unicode:persian_arabic] # حالت امن برای nested def داخل if not s:
+s43_auto_patch_nested_short.py:75 [unicode:persian_arabic] # حالت امن برای nested def داخل except
+s43_auto_patch_nested_short.py:79 [unicode:persian_arabic] # fallback امن: بلاک را خالی نگذار
+s43_auto_patch_nested_short.py:84 [unicode:persian_arabic] die("ERROR: s43.py پیدا نشد. اسکریپت را کنار s43.py اجرا کن.")
+s43_auto_patch_nested_short.py:88 [unicode:persian_arabic] # اول مطمئن شو فایل فعلی parse می‌شود
+s43_auto_patch_nested_short.py:88 [unicode:zero_width] # اول مطمئن شو فایل فعلی parse می‌شود
+s43_auto_patch_nested_short.py:92 [unicode:persian_arabic] die(f"ERROR: s43.py قبل از پچ SyntaxError دارد:\n{e}")
+s43_auto_patch_nested_short.py:97 [unicode:persian_arabic] print("OK: هیچ nested duplicate با نام def _short داخل def _short پیدا نشد.")
+s43_auto_patch_nested_short.py:108 [unicode:persian_arabic] # از پایین به بالا تا شماره خطوط تغییر نکند
+s43_auto_patch_nested_short.py:112 [unicode:persian_arabic] die("ERROR: Python فعلی end_lineno ندارد؛ با Python 3.8+ اجرا کن.")
+s43_auto_patch_nested_short.py:138 [unicode:persian_arabic] # تست parse قبل از نوشتن نهایی
+s43_auto_patch_nested_short.py:145 [unicode:persian_arabic] "ERROR: نتیجه پچ SyntaxError دارد؛ فایل اصلی دست‌نخورده ماند.\n"
+s43_auto_patch_nested_short.py:145 [unicode:zero_width] "ERROR: نتیجه پچ SyntaxError دارد؛ فایل اصلی دست‌نخورده ماند.\n"
+s43_auto_patch_nested_short.py:161 [unicode:persian_arabic] "ERROR: compile بعد از پچ شکست خورد. بکاپ restore شد.\n"
+s43_auto_patch_nested_short.py:166 [unicode:persian_arabic] print("OK: s43.py compile-clean است.")
+s43_auto_patch_nested_short.py:168 [unicode:persian_arabic] # گزارش نهایی watched names
+final_audit_evidence/s43.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_audit_evidence/s43.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_audit_evidence/s43.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_audit_evidence/s43.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_audit_evidence/s43.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_audit_evidence/s43.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_audit_evidence/s43.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_audit_evidence/s43.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_audit_evidence/s43.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_audit_evidence/s43.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_audit_evidence/s43.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_audit_evidence/s43.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_audit_evidence/s43.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_audit_evidence/s43.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_audit_evidence/s43.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_audit_evidence/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:1016 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:1017 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:6243 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:6243 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:6244 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:6244 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:14632 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:15015 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:15015 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:24231 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:24231 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:24232 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:24232 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:24252 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:25727 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:27279 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_stable_before_arzplus_recovery_20260530_203202.py:27623 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:1016 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:1017 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:6243 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:6243 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:6244 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:6244 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:14632 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:15015 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:15015 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:24231 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:24231 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:24232 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:24232 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:24252 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:25727 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:27279 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_stable_before_arzplus_recovery_20260530_203446.py:27623 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:1016 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:1017 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:6243 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:6243 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:6244 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:6244 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:14632 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:15015 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:15015 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:24231 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:24231 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:24232 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:24232 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:24252 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:25727 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:27279 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_before_3wallet_runtime_plan_20260530_204139.py:27623 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+final_release_20260530/s43_latest_refactor.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_release_20260530/s43_latest_refactor.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_release_20260530/s43_latest_refactor.py:6124 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_latest_refactor.py:6124 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_latest_refactor.py:6125 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_latest_refactor.py:6125 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_latest_refactor.py:14513 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_release_20260530/s43_latest_refactor.py:14896 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_latest_refactor.py:14896 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_latest_refactor.py:24112 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_latest_refactor.py:24112 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_latest_refactor.py:24113 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_latest_refactor.py:24113 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_latest_refactor.py:24133 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_release_20260530/s43_latest_refactor.py:25608 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_release_20260530/s43_latest_refactor.py:27160 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_release_20260530/s43_latest_refactor.py:27504 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:6124 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:6124 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:6125 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:6125 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:14513 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:14896 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:14896 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:24112 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:24112 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:24113 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:24113 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:24133 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:25608 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:27160 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_release_20260530/s43_FINAL_LATEST_REFACTOR_20260530.py:27504 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:6124 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:6124 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:6125 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:6125 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:14513 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:14896 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:14896 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:24112 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:24112 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:24113 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:24113 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:24133 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:25608 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:27160 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_release_20260530/s43_STABLE_PATCH13_3_20260530.py:27504 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+final_release_20260530/s43_stable_patch13_3.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+final_release_20260530/s43_stable_patch13_3.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+final_release_20260530/s43_stable_patch13_3.py:6124 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_stable_patch13_3.py:6124 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+final_release_20260530/s43_stable_patch13_3.py:6125 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_stable_patch13_3.py:6125 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+final_release_20260530/s43_stable_patch13_3.py:14513 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+final_release_20260530/s43_stable_patch13_3.py:14896 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_stable_patch13_3.py:14896 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+final_release_20260530/s43_stable_patch13_3.py:24112 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_stable_patch13_3.py:24112 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+final_release_20260530/s43_stable_patch13_3.py:24113 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_stable_patch13_3.py:24113 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+final_release_20260530/s43_stable_patch13_3.py:24133 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+final_release_20260530/s43_stable_patch13_3.py:25608 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+final_release_20260530/s43_stable_patch13_3.py:27160 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+final_release_20260530/s43_stable_patch13_3.py:27504 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_backup_20260529_135247.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_backup_20260529_135247.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_backup_20260529_135247.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_135247.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_135247.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_135247.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_135247.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_backup_20260529_135247.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_135247.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_135247.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_135247.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_135247.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_135247.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_135247.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_backup_20260529_135247.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_backup_20260529_135247.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_backup_20260529_135247.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_before_restore_20260529_131854.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_before_restore_20260529_131854.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_before_restore_20260529_131854.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_restore_20260529_131854.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_restore_20260529_131854.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_restore_20260529_131854.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_restore_20260529_131854.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_before_restore_20260529_131854.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_restore_20260529_131854.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_restore_20260529_131854.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_restore_20260529_131854.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_restore_20260529_131854.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_restore_20260529_131854.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_restore_20260529_131854.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_before_restore_20260529_131854.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_before_restore_20260529_131854.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_before_restore_20260529_131854.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_before_phase2_helpers_20260527_094432.py:736 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_before_phase2_helpers_20260527_094432.py:737 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_before_phase2_helpers_20260527_094432.py:5291 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase2_helpers_20260527_094432.py:5291 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase2_helpers_20260527_094432.py:5292 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase2_helpers_20260527_094432.py:5292 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase2_helpers_20260527_094432.py:13566 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_before_phase2_helpers_20260527_094432.py:13949 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase2_helpers_20260527_094432.py:13949 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase2_helpers_20260527_094432.py:23033 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase2_helpers_20260527_094432.py:23033 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase2_helpers_20260527_094432.py:23034 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase2_helpers_20260527_094432.py:23034 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase2_helpers_20260527_094432.py:23054 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_before_phase2_helpers_20260527_094432.py:24529 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_before_phase2_helpers_20260527_094432.py:26081 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_before_phase2_helpers_20260527_094432.py:26425 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:5297 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:5297 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:5298 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:5298 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:13572 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:13955 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:13955 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:23039 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:23039 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:23040 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:23040 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:23060 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:24535 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:26087 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_before_phase3B_wallet_aut_20260529_000002.py:26431 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:5297 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:5297 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:5298 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:5298 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:13572 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:13955 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:13955 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:23039 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:23039 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:23040 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:23040 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:23060 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:24535 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:26087 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_before_phase4A_autonomous_true_fix_20260529_002320.py:26431 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_repaired_20260529_131401.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_repaired_20260529_131401.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_repaired_20260529_131401.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_repaired_20260529_131401.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_repaired_20260529_131401.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_repaired_20260529_131401.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_repaired_20260529_131401.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_repaired_20260529_131401.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_repaired_20260529_131401.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_repaired_20260529_131401.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_repaired_20260529_131401.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_repaired_20260529_131401.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_repaired_20260529_131401.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_repaired_20260529_131401.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_repaired_20260529_131401.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_repaired_20260529_131401.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_repaired_20260529_131401.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_backup_20260529_131853.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_backup_20260529_131853.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_backup_20260529_131853.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_131853.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_131853.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_131853.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_131853.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_backup_20260529_131853.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_131853.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_131853.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_131853.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_131853.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_131853.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_131853.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_backup_20260529_131853.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_backup_20260529_131853.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_backup_20260529_131853.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/s43_backup_20260529_131521.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/s43_backup_20260529_131521.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/s43_backup_20260529_131521.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_131521.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/s43_backup_20260529_131521.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_131521.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/s43_backup_20260529_131521.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/s43_backup_20260529_131521.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_131521.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/s43_backup_20260529_131521.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_131521.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/s43_backup_20260529_131521.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_131521.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/s43_backup_20260529_131521.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/s43_backup_20260529_131521.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/s43_backup_20260529_131521.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/s43_backup_20260529_131521.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/90000820.py:17207 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/90000820.py:25310 [unicode:persian_arabic] s = str(x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/90000820.py:27679 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/90000820.py:28079 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/90000820.py:31058 [unicode:persian_arabic] # هدف: رفع کامل مشکل MKT INVALID / TOP8_STALE / عدم رفرش Phoenix و اصلاح Equity
+backups/20260527_093330/90000820.py:31059 [unicode:persian_arabic] # - بدون تغییر هیچ توکنی (به توکن‌ها دست نزن)
+backups/20260527_093330/90000820.py:31059 [unicode:zero_width] # - بدون تغییر هیچ توکنی (به توکن‌ها دست نزن)
+backups/20260527_093330/90000820.py:31660 [unicode:persian_arabic] # هدف: رفع واقعی TOP8_STALE / RADAR INVALID / AV=0 (Equity==Cash) در Termux
+backups/20260527_093330/90000820.py:31661 [unicode:persian_arabic] # نکته: به توکن‌ها دست نخورده است.
+backups/20260527_093330/90000820.py:31661 [unicode:zero_width] # نکته: به توکن‌ها دست نخورده است.
+backups/20260527_093330/s42.py:1747 [unicode:persian_arabic] _PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹"
+backups/20260527_093330/s42.py:1748 [unicode:persian_arabic] _ARABIC_INDIC_DIGITS = "٠١٢٣٤٥٦٧٨٩"
+backups/20260527_093330/s42.py:1753 [unicode:persian_arabic] ord("٬"): ord(","),
+backups/20260527_093330/s42.py:1754 [unicode:persian_arabic] ord("٫"): ord("."),
+backups/20260527_093330/s42.py:1755 [unicode:persian_arabic] ord("،"): ord(","),
+backups/20260527_093330/s42.py:1756 [unicode:persian_arabic] ord("٪"): ord("%"),
+backups/20260527_093330/s42.py:1786 [unicode:persian_arabic] s = s.replace("＋", "+").replace("٪", "%")
+backups/20260527_093330/s42.py:3081 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/s42.py:5421 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/s42.py:5422 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/s42.py:28506 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/s42.py:30058 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/s42.py:30402 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/s43.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/s43.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/s43.py:5297 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/s43.py:5297 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/s43.py:5298 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/s43.py:5298 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/s43.py:13572 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/20260527_093330/s43.py:13955 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/s43.py:13955 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/s43.py:23039 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/s43.py:23039 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/s43.py:23040 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/s43.py:23040 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/s43.py:23060 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/20260527_093330/s43.py:24535 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/s43.py:26087 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/s43.py:26431 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:736 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:737 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:5291 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:5291 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:5292 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:5292 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:13566 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:13949 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:13949 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:23033 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:23033 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:23034 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:23034 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:23054 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:24529 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:26081 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/backups/s43_before_phase3_runtime_ai_audit_20260528_233728.py:26425 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:736 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:737 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:5291 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:5291 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:5292 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:5292 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:13566 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:13949 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:13949 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:23033 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:23033 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:23034 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:23034 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:23054 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:24529 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:26081 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234020.py:26425 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:736 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:737 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:5291 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:5291 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:5292 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:5292 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:13566 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:13949 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:13949 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:23033 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:23033 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:23034 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:23034 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:23054 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:24529 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:26081 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234714.py:26425 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:736 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:737 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:5291 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:5291 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:5292 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:5292 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:13566 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:13949 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:13949 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:23033 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:23033 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:23034 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:23034 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:23054 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:24529 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:26081 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+backups/20260527_093330/backups/s43_before_phase3A_safe_runtime_ai_20260528_234233.py:26425 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114854.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:6230 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:6230 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:6231 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:6231 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:14505 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:14888 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:14888 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:23972 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:23972 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:23973 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:23973 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:23993 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:25468 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:27020 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_arzplus_top_level_block_1780034084.py:27364 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114941.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_115231.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:6124 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:6124 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:6125 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:6125 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:14513 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:14896 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:14896 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:24112 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:24112 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:24113 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:24113 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:24133 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:25608 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:27160 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_LATEST_REFACTOR_20260530.py:27504 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:1234 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:1235 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:6389 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:6389 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:6390 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:6390 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:14843 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:24508 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:24508 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:24509 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:24509 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:24529 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:26004 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:27556 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_header_20260602_190322.py:27900 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_114051.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:1234 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:1235 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:6461 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:6461 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:6462 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:6462 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:14915 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:24580 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:24580 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:24581 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:24581 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:24601 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:26076 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:27628 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_quarantine_cleanup_20260602_185807.py:27972 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_prechange_20260602_193430.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/snap_before_patch_20260530_114727.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:6306 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:6306 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:6307 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:6307 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:14581 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:14964 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:14964 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:24048 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:24048 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:24049 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:24049 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:24069 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:25544 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:27096 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_quantize_cleanup_1780033269.py:27440 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase53_audit_1780080168.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_FINAL_AUDIT_LOCKED_20260602_191733.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_phase54_instrument_1780080703.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:1254 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:1255 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:6409 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:6409 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:6410 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:6410 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:14863 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:24528 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:24528 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:24529 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:24529 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:24549 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:26024 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:27576 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_dev_next_pre_refactor_20260602_193653.py:27920 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:1255 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:1256 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:6410 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:6410 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:6411 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:6411 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:14864 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:24529 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:24529 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:24530 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:24530 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:24550 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:26025 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:27577 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_backup_before_toplevel_cleanup_20260602_190601.py:27921 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:742 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:743 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:6306 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:6306 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:6307 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:6307 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:14581 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:14964 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:14964 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:24048 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:24048 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:24049 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:24049 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:24069 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:25544 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:27096 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_before_remove_nested_quantize_block_1780033374.py:27440 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:6226 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:6226 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:6227 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:6227 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:6247 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:7721 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:9273 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+archive_packed_backup/archive_original_20260603_002512/snapshots/s43_broken_before_restore_20260530_113858.py:9618 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140813/s43.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140813/s43.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140813/s43.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140813/s43.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140813/s43.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140813/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140642/s43.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140642/s43.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140642/s43.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140642/s43.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140642/s43.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140642/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_141130/s43.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_141130/s43.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_141130/s43.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_141130/s43.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_141130/s43.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_141130/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140159/s43.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140159/s43.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140159/s43.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140159/s43.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140159/s43.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140159/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140001/s43.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140001/s43.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140001/s43.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140001/s43.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140001/s43.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:897 [unicode:persian_arabic] _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:898 [unicode:persian_arabic] _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:6086 [unicode:persian_arabic] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:6086 [unicode:zero_width] قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:6087 [unicode:persian_arabic] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:6087 [unicode:zero_width] این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:14361 [unicode:persian_arabic] if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:14744 [unicode:persian_arabic] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:14744 [unicode:zero_width] # اگر slot صفرمبنایی باشد، معادل یک‌مبنایی را هم امتحان کن
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:23835 [unicode:persian_arabic] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:23835 [unicode:zero_width] # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:23836 [unicode:persian_arabic] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:23836 [unicode:zero_width] # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:23856 [unicode:persian_arabic] # خود registry وجود دارد، ولی veto فعال ندارد.
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:25331 [unicode:persian_arabic] s = str(_x).replace(",", "").replace("٪", "%").strip()
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:26883 [unicode:persian_arabic] _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+snapshots/s43_snapshot_20260529_140001/s43_final_repaired_locked.py:27227 [unicode:persian_arabic] s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+s43.py sha256: bb6cd5c5893737b30ba16971be9be5980766d9cf841f6a4501a2596f55f8d731
+syntax_check: OK
+duplicate_function: _audit_only_block line 29619
+duplicate_function: __init__ line 183
+duplicate_function: __init__ line 529
+duplicate_function: __init__ line 1088
+duplicate_function: __init__ line 1134
+duplicate_function: __init__ line 1155
+duplicate_function: __init__ line 1221
+duplicate_function: release line 1234
+duplicate_function: locked line 1237
+duplicate_function: __init__ line 1282
+duplicate_function: __init__ line 4732
+duplicate_function: __init__ line 4776
+duplicate_function: __init__ line 4805
+duplicate_function: __init__ line 5023
+duplicate_function: __init__ line 5882
+duplicate_function: __init__ line 5953
+duplicate_function: __init__ line 5968
+duplicate_function: __init__ line 6069
+duplicate_function: __init__ line 6238
+duplicate_function: __init__ line 6320
+duplicate_function: acquire line 6412
+duplicate_function: release line 6415
+duplicate_function: locked line 6418
+duplicate_function: __enter__ line 6421
+duplicate_function: __exit__ line 6425
+duplicate_function: __init__ line 6433
+duplicate_function: _ema line 6460
+duplicate_function: evaluate line 6617
+duplicate_function: __init__ line 6796
+duplicate_function: _ema line 6803
+duplicate_function: __init__ line 6847
+duplicate_function: analyze line 6933
+duplicate_function: __init__ line 6952
+duplicate_function: analyze line 6986
+duplicate_function: __init__ line 7007
+duplicate_function: analyze line 7026
+duplicate_function: __init__ line 7063
+duplicate_function: __init__ line 7112
+duplicate_function: _estimate_volume line 7133
+duplicate_function: __init__ line 7364
+duplicate_function: to_dict line 7402
+duplicate_function: from_dict line 7414
+duplicate_function: __init__ line 7428
+duplicate_function: __init__ line 7717
+duplicate_function: __init__ line 7836
+duplicate_function: __init__ line 7892
+duplicate_function: get_stats line 7961
+duplicate_function: __init__ line 7999
+duplicate_function: __init__ line 8105
+duplicate_function: __init__ line 8221
+duplicate_function: __init__ line 8536
+duplicate_function: __init__ line 8842
+duplicate_function: record_success line 8851
+duplicate_function: record_failure line 8866
+duplicate_function: __init__ line 8913
+duplicate_function: get_stats line 8984
+duplicate_function: __init__ line 8997
+duplicate_function: __init__ line 9131
+duplicate_function: __init__ line 9203
+duplicate_function: __init__ line 9328
+duplicate_function: __init__ line 9688
+duplicate_function: update line 9875
+duplicate_function: __init__ line 10152
+duplicate_function: _key line 10173
+duplicate_function: evaluate line 10175
+duplicate_function: __init__ line 10473
+duplicate_function: __init__ line 10649
+duplicate_function: _normalize_server_time line 10682
+duplicate_function: skew_s line 10684
+duplicate_function: __init__ line 10955
+duplicate_function: to_dict line 11509
+duplicate_function: __init__ line 11573
+duplicate_function: __init__ line 12182
+duplicate_function: start line 12220
+duplicate_function: stop line 12229
+duplicate_function: __init__ line 12262
+duplicate_function: __init__ line 12285
+duplicate_function: __init__ line 12366
+duplicate_function: observe line 12373
+duplicate_function: __init__ line 12562
+duplicate_function: update line 12565
+duplicate_function: __init__ line 12618
+duplicate_function: __init__ line 12831
+duplicate_function: __init__ line 13068
+duplicate_function: __init__ line 13104
+duplicate_function: start line 13117
+duplicate_function: stop line 13123
+duplicate_function: score line 13147
+duplicate_function: to_dict line 13153
+duplicate_function: record_success line 13156
+duplicate_function: record_failure line 13162
+duplicate_function: __init__ line 13197
+duplicate_function: add line 13219
+duplicate_function: record_failure line 13258
+duplicate_function: record_success line 13264
+duplicate_function: snapshot line 13274
+duplicate_function: to_dict line 13281
+duplicate_function: __bool__ line 13290
+duplicate_function: __getattr__ line 13293
+duplicate_function: __init__ line 13307
+duplicate_function: snapshot line 13643
+duplicate_function: __init__ line 14990
+duplicate_function: stop line 14994
+duplicate_function: __init__ line 15197
+duplicate_function: __init__ line 15366
+duplicate_function: __init__ line 23751
+duplicate_function: add line 23757
+duplicate_function: record line 23766
+duplicate_function: clear line 23776
+duplicate_function: save line 23779
+duplicate_function: close line 23785
+duplicate_function: __len__ line 23788
+duplicate_function: __bool__ line 23794
+duplicate_function: __getattr__ line 23797
+duplicate_function: __init__ line 23805
+duplicate_function: __init__ line 24485
+duplicate_function: add line 24488
+duplicate_function: record line 24499
+duplicate_function: append line 24505
+duplicate_function: remove line 24508
+duplicate_function: discard line 24511
+duplicate_function: clear line 24514
+duplicate_function: snapshot line 24527
+duplicate_function: to_dict line 24539
+duplicate_function: __len__ line 24545
+duplicate_function: __bool__ line 24548
+duplicate_function: __iter__ line 24552
+duplicate_function: __contains__ line 24555
+duplicate_function: __getattr__ line 24558
+duplicate_function: __init__ line 28573
+duplicate_function: age line 28590
+duplicate_function: stop line 28598
+duplicate_function: __init__ line 28676
+duplicate_function: _task_name line 28688
+duplicate_function: _update_history line 28701
+duplicate_function: __init__ line 28803
+duplicate_function: _task_name line 28814
+duplicate_function: __init__ line 28968
+duplicate_function: stop line 28997
+duplicate_function: _px_from_row line 5631
+duplicate_function: __init__ line 7440
+duplicate_function: __init__ line 7528
+duplicate_function: update line 7531
+duplicate_function: __init__ line 7617
+duplicate_function: _noop line 13294
+duplicate_function: _add line 17002
+duplicate_function: _add line 17115
+duplicate_function: _f line 17652
+duplicate_function: _noop line 23799
+duplicate_function: _noop line 24559
+duplicate_function: __init__ line 29308
+duplicate_function: __init__ line 29315
+duplicate_function: __init__ line 29320
+duplicate_function: _qty line 6471
+duplicate_function: _f line 22828
+duplicate_function: _ema line 22898
+duplicate_function: _f line 15522
+duplicate_function: _mid_from_row line 16106
+duplicate_function: _f line 17656
+duplicate_function: _age line 11389
+dead_code_pattern line 13072

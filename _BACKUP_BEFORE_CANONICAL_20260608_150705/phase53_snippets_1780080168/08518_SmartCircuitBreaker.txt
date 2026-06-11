@@ -1,0 +1,71 @@
+08518: class SmartCircuitBreaker:
+08519:     def __init__(self, name: str, config: RetryConfig):
+08520:         self.name = name
+08521:         self.config = config
+08522:         self.state = CircuitBreakerState.CLOSED
+08523:         self.failure_count = 0
+08524:         self.last_failure_time = 0.0
+08525:         self.success_count = 0
+08526:         self._lock = _NoopLock()
+08527:         self._state_change_time = time.time()
+08528:     def record_success(self):
+08529:         with self._lock:
+08530:             if self.state == CircuitBreakerState.HALF_OPEN:
+08531:                 self.success_count += 1
+08532:                 if self.success_count >= 3:
+08533:                     self.state = CircuitBreakerState.CLOSED
+08534:                     self.failure_count = 0
+08535:                     self.success_count = 0
+08536:                     self._state_change_time = time.time()
+08537:                     logging.info(f"Circuit breaker {self.name} closed")
+08538:             elif self.state == CircuitBreakerState.CLOSED:
+08539:                 if self.failure_count > 0:
+08540:                     elapsed = time.time() - self.last_failure_time
+08541:                     if elapsed > 30:
+08542:                         self.failure_count = max(0, self.failure_count - 1)
+08543:     def record_failure(self):
+08544:         with self._lock:
+08545:             self.failure_count += 1
+08546:             self.last_failure_time = time.time()
+08547:             self.success_count = 0
+08548:             if (self.state == CircuitBreakerState.CLOSED and
+08549:                 self.failure_count >= self.config.circuit_breaker_threshold):
+08550:                 self.state = CircuitBreakerState.OPEN
+08551:                 self._state_change_time = time.time()
+08552:                 logging.warning(f"Circuit breaker {self.name} opened")
+08553:                 self._schedule_half_open()
+08554:             elif self.state == CircuitBreakerState.HALF_OPEN:
+08555:                 self.state = CircuitBreakerState.OPEN
+08556:                 self._state_change_time = time.time()
+08557:                 logging.warning(f"Circuit breaker {self.name} re-opened")
+08558:                 self._schedule_half_open()
+08559:     def _schedule_half_open(self):
+08560:         async def _transition():
+08561:             try:
+08562:                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+08563:                 with self._lock:
+08564:                     if self.state == CircuitBreakerState.OPEN:
+08565:                         self.state = CircuitBreakerState.HALF_OPEN
+08566:                         self._state_change_time = time.time()
+08567:                         logging.info("event=CB_HALF_OPEN name=%s", str(self.name))
+08568:             except asyncio.CancelledError:
+08569:                 raise
+08570:             except Exception:
+08571:                 logging.exception("event=CB_HALF_OPEN_ERR name=%s", str(self.name))
+08572:         try:
+08573:             asyncio.create_task(_transition(), name=f"cb_halfopen_{self.name}")
+08574:         except Exception:
+08575:             logging.exception("event=CB_SCHED_ERR name=%s", str(self.name))
+08576:     def can_execute(self) -> bool:
+08577:         with self._lock:
+08578:             return self.state != CircuitBreakerState.OPEN
+08579:     def get_state(self) -> Dict[str, Any]:
+08580:         with self._lock:
+08581:             return {
+08582:                 "name": self.name,
+08583:                 "state": self.state.value,
+08584:                 "failure_count": self.failure_count,
+08585:                 "success_count": self.success_count,
+08586:                 "last_failure": self.last_failure_time,
+08587:                 "state_since": self._state_change_time
+08588:             }

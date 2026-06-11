@@ -1,0 +1,65 @@
+===== S43 PHASE2 REMOVE HELPERS REPORT =====
+TS=20260527_095452
+BACKUP=s43_before_phase2_remove_helpers_20260527_095452.py
+
+[IMPORT LINE]
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int
+
+[DEFINITION SEARCH AFTER REMOVAL]
+--- _ensure_dir ---
+--- _env_bool ---
+--- _env_float ---
+--- _env_str ---
+--- _canon_symbol ---
+--- _env_int ---
+
+[COMPILE S43]
+s43.py: SYNTAX_OK
+
+[COMPILE HELPERS]
+s43_core/helpers.py: SYNTAX_OK
+
+[HELP CHECK]
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+  --token-bot           Run Telegram token bot (independent).
+  --wallet-concurrency WALLET_CONCURRENCY
+                        Concurrent wallet cycles in one process (async
+                        gather). 0=env/default.
+
+[RUNTIME IMPORT SMOKE]
+S43_IMPORT_OK
+_ensure_dir source module: s43_core.helpers
+_env_bool source module: s43_core.helpers
+_env_float source module: s43_core.helpers
+_env_str source module: s43_core.helpers
+_canon_symbol source module: s43_core.helpers
+_env_int source module: s43_core.helpers

@@ -1,0 +1,2239 @@
+diff --git a/s43.py b/s43.py
+index 70d365f..74d1e8c 100644
+--- a/s43.py
++++ b/s43.py
+@@ -1,11 +1,55 @@
++# -*- coding: utf-8 -*-
++"""
++s43.py
+ 
++Audit-locked trading system artifact.
+ 
++This module is retained strictly for audit, static analysis, and controlled
++refactor work. It must not be used for live trading.
+ 
++Security guarantees:
++- Live order execution is disabled
++- Trading-related runtime paths are sealed
++- The module must fail closed if unsafe runtime conditions are detected
+ 
++Required runtime policy:
++- DRY_RUN = true
++- LIVE_TRADING_ARMED = false
++
++Any attempt to enable live trading behavior is out of scope for this artifact
++and must be blocked.
++"""
+ 
+-# -*- coding: utf-8 -*-
+ from __future__ import annotations
+ 
++# === S43 AUDIT-ONLY HARD STOP PATCH ===
++import os as _s43_audit_os
++
++def _s43_audit_only_hardstop(*args, **kwargs):
++    raise RuntimeError(
++        "AUDIT-ONLY HARD STOP: live trading / real-order execution is prohibited for s43.py"
++    )
++
++def _s43_audit_env_guard():
++    bad = []
++    if str(_s43_audit_os.environ.get("DRY_RUN", "")).strip() in {"0", "false", "False", "no", "NO"}:
++        bad.append("DRY_RUN")
++    if str(_s43_audit_os.environ.get("LIVE_TRADING_ARMED", "")).strip() in {"1", "true", "True", "yes", "YES"}:
++        bad.append("LIVE_TRADING_ARMED")
++    if str(_s43_audit_os.environ.get("AI_LIVE_TRADING_ARMED", "")).strip() in {"1", "true", "True", "yes", "YES"}:
++        bad.append("AI_LIVE_TRADING_ARMED")
++    if str(_s43_audit_os.environ.get("ALLOW_ORDERS", "")).strip() in {"1", "true", "True", "yes", "YES"}:
++        bad.append("ALLOW_ORDERS")
++    if str(_s43_audit_os.environ.get("REAL", "")).strip() in {"1", "true", "True", "yes", "YES"}:
++        bad.append("REAL")
++    if bad:
++        raise RuntimeError(
++            "AUDIT-ONLY ENV BLOCK: prohibited live/runtime flags detected: " + ",".join(bad)
++        )
++
++_s43_audit_env_guard()
++# === END S43 AUDIT-ONLY HARD STOP PATCH ===
++
+ if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+     print("### S43_RUNTIME_PROBE_ACTIVE ###")
+ 
+@@ -644,7 +688,15 @@ try:
+     get_best_snapshot
+ except NameError:
+     def get_best_snapshot(symbol, bot=None, now=None, stale_after_sec=90.0):
+-        sym = str(symbol).replace("-", "")
++        import time as _time
++
++        now = float(now if now is not None else _time.time())
++        sym = str(symbol or "").replace("-", "").upper()
++        keys = []
++        for k in (symbol, sym, str(symbol or "").upper(), str(symbol or "").replace("-", ""), sym.replace("-", "")):
++            if k and k not in keys:
++                keys.append(k)
++
+         base = {
+             "symbol": symbol,
+             "norm_symbol": sym,
+@@ -653,43 +705,229 @@ except NameError:
+             "last": None,
+             "mid": None,
+             "spread": None,
+-            "stale": True,
+-            "source": "fallback",
+             "ts": now,
++            "source": "fallback",
++            "stale": True,
++            "stale_reason": "NO_DATA",
+         }
+ 
+-        candidates = []
+-        if bot is not None:
+-            for name in (
++        def _safe_float(x):
++            try:
++                return float(x)
++            except Exception:
++                return x
++
++        def _calc_stale(ts_value):
++            try:
++                age = max(0.0, float(now) - float(ts_value))
++                return (age > float(stale_after_sec), f"STALE age={age:.3f}s" if age > float(stale_after_sec) else "")
++            except Exception:
++                return (False, "")
++
++        def _normalize_snapshot(out):
++            if out.get("dp_pct") is None and out.get("pct") is not None:
++                out["dp_pct"] = out.get("pct")
++            if out.get("last") is None and out.get("last_price") is not None:
++                out["last"] = out.get("last_price")
++            if out.get("mid") is None and out.get("last") is not None:
++                try:
++                    out["mid"] = float(out.get("last"))
++                except Exception:
++                    out["mid"] = out.get("last")
++            out.setdefault("symbol", symbol)
++            out.setdefault("norm_symbol", sym)
++            return out
++
++        def _find_key(d):
++            if not isinstance(d, dict):
++                return None
++            for k in keys:
++                if k in d:
++                    return k
++            return None
++
++        # 1) bot cache dictionaries
++        try:
++            for attr in (
+                 "snapshots",
+                 "_snapshots",
+                 "market_snapshots",
+                 "_market_snapshots",
++                "_market_snapshot",
+                 "ticker_cache",
+                 "_ticker_cache",
+             ):
+-                try:
+-                    obj = getattr(bot, name, None)
+-                    if isinstance(obj, dict):
+-                        candidates.append(obj)
+-                except Exception:
+-                    pass
++                d = getattr(bot, attr, None) if bot is not None else None
++                if not isinstance(d, dict):
++                    continue
++                hit = _find_key(d)
++                if hit is None:
++                    continue
++                row = d.get(hit)
++                if isinstance(row, dict):
++                    out = dict(base)
++                    out.update(row)
++                    out["source"] = "bot-cache"
++                    out = _normalize_snapshot(out)
++                    if out.get("ts") is not None:
++                        out["stale"], out["stale_reason"] = _calc_stale(out.get("ts"))
++                    else:
++                        out.setdefault("stale", False)
++                        out.setdefault("stale_reason", "")
++                    return out
++        except Exception:
++            pass
+ 
+-        keys = [symbol, sym, sym.upper(), str(symbol).upper()]
+-        for d in candidates:
+-            for k in keys:
++        # 2) feed._cache fallback support
++        try:
++            feed = getattr(bot, "feed", None) if bot is not None else None
++            cache = getattr(feed, "_cache", None) if feed is not None else None
++            if isinstance(cache, dict):
++                hit = _find_key(cache)
++                if hit is not None:
++                    raw = cache.get(hit)
++                    ts = now
++                    obj = raw
++
++                    if isinstance(raw, tuple) and len(raw) >= 2:
++                        ts, obj = raw[0], raw[1]
++                    elif isinstance(raw, tuple) and len(raw) == 1:
++                        obj = raw[0]
++
++                    try:
++                        ts = float(ts)
++                    except Exception:
++                        ts = now
++
++                    def _g(o, name, default=None):
++                        try:
++                            return getattr(o, name, default)
++                        except Exception:
++                            return default
++
++                    bid = _g(obj, "bid", None)
++                    ask = _g(obj, "ask", None)
++                    last = _g(obj, "last", None)
++                    mid = _g(obj, "mid", None)
++
++                    try:
++                        if mid is None and bid is not None and ask is not None:
++                            mid = (float(bid) + float(ask)) / 2.0
++                        elif mid is not None:
++                            mid = float(mid)
++                        elif last is not None:
++                            mid = float(last)
++                    except Exception:
++                        pass
++
++                    spread = _g(obj, "spread", None)
++                    if spread is None:
++                        spread = _g(obj, "spr_bps", None)
++
++                    out = dict(base)
++                    out.update({
++                        "symbol": symbol,
++                        "norm_symbol": sym,
++                        "bid": bid,
++                        "ask": ask,
++                        "last": last,
++                        "mid": mid,
++                        "spread": spread,
++                        "ts": ts,
++                        "source": "feed-cache",
++                    })
++
++                    out["stale"], out["stale_reason"] = _calc_stale(ts)
++                    return out
++        except Exception:
++            pass
++
++        # 3) phoenix price history + spot cache support
++        try:
++            feed = getattr(bot, "feed", None) if bot is not None else None
++            hist_map = getattr(bot, "_phoenix_px_hist", None) if bot is not None else None
++            spot_map = getattr(feed, "_spot_cache", None) if feed is not None else None
++
++            def _cache_get(m):
++                if not isinstance(m, dict):
++                    return None
++                for kk in (symbol, sym, str(symbol).replace("-", ""), str(sym).replace("-", "")):
++                    if kk in m:
++                        return m.get(kk)
++                return None
++
++            def _price_from(v):
++                if v is None:
++                    return None
++                if isinstance(v, (list, tuple)):
++                    if len(v) >= 2:
++                        return v[1]
++                    if len(v) == 1:
++                        return v[0]
++                if isinstance(v, dict):
++                    for kk in ("mid", "last", "last_price", "price", "close"):
++                        if v.get(kk) is not None:
++                            return v.get(kk)
++                return v
++
++            def _ts_from(v):
++                if isinstance(v, (list, tuple)) and len(v) >= 2:
++                    return v[0]
++                if isinstance(v, dict):
++                    return v.get("ts") or v.get("timestamp") or v.get("time")
++                return None
++
++            hist = _cache_get(hist_map)
++            spot = _cache_get(spot_map)
++
++            latest = _price_from(spot)
++            latest_ts = _ts_from(spot)
++            prev = None
++
++            if hist is not None:
+                 try:
+-                    if k in d and isinstance(d[k], dict):
+-                        out = dict(base)
+-                        out.update(d[k])
+-                        out.setdefault("symbol", symbol)
+-                        out.setdefault("norm_symbol", sym)
+-                        out.setdefault("source", "bot-cache")
+-                        return out
++                    hist_list = list(hist)
++                    prices = []
++                    for item in hist_list:
++                        px = _price_from(item)
++                        if px is not None:
++                            prices.append(px)
++                    if prices:
++                        if latest is None:
++                            latest = prices[-1]
++                        if len(prices) >= 2:
++                            prev = prices[0]
+                 except Exception:
+                     pass
+ 
+-        return base
++            dp_pct = None
++            try:
++                if prev is not None and latest is not None and float(prev) != 0.0:
++                    dp_pct = (float(latest) - float(prev)) / float(prev) * 100.0
++            except Exception:
++                dp_pct = None
++
++            if latest is not None or dp_pct is not None:
++                out = dict(base)
++                if latest is not None:
++                    try:
++                        out["mid"] = float(latest)
++                        out["last"] = float(latest)
++                    except Exception:
++                        out["mid"] = latest
++                        out["last"] = latest
++                if dp_pct is not None:
++                    out["dp_pct"] = dp_pct
++                if latest_ts is not None:
++                    out["ts"] = latest_ts
++                out["source"] = "phoenix-px-hist/spot-cache"
++                out["stale"] = False
++                out["stale_reason"] = ""
++                return out
++        except Exception:
++            pass
++
++        return dict(base)
+ # === /S43_INTERNAL_NAMEERROR_FALLBACKS ===
+ 
+         self._buf = _s43_deque(maxlen=int(maxlen or 400))
+@@ -1013,7 +1251,7 @@ class PrioritySemaphore:
+ 
+ class ExchangeClient:
+     _RE_AUTH_SCHEME = re.compile(r"^(token|bearer|jwt)\s+(.+)$", re.IGNORECASE)
+-    _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|ثانیه|ثانيه)", re.IGNORECASE)
++    _RE_PAUSE_SECONDS = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|sec|second|seconds|)", re.IGNORECASE)
+     _RE_PAUSE_TA = re.compile(r"تا\s*(\d+(?:\.\d+)?)", re.IGNORECASE)
+     _PERSIAN_DIGITS = str.maketrans("\u06f0\u06f1\u06f2\u06f3\u06f4\u06f5\u06f6\u06f7\u06f8\u06f9", "0123456789")
+     @staticmethod
+@@ -2481,6 +2719,25 @@ class ExchangeClient:
+             self.last_update_time = float(time.time())
+         except Exception:
+             pass
++        # --- SafetyCoordinator Phase-1 ticker coverage guard ---
++        try:
++            priced = _priced_count(snap)
++            if isinstance(snap, dict):
++                meta = snap.setdefault("_safety", {})
++                if isinstance(meta, dict):
++                    meta["ticker_priced_count"] = priced
++                    meta["ticker_min_required"] = min_ok
++                    meta["ticker_guard"] = "DENY" if priced < min_ok else "ALLOW"
++            if _s43_safety_env_bool("SAFETY_FAIL_CLOSED_TICKERS", False):
++                return {"server_time": now, "tickers": [], "by_symbol": {}, "_safety": {"ticker_guard": "DENY", "ticker_priced_count": priced, "ticker_min_required": min_ok, "reason": "insufficient_priced_tickers"}}
++        except Exception as _safety_e:
++            try:
++                _s43_debug_print(f"SAFETY_TICKER_GUARD_ERROR error={_safety_e}", flush=True)
++            except Exception:
++                pass
++            if _s43_safety_env_bool("SAFETY_FAIL_CLOSED_ON_GUARD_ERROR", False):
++                return {"server_time": now, "tickers": [], "by_symbol": {}, "_safety": {"ticker_guard": "ERROR", "reason": "guard_error"}}
++        # --- /SafetyCoordinator Phase-1 ticker coverage guard ---
+         return snap
+     def get_current_age(self, now: Optional[float] = None) -> float:
+         now_f = float(time.time() if now is None else now)
+@@ -3603,12 +3860,6 @@ class ExchangeClient:
+     ################################################################################################
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: get_market_snapshot original lines 2719-2852, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def get_market_snapshot(self) -> dict:
+ #         now = time.time()
+ #         last_err: Optional[Exception] = None
+@@ -3746,12 +3997,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: get_last_update_age original lines 2853-2900, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     def get_last_update_age(self, now: float = None) -> float:
+ #         """Return seconds since last successful public API update.
+ #
+@@ -3803,12 +4048,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: get_all_market_stats original lines 2901-2992, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def get_all_market_stats(self) -> dict:
+ #         if self._is_arzplus():
+ #             try:
+@@ -3904,12 +4143,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: get_trades original lines 2993-3011, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def get_trades(self, symbol: str) -> dict:
+ #         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+ #         try:
+@@ -3932,12 +4165,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: get_balance original lines 3012-3065, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def get_balance(self) -> dict:
+ #         try:
+ #             _s43_debug_print(f"[AUTHDBG_GETBAL] token_present={bool(getattr(self, '_token', None))} auth_scheme={getattr(self, '_auth_scheme', None)} cache_valid={self._balance_cache_valid() if hasattr(self, '_balance_cache_valid') else 'NA'}")
+@@ -3995,12 +4222,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: conn_check original lines 3066-3183, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def conn_check(self, *, timeout_sec: Optional[float] = None) -> Tuple[bool, float, int]:
+ #         """Lightweight connectivity check with DNS/path double-verify (Termux / mobile networks).
+ #
+@@ -4122,12 +4343,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def place_order(
+ #         self,
+ #         symbol: str,
+@@ -4283,12 +4498,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: place_limit original lines 3336-3365, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def place_limit(
+ #         self,
+ #         symbol: str,
+@@ -4323,12 +4532,6 @@ class ExchangeClient:
+ 
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: place_market original lines 3367-3395, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def place_market(
+ #         self,
+ #         symbol: str,
+@@ -4361,12 +4564,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: cancel_all_orders original lines 3396-3459, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def cancel_all_orders(self, symbol: Optional[str] = None) -> dict:
+ #         payload: Dict[str, Any] = {}
+ #         try:
+@@ -4434,12 +4631,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: list_orders original lines 3460-3512, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def list_orders(self, symbol: str = None, status: str = None, limit: int = 50, offset: int = 0) -> dict:
+ #         base_params: Dict[str, Any] = {}
+ #         is_arz = _is_arzplus_client(self)
+@@ -4496,12 +4687,6 @@ class ExchangeClient:
+ #===================================================================================================
+ 
+ 
+-#===================================================================================================
+-# QUARANTINED BROKEN NESTED BLOCK: cancel_order original lines 3513-3557, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+-# This block was not removed in the candidate output.
+-# It is commented out to avoid duplicate/nested accidental definitions.
+-# Review manually before applying any final repair.
+-#===================================================================================================
+ #     async def cancel_order(self, order_id) -> dict:
+ #         oid = order_id
+ #         try:
+@@ -6240,8 +6425,8 @@ class EdgeModelV2:
+ 
+ class _NoopLock:
+     """
+-    قفل بی‌اثر و سازگار برای جلوگیری از NameError.
+-    این کلاس عمداً ساده است و هیچ توکن، کلید، سکرت، BotConfig یا منطق اصلی را تغییر نمی‌دهد.
++    Compatibility no-op lock to prevent NameError.
++    This class is intentionally minimal and does not modify any tokens, keys, secrets, BotConfig, or core logic.
+     """
+     def acquire(self, *args, **kwargs):
+         return True
+@@ -9780,6 +9965,19 @@ class PhoenixEngine:
+             age_px = None
+         allow_spot_ready = bool(_env_bool("PHOENIX_ALLOW_SPOT_READY", bool(getattr(self.cfg, "phoenix_allow_spot_ready", False))))
+         depth_required_only = bool(source == "spot" and (not allow_spot_ready))
++        if depth_required_only:
++            dec = PhoenixDecision(
++                state="FLAT",
++                confidence=float(getattr(sig, "confidence", 0.0) or 0.0) if sig is not None else 0.0,
++                composite=float(getattr(sig, "score", 0.0) or 0.0) if sig is not None else 0.0,
++                rsi=50.0,
++                shadow_score=0.0,
++                shadow_label="DEPTH_REQUIRED",
++                ready=False,
++                reason="NO_DEPTH_PRICE",
++            )
++            st.last_decision = dec
++            return dec
+         if ts_px is None:
+             dec = PhoenixDecision(
+                 state="FLAT",
+@@ -14681,7 +14879,7 @@ def _run_raz_entry(argv: List[str], *, script_path: str = "") -> None:
+             except Exception:
+                 text = ""
+             low = text.lower()
+-            if "401" in text or "403" in text or "توکن نامعتبر" in text or "invalid token" in low:
++            if "401" in text or "403" in text or "Invalid token" in text or "invalid token" in low:
+                 return "AUTH_FAILED"
+             if "timeout" in low or "timed out" in low:
+                 return "TIMEOUT"
+@@ -24346,8 +24544,8 @@ class _S43VetoRegistry:
+         return None
+ 
+     def snapshot(self, *args, **kwargs):
+-        # خروجی محافظه‌کارانه: dashboard معمولاً با list/dict کنار می‌آید.
+-        # برای جلوگیری از veto کاذب، active را خالی می‌گذاریم.
++# Conservative output: the dashboard usually handles list/dict safely.
++# Leave active empty to avoid a false veto.
+         return {
+             "active": [],
+             "items": [],
+@@ -24367,7 +24565,7 @@ class _S43VetoRegistry:
+         return 0
+ 
+     def __bool__(self):
+-        # خود registry وجود دارد، ولی veto فعال ندارد.
++# The registry exists, but it has no active veto.
+         return True
+ 
+     def __iter__(self):
+@@ -24584,14 +24782,6 @@ class WallStreetDashboardManager(DashboardManager):
+                 return f"{float(x):,.{int(digits)}f}"
+             except Exception:
+                 return "N/A"
+-        def fmt_mid(x) -> str:
+-            try:
+-                if x is None:
+-                    return "N/A"
+-                x = float(x)
+-                return f"{x:,.0f}" if x > 0 else "N/A"
+-            except Exception:
+-                return "N/A"
+         def fmt_toman_from_irt(x) -> str:
+             try:
+                 v = float(x or 0.0)
+@@ -24659,144 +24849,6 @@ class WallStreetDashboardManager(DashboardManager):
+                 return lines[-int(max_lines or 25):]
+             except Exception:
+                 return []
+-        def _tail_warn_err_lines(path: str, max_lines: int = 6) -> List[str]:
+-            out: List[str] = []
+-            try:
+-                for ln in reversed(_tail_lines(path, max_lines=120, max_bytes=120000)):
+-                    u = ln.upper()
+-                    if (" - ERROR - " in u) or (" - WARNING - " in u) or (" - CRITICAL - " in u) or ("[ERROR" in u) or ("[CRITICAL" in u):
+-                        try:
+-                            ln2 = _pp200_redact(str(ln))
+-                        except Exception:
+-                            ln2 = str(ln)
+-                        out.append(ln2)
+-                    if len(out) >= int(max_lines or 6):
+-                        break
+-                out.reverse()
+-            except Exception:
+-                out = []
+-            return out
+-        def _crashlog_tail(max_items: int = 3) -> List[str]:
+-            items: List[str] = []
+-            try:
+-                p = str(os.getenv("PP200_LOG_PATH", "") or "").strip() or str(_PP200_DEFAULT_PATH)
+-                lines = _tail_lines(p, max_lines=80, max_bytes=150000)
+-                for ln in reversed(lines):
+-                    ln = (ln or "").strip()
+-                    if not ln:
+-                        continue
+-                    try:
+-                        obj = json.loads(ln)
+-                    except Exception:
+-                        continue
+-                    if not isinstance(obj, dict):
+-                        continue
+-                    ts = obj.get("ts") or obj.get("time") or obj.get("timestamp")
+-                    et = obj.get("exc_type") or obj.get("type") or obj.get("exception") or obj.get("err_type")
+-                    msg = obj.get("msg") or obj.get("message") or obj.get("error") or ""
+-                    tag = obj.get("tag") or obj.get("pp_tag") or ""
+-                    where = obj.get("where") or obj.get("module") or obj.get("file") or ""
+-                    try:
+-                        msg = _pp200_redact(str(msg))
+-                    except Exception:
+-                        msg = str(msg)
+-                    s_ts = ""
+-                    try:
+-                        if ts is not None:
+-                            tsv = float(ts)
+-                            s_ts = time.strftime("%H:%M:%S", time.localtime(tsv))
+-                    except Exception:
+-                        s_ts = ""
+-                    line = f"{_icon('🧨','CRASH')} {s_ts} {str(et or 'EXC')} | {_short(str(where), 18)} | {_short(str(msg), 70)}"
+-                    if tag:
+-                        line = f"{line} | {str(tag)[:18]}"
+-                    items.append(line)
+-                    if len(items) >= int(max_items or 3):
+-                        break
+-                items.reverse()
+-            except Exception:
+-                items = []
+-            return items
+-        def _ring_health(window_sec: float = 600.0) -> dict:
+-            now = time.time()
+-            out = {
+-                "warn": 0,
+-                "err": 0,
+-                "last_err": "",
+-                "last_warn": "",
+-                "last_err_age": None,
+-                "last_warn_age": None,
+-                "warn_breakdown": [],
+-            }
+-            _evt_counts = {}
+-            last_err_ts = 0.0
+-            last_warn_ts = 0.0
+-            try:
+-                ring = getattr(getattr(self.bot, "logger", None), "ring", None)
+-                buf = getattr(ring, "_buf", None)
+-                lock = getattr(ring, "_lock", None)
+-                if buf is None:
+-                    return out
+-                if lock is not None:
+-                    with lock:
+-                        items = list(buf)
+-                else:
+-                    items = list(buf)
+-                for lvl, ts, msg in items:
+-                    try:
+-                        ts = float(ts)
+-                    except Exception:
+-                        continue
+-                    if (now - ts) > float(window_sec or 600.0):
+-                        continue
+-                    lv = int(lvl or 0)
+-                    s = str(msg or "")
+-                    if lv >= logging.ERROR:
+-                        out["err"] += 1
+-                        if ts >= last_err_ts:
+-                            last_err_ts = ts
+-                            out["last_err"] = _short(_pp200_redact(s), 120)
+-                            try:
+-                                out["last_err_age"] = float(now - ts)
+-                            except Exception:
+-                                out["last_err_age"] = None
+-                    elif lv >= logging.WARNING:
+-                        out["warn"] += 1
+-                        try:
+-                            m_evt = WallStreetDashboardManager._RE_EVENT_TAG.search(s)
+-                            evt = (m_evt.group(1) if m_evt else "UNCLASSIFIED").upper()
+-                            _evt_counts[evt] = int(_evt_counts.get(evt, 0) or 0) + 1
+-                        except Exception:
+-                            _evt_counts["UNCLASSIFIED"] = int(_evt_counts.get("UNCLASSIFIED", 0) or 0) + 1
+-                        if ts >= last_warn_ts:
+-                            last_warn_ts = ts
+-                            out["last_warn"] = _short(_pp200_redact(s), 120)
+-                            try:
+-                                out["last_warn_age"] = float(now - ts)
+-                            except Exception:
+-                                out["last_warn_age"] = None
+-            except Exception:
+-                pass
+-            try:
+-                if hasattr(self.bot, "_warn_breakdown"):
+-                    for evt, cnt in (self.bot._warn_breakdown(float(window_sec or 600.0)) or []):
+-                        try:
+-                            e = str(evt or "UNCLASSIFIED").upper()
+-                            c2 = int(cnt or 0)
+-                            if c2 <= 0:
+-                                continue
+-                            prev = int(_evt_counts.get(e, 0) or 0)
+-                            _evt_counts[e] = max(prev, c2)
+-                        except Exception:
+-                            continue
+-            except Exception:
+-                pass
+-            try:
+-                items2 = sorted(_evt_counts.items(), key=lambda kv: int(kv[1] or 0), reverse=True)
+-                out["warn_breakdown"] = [(str(k), int(v or 0)) for k, v in items2[:5]]
+-            except Exception:
+-                out["warn_breakdown"] = []
+-            return out
+         def _feed_snapshot(sym: str):
+             """Truthful snapshot feed for dashboard.
+             Uses the single source of truth: get_best_snapshot().
+@@ -24944,14 +24996,13 @@ class WallStreetDashboardManager(DashboardManager):
+             except Exception:
+                 ws = {}
+             return ws or {}
+-        def _short(s: str, n: int = 42) -> str:
++        def _run_short(s: str, n: int = 42) -> str:
+             try:
+                 s = str(s or "").strip()
+             except Exception:
+                 s = ""
+             if not s:
+-                def _short(s: str, n: int = 42) -> str:
+-                    return _short_text(s, n=n, empty='-', strip=True, collapse_ws=True, ellipsis='...')
++                return "-"
+             s = re.sub(r"\s+", " ", s)
+             if len(s) <= n:
+                 return s
+@@ -24973,14 +25024,14 @@ class WallStreetDashboardManager(DashboardManager):
+                 parts.append(p)
+             out = []
+             for p in parts[: max(0, int(limit or 0))]:
+-                out.append(_short(p, 64))
++                out.append(_run_short(p, 64))
+             return out
+         try:
+             quote = str(getattr(getattr(self.bot, "cfg", None), "quote", "IRT") or "IRT").upper()
+         except Exception:
+             quote = "IRT"
+         fiat_aliases = {quote, "IRT", "TMN", "TOMAN", "IRR", "RIAL", "RIALS"}
+-        def _assets_detail(w, max_items: int = 5, compact: bool = False):
++        def _run_assets_detail(w, max_items: int = 5, compact: bool = False):
+             snap_assets = (getattr(w, "assets_total_snapshot", None) or getattr(w, "assets_snapshot", None) or {})
+             items = []
+             assets_value_irt = 0.0
+@@ -25058,65 +25109,6 @@ class WallStreetDashboardManager(DashboardManager):
+             if more > 0:
+                 lines.append(f"+{more} more")
+             return float(assets_value_irt), lines, int(priced_ok), int(total)
+-        def _wallet_coins_compact(w, max_items: int = 10) -> str:
+-            try:
+-                snap_assets = (getattr(w, "assets_total_snapshot", None) or getattr(w, "assets_snapshot", None) or {})
+-            except Exception:
+-                snap_assets = {}
+-            coins = []
+-            seen = set()
+-            try:
+-                c = float(getattr(w, "cash_irt", 0.0) or 0.0)
+-                if c > 0.0:
+-                    seen.add("IRT")
+-                    coins.append("IRT")
+-            except Exception:
+-                pass
+-            try:
+-                for a, amt in list((snap_assets or {}).items()):
+-                    a0 = str(a or "").strip().upper()
+-                    if not a0:
+-                        continue
+-                    try:
+-                        _q = str(quote or "").strip().upper()
+-                    except Exception:
+-                        _q = ""
+-                    try:
+-                        if _q and a0 and (a0 != _q) and a0.endswith(_q) and (len(a0) > len(_q)):
+-                            a0 = a0[:-len(_q)]
+-                    except Exception:
+-                        pass
+-                    if (not a0) or (a0 in fiat_aliases):
+-                        continue
+-                    try:
+-                        fv = float(amt or 0.0)
+-                    except Exception:
+-                        continue
+-                    if fv <= 0.0:
+-                        continue
+-                    if a0 not in seen:
+-                        seen.add(a0)
+-                        coins.append(a0)
+-            except Exception:
+-                pass
+-            if not coins:
+-                return "-"
+-            try:
+-                head = []
+-                tail = []
+-                for c in coins:
+-                    if c == "IRT":
+-                        head.append(c)
+-                    else:
+-                        tail.append(c)
+-                tail = sorted(tail)
+-                coins = head + tail
+-            except Exception:
+-                pass
+-            if len(coins) > int(max_items or 0):
+-                more = len(coins) - int(max_items or 0)
+-                coins = coins[:int(max_items or 0)] + [f"+{more}"]
+-            return "|".join(coins)
+         def _equity_from_wallet(w, assets_value_irt=None, cash_irt=None) -> float:
+             try:
+                 if cash_irt is None:
+@@ -25125,7 +25117,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 cash_irt = 0.0
+             try:
+                 if assets_value_irt is None:
+-                    assets_value_irt, _x, _y, _z = _assets_detail(w, max_items=0, compact=True)
++                    assets_value_irt, _x, _y, _z = _run_assets_detail(w, max_items=0, compact=True)
+             except Exception:
+                 assets_value_irt = 0.0
+             try:
+@@ -25159,61 +25151,6 @@ class WallStreetDashboardManager(DashboardManager):
+             except Exception:
+                 pass
+             return str(age), str(st)
+-        def wallet_summary_panel(wname: str, w):
+-            if w is None:
+-                return Panel("NO WALLET", title=str(wname), box=box.SIMPLE, padding=(0, 1))
+-            ws = _wallet_ws(wname)
+-            cash_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
+-            ord_open_exch = int(getattr(w, "open_orders_exch", 0) or 0)
+-            pos_n = int(len(getattr(w, "positions", {}) or {}))
+-            assets_value_irt, _lines, priced_ok, total_assets = _assets_detail(w, max_items=1, compact=True)
+-            equity_irt = _equity_from_wallet(w, assets_value_irt, cash_irt)
+-            ord_done = int(ws.get("done_trades", 0) or 0)
+-            ord_cxl = int(ws.get("canceled_trades", 0) or 0)
+-            ord_open = ord_open_exch
+-            try:
+-                ord_open = max(ord_open, int(ws.get("open_trades", 0) or 0))
+-            except Exception:
+-                pass
+-            canc = _cancel_reason_lines(ws, limit=1)
+-            why = canc[0] if canc else "-"
+-            age, st = _wallet_age_status(w)
+-            av_label = fmt_toman_from_irt(assets_value_irt)
+-            if total_assets > 0:
+-                av_label = f"{av_label} ({priced_ok}/{total_assets})"
+-            t = Table.grid(padding=(0, 1), expand=True)
+-            t.add_column(justify="left", no_wrap=True)
+-            t.add_column(justify="right", overflow="fold")
+-            t.add_row("EQ", fmt_toman_from_irt(equity_irt))
+-            t.add_row("CA", fmt_toman_from_irt(cash_irt))
+-            try:
+-                t.add_row("COINS", _short(_wallet_coins_compact(w, max_items=10), 60))
+-            except Exception:
+-                t.add_row("COINS", "-")
+-            t.add_row("AV", av_label)
+-            t.add_row("POS/ORD", f"{pos_n}/{ord_open_exch}")
+-            t.add_row("ORD O/F/C", f"{ord_open}/{ord_done}/{ord_cxl}")
+-            t.add_row("CXL WHY", _short(why, 28))
+-            t.add_row("AGE", f"{age}  {st}")
+-            return Panel(t, title=str(wname), box=box.SIMPLE, padding=(0, 1))
+-        def wallet_detail_panel(wname: str, w):
+-            if w is None:
+-                return Panel("NO WALLET", title=str(wname), box=box.MINIMAL, padding=(0, 1))
+-            ws = _wallet_ws(wname)
+-            assets_value_irt, asset_lines, priced_ok, total_assets = _assets_detail(w, max_items=6, compact=False)
+-            canc = _cancel_reason_lines(ws, limit=3)
+-            last_evt = _short(ws.get("last_event", ""), 80)
+-            t = Table.grid(padding=(0, 1), expand=True)
+-            t.add_column(justify="left", no_wrap=True)
+-            t.add_column(justify="left", overflow="fold")
+-            hv = "\n".join(asset_lines) if asset_lines else "-"
+-            t.add_row("HOLDINGS", hv)
+-            if total_assets > 0:
+-                t.add_row("PRICED", f"{priced_ok}/{total_assets}  |  VAL {fmt_toman_from_irt(assets_value_irt)}")
+-            t.add_row("CANCEL", ("\n".join(canc) if canc else "-"))
+-            if last_evt and last_evt != "-":
+-                t.add_row("LAST", last_evt)
+-            return Panel(t, title=str(wname), box=box.MINIMAL, padding=(0, 1))
+         def wallet_full_panel(wname: str, w):
+             if w is None:
+                 return Panel("NO WALLET", title=str(wname), box=box.SQUARE, padding=(0, 1))
+@@ -25221,7 +25158,7 @@ class WallStreetDashboardManager(DashboardManager):
+             cash_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
+             ord_open_exch = int(getattr(w, "open_orders_exch", 0) or 0)
+             pos_n = int(len(getattr(w, "positions", {}) or {}))
+-            assets_value_irt, lines_compact, priced_ok, total_assets = _assets_detail(w, max_items=9, compact=True)
++            assets_value_irt, lines_compact, priced_ok, total_assets = _run_assets_detail(w, max_items=9, compact=True)
+             equity_irt = _equity_from_wallet(w, assets_value_irt, cash_irt)
+             try:
+                 _eq_track(str(wname), float(equity_irt or 0.0))
+@@ -25317,19 +25254,19 @@ class WallStreetDashboardManager(DashboardManager):
+                 eng_rs0 = rr
+             if not eng_rs0:
+                 eng_rs0 = "-"
+-            t.add_row(f"ST {eng_st0} | {_short(eng_rs0, 72)}")
++            t.add_row(f"ST {eng_st0} | {_run_short(eng_rs0, 72)}")
+             t.add_row(f"CA {fmt_toman_from_irt(cash_irt)}   AV {av}   POS {pos_n}   ORD {ord_open_exch}")
+             try:
+                 if not bool(getattr(w, "last_balance_ok", False)):
+                     berr = str(getattr(w, "last_balance_err", "") or "").strip()
+                     if berr:
+-                        t.add_row(f"BAL ! {_short(berr, 72)}")
++                        t.add_row(f"BAL ! {_run_short(berr, 72)}")
+             except Exception:
+                 pass
+             try:
+                 oerr = str(getattr(w, "last_orders_err", "") or "").strip()
+                 if oerr and int(getattr(w, "open_orders_exch", 0) or 0) == 0:
+-                    t.add_row(f"ORD ! {_short(oerr, 72)}")
++                    t.add_row(f"ORD ! {_run_short(oerr, 72)}")
+             except Exception:
+                 pass
+             try:
+@@ -25371,7 +25308,7 @@ class WallStreetDashboardManager(DashboardManager):
+             ttl_err = str(getattr(w, "ttl_last_cancel_err", "") or "")
+             if int(ord_open_exch or 0) > 0 or ttl_fail > 0:
+                 status_icon = "[green]●[/]" if ttl_fail == 0 else "[red]●[/]"
+-                t.add_row(f"ORD {status_icon}  ⏳{_age_s(oldest0)}  TTL{int(ttl0)}s  ✔{ttl_ok} ✖{ttl_fail}  {_short(ttl_err, 26)}")
++                t.add_row(f"ORD {status_icon}  ⏳{_age_s(oldest0)}  TTL{int(ttl0)}s  ✔{ttl_ok} ✖{ttl_fail}  {_run_short(ttl_err, 26)}")
+             try:
+                 eng_st = str(getattr(w, "last_engine_status", "") or "").strip()
+             except Exception:
+@@ -25424,9 +25361,9 @@ class WallStreetDashboardManager(DashboardManager):
+                 pass
+             blk = " | ".join(blockers) if blockers else "OK"
+             if rr and rr != "-":
+-                t.add_row(f"🚫 {_short(rr, 120)}")
++                t.add_row(f"🚫 {_run_short(rr, 120)}")
+             if why and why != "-":
+-                t.add_row(f"✖ {_short(why, 120)}")
++                t.add_row(f"✖ {_run_short(why, 120)}")
+             return Panel(t, title=str(wname), box=box.SQUARE, padding=(0, 1))
+         def wallet_panel(wname: str, w):
+             return wallet_full_panel(wname, w)
+@@ -25443,19 +25380,18 @@ class WallStreetDashboardManager(DashboardManager):
+             except Exception:
+                 quote = "IRT"
+             fiat_aliases = {quote, "IRT", "TMN", "TOMAN", "IRR", "RIAL", "RIALS"}
+-            def _short(s: str, n: int = 28) -> str:
++            def _overview_short(s: str, n: int = 28) -> str:
+                 try:
+                     s = str(s or "").strip()
+                 except Exception:
+-                    def _short(s: str, n: int = 28) -> str:
+-                        return _short_text(s, n=n, empty='-', strip=True, collapse_ws=True, ellipsis='...')
++                    pass
+                 if not s:
+                     return "-"
+                 s = re.sub(r"\s+", " ", s)
+                 if len(s) <= n:
+                     return s
+                 return s[: max(0, n - 3)] + "..."
+-            def _assets_detail(w, max_items: int = 6):
++            def _overview_assets_detail(w, max_items: int = 6):
+                 snap_assets = getattr(w, "assets_snapshot", None) or {}
+                 items = []
+                 assets_value_irt = 0.0
+@@ -25534,7 +25470,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 joined = " | ".join(out)
+                 if len(joined) <= max_len:
+                     return joined
+-                return _short(joined, max_len)
++                return _overview_short(joined, max_len)
+             def _top_cancel_reasons(ws: dict, n: int = 2) -> str:
+                 try:
+                     raw = str(ws.get("cancel_reasons", "") or "").strip()
+@@ -25551,8 +25487,8 @@ class WallStreetDashboardManager(DashboardManager):
+                         continue
+                     parts.append(p)
+                 if not parts:
+-                    return _short(raw, 44)
+-                return _short(", ".join(parts[:n]), 44)
++                    return _overview_short(raw, 44)
++                return _overview_short(", ".join(parts[:n]), 44)
+             rows = []
+             for wname, w in wallets_kv:
+                 ws = (wstats_map.get(str(wname), {}) if isinstance(wstats_map, dict) else {}) or {}
+@@ -25580,7 +25516,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 cash_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
+                 ord_open = int(getattr(w, "open_orders_exch", 0) or 0)
+                 pos = getattr(w, "positions", {}) or {}
+-                assets_value_irt, asset_lines, priced_ok, total_assets = _assets_detail(w, max_items=8)
++                assets_value_irt, asset_lines, priced_ok, total_assets = _overview_assets_detail(w, max_items=8)
+                 if (assets_value_irt <= 0.0) and (not (getattr(w, "assets_snapshot", None) or {})) and len(pos) > 0:
+                     try:
+                         pos_value_irt = 0.0
+@@ -25683,14 +25619,14 @@ class WallStreetDashboardManager(DashboardManager):
+                 ot = int(ws.get("open_trades", 0) or 0)
+                 dt = int(ws.get("done_trades", 0) or 0)
+                 ct = int(ws.get("canceled_trades", 0) or 0)
+-                why = _short(str(ws.get("cancel_reasons", "") or ""), 40)
++                why = _overview_short(str(ws.get("cancel_reasons", "") or ""), 40)
+                 if w is None:
+                     t.add_row(str(wname), "N/A", "N/A", "N/A", "-", "0", "0", f"{ot}/{dt}/{ct}", why, "N/A", "N/A")
+                     continue
+                 cash_irt = float(getattr(w, "cash_irt", 0.0) or 0.0)
+                 ord_open = int(getattr(w, "open_orders_exch", 0) or 0)
+                 pos = getattr(w, "positions", {}) or {}
+-                assets_value_irt, asset_lines, priced_ok, total_assets = _assets_detail(w, max_items=4)
++                assets_value_irt, asset_lines, priced_ok, total_assets = _overview_assets_detail(w, max_items=4)
+                 if (assets_value_irt <= 0.0) and (not (getattr(w, "assets_snapshot", None) or {})) and len(pos) > 0:
+                     try:
+                         pos_value_irt = 0.0
+@@ -25732,7 +25668,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         s = "[bold red]HALT[/]"
+                 except Exception:
+                     pass
+-                hold = _short(_compact_assets(asset_lines, max_len=80), 80)
++                hold = _overview_short(_compact_assets(asset_lines, max_len=80), 80)
+                 assetv_label = fmt_toman_from_irt(assets_value_irt)
+                 if total_assets > 0:
+                     assetv_label = f"{assetv_label} ({priced_ok}/{total_assets})"
+@@ -25745,7 +25681,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     str(len(pos)),
+                     str(ord_open),
+                     f"{ot}/{dt}/{ct}",
+-                    _short(why, 56),
++                    _overview_short(why, 56),
+                     str(age),
+                     s,
+                 )
+@@ -25842,7 +25778,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         if isinstance(_x, (int, float)):
+                             v = float(_x)
+                         else:
+-                            s = str(_x).replace(",", "").replace("٪", "%").strip()
++                            s = str(_x).replace(",", "").replace("%", "%").strip()
+                             if not s or s.upper() in ("N/A", "NA", "NONE", "NULL", "-", "--"):
+                                 return None
+                             if "%" in s:
+@@ -26211,7 +26147,7 @@ class WallStreetDashboardManager(DashboardManager):
+                             ss2 = "USDT"
+                     except Exception:
+                         pass
+-                    ss2 = _short(ss2, 5)
++                    ss2 = _run_short(ss2, 5)
+                     chg = None
+                     try:
+                         chg = _t8_get_pct(r)
+@@ -26233,7 +26169,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         max_len = max(32, min(140, int(width0) - 4))
+                 except Exception:
+                     max_len = 76
+-                t.add_row(_short(line, int(max_len)))
++                t.add_row(_run_short(line, int(max_len)))
+             except Exception:
+                 pass
+             try:
+@@ -26410,7 +26346,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     except Exception:
+                         fb = ""
+                     t.add_row(
+-                        f"FOCUS {_short(focus_sym, 10):<10} {st_icon} "
++                        f"FOCUS {_run_short(focus_sym, 10):<10} {st_icon} "
+                         + f"{dp_txt}{pred_txt} "
+                         + (f"Age:{age_txt} " if age_txt else "")
+                         + f"C:{int(max(0.0, min(1.0, float(cf0))) * 100)}%"
+@@ -26576,7 +26512,7 @@ class WallStreetDashboardManager(DashboardManager):
+                             break
+                 except Exception:
+                     pass
+-                sym_s = _short(sym_s, 7)
++                sym_s = _run_short(sym_s, 7)
+                 if width0 > 0 and width0 < 80:
+                     try:
+                         cplain = int(max(0.0, min(1.0, float(conf))) * 100)
+@@ -26628,7 +26564,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     except Exception:
+                         c_tag = ""
+                     try:
+-                        sh_s = _short(str(sh_txt or "--"), 6)
++                        sh_s = _run_short(str(sh_txt or "--"), 6)
+                     except Exception:
+                         sh_s = str(sh_txt or "--")[:6]
+                     if width0 >= 74:
+@@ -26637,7 +26573,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         t.add_row(f"{sym_s:<5} {st_icon} {dp_txt:<8} C{cplain:02d}{c_tag} R{rsi_txt:<3} SH{sh_s:<6}")
+                 else:
+                     t.add_row(
+-                        f"{_short(s0, 10):<10} {st_icon} {dp_txt:<10} C:{conf_txt:<5} "
++                        f"{_run_short(s0, 10):<10} {st_icon} {dp_txt:<10} C:{conf_txt:<5} "
+                         f"R:{rsi_txt:<4} SH:{sh_txt:<7} S:{sc_txt}"
+                     )
+                 shown += 1
+@@ -26761,7 +26697,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         pass
+                     try:
+                         if str(getattr(w, "last_engine_status", "") or "").upper().startswith("LOCKED"):
+-                            locked.append(f"{wname}:{_short(str(getattr(w,'last_engine_reason','') or ''), 28)}")
++                            locked.append(f"{wname}:{_run_short(str(getattr(w,'last_engine_reason','') or ''), 28)}")
+                     except Exception:
+                         pass
+             except Exception:
+@@ -26946,16 +26882,16 @@ class WallStreetDashboardManager(DashboardManager):
+                         )
+                 except Exception:
+                     pass
+-                st_line += f" | REASON {_short(safe_reason, 52)}"
++                st_line += f" | REASON {_run_short(safe_reason, 52)}"
+             elif (not safe_mode) and bool(net_soft_safe) and str(net_safe_scope).upper() == "SYMBOL":
+-                st_line += f" | NET_SYM_SAFE {_short(net_safe_reason or 'SYMBOL', 40)}"
++                st_line += f" | NET_SYM_SAFE {_run_short(net_safe_reason or 'SYMBOL', 40)}"
+             elif hard_vetoes_active:
+                 st_line += f" | VETO {len(hard_vetoes_active)}"
+             elif soft_vetoes_active and not stale_flags:
+                 st_line += f" | DEG {len(soft_vetoes_active)}"
+             elif stale_flags:
+-                st_line += f" | {_short(','.join(stale_flags[:3]), 62)}"
+-            t.add_row(_short(st_line, 110))
++                st_line += f" | {_run_short(','.join(stale_flags[:3]), 62)}"
++            t.add_row(_run_short(st_line, 110))
+             now_entry = None
+             try:
+                 now_entry = float(time.time())
+@@ -27060,17 +26996,17 @@ class WallStreetDashboardManager(DashboardManager):
+                 pass
+             try:
+                 b_now = "[green]OK[/]" if bool(allow_now) else "[red]BLOCK[/]"
+-                msg = f"NOW {b_now} {_short(str(why_now or ''), 48)}"
++                msg = f"NOW {b_now} {_run_short(str(why_now or ''), 48)}"
+                 if le_recent and (allow_last is not None or why_last):
+                     b_last = "[green]ALLOW[/]" if bool(allow_last) else "[red]BLOCK[/]"
+-                    extra = f"LAST {b_last} {_short(str(why_last or ''), 48)}"
++                    extra = f"LAST {b_last} {_run_short(str(why_last or ''), 48)}"
+                     if ctx_last:
+-                        extra += f" ({_short(ctx_last, 18)})"
++                        extra += f" ({_run_short(ctx_last, 18)})"
+                     if le_age is not None:
+                         extra += f" {fmt_age_s(le_age)} ago"
+                     msg += " | " + extra
+                 if last_rej:
+-                    msg += f" | LAST_REJ {_short(last_rej, 46)} ({fmt_age_s(last_rej_age)})"
++                    msg += f" | LAST_REJ {_run_short(last_rej, 46)} ({fmt_age_s(last_rej_age)})"
+                 t.add_row("ENTRY_POLICY")
+                 def _pol_reason(_allow: bool, _why: str) -> str:
+                     w = str(_why or "").strip()
+@@ -27085,12 +27021,12 @@ class WallStreetDashboardManager(DashboardManager):
+                         w = w[len("BLOCK"):].lstrip(" _:-")
+                     return w if w else ("OK" if bool(_allow) else "BLOCK")
+                 now_icon = "[green]●[/]" if bool(allow_now) else "[red]●[/]"
+-                t.add_row(_short(f"NOW {now_icon} {_short(_pol_reason(bool(allow_now), str(why_now or '')), 52)}", 110))
++                t.add_row(_run_short(f"NOW {now_icon} {_run_short(_pol_reason(bool(allow_now), str(why_now or '')), 52)}", 110))
+                 if le_recent and (allow_last is not None or why_last):
+                     last_icon = "[green]●[/]" if bool(allow_last) else "[red]●[/]"
+-                    t.add_row(_short(f"LAST {last_icon} {_short(_pol_reason(bool(allow_last), str(why_last or '')), 52)} ({fmt_age_s(le_age)})", 110))
++                    t.add_row(_run_short(f"LAST {last_icon} {_run_short(_pol_reason(bool(allow_last), str(why_last or '')), 52)} ({fmt_age_s(le_age)})", 110))
+                 if last_rej:
+-                    t.add_row(_short(f"LAST_REJ {_short(last_rej, 46)} ({fmt_age_s(last_rej_age)})", 110))
++                    t.add_row(_run_short(f"LAST_REJ {_run_short(last_rej, 46)} ({fmt_age_s(last_rej_age)})", 110))
+                 try:
+                     fs = str(getattr(self.bot, "focus_symbol", "") or getattr(self.bot, "_focus_symbol", "") or "")
+                 except Exception:
+@@ -27112,12 +27048,12 @@ class WallStreetDashboardManager(DashboardManager):
+                     t.add_row("NO_SIGNAL")
+                 else:
+                     try:
+-                        t.add_row(_short(f"{fs} {str(getattr(dec, 'state', ''))} C{float(getattr(dec, 'confidence', 0.0) or 0.0)*100.0:.0f}% READY={bool(getattr(dec, 'ready', False))} REASON={_short(str(getattr(dec, 'reason', '')), 36)}", 110))
++                        t.add_row(_run_short(f"{fs} {str(getattr(dec, 'state', ''))} C{float(getattr(dec, 'confidence', 0.0) or 0.0)*100.0:.0f}% READY={bool(getattr(dec, 'ready', False))} REASON={_run_short(str(getattr(dec, 'reason', '')), 36)}", 110))
+                     except Exception:
+-                        t.add_row(_short(f"{fs} SIGNAL_ERR", 110))
++                        t.add_row(_run_short(f"{fs} SIGNAL_ERR", 110))
+                 t.add_row("EXEC_STATE")
+                 try:
+-                    t.add_row(_short(f"Exec:{str(hw_exec)} | MKT:{str(hw_mkt)} | API:{str(hw_api)} | RADAR:{str(hw_radar)}", 110))
++                    t.add_row(_run_short(f"Exec:{str(hw_exec)} | MKT:{str(hw_mkt)} | API:{str(hw_api)} | RADAR:{str(hw_radar)}", 110))
+                 except Exception:
+                     t.add_row("Exec:- | MKT:- | API:- | RADAR:-")
+             except Exception:
+@@ -27144,7 +27080,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 ages_raw = None
+             if not (isinstance(ages_raw, dict) and ages_raw):
+                 ages_raw = {}
+-            t.add_row(_short(
++            t.add_row(_run_short(
+                 f"{_age_cell_wc('RADAR', ages_raw.get('radar', None), radar_warn, radar_crit)} | "
+                 f"{_age_cell_wc('MKT', ages_raw.get('mkt', None), mkt_warn, mkt_crit)} | "
+                 f"{_age_cell_wc('API', ages_raw.get('api', None), api_warn, api_crit)} | "
+@@ -27152,7 +27088,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 120
+             ))
+             t.add_row("DATA AGE (UI/SNAPSHOT)")
+-            t.add_row(_short(
++            t.add_row(_run_short(
+                 f"{_age_cell_wc('RADAR', scan_age, radar_warn, radar_crit)} | "
+                 f"{_age_cell_wc('MKT', market_age, mkt_warn, mkt_crit)} | "
+                 f"{_age_cell_wc('API', api_age, api_warn, api_crit)} | "
+@@ -27179,28 +27115,28 @@ class WallStreetDashboardManager(DashboardManager):
+                                 a_s = fmt_age_s(age) if age is not None else "N/A"
+                                 tag = f"{sym}:{stt[:3]}:{a_s}"
+                                 if rs:
+-                                    tag += f":{_short(rs, 18)}"
++                                    tag += f":{_run_short(rs, 18)}"
+                                 parts.append(tag)
+                             except Exception:
+                                 continue
+                         if parts:
+-                            t.add_row(_short(", ".join(parts), 120))
++                            t.add_row(_run_short(", ".join(parts), 120))
+             except Exception:
+                 pass
+             t.add_row("ORDERS")
+             ord_line = f"OPEN {int(open_orders)}"
+             if locked:
+                 ord_line += f" | LOCK {len(locked)}"
+-            t.add_row(_short(ord_line, 110))
++            t.add_row(_run_short(ord_line, 110))
+             t.add_row("VETOES")
+             if vetoes_active:
+                 for v in vetoes_active[:3]:
+                     try:
+                         dur = fmt_age_s(v.duration_sec(now))
+-                        line = f"{_short(v.wallet, 3)}/{_short(v.symbol, 10)} {v.source} { _short(v.reason, 24)} | dur {dur} | hits {int(v.hits)}"
+-                        t.add_row(_short(line, 110))
++                        line = f"{_run_short(v.wallet, 3)}/{_run_short(v.symbol, 10)} {v.source} { _run_short(v.reason, 24)} | dur {dur} | hits {int(v.hits)}"
++                        t.add_row(_run_short(line, 110))
+                         if v.release_hint:
+-                            t.add_row(_short(f"  rel: {v.release_hint}", 110))
++                            t.add_row(_run_short(f"  rel: {v.release_hint}", 110))
+                     except Exception:
+                         continue
+             else:
+@@ -27209,7 +27145,7 @@ class WallStreetDashboardManager(DashboardManager):
+                         v = vetoes_all[0]
+                         dur = fmt_age_s(v.duration_sec(now))
+                         ago = fmt_age_s(v.age_sec(now))
+-                        t.add_row(_short(f"None (last: {v.source} {_short(v.reason, 26)} dur {dur} ago {ago})", 110))
++                        t.add_row(_run_short(f"None (last: {v.source} {_run_short(v.reason, 26)} dur {dur} ago {ago})", 110))
+                     except Exception:
+                         t.add_row("None")
+                 else:
+@@ -27234,7 +27170,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 if items:
+                     for streak, last_fail, last_ok, sym, err in items[:2]:
+                         ts_age = fmt_age_s(now - float(last_fail or now)) if last_fail else "?"
+-                        t.add_row(_short(f"DEPTH_FAIL sym={_short(sym, 10)} retry={int(streak)} last={ts_age} err={_short(err, 44)}", 120))
++                        t.add_row(_run_short(f"DEPTH_FAIL sym={_run_short(sym, 10)} retry={int(streak)} last={ts_age} err={_run_short(err, 44)}", 120))
+                 else:
+                     t.add_row("None")
+             except Exception:
+@@ -27249,7 +27185,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     nxt_txt = "now" if (nxt <= 0.0 or nxt <= now) else fmt_age_s(float(nxt) - float(now))
+                     lok_txt = ("-" if lok <= 0.0 else fmt_age_s(float(now) - float(lok)))
+                     lfail_txt = ("-" if lfail <= 0.0 else fmt_age_s(float(now) - float(lfail)))
+-                    t.add_row(_short(f"HEALTH_RECOVER streak={rs} next={nxt_txt} ok={lok_txt} fail={lfail_txt} {_short(rr, 36)}", 120))
++                    t.add_row(_run_short(f"HEALTH_RECOVER streak={rs} next={nxt_txt} ok={lok_txt} fail={lfail_txt} {_run_short(rr, 36)}", 120))
+             except Exception:
+                 pass
+             t.add_row("ACTIONS")
+@@ -27270,208 +27206,28 @@ class WallStreetDashboardManager(DashboardManager):
+                 t.add_row("[red]WARN[/]")
+             if issues:
+                 for it in issues[:2]:
+-                    t.add_row(_short(it, 110))
++                    t.add_row(_run_short(it, 110))
+             return Panel(t, title="SYSTEM", box=box.ROUNDED, padding=(0, 1))
+-        def top8_panel(symbols):
+-            now = time.strftime("%H:%M:%S")
++        def ai_status_panel():
++            cfg = getattr(self.bot, "cfg", None)
++            safe = bool(getattr(getattr(self.bot, "risk", None), "safe_mode", False))
+             mode = "LIVE"
+             try:
+-                if bool(getattr(getattr(self.bot, "cfg", None), "dry_run", False)):
++                if bool(getattr(cfg, "dry_run", False)):
+                     mode = "DRY"
+             except Exception:
+                 pass
++            cash_total = 0.0
++            equity_total = 0.0
+             try:
+-                ttl = float(getattr(getattr(self.bot, "cfg", None), "top8_refresh_sec", 12.0) or 12.0)
+-            except Exception:
+-                ttl = 12.0
+-            try:
+-                ok_ts = float(getattr(self.bot, "_top8_ok_ts", 0.0) or 0.0)
+-                ok_ts = ok_ts / 1000.0 if ok_ts and ok_ts > 1e11 else ok_ts
+-                age_top8 = (time.time() - ok_ts) if ok_ts > 0 else float("inf")
+-            except Exception:
+-                age_top8 = float("inf")
+-            width = 0
+-            try:
+-                width = int(getattr(getattr(console, "size", None), "width", 0) or 0)
++                for w in getattr(self.bot, "wallets", {}).values():
++                    cash_total += float(getattr(w, "cash_irt", 0.0) or 0.0)
++                    equity_total += float(getattr(w, "equity_irt", 0.0) or 0.0)
+             except Exception:
+-                width = 0
+-            show_vol = True
+-            show_liq = True
+-            if width > 0 and width < 100:
+-                show_vol = False
+-            if width > 0 and width < 82:
+-                show_liq = False
+-            rows: List[dict] = []
++                pass
++            rss = 0.0
+             try:
+-                rows = list(self.bot.get_top8_snapshot() or [])
+-            except Exception:
+-                rows = []
+-            if len(rows) < 8:
+-                have = set()
+-                try:
+-                    have = {str(r.get("symbol")) for r in rows if isinstance(r, dict)}
+-                except Exception:
+-                    have = set()
+-                try:
+-                    raw = getattr(self.bot, "_market_snapshot", {}) or {}
+-                except Exception:
+-                    raw = {}
+-                ranked = []
+-                try:
+-                    for sym, info in (raw or {}).items():
+-                        s = _canon_symbol(sym)
+-                        if not s or (not s.endswith("IRT")) or s in have:
+-                            continue
+-                        if not isinstance(info, dict):
+-                            continue
+-                        try:
+-                            vol = float(info.get("quote_volume") or info.get("quoteVolume") or info.get("volumeValue") or info.get("turnover") or info.get("volume") or 0.0)
+-                        except Exception:
+-                            vol = 0.0
+-                        if vol <= 0:
+-                            continue
+-                        mid = 0.0
+-                        try:
+-                            mid = float(info.get("last") or info.get("price") or info.get("close") or 0.0)
+-                        except Exception:
+-                            mid = 0.0
+-                        chg = 0.0
+-                        try:
+-                            for k in ("priceChangePercent", "changePercent", "dayChangePercent", "pct", "percentChange", "change24h", "pct24h"):
+-                                if info.get(k) is not None:
+-                                    chg = float(info.get(k))
+-                                    break
+-                            else:
+-                                o = info.get("open") or info.get("openPrice") or info.get("o") or info.get("prevClose")
+-                                if o is not None and float(o) > 0 and mid > 0:
+-                                    chg = (mid - float(o)) / float(o) * 100.0
+-                        except Exception:
+-                            chg = 0.0
+-                        ranked.append((vol, s, mid, chg))
+-                    ranked.sort(key=lambda x: float(x[0]), reverse=True)
+-                    for vol, s, mid, chg in ranked:
+-                        rows.append({"symbol": s, "mid": float(mid), "chg_pct": float(chg), "spread_bps": 0.0, "liq_irt": 0.0, "vol_irt": float(vol), "chg_1h": 0.0})
+-                        if len(rows) >= 8:
+-                            break
+-                except Exception:
+-                    pass
+-            rows = list(rows)[:8]
+-            def _abbr(v: float) -> str:
+-                try:
+-                    x = float(v or 0.0)
+-                    ax = abs(x)
+-                    if ax >= 1.0e12:
+-                        return f"{x/1.0e12:.2f}T"
+-                    if ax >= 1.0e9:
+-                        return f"{x/1.0e9:.2f}B"
+-                    if ax >= 1.0e6:
+-                        return f"{x/1.0e6:.2f}M"
+-                    if ax >= 1.0e3:
+-                        return f"{x/1.0e3:.2f}K"
+-                    return f"{x:,.0f}"
+-                except Exception:
+-                    return "N/A"
+-            compact = bool(width > 0 and width < 90)
+-            if compact:
+-                t = Table.grid(padding=(0, 0), expand=True)
+-                t.add_column(justify="left", overflow="fold")
+-                shown = 0
+-                for r in (rows or [])[:8]:
+-                    try:
+-                        sym = _canon(str(r.get("symbol") or "").strip())
+-                        unknown = bool(r.get("unknown")) or (float(r.get("mid") or 0.0) <= 0.0 and float(r.get("vol_irt") or 0.0) <= 0.0)
+-                        _cv = r.get("pct", None)
+-                        if _cv is None:
+-                            _cv = r.get("chg", None)
+-                        if _cv is None:
+-                            _cv = r.get("chg_pct", None)
+-                        if _cv is None:
+-                            _cv = r.get("chg_1h", None)
+-                        _chg = None
+-                        try:
+-                            if isinstance(_cv, (int, float)):
+-                                _chg = float(_cv)
+-                            else:
+-                                _s = str(_cv).strip()
+-                                if _s and _s.upper() not in ("N/A", "NA", "NONE", "NULL", "-", "--"):
+-                                    _s = _s.replace(",", "").replace("٪", "%").replace("＋", "+").replace("%", "")
+-                                    _chg = float(_s)
+-                        except Exception:
+-                            _chg = None
+-                        ch = "N/A" if unknown else (fmt_pct(float(_chg)) if _chg is not None else "N/A")
+-                        vol_s = _abbr(float(r.get("vol_irt") or 0.0))
+-                        liq_s = _abbr(float(r.get("liq_irt") or 0.0))
+-                    except Exception:
+-                        continue
+-                    t.add_row(f"[bold]{_short(sym, 12)}[/]")
+-                    if show_liq:
+-                        t.add_row(f"  {ch}   V:{vol_s}   L:{liq_s}")
+-                    else:
+-                        t.add_row(f"  {ch}   V:{vol_s}")
+-                    shown += 1
+-                if shown == 0:
+-                    t.add_row("N/A")
+-            else:
+-                t = Table(box=box.SIMPLE, show_header=True, pad_edge=False, expand=True)
+-                t.add_column("SYM", justify="left", no_wrap=True)
+-                t.add_column("delta%", justify="right", no_wrap=True)
+-                t.add_column("MID", justify="right", no_wrap=True)
+-                if show_liq:
+-                    t.add_column("LIQ", justify="right", no_wrap=True)
+-                if show_vol:
+-                    t.add_column("VOL", justify="right", no_wrap=True)
+-                shown = 0
+-                for r in (rows or [])[:8]:
+-                    try:
+-                        sym = _canon(str(r.get("symbol") or "").strip())
+-                        unknown = bool(r.get("unknown")) or (float(r.get("mid") or 0.0) <= 0.0 and float(r.get("vol_irt") or 0.0) <= 0.0)
+-                        ch = "N/A" if unknown else fmt_pct(float(r.get("chg_pct") or 0.0))
+-                        mid_s = "N/A" if float(r.get("mid") or 0.0) <= 0.0 else fmt_mid(float(r.get("mid") or 0.0))
+-                        liq_s = _abbr(float(r.get("liq_irt") or 0.0))
+-                        vol_s = _abbr(float(r.get("vol_irt") or 0.0))
+-                    except Exception:
+-                        continue
+-                    if show_liq and show_vol:
+-                        t.add_row(sym, ch, mid_s, liq_s, vol_s)
+-                    elif show_liq and not show_vol:
+-                        t.add_row(sym, ch, mid_s, liq_s)
+-                    else:
+-                        t.add_row(sym, ch, mid_s)
+-                    shown += 1
+-                if shown == 0:
+-                    if show_liq and show_vol:
+-                        t.add_row("N/A", "N/A", "N/A", "N/A", "N/A")
+-                    elif show_liq and not show_vol:
+-                        t.add_row("N/A", "N/A", "N/A", "N/A")
+-                    else:
+-                        t.add_row("N/A", "N/A", "N/A")
+-            try:
+-                age_s = fmt_age_s(age_top8)
+-                st_tag = " STALE" if age_top8 > max(40.0, ttl * 2.2) else ""
+-            except Exception:
+-                age_s = "?"
+-                st_tag = ""
+-            return Panel(t, title=f"TOP8  {now}  {mode}  age {age_s}{st_tag}", box=box.ROUNDED, padding=(0, 1))
+-        def ai_status_panel():
+-            cfg = getattr(self.bot, "cfg", None)
+-            safe = bool(getattr(getattr(self.bot, "risk", None), "safe_mode", False))
+-            mode = "LIVE"
+-            try:
+-                if bool(getattr(cfg, "dry_run", False)):
+-                    mode = "DRY"
+-            except Exception:
+-                pass
+-            cash_total = 0.0
+-            equity_total = 0.0
+-            try:
+-                for w in getattr(self.bot, "wallets", {}).values():
+-                    cash_total += float(getattr(w, "cash_irt", 0.0) or 0.0)
+-                    equity_total += float(getattr(w, "equity_irt", 0.0) or 0.0)
+-            except Exception:
+-                pass
+-            rss = 0.0
+-            try:
+-                rss = float(_rss_mb(os.getpid()) or 0.0)
++                rss = float(_rss_mb(os.getpid()) or 0.0)
+             except Exception:
+                 rss = 0.0
+             rec = bool(getattr(self.bot, "recorder", None))
+@@ -27536,256 +27292,6 @@ class WallStreetDashboardManager(DashboardManager):
+             except Exception:
+                 pass
+             return Panel(t, title="POLICY", box=box.ROUNDED, padding=(0, 1))
+-        def engine_panel():
+-            wallets = getattr(self.bot, "wallets", {}) or {}
+-            now_ts = time.time()
+-            api_age = None
+-            radar_age = None
+-            mkt_age = None
+-            try:
+-                snap = self.bot.snapshot() or {}
+-                focus = (snap.get("focus") or {}) if isinstance(snap, dict) else {}
+-                api_age = focus.get("api_age_sec")
+-                radar_age = focus.get("scan_age_sec")
+-                mkt_age = focus.get("market_age_sec")
+-            except Exception:
+-                pass
+-            wchips = []
+-            blockers = []
+-            reasons = []
+-            last_reject = ""
+-            any_free = False
+-            any_action = False
+-            all_blocked = True
+-            for wname, w in sorted((wallets or {}).items(), key=lambda kv: str(kv[0])):
+-                oo = int(getattr(w, "open_orders_exch", 0) or 0)
+-                oo_age = float(getattr(w, "open_orders_oldest_age_sec", 0.0) or 0.0)
+-                sanity = bool(getattr(w, "sanity_halt", False)) or float(getattr(w, "sanity_until_ts", 0.0) or 0.0) > now_ts
+-                st = str(getattr(w, "last_engine_status", "") or "").strip()
+-                st_u = st.upper()
+-                reason = str(getattr(w, "last_engine_reason", "") or "").strip()
+-                reject = str(getattr(w, "last_reject_reason", "") or "").strip()
+-                if reject:
+-                    last_reject = reject
+-                blocked = False
+-                if oo > 0:
+-                    blocked = True
+-                    if oo_age > 0:
+-                        blockers.append(f"{wname}:ORD{oo}/{fmt_age_s(oo_age)}")
+-                    else:
+-                        blockers.append(f"{wname}:ORD{oo}")
+-                if sanity:
+-                    blocked = True
+-                    blockers.append(f"{wname}:SAFE")
+-                if not blocked:
+-                    any_free = True
+-                    all_blocked = False
+-                    if ("BUY" in st_u) or ("SELL" in st_u):
+-                        any_action = True
+-                    if reason:
+-                        reasons.append(reason)
+-                icon = _icon("🔒","L") if oo > 0 else (_icon("🛡️","S") if sanity else _icon("✅","OK"))
+-                st_disp = (st.capitalize() if st else "Hold")
+-                wchips.append(f"{icon}{wname}:{st_disp}")
+-            if not wallets:
+-                all_blocked = False
+-            if any_action:
+-                gemoji, gstate = _icon("🟢", "●"), "Trade"
+-            elif all_blocked and wallets:
+-                gemoji, gstate = _icon("🔒", "■"), "Hold"
+-            else:
+-                gemoji, gstate = (_icon("🟡", "◌"), "Run") if any_free else (_icon("🟡", "■"), "Hold")
+-            line1 = f"{gemoji} ST: {gstate} | {_short(' '.join(wchips), 95)}"
+-            parts = []
+-            if blockers:
+-                parts.append(" | ".join(blockers[:4]) + (f" | +{max(0, len(blockers)-4)}" if len(blockers) > 4 else ""))
+-            else:
+-                uniq = []
+-                for r in reasons:
+-                    r0 = str(r).strip()
+-                    if r0 and r0 not in uniq:
+-                        uniq.append(r0)
+-                    if len(uniq) >= 4:
+-                        break
+-                if uniq:
+-                    parts.append(" / ".join(uniq))
+-            stale = []
+-            try:
+-                api_stale = float(_env_float("API_STALE_SEC", 20.0) or 20.0)
+-                if api_age is None or (isinstance(api_age, (int, float)) and (not math.isfinite(float(api_age)))):
+-                    stale.append("API:N/A")
+-                elif float(api_age) > api_stale:
+-                    stale.append(f"API:{fmt_age_s(float(api_age))}")
+-            except Exception:
+-                pass
+-            try:
+-                if isinstance(radar_age, (int, float)) and math.isfinite(float(radar_age)) and float(radar_age) > 120.0:
+-                    stale.append(f"RADAR:{fmt_age_s(float(radar_age))}")
+-            except Exception:
+-                pass
+-            try:
+-                if isinstance(mkt_age, (int, float)) and math.isfinite(float(mkt_age)) and float(mkt_age) > 30.0:
+-                    stale.append(f"MKT:{fmt_age_s(float(mkt_age))}")
+-            except Exception:
+-                pass
+-            if stale:
+-                parts.append(" ".join(stale))
+-            line2 = f"🧭 {_short(' | '.join([p for p in parts if p]), 110)}"
+-            if last_reject and last_reject != "-":
+-                line2 = f"{line2} | 🚫 {_short(last_reject, 40)}"
+-            return Panel("\n".join([line1, line2]), title="ENGINE", box=box.SQUARE, padding=(0, 1))
+-        def top8_compact_panel(symbols):
+-            now_s = time.strftime("%H:%M:%S")
+-            try:
+-                rows = list(self.bot.get_top8_snapshot() or [])
+-            except Exception:
+-                rows = []
+-            try:
+-                ts = float(getattr(self.bot, "_top8_ok_ts", 0.0) or 0.0)
+-                ts = ts / 1000.0 if ts and ts > 1e11 else ts
+-                age_ok = time.time() - ts
+-            except Exception:
+-                age_ok = 999999.0
+-            try:
+-                ts = float(getattr(self.bot, "_top8_last_try_ts", 0.0) or 0.0)
+-                ts = ts / 1000.0 if ts and ts > 1e11 else ts
+-                age_try = time.time() - ts
+-            except Exception:
+-                age_try = 999999.0
+-            if len(rows) < 8:
+-                have = set()
+-                try:
+-                    have = {str(r.get("symbol")) for r in rows if isinstance(r, dict)}
+-                except Exception:
+-                    have = set()
+-                try:
+-                    raw = getattr(self.bot, "_market_snapshot", {}) or {}
+-                except Exception:
+-                    raw = {}
+-                ranked = []
+-                try:
+-                    for sym, info in (raw or {}).items():
+-                        s = _canon_symbol(sym)
+-                        if not s or (not s.endswith("IRT")) or s in have:
+-                            continue
+-                        if not isinstance(info, dict):
+-                            continue
+-                        vol = 0.0
+-                        try:
+-                            vol = float(info.get("quote_volume") or info.get("quoteVolume") or info.get("dayVolume") or info.get("volume") or 0.0)
+-                        except Exception:
+-                            vol = 0.0
+-                        mid = 0.0
+-                        try:
+-                            mid = float(info.get("last") or info.get("latest") or info.get("price") or info.get("close") or 0.0)
+-                        except Exception:
+-                            mid = 0.0
+-                        chg = 0.0
+-                        try:
+-                            chg = float(info.get("priceChangePercent") or info.get("dayChange") or info.get("change_percent") or info.get("change") or 0.0)
+-                        except Exception:
+-                            chg = 0.0
+-                        ranked.append((vol, s, mid, chg))
+-                    ranked.sort(key=lambda x: float(x[0]), reverse=True)
+-                    for vol, s, mid, chg in ranked:
+-                        rows.append({"symbol": s, "mid": float(mid), "chg_pct": float(chg), "spread_bps": 0.0, "liq_irt": 0.0, "vol_irt": float(vol), "chg_1h": 0.0})
+-                        have.add(s)
+-                        if len(rows) >= 8:
+-                            break
+-                except Exception:
+-                    pass
+-                if len(rows) < 8:
+-                    cfg_syms = []
+-                    try:
+-                        cfg_syms = list(getattr(getattr(self.bot, "cfg", None), "symbols", []) or [])
+-                    except Exception:
+-                        cfg_syms = []
+-                    majors = ["BTCIRT", "ETHIRT", "USDTIRT", "BNBIRT", "SOLIRT", "XRPIRT", "TONIRT", "DOGEIRT", "TRXIRT", "ADAIRT"]
+-                    for s in [_canon_symbol(x) for x in (cfg_syms + majors)]:
+-                        if not s or (not s.endswith("IRT")) or s in have:
+-                            continue
+-                        rows.append({"symbol": s, "mid": 0.0, "chg_pct": 0.0, "spread_bps": 0.0, "liq_irt": 0.0, "vol_irt": 0.0, "chg_1h": 0.0})
+-                        have.add(s)
+-                        if len(rows) >= 8:
+-                            break
+-            def _mid_short(x: float) -> str:
+-                try:
+-                    x = float(x or 0.0)
+-                except Exception:
+-                    return "N/A"
+-                if x <= 0:
+-                    return "N/A"
+-                ax = abs(x)
+-                if ax >= 1_000_000_000:
+-                    return f"{x/1_000_000_000:.2f}B"
+-                if ax >= 1_000_000:
+-                    return f"{x/1_000_000:.2f}M"
+-                if ax >= 1_000:
+-                    return f"{x/1_000:.1f}K"
+-                return f"{x:.0f}"
+-            width0 = 0
+-            try:
+-                width0 = int(getattr(getattr(console, "size", None), "width", 0) or 0)
+-            except Exception:
+-                width0 = 0
+-            show_mid = not (width0 > 0 and width0 < 76)
+-            def _num(x, default=None):
+-                try:
+-                    if x is None:
+-                        return default
+-                    def _num(x, default=None):
+-                        return _safe_float(x, default=default, translate_digits=False, allow_percent=True, finite=False, na_values=True, strip=True)
+-                    s = str(x).strip()
+-                    if (not s) or (s.upper() in ("N/A", "NA", "NONE", "NULL", "-", "--")):
+-                        return default
+-                    s = s.replace(",", "").replace("٪", "%").replace("＋", "+")
+-                    if "%" in s:
+-                        s = s.replace("%", "")
+-                    return float(s)
+-                except Exception:
+-                    return default
+-            items = []
+-            for r in (rows or [])[:8]:
+-                sym = ""
+-                try:
+-                    sym = _canon_symbol(str(r.get("symbol") or "").strip())
+-                except Exception:
+-                    sym = str(r.get("symbol") or "").strip().upper()
+-                sym_s = sym
+-                try:
+-                    if sym_s.endswith("IRT") and len(sym_s) > 3:
+-                        sym_s = sym_s[:-3]
+-                    if sym.upper().startswith("USDT") and sym.upper().endswith("IRT"):
+-                        sym_s = "USDT"
+-                except Exception:
+-                    pass
+-                sym_s = (sym_s[:7] if sym_s else (sym[:7] if sym else "")) or "-"
+-                chg_v = _num(r.get("pct", None), None)
+-                if chg_v is None:
+-                    chg_v = _num(r.get("chg", None), None)
+-                if chg_v is None:
+-                    chg_v = _num(r.get("chg_pct", None), None)
+-                if chg_v is None:
+-                    chg_v = _num(r.get("chg_1h", None), None)
+-                ch = ("N/A" if chg_v is None else fmt_pct(float(chg_v)))
+-                mid_v = _num(r.get("mid", None), 0.0) or 0.0
+-                mid_s = _mid_short(float(mid_v))
+-                if show_mid:
+-                    items.append(f"{sym_s:<7} {ch:>7} {mid_s:>7}")
+-                else:
+-                    items.append(f"{sym_s:<7} {ch:>7}")
+-            if not items:
+-                return Panel("N/A", title=f"TOP8 {now_s}  OK {fmt_age_s(age_ok)}", box=box.SQUARE, padding=(0, 1))
+-            g = Table.grid(padding=(0, 1), expand=True)
+-            g.add_column(justify="left", ratio=1, overflow="crop")
+-            g.add_column(justify="left", ratio=1, overflow="crop")
+-            rows_n = 4
+-            for i in range(rows_n):
+-                a = items[i] if i < len(items) else ""
+-                b = items[i + rows_n] if (i + rows_n) < len(items) else ""
+-                g.add_row(a, b)
+-            title = f"TOP8 {now_s}  OK {fmt_age_s(age_ok)} | TRY {fmt_age_s(age_try)}"
+-            return Panel(g, title=title, box=box.SQUARE, padding=(0, 1))
+         def banner_panel():
+             now = time.strftime("%Y-%m-%d %H:%M:%S")
+             mode = "LIVE"
+@@ -28486,11 +27992,11 @@ class WallStreetDashboardManager(DashboardManager):
+                         trig = ""
+                     head += f" | ENTRY:{'ALLOW' if entry_allow else 'BLOCK'}"
+                     if entry_ctx:
+-                        head += f"[{_short(entry_ctx, 18)}]"
++                        head += f"[{_run_short(entry_ctx, 18)}]"
+                     if (not entry_allow) and entry_reason:
+-                        head += f"({_short(entry_reason, 36)})"
++                        head += f"({_run_short(entry_reason, 36)})"
+                     if trig:
+-                        head += " " + _short(trig, 72)
++                        head += " " + _run_short(trig, 72)
+                 except Exception:
+                     pass
+             try:
+@@ -28555,7 +28061,7 @@ class WallStreetDashboardManager(DashboardManager):
+                             sr_head = str(sr_head)[:ix]
+                 except Exception:
+                     sr_head = safe_reason
+-                head += f" | SAFE:ON {_short(sr_head, 42)}"
++                head += f" | SAFE:ON {_run_short(sr_head, 42)}"
+             else:
+                 head += " | SAFE:OFF"
+             try:
+@@ -28583,7 +28089,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     head += f" | AgeUI radar:{fmt_age_s(scan_age)} mkt:{fmt_age_s(market_age)} top8:{fmt_age_s(top8_age2)} api:{fmt_age_s(api_age)}"
+             except Exception:
+                 pass
+-            lines.append(_short(head, head_max))
++            lines.append(_run_short(head, head_max))
+             try:
+                 if summary:
+                     lines.append(summary)
+@@ -28709,9 +28215,9 @@ class WallStreetDashboardManager(DashboardManager):
+                                 if w0 or s0:
+                                     ctx = f"{w0}:{s0}" if (w0 and s0) else (w0 or s0)
+                                 if ctx:
+-                                    _wp(f"LAST({ctx})={_short(r0, 64)}")
++                                    _wp(f"LAST({ctx})={_run_short(r0, 64)}")
+                                 else:
+-                                    _wp(f"LAST={_short(r0, 64)}")
++                                    _wp(f"LAST={_run_short(r0, 64)}")
+                 except Exception:
+                     pass
+                 try:
+@@ -28775,7 +28281,7 @@ class WallStreetDashboardManager(DashboardManager):
+                     except Exception:
+                         cpc = 0
+                     age_s0 = fmt_age_s(float(fage0)) if fage0 is not None else "?"
+-                    lines.append(f"🧠 Focus: {fsym0} | C:{cpc}% | age:{age_s0}" + (f" | {_short(pick0, 28)}" if pick0 else ""))
++                    lines.append(f"🧠 Focus: {fsym0} | C:{cpc}% | age:{age_s0}" + (f" | {_run_short(pick0, 28)}" if pick0 else ""))
+                 if state0:
+                     lines.append(f"🧠 Regime: {state0}")
+                 if mage0 is not None:
+@@ -28840,7 +28346,7 @@ class WallStreetDashboardManager(DashboardManager):
+             try:
+                 for wl in (wlines or [])[:10]:
+                     if "WHY " in str(wl) or "WHY:" in str(wl):
+-                        lines.append("🧠 " + _short(str(wl), 160))
++                        lines.append("🧠 " + _run_short(str(wl), 160))
+             except Exception:
+                 pass
+             try:
+@@ -28876,7 +28382,7 @@ class WallStreetDashboardManager(DashboardManager):
+                 try:
+                     risk = getattr(self.bot, "risk", None)
+                     if bool(getattr(risk, "safe_mode", False)):
+-                        actions.append(f"ACTION: SAFE_MODE | {_short(str(getattr(risk,'safe_reason','') or ''), 90)}")
++                        actions.append(f"ACTION: SAFE_MODE | {_run_short(str(getattr(risk,'safe_reason','') or ''), 90)}")
+                 except Exception:
+                     pass
+                 try:
+@@ -28900,7 +28406,7 @@ class WallStreetDashboardManager(DashboardManager):
+                                 why_e = str(le.get("reason") or le.get("policy") or le.get("status") or "")
+                             except Exception:
+                                 why_e = ""
+-                            actions.append(f"ACTION: ENTRY_BLOCKED | {_short(str(why_e or ''), 90)}")
++                            actions.append(f"ACTION: ENTRY_BLOCKED | {_run_short(str(why_e or ''), 90)}")
+                 except Exception:
+                     pass
+                 try:
+@@ -28922,11 +28428,11 @@ class WallStreetDashboardManager(DashboardManager):
+             except Exception:
+                 pass
+             if warn_err:
+-                lines.append(f"{_icon('📄','LOG')} tail: " + _short(warn_err[-1], 120))
++                lines.append(f"{_icon('📄','LOG')} tail: " + _run_short(warn_err[-1], 120))
+             if crashes:
+-                lines.append(_short(crashes[-1], 140))
++                lines.append(_run_short(crashes[-1], 140))
+             max_lines = int(_env_int("DASH_FOOTER_MAX_LINES", 10) or 10)
+-            footer = "\n".join([_short(str(x), 170) for x in lines[:max_lines]]) if lines else hb
++            footer = "\n".join([_run_short(str(x), 170) for x in lines[:max_lines]]) if lines else hb
+             logs_panel = Panel(Text(footer, overflow="fold", no_wrap=False), title="Last events / logs", box=box.ROUNDED, padding=(0, 1))
+             width = 0
+             try:
+@@ -30069,3 +29575,384 @@ def _sleep_or_stop(seconds, stop_event=None, *, interval=0.25):
+         if remaining <= 0:
+             return True
+         time.sleep(min(float(interval), remaining))
++
++
++
++# === S43 AUDIT-ONLY TAIL MONKEYPATCH ===
++def _s43_block_live_order_call(*args, **kwargs):
++    raise RuntimeError("AUDIT-ONLY BLOCK: place_order path disabled")
++
++async def _s43_block_live_order_call_async(*args, **kwargs):
++    raise RuntimeError("AUDIT-ONLY BLOCK: async place_order path disabled")
++
++try:
++    ExchangeClient.place_order = _s43_block_live_order_call_async
++except Exception:
++    pass
++
++try:
++    _FaultInjectExchange.place_order = _s43_block_live_order_call_async
++except Exception:
++    pass
++
++try:
++    _FaultInjectExchange._place_order_impl = _s43_block_live_order_call_async
++except Exception:
++    pass
++# === END S43 AUDIT-ONLY TAIL MONKEYPATCH ===
++
++# ==============================
++# GLOBAL AUDIT KILL-SWITCH
++# ==============================
++
++def _audit_only_block(*args, **kwargs):
++    raise RuntimeError("AUDIT-ONLY BLOCK: order execution disabled")
++
++try:
++    if "ExchangeClient" in globals():
++        ExchangeClient.place_order = _audit_only_block
++
++    if "_FaultInjectExchange" in globals():
++        _FaultInjectExchange.place_order = _audit_only_block
++
++    if "ExchangeClient" in globals():
++        if hasattr(ExchangeClient, "_place_order_impl"):
++            ExchangeClient._place_order_impl = _audit_only_block
++
++    if "_FaultInjectExchange" in globals():
++        if hasattr(_FaultInjectExchange, "_place_order_impl"):
++            _FaultInjectExchange._place_order_impl = _audit_only_block
++
++except Exception as _audit_patch_error:
++    print("AUDIT PATCH ERROR:", _audit_patch_error)
++
++# ==============================
++# END AUDIT KILL-SWITCH
++# ==============================
++
++
++# ==============================
++# FINAL ORDER ENGINE SEAL
++# ==============================
++
++def _audit_only_block(*args, **kwargs):
++    raise RuntimeError("AUDIT-ONLY BLOCK: order execution disabled")
++
++try:
++
++    if "ExchangeClient" in globals():
++        ExchangeClient.place_order = _audit_only_block
++        if hasattr(ExchangeClient, "_place_order_impl"):
++            ExchangeClient._place_order_impl = _audit_only_block
++
++    if "_FaultInjectExchange" in globals():
++        _FaultInjectExchange.place_order = _audit_only_block
++        if hasattr(_FaultInjectExchange, "_place_order_impl"):
++            _FaultInjectExchange._place_order_impl = _audit_only_block
++
++    if "execute_order_v121" in globals():
++        execute_order_v121 = _audit_only_block
++
++except Exception as _audit_patch_error:
++    print("AUDIT PATCH ERROR:", _audit_patch_error)
++
++# ==============================
++# END FINAL SEAL
++# ==============================
++
++
++# === S43 SAFETY GUARD HELPERS PHASE1 ===
++def _s43_safety_env_bool(name: str, default: bool = False) -> bool:
++    try:
++        import os
++        v = os.getenv(name)
++        if v is None:
++            return bool(default)
++        return str(v).strip().lower() in ("1", "true", "yes", "y", "on")
++    except Exception:
++        return bool(default)
++
++
++def _s43_safety_float_env(name: str, default: float) -> float:
++    try:
++        import os
++        v = os.getenv(name)
++        if v is None or str(v).strip() == "":
++            return float(default)
++        return float(v)
++    except Exception:
++        return float(default)
++
++
++def _s43_get_safety_coordinator(owner=None):
++    """
++    Lazy connector to s43_project.safety.
++
++    This intentionally avoids hard dependency at module import time.
++    If safety module is missing/broken, caller receives None and legacy
++    behavior continues.
++    """
++    try:
++        if owner is not None:
++            existing = getattr(owner, "safety_coordinator", None)
++            if existing is not None:
++                return existing
++
++        from s43_project.safety import SafetyCoordinator, SafetyConfig
++
++        cfg = SafetyConfig(
++            max_market_staleness_sec=_s43_safety_float_env(
++                "SAFETY_MAX_MARKET_STALENESS_SEC",
++                _s43_safety_float_env("MARKET_SNAPSHOT_MAX_AGE_SEC", 60.0),
++            ),
++            max_spread_bps=_s43_safety_float_env("SAFETY_MAX_SPREAD_BPS", 50.0),
++            min_top_book_size=_s43_safety_float_env("SAFETY_MIN_TOP_BOOK_SIZE", 0.0),
++            max_balance_staleness_sec=_s43_safety_float_env(
++                "SAFETY_MAX_BALANCE_STALENESS_SEC",
++                _s43_safety_float_env("BALANCE_REFRESH_SEC", 10.0),
++            ),
++            max_balance_drift_ratio=_s43_safety_float_env("SAFETY_MAX_BALANCE_DRIFT_RATIO", 0.05),
++            halt_on_balance_mismatch=_s43_safety_env_bool("SAFETY_HALT_ON_BALANCE_MISMATCH", True),
++            halt_on_stale_market=_s43_safety_env_bool("SAFETY_HALT_ON_STALE_MARKET", True),
++            halt_on_spread_breach=_s43_safety_env_bool("SAFETY_HALT_ON_SPREAD_BREACH", False),
++            halt_on_liquidity_breach=_s43_safety_env_bool("SAFETY_HALT_ON_LIQUIDITY_BREACH", False),
++        )
++
++        sc = SafetyCoordinator(cfg)
++
++        if owner is not None:
++            try:
++                setattr(owner, "safety_coordinator", sc)
++            except Exception:
++                pass
++
++        return sc
++    except Exception as e:
++        try:
++            _s43_debug_print(f"SAFETY_IMPORT_DISABLED error={e}", flush=True)
++        except Exception:
++            pass
++        return None
++
++
++def _s43_first_market_row(snapshot):
++    """
++    Extract one representative market row from a snapshot dict.
++
++    Expected shapes may include:
++      {"by_symbol": {"BTCUSDT": {...}}}
++      {"tickers": [{...}, {...}]}
++      {"BTCUSDT": {...}, ...}
++    """
++    try:
++        if not isinstance(snapshot, dict):
++            return None, None
++
++        by = snapshot.get("by_symbol")
++        if isinstance(by, dict) and by:
++            for sym, row in by.items():
++                if isinstance(row, dict):
++                    return str(sym), row
++
++        rows = snapshot.get("tickers")
++        if isinstance(rows, list):
++            for row in rows:
++                if isinstance(row, dict):
++                    sym = (
++                        row.get("symbol")
++                        or row.get("name")
++                        or row.get("market")
++                        or row.get("pair")
++                        or row.get("sym")
++                        or row.get("s")
++                    )
++                    if sym:
++                        return str(sym), row
++
++        # Sometimes the snapshot itself is a by_symbol map
++        if len(snapshot) >= 1:
++            for sym, row in snapshot.items():
++                if isinstance(row, dict):
++                    return str(sym), row
++
++    except Exception:
++        pass
++
++    return None, None
++
++
++def _s43_float_from_keys(row, keys, default=0.0):
++    try:
++        if not isinstance(row, dict):
++            return float(default)
++        for k in keys:
++            try:
++                v = row.get(k)
++                if v is None:
++                    continue
++                fv = float(v)
++                if fv > 0:
++                    return fv
++            except Exception:
++                continue
++    except Exception:
++        pass
++    return float(default)
++
++
++def _s43_market_snapshot_for_guard(snapshot, local_ts=None, fallback_symbol="UNKNOWN"):
++    """
++    Convert project market snapshot shape to safety.MarketSnapshot.
++    Returns None if safety module is unavailable.
++    """
++    try:
++        from s43_project.safety import MarketSnapshot
++
++        sym, row = _s43_first_market_row(snapshot)
++        if not sym:
++            sym = fallback_symbol
++
++        row = row or {}
++
++        bid = _s43_float_from_keys(row, ("bid", "bestBid", "bidPrice", "buy", "b"), 0.0)
++        ask = _s43_float_from_keys(row, ("ask", "bestAsk", "askPrice", "sell", "a"), 0.0)
++
++        mid = _s43_float_from_keys(
++            row,
++            (
++                "mid", "mark", "markPrice", "last", "last_price", "lastPrice",
++                "price", "close", "closePrice", "latest", "ltp",
++            ),
++            0.0,
++        )
++
++        if mid <= 0 and bid > 0 and ask > 0:
++            mid = (bid + ask) / 2.0
++
++        spread_abs = None
++        spread_bps = None
++        if bid > 0 and ask >= bid:
++            spread_abs = ask - bid
++            denom = mid if mid > 0 else ((bid + ask) / 2.0)
++            if denom > 0:
++                spread_bps = (spread_abs / denom) * 10000.0
++
++        bid_size = _s43_float_from_keys(
++            row,
++            ("best_bid_size", "bidSize", "bid_size", "baseBidSize", "bidQty", "bq"),
++            0.0,
++        )
++        ask_size = _s43_float_from_keys(
++            row,
++            ("best_ask_size", "askSize", "ask_size", "baseAskSize", "askQty", "aq"),
++            0.0,
++        )
++
++        return MarketSnapshot(
++            symbol=str(sym),
++            bid=(bid if bid > 0 else None),
++            ask=(ask if ask > 0 else None),
++            mid=(mid if mid > 0 else None),
++            spread_abs=spread_abs,
++            spread_bps=spread_bps,
++            best_bid_size=(bid_size if bid_size > 0 else None),
++            best_ask_size=(ask_size if ask_size > 0 else None),
++            last_update_ts=local_ts,
++            source="s43_guard_phase1",
++        )
++    except Exception:
++        return None
++
++
++def _s43_balance_total_from_account_data(account_data):
++    """
++    Best-effort extraction of total account balance.
++
++    Supports common shapes:
++      {"total": 123}
++      {"USDT": {"free": 1, "locked": 2, "total": 3}}
++      {"balances": [{"asset": "USDT", "free": "...", "locked": "..."}]}
++    """
++    total = 0.0
++    seen = False
++
++    try:
++        if not isinstance(account_data, dict):
++            return None
++
++        direct = account_data.get("total")
++        if direct is not None:
++            try:
++                return float(direct)
++            except Exception:
++                pass
++
++        balances = account_data.get("balances")
++        if isinstance(balances, list):
++            for b in balances:
++                if not isinstance(b, dict):
++                    continue
++                if b.get("total") is not None:
++                    try:
++                        total += float(b.get("total") or 0.0)
++                        seen = True
++                        continue
++                    except Exception:
++                        pass
++                try:
++                    free = float(b.get("free") or b.get("available") or 0.0)
++                    locked = float(b.get("locked") or b.get("hold") or b.get("reserved") or 0.0)
++                    total += free + locked
++                    seen = True
++                except Exception:
++                    continue
++
++        if seen:
++            return total
++
++        # dict-of-assets shape
++        for _asset, b in account_data.items():
++            if not isinstance(b, dict):
++                continue
++            if b.get("total") is not None:
++                try:
++                    total += float(b.get("total") or 0.0)
++                    seen = True
++                    continue
++                except Exception:
++                    pass
++            try:
++                free = float(b.get("free") or b.get("available") or 0.0)
++                locked = float(b.get("locked") or b.get("hold") or b.get("reserved") or 0.0)
++                total += free + locked
++                seen = True
++            except Exception:
++                continue
++
++        if seen:
++            return total
++
++    except Exception:
++        pass
++
++    return None
++
++
++def _s43_balance_snapshot_for_guard(account_data, ts=None):
++    try:
++        from s43_project.safety import BalanceSnapshot
++
++        total = _s43_balance_total_from_account_data(account_data)
++        if total is None:
++            total = 0.0
++
++        return BalanceSnapshot(
++            asset="ACCOUNT",
++            free=float(total),
++            locked=0.0,
++            total=float(total),
++            last_update_ts=ts,
++            source="s43_guard_phase1",
++        )
++    except Exception:
++        return None

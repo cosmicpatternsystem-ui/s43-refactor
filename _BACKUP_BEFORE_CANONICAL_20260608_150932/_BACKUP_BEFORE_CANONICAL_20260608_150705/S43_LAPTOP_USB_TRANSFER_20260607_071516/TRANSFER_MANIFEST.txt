@@ -1,0 +1,21 @@
+S43 LAPTOP USB TRANSFER MANIFEST
+created_at: 2026-06-07T03:45:57Z
+source_project: /data/data/com.termux/files/home/s43_refactor
+package_root: /data/data/com.termux/files/home/storage/shared/S43_LAPTOP_USB_TRANSFER_20260607_071516/package
+
+expected_hashes:
+s43.py: 8270dbb24d728c22e4a1c42b00c148dc0bf81e00454a1932003531963eef3786
+backup_snapshot: d381f7c1eecfd71abc9c95731bb84c5aeb30fe2deaf7e018e302af030972f2a1
+release_evidence_bundle: a1a37e3ed2a440c8c517af02f2bdcc29f87738959792993c35d3d6d03aac39f0
+
+included_items:
+- full project copy: s43_refactor
+- sealed artifact copy: sealed_artifacts/s43_terminal_backup_snapshot_20260607_061300.tar.gz
+- sealed artifact copy: sealed_artifacts/s43_terminal_backup_snapshot_20260607_061300.tar.gz.sha256
+- sealed artifact copy: sealed_artifacts/s43_terminal_backup_snapshot_20260607_061300.manifest.sha256
+- sealed artifact copy: sealed_artifacts/s43_final_release_evidence_bundle_20260606_215239.tar.gz
+
+post_transfer_verification_on_laptop:
+1. verify SHA256SUMS.txt
+2. verify package/s43_refactor/s43.py hash
+3. verify sealed artifact hashes

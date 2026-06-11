@@ -1,0 +1,29 @@
+s43 repair manifest
+created_at=Fri May 29 13:17:12 +0330 2026
+base_dir=/data/data/com.termux/files/home/s43_refactor
+
+main_file=/data/data/com.termux/files/home/s43_refactor/s43.py
+editable_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+locked_final=/data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+manager=/data/data/com.termux/files/home/s43_refactor/s43_manager.sh
+
+status:
+- syntax: OK
+- doctor: OK
+- selftest: OK
+- parisa loader: HOT-ACTIVE
+- public API: OK
+- private API: token invalid / 403, requires valid token
+
+aliases:
+- s43
+- s43-save
+- s43-check
+- s43-restore
+- s43-lock
+
+checksums:
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired.py
+1e1131bc8409fe985988caad181d71e73a376dd63151a26570d5a82c1526eef5  /data/data/com.termux/files/home/s43_refactor/s43_final_repaired_locked.py
+ed1d28263e52fc8d714104993deaccbefa425196ce27b8ec47e717b9c2f1b478  /data/data/com.termux/files/home/s43_refactor/s43_manager.sh

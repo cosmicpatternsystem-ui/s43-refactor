@@ -1,0 +1,14 @@
+﻿{
+    "status":  "LOCK_APPLIED",
+    "marker":  "S43_LOCKED_AFTER_CHANGE_PLAN_002",
+    "timestamp":  "2026-06-11 22:19:50",
+    "locked_after_plan":  "S43_CHANGE_PLAN_002",
+    "target":  "E:\\اخباری\\ssl\\s43_refactor\\s43_instrumented_LATEST.py",
+    "target_sha256":  "20FB50643AA6A17D950DAAB821072E48132F15FBF6B82646B8BA1390FA237E0F",
+    "finalization_receipt":  "E:\\اخباری\\ssl\\s43_refactor\\S43_CHANGE_PLAN_002_FINALIZATION_RECEIPT.json",
+    "lock_state_file":  ".\\S43_LOCK_STATE.json",
+    "gate_file":  ".\\S43_CHANGE_GATE.txt",
+    "verify_script":  ".\\s43_verify_locked_state.ps1",
+    "final_project_state":  "ROADMAP_CONFORMANT_AUDIT_READY",
+    "next_mutation_gate":  "S43_CHANGE_PLAN_003"
+}

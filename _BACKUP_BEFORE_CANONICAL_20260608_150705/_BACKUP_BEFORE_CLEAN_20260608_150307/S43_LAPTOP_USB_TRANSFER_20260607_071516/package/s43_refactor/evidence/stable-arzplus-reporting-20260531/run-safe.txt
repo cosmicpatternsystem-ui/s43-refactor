@@ -1,0 +1,14 @@
+Running ArzPlus token healthcheck...
+PASS: ArzPlus token layout is healthy
+  slot 1 -> SET
+  slot 2 -> EMPTY
+  slot 3 -> SET
+
+Starting s43.py...
+[SAFE-NO-TRADE] Empty argv detected; defaulting to --status instead of live trade.
+ISOCHK_GLOBAL phase=get_balance err=ApiHttpError:HTTP 403: {"detail":"توکن نامعتبر"} fail_count=1 token_present=True auth_scheme=Token base_url=None
+wallet=W1 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+wallet=W2 disabled=1 reason=TOKEN_MISSING balance_ok=0 balance_error_type=WalletDisabled balance_error_class=wallet_disabled balance_error=TOKEN_MISSING
+ISOCHK_GLOBAL_COOLDOWN phase=get_balance until=1780249208 fail_count=1 token_present=True auth_scheme=Token base_url=None
+wallet=W3 disabled=0 balance_ok=0 balance_error_type=BalanceStatusError balance_error_class=balance_status_failed balance_error=last_balance_ok_false cash_irt=0
+summary wallets=3 disabled=1 balance_ok=0 balance_failed=2

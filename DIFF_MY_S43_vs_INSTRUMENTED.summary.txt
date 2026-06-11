@@ -1,0 +1,15 @@
+﻿Diff summary
+Generated: 2026-06-08 17:08:03
+Base: .\MY_S43_LATEST.py
+Candidate: .\s43_instrumented_LATEST.py
+Base line count: 30085
+Candidate line count: 30106
+
+Lines only in base: 0
+Lines only in candidate: 21
+Total diff entries: 21
+
+Notes:
+- Compare-Object is line-based, not function-aware.
+- Line order changes can create multiple diff entries.
+- Use this report for review, not blind merge decisions.

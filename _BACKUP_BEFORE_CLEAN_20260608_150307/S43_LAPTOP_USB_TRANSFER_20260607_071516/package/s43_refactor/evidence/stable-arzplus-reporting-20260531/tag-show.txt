@@ -1,0 +1,11 @@
+tag stable-arzplus-reporting-20260531
+Tagger: Termux User <termux@example.local>
+Date:   Sun May 31 20:35:34 2026 +0330
+
+Stable conservative ArzPlus reporting after 403-safe balance status fix
+
+commit caf2ed7724bbd00553779a4825332d25f49d3fcd
+Author: Termux User <termux@example.local>
+Date:   Sun May 31 20:31:35 2026 +0330
+
+    Fix conservative ArzPlus status reporting

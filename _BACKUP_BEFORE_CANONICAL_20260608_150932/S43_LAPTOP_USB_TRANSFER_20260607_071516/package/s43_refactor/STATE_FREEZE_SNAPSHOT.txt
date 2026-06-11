@@ -1,0 +1,46 @@
+STATE FREEZE SNAPSHOT
+generated_at_utc: 2026-06-03T10:24:05Z
+generated_at_local: 2026-06-03 13:54:05 +0330
+project_dir: /data/data/com.termux/files/home/s43_refactor
+
+[file_status]
+s43.py_present: yes
+s43.py_lines: 29958
+s43.py_size_bytes: 2620287
+
+[checksums]
+s43.py_sha256: c5b0b5cf1e20dc253d91867d833cf5a02f53324b07f491f4acb891caad45b334
+
+[key_backups]
+s43.py
+s43.py.bak_cleanup_bad_guards_1780478997
+s43.py.bak_guard_phase1_1780470918
+s43.py.bak_guard_phase1b_1780471130
+s43.py.bak_guard_phase1c_1780471331
+s43.py.bak_guard_v3_1780477874
+s43.py.bak_market_guard_v8_1780479146
+s43.py.bak_repair_orphan_balance_blocks_1780479089
+s43.py.bak_repair_remove_bad_guards_1780471629
+s43.py.baseline_market_guard_v8
+s43.py.baseline_restored_phase1c_dryrun_ok
+s43.py.before_final_persian_cleanup
+s43.py.broken_6258_backup
+s43.py.final_safe_1780479225
+s43.py.final_safe_after_restore
+s43.py.literal_n_bak
+s43.py.stable.20260531_195953
+s43.py.stable.20260531_200152
+s43.py.stable_after_patch12_balance_isolation
+s43.py.stable_patch12_5
+s43.py.stable_patch13_3
+s43.py.stable_patch13_3_20260530_160640
+s43.py.stable_patch13_3_parserfix_20260530_192948
+s43.py.syntax_broken_guard_injected_backup
+
+[python]
+Python 3.13.13
+Python 3.13.13
+
+[termux_shell]
+shell: /data/data/com.termux/files/usr/bin/bash
+user: u0_a260

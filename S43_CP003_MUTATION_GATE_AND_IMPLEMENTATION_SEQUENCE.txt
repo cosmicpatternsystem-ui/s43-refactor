@@ -1,0 +1,304 @@
+﻿S43 CP-003 MUTATION GATE AND IMPLEMENTATION SEQUENCE
+
+DOCUMENT STATUS:
+CP003_MUTATION_GATE_AND_IMPLEMENTATION_SEQUENCE_REGISTERED
+
+CODE_MUTATION_AUTHORIZED:
+FALSE
+
+LIVE_TRADING_AUTHORIZED:
+FALSE
+
+CREATED_AT:
+2026-06-11T23:54:11.7313335+03:30
+
+RELATED LOCKED STATE:
+S43_CHANGE_PLAN_002 LOCKED
+S43_CHANGE_PLAN_003 ARCHITECTURE BLUEPRINT REGISTERED
+BASELINE_SELECTION_AND_REALITY_REVIEW_REGISTERED
+OFFICIAL_BASELINE LOCKED_POST_S43_CHANGE_PLAN_002_PROJECT_STATE
+ROADMAP_LOCKED
+DIAMOND_READY
+
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
+
+This document defines the official mutation gate and implementation sequence for S43_CHANGE_PLAN_003.
+
+The purpose is to prevent uncontrolled code changes and to ensure that CP-003 begins from a verified, inspectable, and reversible baseline.
+
+This document does not authorize code mutation by itself.
+
+It defines the conditions that must be satisfied before any CP-003 code mutation may begin.
+
+------------------------------------------------------------
+2. CURRENT AUTHORIZATION STATE
+------------------------------------------------------------
+
+CP003_BLUEPRINT_REGISTERED:
+TRUE
+
+CP003_CODE_MUTATION_AUTHORIZED:
+FALSE
+
+CP003_LIVE_TRADING_AUTHORIZED:
+FALSE
+
+FULL_REWRITE_AUTHORIZED:
+FALSE
+
+FOURTH_CODEBASE_AUTHORIZED:
+FALSE
+
+EXCHANGE_WRITE_ACCESS_AUTHORIZED:
+FALSE
+
+WALLET_WITHDRAWAL_AUTOMATION_AUTHORIZED:
+FALSE
+
+AI_DIRECT_EXECUTION_AUTHORIZED:
+FALSE
+
+------------------------------------------------------------
+3. MUTATION GATE PRINCIPLE
+------------------------------------------------------------
+
+S43 must not move from blueprint to code mutation without a gate.
+
+The gate exists to ensure that any implementation begins with:
+
+- known files
+- known baseline
+- known safety state
+- known rollback path
+- known implementation order
+- known forbidden actions
+- known verification steps
+
+No CP-003 code change should occur until the project has a pre-mutation inventory snapshot.
+
+------------------------------------------------------------
+4. REQUIRED PRE-MUTATION INVENTORY
+------------------------------------------------------------
+
+Before CP-003 code mutation is authorized, S43 must produce an inventory snapshot containing:
+
+- list of relevant source files
+- list of configuration files
+- list of verifier or test files
+- list of existing receipts and lock documents
+- hash of critical files where practical
+- detected entry points
+- detected execution-related code
+- detected exchange-related code
+- detected wallet-related code
+- detected AI-related code if any
+- detected strategy or signal modules
+- detected safety or risk modules
+
+The inventory must be read-only.
+
+The inventory must not modify code.
+
+------------------------------------------------------------
+5. FIRST IMPLEMENTATION STRATEGY
+------------------------------------------------------------
+
+The first CP-003 implementation must be structural and low-risk.
+
+The preferred first implementation slice is:
+
+CP003-A:
+Architecture scaffold package and neutral interfaces.
+
+CP003-A should introduce structure without changing trading behavior.
+
+CP003-A may include:
+
+- new scaffold directory
+- module placeholder files
+- neutral interface definitions
+- safety boundary placeholder
+- audit receipt placeholder
+- autonomy mode placeholder
+- AI supervisor placeholder
+- execution approval placeholder
+- architecture registry
+- no-op behavior
+- read-only defaults
+
+CP003-A must not change live behavior.
+
+------------------------------------------------------------
+6. IMPLEMENTATION SEQUENCE
+------------------------------------------------------------
+
+The official CP-003 implementation sequence is:
+
+Step 0:
+Pre-mutation inventory and source map.
+
+Step 1:
+Create CP003 scaffold boundaries with no behavior change.
+
+Step 2:
+Add SafetyLawEngine placeholder and immutable safety constants.
+
+Step 3:
+Add AutonomyModeManager with safe default mode.
+
+Step 4:
+Add ExecutionApprovalPolicy with deny-by-default behavior.
+
+Step 5:
+Add AuditReceiptEngine and DiamondDecisionReceipt structures.
+
+Step 6:
+Add AISupervisorBridge as analysis-only, no execution authority.
+
+Step 7:
+Add read-only intelligence module placeholders:
+- MarketRegimeEngine
+- HiddenSignalEngine
+- InvisibleRiskEngine
+- AsymmetricOpportunityScorer
+- NoiseRejectionLayer
+
+Step 8:
+Add PortfolioBrain placeholder with no capital movement authority.
+
+Step 9:
+Add AdapterLayer boundaries without enabling exchange write access.
+
+Step 10:
+Add verifier checks proving no live trading activation and no unauthorized execution path.
+
+------------------------------------------------------------
+7. SAFE DEFAULTS
+------------------------------------------------------------
+
+All CP-003 modules must default to the safest state.
+
+Required defaults:
+
+AUTONOMY_MODE:
+OBSERVATION_ONLY
+
+EXECUTION_APPROVAL:
+DENY_BY_DEFAULT
+
+AI_EXECUTION_AUTHORITY:
+FALSE
+
+EXCHANGE_WRITE_ACCESS:
+FALSE
+
+WALLET_WITHDRAWAL_AUTHORITY:
+FALSE
+
+LIVE_TRADING:
+FALSE
+
+SAFETY_LAWS_BYPASSABLE:
+FALSE
+
+RECEIPT_REQUIRED_FOR_DECISION:
+TRUE
+
+------------------------------------------------------------
+8. FORBIDDEN DURING CP-003-A
+------------------------------------------------------------
+
+The first implementation slice must not:
+
+- place orders
+- cancel orders
+- modify leverage
+- move wallet funds
+- enable withdrawals
+- enable live trading
+- grant AI execution authority
+- change credential handling
+- replace the baseline
+- create a fourth codebase
+- rewrite the project from zero
+- change existing strategy behavior silently
+- remove existing safety checks
+- bypass verifiers
+
+------------------------------------------------------------
+9. ACCEPTABLE CP-003-A CODE CHANGES
+------------------------------------------------------------
+
+After explicit future mutation authorization, acceptable CP003-A code changes may include:
+
+- adding new scaffold files
+- adding new interface files
+- adding new constants files
+- adding new receipt schema files
+- adding new read-only verifier files
+- adding new documentation-linked markers
+- adding no-op module registration
+- adding deny-by-default policy objects
+
+These changes must be isolated and reviewable.
+
+------------------------------------------------------------
+10. VERIFICATION REQUIREMENTS
+------------------------------------------------------------
+
+Before CP003-A can be considered complete, verification must prove:
+
+- Python compilation passes if Python source exists
+- no live trading flag was enabled
+- no exchange write path was activated
+- no wallet withdrawal path was activated
+- no AI direct execution path exists
+- new modules default to safe states
+- deny-by-default policy exists
+- receipts can be generated or represented
+- baseline identity remains preserved
+
+------------------------------------------------------------
+11. ROLLBACK REQUIREMENT
+------------------------------------------------------------
+
+Every CP-003 implementation step must be reversible.
+
+The project must preserve:
+
+- original baseline documents
+- pre-mutation inventory
+- file hashes where practical
+- change receipts
+- verifier output
+- implementation notes
+
+If a CP-003 change creates unclear behavior, it must be stopped before further mutation.
+
+------------------------------------------------------------
+12. DECISION ON CODE MUTATION
+------------------------------------------------------------
+
+This document does not authorize mutation yet.
+
+It only registers the gate and sequence.
+
+The next required document before code mutation is:
+
+S43_CP003_PRE_MUTATION_INVENTORY_SNAPSHOT
+
+Only after that inventory snapshot is registered may a limited CP003-A mutation authorization be considered.
+
+------------------------------------------------------------
+13. FINAL RULING
+------------------------------------------------------------
+
+S43_CHANGE_PLAN_003 must begin with inventory, not code mutation.
+
+The first code mutation, when authorized later, must be CP003-A architecture scaffolding only.
+
+CP003-A must be deny-by-default, observation-only, audit-friendly, reversible, and behavior-preserving.
+
+This document is the official CP-003 mutation gate and implementation sequence.

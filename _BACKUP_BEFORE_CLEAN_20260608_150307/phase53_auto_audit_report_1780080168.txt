@@ -1,0 +1,2785 @@
+# Phase 5.3 Automated Audit Report
+timestamp: 1780080168
+target: s43.py
+backup: s43_before_phase53_audit_1780080168.py
+
+## 1. Selected Definitions
+- class TemporaryPause: lines 12-15
+- class TemporaryPause: lines 382-383
+- async def penalize: lines 831-840
+- def _record_failure_if_transient: lines 1982-1984
+- async def place_order: lines 3060-3211
+- async def place_limit: lines 3214-3243
+- async def _place: lines 7411-7438
+- class SmartCircuitBreaker: lines 8518-8588
+- class AdaptiveRetryHandler: lines 8589-8672
+- async def _execute_trade: lines 9250-9274
+- async def place_limit: lines 11250-11423
+- async def place_order: lines 14688-14715
+- async def place_order: lines 14875-14900
+
+## 2. Pattern Hits
+[line 12] pattern=\bTemporaryPause\b :: class TemporaryPause(Exception):
+[line 13] pattern=\bpause_sec\b ::     def __init__(self, message="", pause_sec=None):
+[line 15] pattern=\bpause_sec\b ::         self.pause_sec = pause_sec
+[line 380] pattern=\bTemporaryPause\b ::     TemporaryPause
+[line 382] pattern=\bTemporaryPause\b ::     class TemporaryPause(RuntimeError):
+[line 790] pattern=\brecord_success\s*\( ::     def record_success(self) -> None:
+[line 792] pattern=\brecord_failure\s*\( ::     def record_failure(self, exc: Exception) -> None:
+[line 819] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(sleep_for)
+[line 819] pattern=\bsleep\s*\( ::                 await asyncio.sleep(sleep_for)
+[line 831] pattern=\bpause_sec\b ::     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+[line 831] pattern=\bpenalize\s*\( ::     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+[line 832] pattern=\bpause_sec\b ::         pause = float(max(0.0, pause_sec or 0.0))
+[line 1816] pattern=\bTemporaryPause\b ::             raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+[line 1816] pattern=\bpause_sec\b ::             raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+[line 1915] pattern=\bpenalize\s*\( ::                     await self._limiter.penalize(pause, hard=True)
+[line 1918] pattern=\bTemporaryPause\b ::                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+[line 1918] pattern=\bpause_sec\b ::                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+[line 1973] pattern=\brecord_success\s*\( ::         self._breaker.record_success()
+[line 1982] pattern=\b_record_failure_if_transient\b ::     def _record_failure_if_transient(self, exc: Exception) -> None:
+[line 1984] pattern=\brecord_failure\s*\( ::             self._breaker.record_failure(exc)
+[line 2078] pattern=\bTemporaryPause\b ::                 except TemporaryPause as e: self._record_failure_if_transient(e); raise
+[line 2078] pattern=\b_record_failure_if_transient\b ::                 except TemporaryPause as e: self._record_failure_if_transient(e); raise
+[line 2084] pattern=\basyncio\.sleep\s*\( ::                         await asyncio.sleep(delay)
+[line 2084] pattern=\bsleep\s*\( ::                         await asyncio.sleep(delay)
+[line 2086] pattern=\b_record_failure_if_transient\b ::                     self._record_failure_if_transient(e)
+[line 3059] pattern=\bplace_order\b ::     # ---- repaired candidate method: place_order from lines 3184-3335 ----
+[line 3060] pattern=\bplace_order\b ::     async def place_order(
+[line 3194] pattern=\bTemporaryPause\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3194] pattern=\bpause_sec\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3195] pattern=\bTemporaryPause\b ::         except TemporaryPause:
+[line 3199] pattern=\bTemporaryPause\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3199] pattern=\bpause_sec\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3213] pattern=\bplace_limit\b ::     # ---- repaired candidate method: place_limit from lines 3336-3365 ----
+[line 3214] pattern=\bplace_limit\b ::     async def place_limit(
+[line 3232] pattern=\bplace_order\b ::         return await self.place_order(
+[line 3263] pattern=\bplace_order\b ::         return await self.place_order(
+[line 3297] pattern=\bTemporaryPause\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3297] pattern=\bpause_sec\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3298] pattern=\bTemporaryPause\b ::         except TemporaryPause:
+[line 3302] pattern=\bTemporaryPause\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3302] pattern=\bpause_sec\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3418] pattern=\bTemporaryPause\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3418] pattern=\bpause_sec\b ::                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 3419] pattern=\bTemporaryPause\b ::         except TemporaryPause:
+[line 3423] pattern=\bTemporaryPause\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3423] pattern=\bpause_sec\b ::             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 3969] pattern=\bplace_order\b :: # QUARANTINED BROKEN NESTED BLOCK: place_order original lines 3184-3335, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+[line 3974] pattern=\bplace_order\b :: #     async def place_order(
+[line 4108] pattern=\bTemporaryPause\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4108] pattern=\bpause_sec\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4109] pattern=\bTemporaryPause\b :: #         except TemporaryPause:
+[line 4113] pattern=\bTemporaryPause\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4113] pattern=\bpause_sec\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4130] pattern=\bplace_limit\b :: # QUARANTINED BROKEN NESTED BLOCK: place_limit original lines 3336-3365, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+[line 4135] pattern=\bplace_limit\b :: #     async def place_limit(
+[line 4153] pattern=\bplace_order\b :: #         return await self.place_order(
+[line 4192] pattern=\bplace_order\b :: #         return await self.place_order(
+[line 4233] pattern=\bTemporaryPause\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4233] pattern=\bpause_sec\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4234] pattern=\bTemporaryPause\b :: #         except TemporaryPause:
+[line 4238] pattern=\bTemporaryPause\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4238] pattern=\bpause_sec\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4368] pattern=\bTemporaryPause\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4368] pattern=\bpause_sec\b :: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+[line 4369] pattern=\bTemporaryPause\b :: #         except TemporaryPause:
+[line 4373] pattern=\bTemporaryPause\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4373] pattern=\bpause_sec\b :: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+[line 4545] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(backoff)
+[line 4545] pattern=\bsleep\s*\( ::                     await asyncio.sleep(backoff)
+[line 4574] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(backoff)
+[line 4574] pattern=\bsleep\s*\( ::                 await asyncio.sleep(backoff)
+[line 5130] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 5179] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(dt)
+[line 5179] pattern=\bsleep\s*\( ::                     await asyncio.sleep(dt)
+[line 5365] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 5371] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 5379] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 5411] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 5982] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(sleep_s)
+[line 5982] pattern=\bsleep\s*\( ::                     await asyncio.sleep(sleep_s)
+[line 7411] pattern=\b_place\b ::     async def _place(self, side: str, price: float, qty: float, cid: str = "") -> None:
+[line 7412] pattern=\bplace_order\b ::         fn = getattr(self.exec, "place_order", None)
+[line 7414] pattern=\bplace_order\b ::             raise RuntimeError("order_executor has no place_order()")
+[line 7481] pattern=\b_place\b ::                     await self._place(o["side"], o["price"], o["qty"], o.get("cid", "SOV_SNIPER"))
+[line 7497] pattern=\b_place\b ::                     await self._place("buy", float(lvl_px), float(qty_each), f"SOV_CID_{i}_{ts}")
+[line 7527] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(0.5)
+[line 7527] pattern=\bsleep\s*\( ::                 await asyncio.sleep(0.5)
+[line 7529] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(0)
+[line 7529] pattern=\bsleep\s*\( ::                 await asyncio.sleep(0)
+[line 7546] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(0.5)
+[line 7546] pattern=\bsleep\s*\( ::                 await asyncio.sleep(0.5)
+[line 7604] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(wait_time)
+[line 7604] pattern=\bsleep\s*\( ::                     await asyncio.sleep(wait_time)
+[line 7854] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(reset_delay)
+[line 7854] pattern=\bsleep\s*\( ::                 await asyncio.sleep(reset_delay)
+[line 8518] pattern=\bSmartCircuitBreaker\b :: class SmartCircuitBreaker:
+[line 8528] pattern=\brecord_success\s*\( ::     def record_success(self):
+[line 8543] pattern=\brecord_failure\s*\( ::     def record_failure(self):
+[line 8562] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+[line 8562] pattern=\bsleep\s*\( ::                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+[line 8589] pattern=\bAdaptiveRetryHandler\b :: class AdaptiveRetryHandler:
+[line 8591] pattern=\bSmartCircuitBreaker\b ::         self.breakers: Dict[str, SmartCircuitBreaker] = {}
+[line 8595] pattern=\bSmartCircuitBreaker\b ::     def get_circuit_breaker(self, endpoint: str, config: RetryConfig) -> SmartCircuitBreaker:
+[line 8597] pattern=\bSmartCircuitBreaker\b ::             self.breakers[endpoint] = SmartCircuitBreaker(endpoint, config)
+[line 8610] pattern=\bTemporaryPause\b ::                 raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+[line 8610] pattern=\bpause_sec\b ::                 raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+[line 8617] pattern=\brecord_success\s*\( ::                 breaker.record_success()
+[line 8621] pattern=\brecord_failure\s*\( ::                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+[line 8626] pattern=\brecord_failure\s*\( ::                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+[line 8633] pattern=\brecord_failure\s*\( ::                 breaker.record_failure()
+[line 8641] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(delay)
+[line 8641] pattern=\bsleep\s*\( ::                 await asyncio.sleep(delay)
+[line 8642] pattern=\bTemporaryPause\b ::         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+[line 8642] pattern=\bpause_sec\b ::         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+[line 8678] pattern=\bAdaptiveRetryHandler\b ::         retry_handler: AdaptiveRetryHandler
+[line 8843] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(self.refresh_interval)
+[line 8843] pattern=\bsleep\s*\( ::                 await asyncio.sleep(self.refresh_interval)
+[line 9019] pattern=\bAdaptiveRetryHandler\b ::         self.retry_handler = AdaptiveRetryHandler()
+[line 9063] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(5)
+[line 9063] pattern=\bsleep\s*\( ::                     await asyncio.sleep(5)
+[line 9073] pattern=\basyncio\.sleep\s*\( ::                     await asyncio.sleep(target_interval - loop_duration)
+[line 9073] pattern=\bsleep\s*\( ::                     await asyncio.sleep(target_interval - loop_duration)
+[line 9078] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(1)
+[line 9078] pattern=\bsleep\s*\( ::                 await asyncio.sleep(1)
+[line 9133] pattern=\b_execute_trade\b ::                 self._execute_trade(filtered_signal, position_size),
+[line 9250] pattern=\b_execute_trade\b ::     async def _execute_trade(
+[line 10578] pattern=\bplace_limit\b ::             await w.exec.place_limit(sym, "sell", qty, bid, float(notional))
+[line 11250] pattern=\bplace_limit\b ::     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+[line 11292] pattern=\bTemporaryPause\b ::                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+[line 11308] pattern=\bTemporaryPause\b ::         except TemporaryPause:
+[line 11351] pattern=\bplace_order\b ::                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+[line 11386] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 11396] pattern=\basyncio\.sleep\s*\( ::                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+[line 11396] pattern=\bsleep\s*\( ::                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+[line 11410] pattern=\basyncio\.sleep\s*\( ::                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+[line 11410] pattern=\bsleep\s*\( ::                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+[line 11428] pattern=\bplace_limit\b ::             return await self.place_limit(sym, side, qty, base_price, notional_irt)
+[line 11440] pattern=\bplace_limit\b ::             resp = await self.place_limit(sym, side, q_i, px_i, (notional_irt * (q_i / max(qty, 1e-12))))
+[line 11443] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(pause_ms / 1000.0)
+[line 11443] pattern=\bsleep\s*\( ::                 await asyncio.sleep(pause_ms / 1000.0)
+[line 12742] pattern=\brecord_success\s*\( ::     def record_success(self, *args, **kwargs):
+[line 12748] pattern=\brecord_failure\s*\( ::     def record_failure(self, *args, **kwargs):
+[line 12757] pattern=\brecord_failure\s*\( ::         return self.record_failure(*args, **kwargs)
+[line 12844] pattern=\brecord_failure\s*\( ::     def record_failure(self, symbol=None, reason=None, *args, **kwargs):
+[line 12850] pattern=\brecord_success\s*\( ::     def record_success(self, symbol=None, *args, **kwargs):
+[line 14486] pattern=\basyncio\.sleep\s*\( ::             await asyncio.sleep(max(0.2, sweep_sec - dt))
+[line 14486] pattern=\bsleep\s*\( ::             await asyncio.sleep(max(0.2, sweep_sec - dt))
+[line 14688] pattern=\bplace_order\b ::     async def place_order(
+[line 14703] pattern=\bplace_order\b ::         res = await self._ex.place_order(
+[line 14844] pattern=\bplace_order\b ::                     await self._ex.place_order(
+[line 14862] pattern=\bplace_order\b ::         return await self._ex.place_order(
+[line 14875] pattern=\bplace_order\b ::     async def place_order(
+[line 15839] pattern=\basyncio\.sleep\s*\( ::                             await asyncio.sleep(0)
+[line 15839] pattern=\bsleep\s*\( ::                             await asyncio.sleep(0)
+[line 18334] pattern=\bpause_sec\b ::             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+[line 19119] pattern=\bTemporaryPause\b ::             except (TradingHalt, TemporaryPause):
+[line 20055] pattern=\bplace_limit\b ::                         resp = await w.exec.place_limit(sym, "buy", qty, book.ask, float(notional))
+[line 20417] pattern=\bplace_limit\b ::                     resp = await w.exec.place_limit(sym, "sell", pos.qty, float(sell_px), float(sell_notional))
+[line 20619] pattern=\basyncio\.sleep\s*\( ::                             await asyncio.sleep(0.25)
+[line 20619] pattern=\bsleep\s*\( ::                             await asyncio.sleep(0.25)
+[line 20651] pattern=\bplace_limit\b ::                     w.exec.place_limit(sym, "sell", qty, px, float(notion)),
+[line 20661] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(0.4)
+[line 20661] pattern=\bsleep\s*\( ::                 await asyncio.sleep(0.4)
+[line 20836] pattern=\bplace_limit\b ::                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+[line 20842] pattern=\bTemporaryPause\b ::         except (TradingHalt, TemporaryPause):
+[line 20868] pattern=\bTemporaryPause\b ::             _pause_t = globals().get("TemporaryPause")
+[line 21055] pattern=\basyncio\.sleep\s*\( ::                                 await asyncio.sleep(5)
+[line 21055] pattern=\bsleep\s*\( ::                                 await asyncio.sleep(5)
+[line 21332] pattern=\bplace_limit\b ::                                     await w.exec.place_limit(sym_low, "sell", qty, px, float(qty * px))
+[line 21471] pattern=\bplace_limit\b ::                 await w.exec.place_limit(sym, "buy", float(qty_each), float(tp), float(notional))
+[line 21475] pattern=\bplace_limit\b ::             if api and hasattr(api, "place_limit") and callable(getattr(api, "place_limit")):
+[line 21477] pattern=\bplace_limit\b ::                     await api.place_limit(sym, "buy", float(qty_each), float(tp))
+[line 23066] pattern=\basyncio\.sleep\s*\( ::                         await asyncio.sleep(float(_env_float("HEALTH_WD_SELF_RESTART_SLEEP_SEC", 2.0) or 2.0))
+[line 23066] pattern=\bsleep\s*\( ::                         await asyncio.sleep(float(_env_float("HEALTH_WD_SELF_RESTART_SLEEP_SEC", 2.0) or 2.0))
+[line 23504] pattern=\bTemporaryPause\b ::             except TemporaryPause:
+[line 29189] pattern=\basyncio\.sleep\s*\( ::                 await asyncio.sleep(1.0)
+[line 29189] pattern=\bsleep\s*\( ::                 await asyncio.sleep(1.0)
+
+## 3. Extracted Definitions
+
+### class TemporaryPause (12-15)
+00012: class TemporaryPause(Exception):
+00013:     def __init__(self, message="", pause_sec=None):
+00014:         super().__init__(message)
+00015:         self.pause_sec = pause_sec
+
+### class TemporaryPause (382-383)
+00382:     class TemporaryPause(RuntimeError):
+00383:         pass
+
+### async def penalize (831-840)
+00831:     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+00832:         pause = float(max(0.0, pause_sec or 0.0))
+00833:         if pause <= 0.0 and not hard:
+00834:             return
+00835:         async with self._lock:
+00836:             now = time.time()
+00837:             if pause > 0.0:
+00838:                 self._hold_until = max(self._hold_until, now + pause)
+00839:             bump = 1.25 if hard else 1.12
+00840:             self._min_interval = min(12.0, max(self._min_interval, self._min_interval * bump, 1.05))
+
+### def _record_failure_if_transient (1982-1984)
+01982:     def _record_failure_if_transient(self, exc: Exception) -> None:
+01983:         if self._is_transient_for_breaker(exc):
+01984:             self._breaker.record_failure(exc)
+
+### async def place_order (3060-3211)
+03060:     async def place_order(
+03061:         self,
+03062:         symbol: str,
+03063:         side: str,
+03064:         amount: float,
+03065:         price: float,
+03066:         cid: Optional[str] = None,
+03067:         *,
+03068:         fill_type: str = "limit",
+03069:         market: str = "spot",
+03070:         reduce_only: Optional[bool] = None,
+03071:         **kwargs: Any,
+03072:     ) -> dict:
+03073:         try:
+03074:             if _termux_env_bool("TERMUX_MODE", False):
+03075:                 _termux_mark_order_activity()
+03076:         except Exception:
+03077:             pass
+03078: 
+03079:         # PHASE4_ORDER_GATE_MAIN
+03080:         if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+03081:             try:
+03082:                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+03083:                 if hasattr(_gate_log, "warning"):
+03084:                     _gate_log.warning(
+03085:                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+03086:                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+03087:                     )
+03088:             except Exception:
+03089:                 pass
+03090:             return {}
+03091: 
+03092:         if (
+03093:             not bool(getattr(self, "_ai_live_trading_armed", False))
+03094:             and bool(getattr(getattr(self, "_cfg", getattr(self, "cfg", None)), "autonomous_ai", False))
+03095:         ):
+03096:             try:
+03097:                 _gate_log = getattr(self, "_logger", None) or getattr(self, "log", None)
+03098:                 if hasattr(_gate_log, "warning"):
+03099:                     _gate_log.warning(
+03100:                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+03101:                         symbol, side, amount, price, str(cid)[:40] if cid is not None else None,
+03102:                     )
+03103:             except Exception:
+03104:                 pass
+03105:             return {}
+03106: 
+03107:         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
+03108:         try:
+03109:             sym = _canon_pair(symbol, default_quote=q)
+03110:         except Exception:
+03111:             try:
+03112:                 sym = _canon_symbol(symbol)
+03113:             except Exception:
+03114:                 sym = str(symbol or "")
+03115: 
+03116:         market_raw = market
+03117:         market_norm = str(market or "spot").lower().strip()
+03118:         market_aliases = {
+03119:             "spot": "spot",
+03120:             "cash": "spot",
+03121:             "future": "futures",
+03122:             "futures": "futures",
+03123:             "perp": "futures",
+03124:             "perpetual": "futures",
+03125:             "swap": "futures",
+03126:         }
+03127:         market_norm = market_aliases.get(market_norm, market_norm)
+03128:         if market_norm not in ("spot", "futures"):
+03129:             self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
+03130:             raise ValueError(f"Unsupported market type: {market_raw}")
+03131: 
+03132:         fill_norm = str(fill_type or "limit").lower().strip()
+03133:         fill_aliases = {
+03134:             "limit": "limit",
+03135:             "lmt": "limit",
+03136:             "market": "market",
+03137:             "mkt": "market",
+03138:         }
+03139:         fill_norm = fill_aliases.get(fill_norm, fill_norm)
+03140:         if fill_norm not in ("limit", "market"):
+03141:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
+03142:             raise ValueError(f"Unsupported fill_type: {fill_type}")
+03143: 
+03144:         if fill_norm == "limit" and price is None:
+03145:             raise ValueError("Price must be specified for LIMIT orders.")
+03146: 
+03147:         payload: Dict[str, Any] = {
+03148:             "symbol": sym,
+03149:             "amount": self._as_payload_number(amount),
+03150:             "side": self._norm_side(side),
+03151:             "fill_type": fill_norm,
+03152:             "market": market_norm,
+03153:         }
+03154: 
+03155:         if price is not None:
+03156:             payload["price"] = self._as_payload_number(price)
+03157:         else:
+03158:             payload["price"] = None
+03159: 
+03160:         if cid:
+03161:             payload["client_id"] = str(cid)
+03162: 
+03163:         extra: Dict[str, Any] = dict(kwargs or {})
+03164: 
+03165:         if reduce_only is not None:
+03166:             extra["reduce_only"] = bool(reduce_only)
+03167: 
+03168:         if market_norm == "futures":
+03169:             extra["reduce_only"] = bool(extra.get("reduce_only", False))
+03170:             if "leverage" in extra and extra.get("leverage") is not None:
+03171:                 try:
+03172:                     extra["leverage"] = float(extra.get("leverage"))
+03173:                 except (TypeError, ValueError):
+03174:                     self._logger.warning("Invalid futures leverage ignored: %r", extra.get("leverage"))
+03175:                     extra.pop("leverage", None)
+03176:         else:
+03177:             if bool(extra.get("reduce_only", False)):
+03178:                 self._logger.warning("reduce_only=True ignored for spot order.")
+03179:             extra.pop("reduce_only", None)
+03180: 
+03181:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
+03182:             extra.pop(protected_key, None)
+03183: 
+03184:         payload.update(extra)
+03185: 
+03186:         try:
+03187:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
+03188:                 ok, rtt_ms, code = await self.conn_check()
+03189:                 if not ok:
+03190:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03191:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03192:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03193:                         diag = "CONN_CHECK_FAIL"
+03194:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03195:         except TemporaryPause:
+03196:             raise
+03197:         except Exception as e:
+03198:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03199:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03200: 
+03201:         last_exc: Optional[Exception] = None
+03202:         for ep in ("/market/orders/", "/market/orders"):
+03203:             try:
+03204:                 return await self.request("POST", ep, payload=payload, auth=True)
+03205:             except Exception as e:
+03206:                 last_exc = e
+03207:                 continue
+03208: 
+03209:         if last_exc:
+03210:             raise last_exc
+03211:         return {}
+
+### async def place_limit (3214-3243)
+03214:     async def place_limit(
+03215:         self,
+03216:         symbol: str,
+03217:         side: str,
+03218:         qty: float,
+03219:         price: float,
+03220:         cid: Optional[str] = None,
+03221:         *,
+03222:         notional_irt: Optional[float] = None,
+03223:         market: str = "spot",
+03224:         reduce_only: Optional[bool] = None,
+03225:         leverage: Optional[Union[int, float]] = None,
+03226:         **kwargs: Any,
+03227:     ) -> dict:
+03228:         extra: Dict[str, Any] = dict(kwargs or {})
+03229:         if notional_irt is not None and "notional_irt" not in extra:
+03230:             extra["notional_irt"] = notional_irt
+03231: 
+03232:         return await self.place_order(
+03233:             symbol=symbol,
+03234:             side=side,
+03235:             amount=qty,
+03236:             price=price,
+03237:             cid=cid,
+03238:             fill_type="limit",
+03239:             market=market,
+03240:             reduce_only=reduce_only,
+03241:             leverage=leverage,
+03242:             **extra,
+03243:         )
+
+### async def _place (7411-7438)
+07411:     async def _place(self, side: str, price: float, qty: float, cid: str = "") -> None:
+07412:         fn = getattr(self.exec, "place_order", None)
+07413:         if not fn or not callable(fn):
+07414:             raise RuntimeError("order_executor has no place_order()")
+07415:         try:
+07416:             try:
+07417:                 try:
+07418:                     import inspect
+07419:                 except:
+07420:                     pass
+07421:             except:
+07422:                 pass
+07423:             sig = inspect.signature(fn)
+07424:             n = len(sig.parameters)
+07425:         except Exception:
+07426:             n = 4
+07427:         try:
+07428:             if n <= 2:
+07429:                 await fn(float(price), float(qty))
+07430:             elif n == 3:
+07431:                 await fn(str(side), float(price), float(qty))
+07432:             else:
+07433:                 await fn(str(side), float(price), float(qty), str(cid))
+07434:         except TypeError:
+07435:             try:
+07436:                 await fn(float(price), float(qty))
+07437:             except Exception:
+07438:                 await fn(str(side), float(price), float(qty), str(cid))
+
+### class SmartCircuitBreaker (8518-8588)
+08518: class SmartCircuitBreaker:
+08519:     def __init__(self, name: str, config: RetryConfig):
+08520:         self.name = name
+08521:         self.config = config
+08522:         self.state = CircuitBreakerState.CLOSED
+08523:         self.failure_count = 0
+08524:         self.last_failure_time = 0.0
+08525:         self.success_count = 0
+08526:         self._lock = _NoopLock()
+08527:         self._state_change_time = time.time()
+08528:     def record_success(self):
+08529:         with self._lock:
+08530:             if self.state == CircuitBreakerState.HALF_OPEN:
+08531:                 self.success_count += 1
+08532:                 if self.success_count >= 3:
+08533:                     self.state = CircuitBreakerState.CLOSED
+08534:                     self.failure_count = 0
+08535:                     self.success_count = 0
+08536:                     self._state_change_time = time.time()
+08537:                     logging.info(f"Circuit breaker {self.name} closed")
+08538:             elif self.state == CircuitBreakerState.CLOSED:
+08539:                 if self.failure_count > 0:
+08540:                     elapsed = time.time() - self.last_failure_time
+08541:                     if elapsed > 30:
+08542:                         self.failure_count = max(0, self.failure_count - 1)
+08543:     def record_failure(self):
+08544:         with self._lock:
+08545:             self.failure_count += 1
+08546:             self.last_failure_time = time.time()
+08547:             self.success_count = 0
+08548:             if (self.state == CircuitBreakerState.CLOSED and
+08549:                 self.failure_count >= self.config.circuit_breaker_threshold):
+08550:                 self.state = CircuitBreakerState.OPEN
+08551:                 self._state_change_time = time.time()
+08552:                 logging.warning(f"Circuit breaker {self.name} opened")
+08553:                 self._schedule_half_open()
+08554:             elif self.state == CircuitBreakerState.HALF_OPEN:
+08555:                 self.state = CircuitBreakerState.OPEN
+08556:                 self._state_change_time = time.time()
+08557:                 logging.warning(f"Circuit breaker {self.name} re-opened")
+08558:                 self._schedule_half_open()
+08559:     def _schedule_half_open(self):
+08560:         async def _transition():
+08561:             try:
+08562:                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+08563:                 with self._lock:
+08564:                     if self.state == CircuitBreakerState.OPEN:
+08565:                         self.state = CircuitBreakerState.HALF_OPEN
+08566:                         self._state_change_time = time.time()
+08567:                         logging.info("event=CB_HALF_OPEN name=%s", str(self.name))
+08568:             except asyncio.CancelledError:
+08569:                 raise
+08570:             except Exception:
+08571:                 logging.exception("event=CB_HALF_OPEN_ERR name=%s", str(self.name))
+08572:         try:
+08573:             asyncio.create_task(_transition(), name=f"cb_halfopen_{self.name}")
+08574:         except Exception:
+08575:             logging.exception("event=CB_SCHED_ERR name=%s", str(self.name))
+08576:     def can_execute(self) -> bool:
+08577:         with self._lock:
+08578:             return self.state != CircuitBreakerState.OPEN
+08579:     def get_state(self) -> Dict[str, Any]:
+08580:         with self._lock:
+08581:             return {
+08582:                 "name": self.name,
+08583:                 "state": self.state.value,
+08584:                 "failure_count": self.failure_count,
+08585:                 "success_count": self.success_count,
+08586:                 "last_failure": self.last_failure_time,
+08587:                 "state_since": self._state_change_time
+08588:             }
+
+### class AdaptiveRetryHandler (8589-8672)
+08589: class AdaptiveRetryHandler:
+08590:     def __init__(self):
+08591:         self.breakers: Dict[str, SmartCircuitBreaker] = {}
+08592:         self.retry_stats: Dict[str, Dict[str, int]] = defaultdict(
+08593:             lambda: {"success": 0, "failures": 0, "retries": 0}
+08594:         )
+08595:     def get_circuit_breaker(self, endpoint: str, config: RetryConfig) -> SmartCircuitBreaker:
+08596:         if endpoint not in self.breakers:
+08597:             self.breakers[endpoint] = SmartCircuitBreaker(endpoint, config)
+08598:         return self.breakers[endpoint]
+08599:     async def execute_with_retry(
+08600:         self,
+08601:         coro_func: Callable[..., Awaitable[Any]],
+08602:         endpoint: str,
+08603:         retry_config: RetryConfig,
+08604:         *args,
+08605:         **kwargs
+08606:     ) -> Any:
+08607:         breaker = self.get_circuit_breaker(endpoint, retry_config)
+08608:         for attempt in range(1, retry_config.max_attempts + 1):
+08609:             if not breaker.can_execute():
+08610:                 raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+08611:             try:
+08612:                 timeout = retry_config.base_delay * retry_config.timeout_multiplier
+08613:                 result = await asyncio.wait_for(
+08614:                     coro_func(*args, **kwargs),
+08615:                     timeout=timeout
+08616:                 )
+08617:                 breaker.record_success()
+08618:                 self.retry_stats[endpoint]["success"] += 1
+08619:                 return result
+08620:             except asyncio.TimeoutError:
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+08623:                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
+08624:                 )
+08625:             except aiohttp.ClientError as e:
+08626:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08627:                 logging.warning(
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08630:                 )
+08631:             except Exception as e:
+08632:                 self.retry_stats[endpoint]["failures"] += 1
+08633:                 breaker.record_failure()
+08634:                 logging.error(
+08635:                     f"Error on {endpoint}: {e} "
+08636:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+08639:                 delay = self._calculate_delay(attempt, retry_config)
+08640:                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
+08641:                 await asyncio.sleep(delay)
+08642:         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+08643:     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
+08644:         if config.strategy == RetryStrategy.IMMEDIATE:
+08645:             delay = 0.1
+08646:         elif config.strategy == RetryStrategy.EXPONENTIAL:
+08647:             delay = config.base_delay * (config.backoff_factor ** (attempt - 1))
+08648:         elif config.strategy == RetryStrategy.FIBONACCI:
+08649:             fib = [1, 1]
+08650:             for _ in range(attempt):
+08651:                 fib.append(fib[-1] + fib[-2])
+08652:             delay = config.base_delay * fib[attempt]
+08653:         elif config.strategy == RetryStrategy.FIXED:
+08654:             delay = config.base_delay
+08655:         else:
+08656:             delay = config.base_delay
+08657:         if config.jitter and _nd_allowed():
+08658:             jitter_amount = delay * 0.1
+08659:             delay += secrets.SystemRandom().uniform(-jitter_amount, jitter_amount)
+08660:         return min(max(0.1, delay), config.max_delay)
+08661:     def get_stats(self) -> Dict[str, Any]:
+08662:         return {
+08663:             "circuit_breakers": {
+08664:                 name: breaker.get_state()
+08665:                 for name, breaker in self.breakers.items()
+08666:             },
+08667:             "retry_stats": dict(self.retry_stats),
+08668:             "total_requests": sum(
+08669:                 stats["success"] + stats["failures"]
+08670:                 for stats in self.retry_stats.values()
+08671:             )
+08672:         }
+
+### async def _execute_trade (9250-9274)
+09250:     async def _execute_trade(
+09251:         self,
+09252:         signal: FilteredSignal,
+09253:         position_size: Dict[str, Any]
+09254:     ):
+09255:         try:
+09256:             order_data = {
+09257:                 "symbol": signal.symbol,
+09258:                 "side": signal.action,
+09259:                 "amount": position_size["position_size"],
+09260:                 "price": 0,
+09261:                 "client_order_id": f"enhanced_{int(time.time() * 1000)}"
+09262:             }
+09263:             result = await self.api_client.request(
+09264:                 "POST",
+09265:                 "/market/orders/",
+09266:                 json=order_data
+09267:             )
+09268:             logging.info(
+09269:                 f"Executed {signal.action} order for {signal.symbol}: "
+09270:                 f"Size={position_size['position_size']:.2f}, "
+09271:                 f"Confidence={signal.filtered_confidence:.2f}"
+09272:             )
+09273:         except Exception as e:
+09274:             logging.error(f"Failed to execute trade for {signal.symbol}: {e}")
+
+### async def place_limit (11250-11423)
+11250:     async def place_limit(self, symbol: str, side: str, qty: float, price: float, notional_irt: float, **kwargs) -> dict:
+11251:         sym = _canon_symbol(symbol)
+11252:         try:
+11253:             side_l0 = str(side or "").lower()
+11254:             if side_l0.startswith("buy"):
+11255:                 m = self._regime_multiplier(sym, float(notional_irt))
+11256:                 m = float(clamp(float(m), 0.0, 1.0))
+11257:                 if m != 1.0:
+11258:                     qty = float(qty) * float(m)
+11259:                     notional_irt = float(notional_irt) * float(m)
+11260:         except Exception:
+11261:             pass
+11262:         if self.cfg.dry_run:
+11263:             self._logger.info("[DRY_RUN] %s %s qty=%.8f px=%.0f notional=%.0f", side, sym, qty, price, notional_irt)
+11264:             if self._rec:
+11265:                 self._rec.record_order(time.time(), self._wallet, sym, side, float(qty), float(price), float(notional_irt),
+11266:                                        ok=True, order_id="DRY", raw={"dry_run": True})
+11267:             return {"ok": True, "dry_run": True}
+11268:         r = getattr(self, "_risk", None)
+11269:         if r is not None:
+11270:             try:
+11271:                 hb = getattr(r, "hard_blocks_all_orders", None)
+11272:                 side_lk = str(side or "").lower().strip()
+11273:                 if callable(hb) and bool(hb(side=side_lk, reduce_only=side_lk.startswith("sell"))):
+11274:                     reason = str(getattr(r, "safe_reason", "") or "HARD_BLOCK")
+11275:                     self._logger.critical("event=HARD_BLOCK wallet=%s sym=%s reason=%s", self._wallet, sym, reason)
+11276:                     raise TradingHalt(f"HARD_BLOCK:{reason}")
+11277:             except TradingHalt:
+11278:                 raise
+11279:             except Exception as e:
+11280:                 if not bool(getattr(self.cfg, "dry_run", False)):
+11281:                     raise TradingHalt(f"HARD_BLOCK:RISK_ERR:{type(e).__name__}") from e
+11282:         try:
+11283:             rd = None
+11284:             if r is not None:
+11285:                 g = getattr(r, "get_runtime_risk", None)
+11286:                 if callable(g):
+11287:                     rd = g(self._wallet, sym)
+11288:             side_l = str(side or "").lower()
+11289:             is_entry = side_l.startswith("buy")
+11290:             if rd is not None and is_entry:
+11291:                 if not bool(getattr(rd, "allow_entries", True)):
+11292:                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+11293:                 mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+11294:                 mult = float(clamp(mult, 0.0, 1.0))
+11295:                 _skip_mult = False
+11296:                 try:
+11297:                     _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+11298:                 except Exception:
+11299:                     _skip_mult = False
+11300:                 if (not _skip_mult) and mult < 0.999:
+11301:                     qty = float(qty) * mult
+11302:                     notional_irt = float(notional_irt) * mult
+11303:                     try:
+11304:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+11305:                                           self._wallet, sym, str(getattr(rd,'level','?')), mult)
+11306:                     except Exception:
+11307:                         pass
+11308:         except TemporaryPause:
+11309:             raise
+11310:         except Exception:
+11311:             pass
+11312:         if qty <= 0 or price <= 0:
+11313:             raise ValueError(f"Invalid order params qty={qty} price={price}")
+11314:         qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+11315:         if qty2 <= 0 or px2 <= 0:
+11316:             raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+11317:         cid: Optional[str] = None
+11318:         if self._oj is not None:
+11319:             cid = self._oj.new_cid(self._wallet, sym, side)
+11320:             self._oj.mark_pending(cid, wallet=self._wallet, symbol=sym, side=side,
+11321:                                  qty=float(qty2), price=float(px2), notional_irt=float(notional_irt))
+11322:             self._logger.info("event=ORDER_INTENT cid=%s wallet=%s side=%s sym=%s qty=%.8f px=%.0f",
+11323:                              cid, self._wallet, str(side).lower(), sym, float(qty2), float(px2))
+11324:         else:
+11325:             raise TradingHalt("ORDERS_JOURNAL_DISABLED")
+11326:         last_exc: Optional[Exception] = None
+11327:         for attempt in range(self.max_retries + 1):
+11328:             try:
+11329:                 async with self._submit_lock:
+11330:                     if attempt == 0:
+11331:                         order_key = f"{str(side).lower()}_{px2}_{qty2}_{sym}"
+11332:                         if getattr(self, "_last_order_key", None) == order_key and (time.time() - getattr(self, "_last_order_time", 0.0)) < 5.0:
+11333:                             try:
+11334:                                 self._logger.warning("Duplicate order prevented for %s", sym)
+11335:                             except Exception:
+11336:                                 pass
+11337:                             if self._oj is not None:
+11338:                                 try:
+11339:                                     self._oj.mark_resolved(cid, final_state="SKIPPED_DUP", note=str(order_key))
+11340:                                 except Exception:
+11341:                                     pass
+11342:                             return {"ok": False, "skipped": True, "reason": "DUPLICATE_PREVENTED", "cid": cid}
+11343:                         self._last_order_key = order_key
+11344:                         self._last_order_time = time.time()
+11345:                     order_kwargs = dict(kwargs)
+11346:                     order_kwargs.pop("cid", None)
+11347:                     order_kwargs.setdefault("notional_irt", float(notional_irt))
+11348:                     order_kwargs.setdefault("fill_type", "limit")
+11349:                     order_kwargs.setdefault("market", "spot")
+11350:                     order_kwargs.setdefault("reduce_only", str(side or "").lower().startswith("sell"))
+11351:                     resp = await self._ex.place_order(sym, side, float(qty2), float(px2), cid=cid, **order_kwargs)
+11352:                 if resp is None:
+11353:                     raise ApiError("Order submission returned None")
+11354:                 ok = bool(resp.get("ok")) or (resp.get("status") in (200, 201))
+11355:                 if ok:
+11356:                     oid = str(resp.get("order_id") or resp.get("id") or "")
+11357:                     if self._oj is not None:
+11358:                         try:
+11359:                             self._oj.mark_ack(cid, exchange_order_id=oid, raw=resp)
+11360:                         except Exception:
+11361:                             pass
+11362:                     if self._rec:
+11363:                         self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2),
+11364:                                                float(notional_irt), ok=True, order_id=oid, raw=resp)
+11365:                     try:
+11366:                         if isinstance(resp, dict) and cid:
+11367:                             if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+11368:                                 resp = dict(resp)
+11369:                                 resp["cid"] = str(cid)
+11370:                     except Exception:
+11371:                         pass
+11372:                     return resp
+11373:                 if self._oj is not None:
+11374:                     try:
+11375:                         self._oj.mark_resolved(cid, final_state="REJECTED", note=str(resp)[:300])
+11376:                     except Exception:
+11377:                         pass
+11378:                 try:
+11379:                     if isinstance(resp, dict) and cid:
+11380:                         if ("cid" not in resp) and ("client_id" not in resp) and ("clientId" not in resp) and ("client_order_id" not in resp) and ("clientOrderId" not in resp):
+11381:                             resp = dict(resp)
+11382:                             resp["cid"] = str(cid)
+11383:                 except Exception:
+11384:                     pass
+11385:                 return resp
+11386:             except (TradingHalt, TemporaryPause):
+11387:                 raise
+11388:             except asyncio.TimeoutError as e:
+11389:                 last_exc = e
+11390:                 try:
+11391:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+11392:                 except Exception:
+11393:                     pass
+11394:                 if attempt < self.max_retries:
+11395:                     try:
+11396:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11397:                     except Exception:
+11398:                         pass
+11399:                     continue
+11400:                 break
+11401:             except Exception as e:
+11402:                 last_exc = e
+11403:                 try:
+11404:                     self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+11405:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+11406:                 except Exception:
+11407:                     pass
+11408:                 if attempt < self.max_retries:
+11409:                     try:
+11410:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11411:                     except Exception:
+11412:                         pass
+11413:         if self._rec:
+11414:             self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2), float(notional_irt),
+11415:                                    ok=False, order_id=None, raw={"error": str(last_exc), "cid": cid})
+11416:         if self._oj is not None:
+11417:             try:
+11418:                 self._oj.mark_uncertain(cid, err=str(last_exc))
+11419:             except Exception:
+11420:                 pass
+11421:         if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+11422:             raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+11423:         raise ApiError(f"Order failed after retries: {last_exc}")
+
+### async def place_order (14688-14715)
+14688:     async def place_order(
+14689:         self,
+14690:         symbol: str,
+14691:         side: str,
+14692:         amount: float,
+14693:         price: float,
+14694:         cid: Optional[str] = None,
+14695:         *,
+14696:         fill_type: str = "limit",
+14697:         market: str = "spot",
+14698:         notional_irt: Optional[float] = None,
+14699:         reduce_only: Optional[bool] = None,
+14700:         **kwargs: Any,
+14701:     ) -> dict:
+14702:         sym = _canon_symbol(symbol)
+14703:         res = await self._ex.place_order(
+14704:             symbol=sym,
+14705:             side=side,
+14706:             amount=amount,
+14707:             price=price,
+14708:             cid=cid,
+14709:             fill_type=fill_type,
+14710:             market=market,
+14711:             notional_irt=notional_irt,
+14712:             reduce_only=reduce_only,
+14713:             **kwargs,
+14714:         )
+14715:         return res
+
+### async def place_order (14875-14900)
+14875:     async def place_order(
+14876:         self,
+14877:         symbol: str,
+14878:         side: str,
+14879:         amount: float,
+14880:         price: float,
+14881:         cid: Optional[str] = None,
+14882:         *,
+14883:         notional_irt: Optional[float] = None,
+14884:         reduce_only: bool = False,
+14885:         fill_type: Optional[str] = None,
+14886:         market: Optional[str] = None,
+14887:         **kwargs,
+14888:     ) -> dict:
+14889:         return await self._place_order_impl(
+14890:             symbol,
+14891:             side,
+14892:             amount,
+14893:             price,
+14894:             cid=cid,
+14895:             notional_irt=notional_irt,
+14896:             reduce_only=reduce_only,
+14897:             fill_type=fill_type,
+14898:             market=market,
+14899:             **kwargs,
+14900:         )
+
+## 4. Context Windows Around Critical Hits
+
+### Context around line 12
+00007: from __future__ import annotations
+00008: 
+00009: if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+00010:     print("### S43_RUNTIME_PROBE_ACTIVE ###")
+00011: 
+00012: class TemporaryPause(Exception):
+00013:     def __init__(self, message="", pause_sec=None):
+00014:         super().__init__(message)
+00015:         self.pause_sec = pause_sec
+00016: import socket
+00017: class ApiError(Exception):
+00018:     pass
+00019: class ApiHttpError(ApiError):
+00020:     def __init__(self, message="", status=None, body=None, headers=None, code=None, payload=None, response=None, **kwargs):
+00021:         super().__init__(message)
+00022:         self.status = status
+00023:         self.body = body
+00024:         self.headers = headers
+
+### Context around line 13
+00008: 
+00009: if str(__import__("os").environ.get("S43_DEBUG_PRINTS", "")).lower() in ("1", "true", "yes", "on"):
+00010:     print("### S43_RUNTIME_PROBE_ACTIVE ###")
+00011: 
+00012: class TemporaryPause(Exception):
+00013:     def __init__(self, message="", pause_sec=None):
+00014:         super().__init__(message)
+00015:         self.pause_sec = pause_sec
+00016: import socket
+00017: class ApiError(Exception):
+00018:     pass
+00019: class ApiHttpError(ApiError):
+00020:     def __init__(self, message="", status=None, body=None, headers=None, code=None, payload=None, response=None, **kwargs):
+00021:         super().__init__(message)
+00022:         self.status = status
+00023:         self.body = body
+00024:         self.headers = headers
+00025:         self.code = code
+
+### Context around line 15
+00010:     print("### S43_RUNTIME_PROBE_ACTIVE ###")
+00011: 
+00012: class TemporaryPause(Exception):
+00013:     def __init__(self, message="", pause_sec=None):
+00014:         super().__init__(message)
+00015:         self.pause_sec = pause_sec
+00016: import socket
+00017: class ApiError(Exception):
+00018:     pass
+00019: class ApiHttpError(ApiError):
+00020:     def __init__(self, message="", status=None, body=None, headers=None, code=None, payload=None, response=None, **kwargs):
+00021:         super().__init__(message)
+00022:         self.status = status
+00023:         self.body = body
+00024:         self.headers = headers
+00025:         self.code = code
+00026:         self.payload = payload
+00027:         self.response = response
+
+### Context around line 380
+00375: except NameError:
+00376:     class TradingHalt(RuntimeError):
+00377:         pass
+00378: 
+00379: try:
+00380:     TemporaryPause
+00381: except NameError:
+00382:     class TemporaryPause(RuntimeError):
+00383:         pass
+00384: 
+00385: def _parisa_embedded_code_bytes() -> bytes:
+00386:     import base64 as _base64
+00387:     import zlib as _zlib
+00388:     return _zlib.decompress(_base64.b64decode(PARISA_B64_ZLIB))
+00389: def _extract_parisa_to_file(out_path: str) -> str:
+00390:     try:
+00391:         try:
+00392:             try:
+
+### Context around line 382
+00377:         pass
+00378: 
+00379: try:
+00380:     TemporaryPause
+00381: except NameError:
+00382:     class TemporaryPause(RuntimeError):
+00383:         pass
+00384: 
+00385: def _parisa_embedded_code_bytes() -> bytes:
+00386:     import base64 as _base64
+00387:     import zlib as _zlib
+00388:     return _zlib.decompress(_base64.b64decode(PARISA_B64_ZLIB))
+00389: def _extract_parisa_to_file(out_path: str) -> str:
+00390:     try:
+00391:         try:
+00392:             try:
+00393:                 from pathlib import Path
+00394:             except:
+
+### Context around line 790
+00785:     def remaining_sec(self) -> float:
+00786:         try:
+00787:             return max(0.0, float(self._open_until) - time.time())
+00788:         except Exception:
+00789:             return 0.0
+00790:     def record_success(self) -> None:
+00791:         self._errors = 0
+00792:     def record_failure(self, exc: Exception) -> None:
+00793:         self._errors += 1
+00794:         if self._errors >= self.max_errors:
+00795:             self._open_until = time.time() + self.cooldown_sec
+00796:             self._logger.critical("Circuit breaker OPEN for %.0fs (err=%d): %s", self.cooldown_sec, self._errors, exc)
+00797: class SharedAsyncRateLimiter:
+00798:     def __init__(self, per_minute: int, min_interval_floor_sec: float = 1.05):
+00799:         self.per_minute = max(1, int(per_minute))
+00800:         self._base_min_interval = (60.0 / float(self.per_minute)) * 1.10
+00801:         self._min_interval = max(float(min_interval_floor_sec), float(self._base_min_interval))
+00802:         self._hold_until = 0.0
+
+### Context around line 792
+00787:             return max(0.0, float(self._open_until) - time.time())
+00788:         except Exception:
+00789:             return 0.0
+00790:     def record_success(self) -> None:
+00791:         self._errors = 0
+00792:     def record_failure(self, exc: Exception) -> None:
+00793:         self._errors += 1
+00794:         if self._errors >= self.max_errors:
+00795:             self._open_until = time.time() + self.cooldown_sec
+00796:             self._logger.critical("Circuit breaker OPEN for %.0fs (err=%d): %s", self.cooldown_sec, self._errors, exc)
+00797: class SharedAsyncRateLimiter:
+00798:     def __init__(self, per_minute: int, min_interval_floor_sec: float = 1.05):
+00799:         self.per_minute = max(1, int(per_minute))
+00800:         self._base_min_interval = (60.0 / float(self.per_minute)) * 1.10
+00801:         self._min_interval = max(float(min_interval_floor_sec), float(self._base_min_interval))
+00802:         self._hold_until = 0.0
+00803:         self._lock = asyncio.Lock()
+00804:         self._last = 0.0
+
+### Context around line 819
+00814:                 sleep_for = self._hold_until - now
+00815:             dt = now - self._last
+00816:             sleep_for = max(sleep_for, self._min_interval - dt)
+00817:             if sleep_for > 0.0:
+00818:                 self._last_sleep = float(sleep_for)
+00819:                 await asyncio.sleep(sleep_for)
+00820:             self._last = time.time()
+00821:             try:
+00822:                 now2 = float(self._last)
+00823:                 self._req_times.append(now2)
+00824:                 cutoff = now2 - 60.0
+00825:                 for _omega_guard in range(150000):
+00826:                     self._req_times.popleft()
+00827:                 self._util_pct = min(100.0, (len(self._req_times) / float(max(1, self.per_minute))) * 100.0)
+00828:                 self._hold_remain = max(0.0, float(self._hold_until) - now2)
+00829:             except Exception:
+00830:                 pass
+00831:     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+
+### Context around line 831
+00826:                     self._req_times.popleft()
+00827:                 self._util_pct = min(100.0, (len(self._req_times) / float(max(1, self.per_minute))) * 100.0)
+00828:                 self._hold_remain = max(0.0, float(self._hold_until) - now2)
+00829:             except Exception:
+00830:                 pass
+00831:     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+00832:         pause = float(max(0.0, pause_sec or 0.0))
+00833:         if pause <= 0.0 and not hard:
+00834:             return
+00835:         async with self._lock:
+00836:             now = time.time()
+00837:             if pause > 0.0:
+00838:                 self._hold_until = max(self._hold_until, now + pause)
+00839:             bump = 1.25 if hard else 1.12
+00840:             self._min_interval = min(12.0, max(self._min_interval, self._min_interval * bump, 1.05))
+00841:     async def reward(self) -> None:
+00842:         async with self._lock:
+00843:             self._min_interval = max(self._base_min_interval, self._min_interval * 0.985, 1.05)
+
+### Context around line 832
+00827:                 self._util_pct = min(100.0, (len(self._req_times) / float(max(1, self.per_minute))) * 100.0)
+00828:                 self._hold_remain = max(0.0, float(self._hold_until) - now2)
+00829:             except Exception:
+00830:                 pass
+00831:     async def penalize(self, pause_sec: float, hard: bool = False) -> None:
+00832:         pause = float(max(0.0, pause_sec or 0.0))
+00833:         if pause <= 0.0 and not hard:
+00834:             return
+00835:         async with self._lock:
+00836:             now = time.time()
+00837:             if pause > 0.0:
+00838:                 self._hold_until = max(self._hold_until, now + pause)
+00839:             bump = 1.25 if hard else 1.12
+00840:             self._min_interval = min(12.0, max(self._min_interval, self._min_interval * bump, 1.05))
+00841:     async def reward(self) -> None:
+00842:         async with self._lock:
+00843:             self._min_interval = max(self._base_min_interval, self._min_interval * 0.985, 1.05)
+00844:     def metrics(self) -> dict:
+
+### Context around line 1783
+01778:             except Exception:
+01779:                 pass
+01780:         except Exception:
+01781:             return
+01782:     @classmethod
+01783:     def _extract_rate_limit_pause_sec(cls, raw: str, default: float = 1.0) -> float:
+01784:         try:
+01785:             s = str(raw or "")
+01786:         except Exception:
+01787:             return float(default)
+01788:         try:
+01789:             obj = json.loads(s) if s and s.strip().startswith("{") else None
+01790:             if isinstance(obj, dict):
+01791:                 s2 = obj.get("detail") or obj.get("message") or obj.get("error") or ""
+01792:                 if s2:
+01793:                     s = str(s2)
+01794:         except Exception:
+01795:             pass
+
+### Context around line 1816
+01811:         if self._breaker.is_open():
+01812:             try:
+01813:                 rem = float(self._breaker.remaining_sec())
+01814:             except Exception:
+01815:                 rem = 0.0
+01816:             raise TemporaryPause("Circuit breaker open (API).", pause_sec=rem)
+01817:     def _build_url(self, endpoint: str) -> str:
+01818:         ep = str(endpoint or "").strip()
+01819:         return f"{self.cfg.base_url}{ep if ep.startswith('/') else '/' + ep}"
+01820:     def _build_headers(self, auth: bool) -> dict:
+01821:         headers: dict = {
+01822:             "Accept": "application/json",
+01823:             "User-Agent": str(getattr(self.cfg, "user_agent", "PhoenixBot/1.0") or "PhoenixBot/1.0"),
+01824:         }
+01825:         if not auth:
+01826:             return headers
+01827:         if not self._token:
+01828:             raise ApiError("Missing API token for private endpoint.")
+
+### Context around line 1913
+01908:             self._arzplus_health_check_clock(resp_headers=rh, endpoint=str(endpoint or ""))
+01909:         except Exception:
+01910:             pass
+01911:         match st:
+01912:             case 429:
+01913:                 pause = self._extract_rate_limit_pause_sec(raw, default=1.0)
+01914:                 try:
+01915:                     await self._limiter.penalize(pause, hard=True)
+01916:                 except Exception:
+01917:                     pass
+01918:                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+01919:             case 500 | 502 | 503 | 504:
+01920:                 body = self._safe_body_for_log(raw)
+01921:                 raise ApiError(f"Transient HTTP {st}: {body}")
+01922:             case 401 | 403:
+01923:                 body_snip = self._sanitize_body_for_debug(raw, limit=300)
+01924:                 # Determine clock drift, WAF/IP allowlist, or permission scope issues
+01925:                 _st, drift = self._clock_drift_from_headers(rh)
+
+### Context around line 1915
+01910:             pass
+01911:         match st:
+01912:             case 429:
+01913:                 pause = self._extract_rate_limit_pause_sec(raw, default=1.0)
+01914:                 try:
+01915:                     await self._limiter.penalize(pause, hard=True)
+01916:                 except Exception:
+01917:                     pass
+01918:                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+01919:             case 500 | 502 | 503 | 504:
+01920:                 body = self._safe_body_for_log(raw)
+01921:                 raise ApiError(f"Transient HTTP {st}: {body}")
+01922:             case 401 | 403:
+01923:                 body_snip = self._sanitize_body_for_debug(raw, limit=300)
+01924:                 # Determine clock drift, WAF/IP allowlist, or permission scope issues
+01925:                 _st, drift = self._clock_drift_from_headers(rh)
+01926:                 cause = self._arzplus_detect_403_cause(
+01927:                     endpoint=str(endpoint or ""),
+
+### Context around line 1918
+01913:                 pause = self._extract_rate_limit_pause_sec(raw, default=1.0)
+01914:                 try:
+01915:                     await self._limiter.penalize(pause, hard=True)
+01916:                 except Exception:
+01917:                     pass
+01918:                 raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+01919:             case 500 | 502 | 503 | 504:
+01920:                 body = self._safe_body_for_log(raw)
+01921:                 raise ApiError(f"Transient HTTP {st}: {body}")
+01922:             case 401 | 403:
+01923:                 body_snip = self._sanitize_body_for_debug(raw, limit=300)
+01924:                 # Determine clock drift, WAF/IP allowlist, or permission scope issues
+01925:                 _st, drift = self._clock_drift_from_headers(rh)
+01926:                 cause = self._arzplus_detect_403_cause(
+01927:                     endpoint=str(endpoint or ""),
+01928:                     body_snip=str(body_snip or ""),
+01929:                     resp_headers=rh,
+01930:                     drift_s=drift,
+
+### Context around line 1973
+01968:             return json.loads(raw) if raw else {}
+01969:         except json.JSONDecodeError as e:
+01970:             body = self._safe_body_for_log(raw)
+01971:             raise ApiError(f"Bad JSON: {e}: {body}")
+01972:     async def _on_success(self) -> None:
+01973:         self._breaker.record_success()
+01974:         try:
+01975:             self.last_update_time = time.time()
+01976:         except Exception:
+01977:             pass
+01978:         try:
+01979:             await self._limiter.reward()
+01980:         except Exception:
+01981:             pass
+01982:     def _record_failure_if_transient(self, exc: Exception) -> None:
+01983:         if self._is_transient_for_breaker(exc):
+01984:             self._breaker.record_failure(exc)
+01985:     def _harden_request(
+
+### Context around line 1982
+01977:             pass
+01978:         try:
+01979:             await self._limiter.reward()
+01980:         except Exception:
+01981:             pass
+01982:     def _record_failure_if_transient(self, exc: Exception) -> None:
+01983:         if self._is_transient_for_breaker(exc):
+01984:             self._breaker.record_failure(exc)
+01985:     def _harden_request(
+01986:         self,
+01987:         *,
+01988:         method: str,
+01989:         endpoint: str,
+01990:         url: str,
+01991:         headers: dict,
+01992:         payload: Optional[dict],
+01993:         params: Optional[dict],
+01994:         auth: bool,
+
+### Context around line 1984
+01979:             await self._limiter.reward()
+01980:         except Exception:
+01981:             pass
+01982:     def _record_failure_if_transient(self, exc: Exception) -> None:
+01983:         if self._is_transient_for_breaker(exc):
+01984:             self._breaker.record_failure(exc)
+01985:     def _harden_request(
+01986:         self,
+01987:         *,
+01988:         method: str,
+01989:         endpoint: str,
+01990:         url: str,
+01991:         headers: dict,
+01992:         payload: Optional[dict],
+01993:         params: Optional[dict],
+01994:         auth: bool,
+01995:     ) -> None:
+01996:         """Root hardening for outbound HTTP.
+
+### Context around line 2078
+02073:                         req_headers=headers,
+02074:                     )
+02075:                     data = self._decode_json(raw)
+02076:                     await self._on_success()
+02077:                     return data
+02078:                 except TemporaryPause as e: self._record_failure_if_transient(e); raise
+02079:                 except (aiohttp.ClientError, asyncio.TimeoutError, OSError, ApiError) as e:
+02080:                     msg = str(e)
+02081:                     retryable = isinstance(e, (aiohttp.ClientError, asyncio.TimeoutError, OSError)) or ("Transient HTTP" in msg)
+02082:                     if retryable and attempt < max_tries:
+02083:                         delay = min(cap_delay, base_delay * (2 ** (attempt - 1)))
+02084:                         await asyncio.sleep(delay)
+02085:                         continue
+02086:                     self._record_failure_if_transient(e)
+02087:                     raise
+02088:     async def request(
+02089:         self,
+02090:         method: str,
+
+### Context around line 2084
+02079:                 except (aiohttp.ClientError, asyncio.TimeoutError, OSError, ApiError) as e:
+02080:                     msg = str(e)
+02081:                     retryable = isinstance(e, (aiohttp.ClientError, asyncio.TimeoutError, OSError)) or ("Transient HTTP" in msg)
+02082:                     if retryable and attempt < max_tries:
+02083:                         delay = min(cap_delay, base_delay * (2 ** (attempt - 1)))
+02084:                         await asyncio.sleep(delay)
+02085:                         continue
+02086:                     self._record_failure_if_transient(e)
+02087:                     raise
+02088:     async def request(
+02089:         self,
+02090:         method: str,
+02091:         endpoint: str,
+02092:         payload: Optional[dict] = None,
+02093:         auth: bool = False,
+02094:         params: Optional[dict] = None,
+02095:         priority: bool = False,
+02096:     ) -> dict:
+
+### Context around line 2086
+02081:                     retryable = isinstance(e, (aiohttp.ClientError, asyncio.TimeoutError, OSError)) or ("Transient HTTP" in msg)
+02082:                     if retryable and attempt < max_tries:
+02083:                         delay = min(cap_delay, base_delay * (2 ** (attempt - 1)))
+02084:                         await asyncio.sleep(delay)
+02085:                         continue
+02086:                     self._record_failure_if_transient(e)
+02087:                     raise
+02088:     async def request(
+02089:         self,
+02090:         method: str,
+02091:         endpoint: str,
+02092:         payload: Optional[dict] = None,
+02093:         auth: bool = False,
+02094:         params: Optional[dict] = None,
+02095:         priority: bool = False,
+02096:     ) -> dict:
+02097:         return await self._request_impl(method, endpoint, payload=payload, auth=auth, params=params, priority=priority)
+02098: 
+
+### Context around line 3194
+03189:                 if not ok:
+03190:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03191:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03192:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03193:                         diag = "CONN_CHECK_FAIL"
+03194:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03195:         except TemporaryPause:
+03196:             raise
+03197:         except Exception as e:
+03198:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03199:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03200: 
+03201:         last_exc: Optional[Exception] = None
+03202:         for ep in ("/market/orders/", "/market/orders"):
+03203:             try:
+03204:                 return await self.request("POST", ep, payload=payload, auth=True)
+03205:             except Exception as e:
+03206:                 last_exc = e
+
+### Context around line 3195
+03190:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03191:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03192:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03193:                         diag = "CONN_CHECK_FAIL"
+03194:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03195:         except TemporaryPause:
+03196:             raise
+03197:         except Exception as e:
+03198:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03199:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03200: 
+03201:         last_exc: Optional[Exception] = None
+03202:         for ep in ("/market/orders/", "/market/orders"):
+03203:             try:
+03204:                 return await self.request("POST", ep, payload=payload, auth=True)
+03205:             except Exception as e:
+03206:                 last_exc = e
+03207:                 continue
+
+### Context around line 3199
+03194:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03195:         except TemporaryPause:
+03196:             raise
+03197:         except Exception as e:
+03198:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03199:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03200: 
+03201:         last_exc: Optional[Exception] = None
+03202:         for ep in ("/market/orders/", "/market/orders"):
+03203:             try:
+03204:                 return await self.request("POST", ep, payload=payload, auth=True)
+03205:             except Exception as e:
+03206:                 last_exc = e
+03207:                 continue
+03208: 
+03209:         if last_exc:
+03210:             raise last_exc
+03211:         return {}
+
+### Context around line 3297
+03292:                 if not ok:
+03293:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03294:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03295:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03296:                         diag = "CONN_CHECK_FAIL"
+03297:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03298:         except TemporaryPause:
+03299:             raise
+03300:         except Exception as e:
+03301:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03302:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03303:         last_exc: Optional[Exception] = None
+03304:         for ep in (
+03305:             "/market/orders/cancel_all/",
+03306:             "/market/orders/cancel_all",
+03307:             "/market/orders/cancel-all/",
+03308:             "/market/orders/cancel-all",
+03309:         ):
+
+### Context around line 3298
+03293:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03294:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03295:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03296:                         diag = "CONN_CHECK_FAIL"
+03297:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03298:         except TemporaryPause:
+03299:             raise
+03300:         except Exception as e:
+03301:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03302:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03303:         last_exc: Optional[Exception] = None
+03304:         for ep in (
+03305:             "/market/orders/cancel_all/",
+03306:             "/market/orders/cancel_all",
+03307:             "/market/orders/cancel-all/",
+03308:             "/market/orders/cancel-all",
+03309:         ):
+03310:             try:
+
+### Context around line 3302
+03297:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03298:         except TemporaryPause:
+03299:             raise
+03300:         except Exception as e:
+03301:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03302:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03303:         last_exc: Optional[Exception] = None
+03304:         for ep in (
+03305:             "/market/orders/cancel_all/",
+03306:             "/market/orders/cancel_all",
+03307:             "/market/orders/cancel-all/",
+03308:             "/market/orders/cancel-all",
+03309:         ):
+03310:             try:
+03311:                 return await self.request("POST", ep, payload=payload or None, auth=True)
+03312:             except Exception as e:
+03313:                 last_exc = e
+03314:                 continue
+
+### Context around line 3418
+03413:                 if not ok:
+03414:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03415:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03416:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03417:                         diag = "CONN_CHECK_FAIL"
+03418:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03419:         except TemporaryPause:
+03420:             raise
+03421:         except Exception as e:
+03422:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03423:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03424:         last_err = None
+03425:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03426:             try:
+03427:                 return await self.request("POST", ep, payload=None, auth=True)
+03428:             except Exception as e:
+03429:                 last_err = e
+03430:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+
+### Context around line 3419
+03414:                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03415:                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+03416:                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+03417:                         diag = "CONN_CHECK_FAIL"
+03418:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03419:         except TemporaryPause:
+03420:             raise
+03421:         except Exception as e:
+03422:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03423:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03424:         last_err = None
+03425:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03426:             try:
+03427:                 return await self.request("POST", ep, payload=None, auth=True)
+03428:             except Exception as e:
+03429:                 last_err = e
+03430:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+03431:             try:
+
+### Context around line 3423
+03418:                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+03419:         except TemporaryPause:
+03420:             raise
+03421:         except Exception as e:
+03422:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+03423:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+03424:         last_err = None
+03425:         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+03426:             try:
+03427:                 return await self.request("POST", ep, payload=None, auth=True)
+03428:             except Exception as e:
+03429:                 last_err = e
+03430:         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+03431:             try:
+03432:                 return await self.request("DELETE", ep, payload=None, auth=True)
+03433:             except Exception as e:
+03434:                 last_err = e
+03435:         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+
+### Context around line 4108
+04103: #                 if not ok:
+04104: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04105: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04106: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04107: #                         diag = "CONN_CHECK_FAIL"
+04108: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04109: #         except TemporaryPause:
+04110: #             raise
+04111: #         except Exception as e:
+04112: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04113: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04114: #
+04115: #         last_exc: Optional[Exception] = None
+04116: #         for ep in ("/market/orders/", "/market/orders"):
+04117: #             try:
+04118: #                 return await self.request("POST", ep, payload=payload, auth=True)
+04119: #             except Exception as e:
+04120: #                 last_exc = e
+
+### Context around line 4109
+04104: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04105: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04106: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04107: #                         diag = "CONN_CHECK_FAIL"
+04108: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04109: #         except TemporaryPause:
+04110: #             raise
+04111: #         except Exception as e:
+04112: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04113: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04114: #
+04115: #         last_exc: Optional[Exception] = None
+04116: #         for ep in ("/market/orders/", "/market/orders"):
+04117: #             try:
+04118: #                 return await self.request("POST", ep, payload=payload, auth=True)
+04119: #             except Exception as e:
+04120: #                 last_exc = e
+04121: #                 continue
+
+### Context around line 4113
+04108: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04109: #         except TemporaryPause:
+04110: #             raise
+04111: #         except Exception as e:
+04112: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04113: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04114: #
+04115: #         last_exc: Optional[Exception] = None
+04116: #         for ep in ("/market/orders/", "/market/orders"):
+04117: #             try:
+04118: #                 return await self.request("POST", ep, payload=payload, auth=True)
+04119: #             except Exception as e:
+04120: #                 last_exc = e
+04121: #                 continue
+04122: #
+04123: #         if last_exc:
+04124: #             raise last_exc
+04125: #         return {}
+
+### Context around line 4233
+04228: #                 if not ok:
+04229: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04230: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04231: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04232: #                         diag = "CONN_CHECK_FAIL"
+04233: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04234: #         except TemporaryPause:
+04235: #             raise
+04236: #         except Exception as e:
+04237: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04238: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04239: #         last_exc: Optional[Exception] = None
+04240: #         for ep in (
+04241: #             "/market/orders/cancel_all/",
+04242: #             "/market/orders/cancel_all",
+04243: #             "/market/orders/cancel-all/",
+04244: #             "/market/orders/cancel-all",
+04245: #         ):
+
+### Context around line 4234
+04229: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04230: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04231: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04232: #                         diag = "CONN_CHECK_FAIL"
+04233: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04234: #         except TemporaryPause:
+04235: #             raise
+04236: #         except Exception as e:
+04237: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04238: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04239: #         last_exc: Optional[Exception] = None
+04240: #         for ep in (
+04241: #             "/market/orders/cancel_all/",
+04242: #             "/market/orders/cancel_all",
+04243: #             "/market/orders/cancel-all/",
+04244: #             "/market/orders/cancel-all",
+04245: #         ):
+04246: #             try:
+
+### Context around line 4238
+04233: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04234: #         except TemporaryPause:
+04235: #             raise
+04236: #         except Exception as e:
+04237: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04238: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04239: #         last_exc: Optional[Exception] = None
+04240: #         for ep in (
+04241: #             "/market/orders/cancel_all/",
+04242: #             "/market/orders/cancel_all",
+04243: #             "/market/orders/cancel-all/",
+04244: #             "/market/orders/cancel-all",
+04245: #         ):
+04246: #             try:
+04247: #                 return await self.request("POST", ep, payload=payload or None, auth=True)
+04248: #             except Exception as e:
+04249: #                 last_exc = e
+04250: #                 continue
+
+### Context around line 4368
+04363: #                 if not ok:
+04364: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04365: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04366: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04367: #                         diag = "CONN_CHECK_FAIL"
+04368: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04369: #         except TemporaryPause:
+04370: #             raise
+04371: #         except Exception as e:
+04372: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04373: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04374: #         last_err = None
+04375: #         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+04376: #             try:
+04377: #                 return await self.request("POST", ep, payload=None, auth=True)
+04378: #             except Exception as e:
+04379: #                 last_err = e
+04380: #         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+
+### Context around line 4369
+04364: #                     pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04365: #                     diag = str(getattr(self, "_conn_last_diag", "") or "CONN_CHECK_FAIL").upper().strip()
+04366: #                     if diag not in ("DNS_OR_PATH", "TOTAL_DOWN"):
+04367: #                         diag = "CONN_CHECK_FAIL"
+04368: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04369: #         except TemporaryPause:
+04370: #             raise
+04371: #         except Exception as e:
+04372: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04373: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04374: #         last_err = None
+04375: #         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+04376: #             try:
+04377: #                 return await self.request("POST", ep, payload=None, auth=True)
+04378: #             except Exception as e:
+04379: #                 last_err = e
+04380: #         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+04381: #             try:
+
+### Context around line 4373
+04368: #                     raise TemporaryPause(f"NET_{diag} code={int(code)}", pause_sec=pause)
+04369: #         except TemporaryPause:
+04370: #             raise
+04371: #         except Exception as e:
+04372: #             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
+04373: #             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
+04374: #         last_err = None
+04375: #         for ep in (f"/market/orders/{oid}/cancel/", f"/market/orders/{oid}/cancel"):
+04376: #             try:
+04377: #                 return await self.request("POST", ep, payload=None, auth=True)
+04378: #             except Exception as e:
+04379: #                 last_err = e
+04380: #         for ep in (f"/market/orders/{oid}/", f"/market/orders/{oid}"):
+04381: #             try:
+04382: #                 return await self.request("DELETE", ep, payload=None, auth=True)
+04383: #             except Exception as e:
+04384: #                 last_err = e
+04385: #         for ep in ("/market/orders/cancel/", "/market/orders/cancel"):
+
+### Context around line 4545
+04540:         backoff = 0.25
+04541:         for _omega_guard in range(150000):
+04542:             try:
+04543:                 if self._proc is None or self._proc.returncode is not None or self._proc.stdin is None:
+04544:                     await self._ensure_writer()
+04545:                     await asyncio.sleep(backoff)
+04546:                     backoff = min(5.0, backoff * 2.0)
+04547:                     continue
+04548:                 kind, row = await self._q.get()
+04549:                 try:
+04550:                     payload = json.dumps({"k": kind, "r": row}, separators=(",", ":")) + "\n"
+04551:                     self._proc.stdin.write(payload.encode("utf-8", "strict"))
+04552:                     await asyncio.wait_for(self._proc.stdin.drain(), timeout=2.5)
+04553:                 finally:
+04554:                     self._q.task_done()
+04555:                 backoff = 0.25
+04556:             except asyncio.CancelledError:
+04557:                 raise
+
+### Context around line 4574
+04569:                     if self._proc:
+04570:                         self._proc.kill()
+04571:                 except Exception:
+04572:                     pass
+04573:                 self._proc = None
+04574:                 await asyncio.sleep(backoff)
+04575:                 backoff = min(5.0, backoff * 2.0)
+04576:     def _put_nowait(self, kind: str, row: tuple) -> None:
+04577:         if self.disabled or self._closing:
+04578:             return
+04579:         self._start_if_needed()
+04580:         try:
+04581:             self._q.put_nowait((kind, row))
+04582:         except asyncio.QueueFull:
+04583:             self.dropped_ticks += 1
+04584:             now = time.time()
+04585:             if (now - self._last_drop_log) > 5.0:
+04586:                 self._last_drop_log = now
+
+### Context around line 5130
+05125:                 try:
+05126:                     self._depth_note_ok(sym, now2)
+05127:                 except Exception:
+05128:                     pass
+05129:                 return top
+05130:             except (TradingHalt, TemporaryPause):
+05131:                 raise
+05132:             except asyncio.TimeoutError as e:
+05133:                 last_exc = e
+05134:                 msg = "timeout"
+05135:             except Exception as e:
+05136:                 last_exc = e
+05137:                 try:
+05138:                     msg = str(e or "").strip()
+05139:                 except Exception:
+05140:                     msg = ""
+05141:                 low = msg.lower()
+05142:                 try:
+
+### Context around line 5179
+05174:                             pass
+05175:                         return None
+05176:             if attempt < (retry_max - 1):
+05177:                 try:
+05178:                     dt = min(1.2, backoff0 * (2 ** attempt))
+05179:                     await asyncio.sleep(dt)
+05180:                 except Exception:
+05181:                     pass
+05182:         if use_disk_cache_on_timeout:
+05183:             dc = self._disk_cache.get(sym)
+05184:             if dc:
+05185:                 try:
+05186:                     max_age = float(_env_float("DEPTH_DISK_CACHE_MAX_AGE_SEC", (90.0 if _env_bool("TERMUX_MODE", False) else 60.0)) or 0.0)
+05187:                 except Exception:
+05188:                     max_age = 0.0
+05189:                 try:
+05190:                     dc_ts = float(dc.get("ts") or 0.0)
+05191:                 except Exception:
+
+### Context around line 5365
+05360:                 tmo = float(_env_float("SPOT_SNAPSHOT_TIMEOUT_SEC", _env_float("TICKERS_REQ_TIMEOUT", 6.5)) or 6.5)
+05361:             except Exception:
+05362:                 tmo = 6.5
+05363:             try:
+05364:                 await asyncio.wait_for(self._ex.get_market_snapshot(), timeout=tmo)
+05365:             except (TradingHalt, TemporaryPause):
+05366:                 raise
+05367:             except Exception:
+05368:                 pass
+05369:             try:
+05370:                 await asyncio.wait_for(self._ex.get_all_tickers_optimized(), timeout=tmo)
+05371:             except (TradingHalt, TemporaryPause):
+05372:                 raise
+05373:             except Exception:
+05374:                 pass
+05375:         px = _try_snapshots()
+05376:         if (px is None) or float(px or 0.0) <= 0.0:
+05377:             try:
+
+### Context around line 5371
+05366:                 raise
+05367:             except Exception:
+05368:                 pass
+05369:             try:
+05370:                 await asyncio.wait_for(self._ex.get_all_tickers_optimized(), timeout=tmo)
+05371:             except (TradingHalt, TemporaryPause):
+05372:                 raise
+05373:             except Exception:
+05374:                 pass
+05375:         px = _try_snapshots()
+05376:         if (px is None) or float(px or 0.0) <= 0.0:
+05377:             try:
+05378:                 await _refresh_snapshots_once()
+05379:             except (TradingHalt, TemporaryPause):
+05380:                 raise
+05381:             except Exception:
+05382:                 pass
+05383:             px = _try_snapshots()
+
+### Context around line 5379
+05374:                 pass
+05375:         px = _try_snapshots()
+05376:         if (px is None) or float(px or 0.0) <= 0.0:
+05377:             try:
+05378:                 await _refresh_snapshots_once()
+05379:             except (TradingHalt, TemporaryPause):
+05380:                 raise
+05381:             except Exception:
+05382:                 pass
+05383:             px = _try_snapshots()
+05384:         if (px is None) or float(px or 0.0) <= 0.0:
+05385:             try:
+05386:                 tmo = float(_env_float("TRADES_REQ_TIMEOUT", _env_float("TICKERS_REQ_TIMEOUT", 6.5)) or 5.0)
+05387:             except Exception:
+05388:                 tmo = 5.0
+05389:             try:
+05390:                 candidates = _symbol_aliases(sym) or [sym]
+05391:                 for cand in candidates[:12]:
+
+### Context around line 5411
+05406:                         pass
+05407:                     px_t = _px_from_row(t_last or {})
+05408:                     if px_t and float(px_t) > 0.0:
+05409:                         px = float(px_t)
+05410:                         break
+05411:             except (TradingHalt, TemporaryPause):
+05412:                 raise
+05413:             except Exception:
+05414:                 px = None
+05415:         if (px is None) or float(px or 0.0) <= 0.0:
+05416:             try:
+05417:                 s = sym
+05418:                 q = None
+05419:                 for quote in ("IRT", "IRR", "USDT", "USD", "USDC"):
+05420:                     if s.endswith(quote) and len(s) > len(quote):
+05421:                         q = quote
+05422:                         base = s[: -len(quote)]
+05423:                         break
+
+### Context around line 5982
+05977:                 if tries >= 5:
+05978:                     return
+05979:                 sleep_s = min(cap, base * (2 ** (tries - 1)))
+05980:                 sleep_s = float(sleep_s) * float(0.85 + (int.from_bytes(hashlib.blake2b(f"{sym}:{tries}".encode(), digest_size=2).digest(), "big") / 65535.0) * 0.3)
+05981:                 try:
+05982:                     await asyncio.sleep(sleep_s)
+05983:                 except asyncio.CancelledError:
+05984:                     return
+05985: @dataclass
+05986: class _SymbolState:
+05987:     last_mid: float = 0.0
+05988:     ema_fast: float = 0.0
+05989:     ema_slow: float = 0.0
+05990:     ema_var: float = 0.0
+05991:     ema_imb: float = 0.0
+05992:     ema_micro: float = 0.0
+05993:     ema_spread_bps: float = 0.0
+05994:     last_score: float = 0.0
+
+### Context around line 7527
+07522:             "total_processed": 0,
+07523:         }
+07524:     async def monitor_loop(self):
+07525:         for _omega_guard in range(1000000):
+07526:             try:
+07527:                 await asyncio.sleep(0.5)
+07528:                 start = time.perf_counter()
+07529:                 await asyncio.sleep(0)
+07530:                 end = time.perf_counter()
+07531:                 latency_ms = (end - start) * 1000.0
+07532:                 self._latency_history.append(float(latency_ms))
+07533:                 if len(self._latency_history) >= 10:
+07534:                     self._stats["avg_latency_ms"] = float(statistics.mean(self._latency_history))
+07535:                     try:
+07536:                         self._stats["p95_latency_ms"] = float(np.percentile(list(self._latency_history), 95))
+07537:                     except Exception:
+07538:                         self._stats["p95_latency_ms"] = float(max(self._latency_history))
+07539:                 if latency_ms > (self.max_latency_ms * 2.0):
+
+### Context around line 7529
+07524:     async def monitor_loop(self):
+07525:         for _omega_guard in range(1000000):
+07526:             try:
+07527:                 await asyncio.sleep(0.5)
+07528:                 start = time.perf_counter()
+07529:                 await asyncio.sleep(0)
+07530:                 end = time.perf_counter()
+07531:                 latency_ms = (end - start) * 1000.0
+07532:                 self._latency_history.append(float(latency_ms))
+07533:                 if len(self._latency_history) >= 10:
+07534:                     self._stats["avg_latency_ms"] = float(statistics.mean(self._latency_history))
+07535:                     try:
+07536:                         self._stats["p95_latency_ms"] = float(np.percentile(list(self._latency_history), 95))
+07537:                     except Exception:
+07538:                         self._stats["p95_latency_ms"] = float(max(self._latency_history))
+07539:                 if latency_ms > (self.max_latency_ms * 2.0):
+07540:                     self._stats["overflow_count"] += 1
+07541:                     logging.warning("event=LOOP_LATENCY_SPIKE latency_ms=%.2f max_ms=%.2f", float(latency_ms), float(self.max_latency_ms))
+
+### Context around line 7546
+07541:                     logging.warning("event=LOOP_LATENCY_SPIKE latency_ms=%.2f max_ms=%.2f", float(latency_ms), float(self.max_latency_ms))
+07542:             except asyncio.CancelledError:
+07543:                 raise
+07544:             except Exception:
+07545:                 logging.exception("event=LOOP_MONITOR_ERR")
+07546:                 await asyncio.sleep(0.5)
+07547:     async def submit_priority_task(
+07548:         self,
+07549:         coro: Awaitable,
+07550:         priority: Priority = Priority.NORMAL,
+07551:         task_id: Optional[str] = None,
+07552:     ) -> asyncio.Task:
+07553:         if task_id and task_id in self._pending_tasks:
+07554:             return self._pending_tasks[task_id]
+07555:         async def _wrapped():
+07556:             try:
+07557:                 return await coro
+07558:             finally:
+
+### Context around line 7604
+07599:                         self.max_backoff_sec,
+07600:                         self._backoff_factor * (2 ** self._consecutive_failures)
+07601:                     )
+07602:                     wait_time = max(wait_time, backoff)
+07603:                 if wait_time > 0:
+07604:                     await asyncio.sleep(wait_time)
+07605:                     self._tokens = 0
+07606:                 else:
+07607:                     self._tokens -= required
+07608:             else:
+07609:                 self._tokens -= required
+07610:                 self._consecutive_failures = 0
+07611:                 self._backoff_factor = 1.0
+07612:     async def __aenter__(self):
+07613:         await self.acquire()
+07614:         return self
+07615:     async def __aexit__(self, exc_type, exc, tb):
+07616:         try:
+
+### Context around line 7854
+07849:             reset_delay = float(self.config.get("circuit_breaker_reset_sec", 60) or 60.0)
+07850:         except Exception:
+07851:             reset_delay = 60.0
+07852:         async def _reset():
+07853:             try:
+07854:                 await asyncio.sleep(reset_delay)
+07855:                 with self._lock:
+07856:                     if self.circuit_breakers.get(breaker_id):
+07857:                         self.circuit_breakers[breaker_id] = False
+07858:                 logging.info("event=CIRCUIT_RESET id=%s delay_s=%.1f", str(breaker_id), float(reset_delay))
+07859:             except asyncio.CancelledError:
+07860:                 raise
+07861:             except Exception:
+07862:                 logging.exception("event=CIRCUIT_RESET_ERR id=%s", str(breaker_id))
+07863:         try:
+07864:             t = self._cb_reset_tasks.get(breaker_id)
+07865:             if t is None or t.done():
+07866:                 self._cb_reset_tasks[breaker_id] = asyncio.create_task(_reset(), name=f"cb_reset_{breaker_id}")
+
+### Context around line 8528
+08523:         self.failure_count = 0
+08524:         self.last_failure_time = 0.0
+08525:         self.success_count = 0
+08526:         self._lock = _NoopLock()
+08527:         self._state_change_time = time.time()
+08528:     def record_success(self):
+08529:         with self._lock:
+08530:             if self.state == CircuitBreakerState.HALF_OPEN:
+08531:                 self.success_count += 1
+08532:                 if self.success_count >= 3:
+08533:                     self.state = CircuitBreakerState.CLOSED
+08534:                     self.failure_count = 0
+08535:                     self.success_count = 0
+08536:                     self._state_change_time = time.time()
+08537:                     logging.info(f"Circuit breaker {self.name} closed")
+08538:             elif self.state == CircuitBreakerState.CLOSED:
+08539:                 if self.failure_count > 0:
+08540:                     elapsed = time.time() - self.last_failure_time
+
+### Context around line 8543
+08538:             elif self.state == CircuitBreakerState.CLOSED:
+08539:                 if self.failure_count > 0:
+08540:                     elapsed = time.time() - self.last_failure_time
+08541:                     if elapsed > 30:
+08542:                         self.failure_count = max(0, self.failure_count - 1)
+08543:     def record_failure(self):
+08544:         with self._lock:
+08545:             self.failure_count += 1
+08546:             self.last_failure_time = time.time()
+08547:             self.success_count = 0
+08548:             if (self.state == CircuitBreakerState.CLOSED and
+08549:                 self.failure_count >= self.config.circuit_breaker_threshold):
+08550:                 self.state = CircuitBreakerState.OPEN
+08551:                 self._state_change_time = time.time()
+08552:                 logging.warning(f"Circuit breaker {self.name} opened")
+08553:                 self._schedule_half_open()
+08554:             elif self.state == CircuitBreakerState.HALF_OPEN:
+08555:                 self.state = CircuitBreakerState.OPEN
+
+### Context around line 8562
+08557:                 logging.warning(f"Circuit breaker {self.name} re-opened")
+08558:                 self._schedule_half_open()
+08559:     def _schedule_half_open(self):
+08560:         async def _transition():
+08561:             try:
+08562:                 await asyncio.sleep(float(self.config.circuit_breaker_timeout))
+08563:                 with self._lock:
+08564:                     if self.state == CircuitBreakerState.OPEN:
+08565:                         self.state = CircuitBreakerState.HALF_OPEN
+08566:                         self._state_change_time = time.time()
+08567:                         logging.info("event=CB_HALF_OPEN name=%s", str(self.name))
+08568:             except asyncio.CancelledError:
+08569:                 raise
+08570:             except Exception:
+08571:                 logging.exception("event=CB_HALF_OPEN_ERR name=%s", str(self.name))
+08572:         try:
+08573:             asyncio.create_task(_transition(), name=f"cb_halfopen_{self.name}")
+08574:         except Exception:
+
+### Context around line 8610
+08605:         **kwargs
+08606:     ) -> Any:
+08607:         breaker = self.get_circuit_breaker(endpoint, retry_config)
+08608:         for attempt in range(1, retry_config.max_attempts + 1):
+08609:             if not breaker.can_execute():
+08610:                 raise TemporaryPause(f"Circuit breaker open for {endpoint}", pause_sec=float(breaker.config.circuit_breaker_timeout))
+08611:             try:
+08612:                 timeout = retry_config.base_delay * retry_config.timeout_multiplier
+08613:                 result = await asyncio.wait_for(
+08614:                     coro_func(*args, **kwargs),
+08615:                     timeout=timeout
+08616:                 )
+08617:                 breaker.record_success()
+08618:                 self.retry_stats[endpoint]["success"] += 1
+08619:                 return result
+08620:             except asyncio.TimeoutError:
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+
+### Context around line 8617
+08612:                 timeout = retry_config.base_delay * retry_config.timeout_multiplier
+08613:                 result = await asyncio.wait_for(
+08614:                     coro_func(*args, **kwargs),
+08615:                     timeout=timeout
+08616:                 )
+08617:                 breaker.record_success()
+08618:                 self.retry_stats[endpoint]["success"] += 1
+08619:                 return result
+08620:             except asyncio.TimeoutError:
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+08623:                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
+08624:                 )
+08625:             except aiohttp.ClientError as e:
+08626:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08627:                 logging.warning(
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+
+### Context around line 8621
+08616:                 )
+08617:                 breaker.record_success()
+08618:                 self.retry_stats[endpoint]["success"] += 1
+08619:                 return result
+08620:             except asyncio.TimeoutError:
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+08623:                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
+08624:                 )
+08625:             except aiohttp.ClientError as e:
+08626:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08627:                 logging.warning(
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08630:                 )
+08631:             except Exception as e:
+08632:                 self.retry_stats[endpoint]["failures"] += 1
+08633:                 breaker.record_failure()
+
+### Context around line 8626
+08621:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08622:                 logging.warning(
+08623:                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
+08624:                 )
+08625:             except aiohttp.ClientError as e:
+08626:                 self.retry_stats[endpoint]["failures"] += 1; breaker.record_failure()
+08627:                 logging.warning(
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08630:                 )
+08631:             except Exception as e:
+08632:                 self.retry_stats[endpoint]["failures"] += 1
+08633:                 breaker.record_failure()
+08634:                 logging.error(
+08635:                     f"Error on {endpoint}: {e} "
+08636:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+
+### Context around line 8633
+08628:                     f"Client error on {endpoint}: {e} "
+08629:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08630:                 )
+08631:             except Exception as e:
+08632:                 self.retry_stats[endpoint]["failures"] += 1
+08633:                 breaker.record_failure()
+08634:                 logging.error(
+08635:                     f"Error on {endpoint}: {e} "
+08636:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+08639:                 delay = self._calculate_delay(attempt, retry_config)
+08640:                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
+08641:                 await asyncio.sleep(delay)
+08642:         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+08643:     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
+08644:         if config.strategy == RetryStrategy.IMMEDIATE:
+08645:             delay = 0.1
+
+### Context around line 8641
+08636:                     f"(attempt {attempt}/{retry_config.max_attempts})"
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+08639:                 delay = self._calculate_delay(attempt, retry_config)
+08640:                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
+08641:                 await asyncio.sleep(delay)
+08642:         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+08643:     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
+08644:         if config.strategy == RetryStrategy.IMMEDIATE:
+08645:             delay = 0.1
+08646:         elif config.strategy == RetryStrategy.EXPONENTIAL:
+08647:             delay = config.base_delay * (config.backoff_factor ** (attempt - 1))
+08648:         elif config.strategy == RetryStrategy.FIBONACCI:
+08649:             fib = [1, 1]
+08650:             for _ in range(attempt):
+08651:                 fib.append(fib[-1] + fib[-2])
+08652:             delay = config.base_delay * fib[attempt]
+08653:         elif config.strategy == RetryStrategy.FIXED:
+
+### Context around line 8642
+08637:                 )
+08638:             if attempt < retry_config.max_attempts:
+08639:                 delay = self._calculate_delay(attempt, retry_config)
+08640:                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
+08641:                 await asyncio.sleep(delay)
+08642:         raise TemporaryPause(f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts", pause_sec=float(retry_config.base_delay))
+08643:     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
+08644:         if config.strategy == RetryStrategy.IMMEDIATE:
+08645:             delay = 0.1
+08646:         elif config.strategy == RetryStrategy.EXPONENTIAL:
+08647:             delay = config.base_delay * (config.backoff_factor ** (attempt - 1))
+08648:         elif config.strategy == RetryStrategy.FIBONACCI:
+08649:             fib = [1, 1]
+08650:             for _ in range(attempt):
+08651:                 fib.append(fib[-1] + fib[-2])
+08652:             delay = config.base_delay * fib[attempt]
+08653:         elif config.strategy == RetryStrategy.FIXED:
+08654:             delay = config.base_delay
+
+### Context around line 8843
+08838:             pass
+08839:         self._render_task = None
+08840:     async def _render_loop(self):
+08841:         for _omega_guard in range(150000):
+08842:             try:
+08843:                 await asyncio.sleep(self.refresh_interval)
+08844:                 self.render_dashboard()
+08845:             except asyncio.CancelledError:
+08846:                 raise
+08847:             except Exception:
+08848:                 logging.exception("event=DASH_RENDER_ERR")
+08849:     def update_metrics(self, metrics: RiskMetrics):
+08850:         try:
+08851:             self.metrics_history.append(metrics)
+08852:         except Exception:
+08853:             pass
+08854:     def render_dashboard(self):
+08855:         try:
+
+### Context around line 9063
+09058:             try:
+09059:                 start_time = time.time()
+09060:                 health_report = self.health_monitor.check_system_health()
+09061:                 if health_report.get("system_status") == "CRITICAL":
+09062:                     logging.critical("System health critical, pausing trading")
+09063:                     await asyncio.sleep(5)
+09064:                     continue
+09065:                 symbols = self._get_trading_symbols()
+09066:                 priority_symbols = self._prioritize_symbols(symbols, health_report)
+09067:                 for symbol in priority_symbols:
+09068:                     await self._process_symbol_enhanced(symbol)
+09069:                 await self._update_dashboard()
+09070:                 loop_duration = time.time() - start_time
+09071:                 target_interval = self.original_config.get("loop_interval_sec", 2.0)
+09072:                 if loop_duration < target_interval:
+09073:                     await asyncio.sleep(target_interval - loop_duration)
+09074:             except asyncio.CancelledError:
+09075:                 break
+
+### Context around line 9073
+09068:                     await self._process_symbol_enhanced(symbol)
+09069:                 await self._update_dashboard()
+09070:                 loop_duration = time.time() - start_time
+09071:                 target_interval = self.original_config.get("loop_interval_sec", 2.0)
+09072:                 if loop_duration < target_interval:
+09073:                     await asyncio.sleep(target_interval - loop_duration)
+09074:             except asyncio.CancelledError:
+09075:                 break
+09076:             except Exception as e:
+09077:                 logging.error(f"Enhanced trading loop error: {e}")
+09078:                 await asyncio.sleep(1)
+09079:     def _get_trading_symbols(self) -> List[str]:
+09080:         return self.original_config.get("symbols", ["BTCIRT", "ETHIRT", "USDTIRT"])
+09081:     def _prioritize_symbols(
+09082:         self,
+09083:         symbols: List[str],
+09084:         health_report: Dict[str, Any]
+09085:     ) -> List[str]:
+
+### Context around line 9078
+09073:                     await asyncio.sleep(target_interval - loop_duration)
+09074:             except asyncio.CancelledError:
+09075:                 break
+09076:             except Exception as e:
+09077:                 logging.error(f"Enhanced trading loop error: {e}")
+09078:                 await asyncio.sleep(1)
+09079:     def _get_trading_symbols(self) -> List[str]:
+09080:         return self.original_config.get("symbols", ["BTCIRT", "ETHIRT", "USDTIRT"])
+09081:     def _prioritize_symbols(
+09082:         self,
+09083:         symbols: List[str],
+09084:         health_report: Dict[str, Any]
+09085:     ) -> List[str]:
+09086:         prioritized = []
+09087:         for symbol in symbols:
+09088:             symbol_report = health_report.get("symbol_reports", {}).get(symbol, {})
+09089:             health_score = symbol_report.get("health_score", 0)
+09090:             if health_score >= 70:
+
+### Context around line 11292
+11287:                     rd = g(self._wallet, sym)
+11288:             side_l = str(side or "").lower()
+11289:             is_entry = side_l.startswith("buy")
+11290:             if rd is not None and is_entry:
+11291:                 if not bool(getattr(rd, "allow_entries", True)):
+11292:                     raise TemporaryPause(f"RISK_L{int(getattr(rd,'level',5))}_NO_ENTRY")
+11293:                 mult = float(getattr(rd, "size_mult", 1.0) or 1.0)
+11294:                 mult = float(clamp(mult, 0.0, 1.0))
+11295:                 _skip_mult = False
+11296:                 try:
+11297:                     _skip_mult = bool(_CTX_SKIP_RUNTIME_RISK_MULT.get())
+11298:                 except Exception:
+11299:                     _skip_mult = False
+11300:                 if (not _skip_mult) and mult < 0.999:
+11301:                     qty = float(qty) * mult
+11302:                     notional_irt = float(notional_irt) * mult
+11303:                     try:
+11304:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+
+### Context around line 11308
+11303:                     try:
+11304:                         self._logger.info("event=RISK_SIZE_MULT wallet=%s sym=%s level=%s mult=%.3f",
+11305:                                           self._wallet, sym, str(getattr(rd,'level','?')), mult)
+11306:                     except Exception:
+11307:                         pass
+11308:         except TemporaryPause:
+11309:             raise
+11310:         except Exception:
+11311:             pass
+11312:         if qty <= 0 or price <= 0:
+11313:             raise ValueError(f"Invalid order params qty={qty} price={price}")
+11314:         qty2, px2 = await self._norm.normalize(sym, float(qty), float(price))
+11315:         if qty2 <= 0 or px2 <= 0:
+11316:             raise ValueError(f"Normalized order invalid qty={qty2} price={px2}")
+11317:         cid: Optional[str] = None
+11318:         if self._oj is not None:
+11319:             cid = self._oj.new_cid(self._wallet, sym, side)
+11320:             self._oj.mark_pending(cid, wallet=self._wallet, symbol=sym, side=side,
+
+### Context around line 11386
+11381:                             resp = dict(resp)
+11382:                             resp["cid"] = str(cid)
+11383:                 except Exception:
+11384:                     pass
+11385:                 return resp
+11386:             except (TradingHalt, TemporaryPause):
+11387:                 raise
+11388:             except asyncio.TimeoutError as e:
+11389:                 last_exc = e
+11390:                 try:
+11391:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+11392:                 except Exception:
+11393:                     pass
+11394:                 if attempt < self.max_retries:
+11395:                     try:
+11396:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11397:                     except Exception:
+11398:                         pass
+
+### Context around line 11396
+11391:                     self._logger.error("event=ORDER_TIMEOUT wallet=%s sym=%s cid=%s", self._wallet, sym, cid)
+11392:                 except Exception:
+11393:                     pass
+11394:                 if attempt < self.max_retries:
+11395:                     try:
+11396:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11397:                     except Exception:
+11398:                         pass
+11399:                     continue
+11400:                 break
+11401:             except Exception as e:
+11402:                 last_exc = e
+11403:                 try:
+11404:                     self._logger.error("event=ORDER_POST_FAIL side=%s sym=%s cid=%s attempt=%d/%d err=%s",
+11405:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+11406:                 except Exception:
+11407:                     pass
+11408:                 if attempt < self.max_retries:
+
+### Context around line 11410
+11405:                                        side, sym, cid, attempt + 1, self.max_retries + 1, e, exc_info=True)
+11406:                 except Exception:
+11407:                     pass
+11408:                 if attempt < self.max_retries:
+11409:                     try:
+11410:                         await asyncio.sleep(float(self.base_backoff) * (2 ** attempt))
+11411:                     except Exception:
+11412:                         pass
+11413:         if self._rec:
+11414:             self._rec.record_order(time.time(), self._wallet, sym, side, float(qty2), float(px2), float(notional_irt),
+11415:                                    ok=False, order_id=None, raw={"error": str(last_exc), "cid": cid})
+11416:         if self._oj is not None:
+11417:             try:
+11418:                 self._oj.mark_uncertain(cid, err=str(last_exc))
+11419:             except Exception:
+11420:                 pass
+11421:         if isinstance(last_exc, (asyncio.TimeoutError, aiohttp.ClientError, OSError)) and (not self.cfg.dry_run):
+11422:             raise TradingHalt(f"ORDER_DESYNC cid={cid} side={side} sym={sym}") from last_exc
+
+### Context around line 11443
+11438:             step_bps = (bps * float(i)) / 10000.0
+11439:             px_i = base_price * (1.0 - step_bps) if str(side).lower() == "buy" else base_price * (1.0 + step_bps)
+11440:             resp = await self.place_limit(sym, side, q_i, px_i, (notional_irt * (q_i / max(qty, 1e-12))))
+11441:             child_orders.append(resp)
+11442:             if pause_ms > 0 and i < steps - 1:
+11443:                 await asyncio.sleep(pause_ms / 1000.0)
+11444:         any_sent = False
+11445:         all_good = True
+11446:         all_dup = True
+11447:         for o in (child_orders or []):
+11448:             if not isinstance(o, dict):
+11449:                 all_good = False
+11450:                 all_dup = False
+11451:                 continue
+11452:             ok0 = bool(o.get("ok"))
+11453:             if not ok0:
+11454:                 try:
+11455:                     ok0 = int(float(o.get("status") or o.get("code") or 0)) in (200, 201)
+
+### Context around line 12742
+12737:         return dict(self.stats)
+12738: 
+12739:     def to_dict(self, *args, **kwargs):
+12740:         return dict(self.stats)
+12741: 
+12742:     def record_success(self, *args, **kwargs):
+12743:         self.healthy = True
+12744:         self.stats["healthy"] = True
+12745:         self.stats["ok"] = True
+12746:         return None
+12747: 
+12748:     def record_failure(self, *args, **kwargs):
+12749:         self.stats["failures"] = int(self.stats.get("failures", 0)) + 1
+12750:         self.stats["errors"] = int(self.stats.get("errors", 0)) + 1
+12751:         # fail-safe: do not make startup fail
+12752:         self.healthy = True
+12753:         return None
+12754: 
+
+### Context around line 12748
+12743:         self.healthy = True
+12744:         self.stats["healthy"] = True
+12745:         self.stats["ok"] = True
+12746:         return None
+12747: 
+12748:     def record_failure(self, *args, **kwargs):
+12749:         self.stats["failures"] = int(self.stats.get("failures", 0)) + 1
+12750:         self.stats["errors"] = int(self.stats.get("errors", 0)) + 1
+12751:         # fail-safe: do not make startup fail
+12752:         self.healthy = True
+12753:         return None
+12754: 
+12755:     def record_error(self, err=None, *args, **kwargs):
+12756:         self.last_error = err
+12757:         return self.record_failure(*args, **kwargs)
+12758: 
+12759:     def __getattr__(self, name):
+12760:         # Any missing method becomes a harmless callable.
+
+### Context around line 12757
+12752:         self.healthy = True
+12753:         return None
+12754: 
+12755:     def record_error(self, err=None, *args, **kwargs):
+12756:         self.last_error = err
+12757:         return self.record_failure(*args, **kwargs)
+12758: 
+12759:     def __getattr__(self, name):
+12760:         # Any missing method becomes a harmless callable.
+12761:         def _noop(*args, **kwargs):
+12762:             if name.startswith("is_") or name in {"healthy", "available", "ready"}:
+12763:                 return True
+12764:             if name in {"score", "ratio", "rate"}:
+12765:                 return 1.0
+12766:             if name in {"snapshot", "stats", "metrics", "status"}:
+12767:                 return dict(self.stats)
+12768:             return _S43NoopAwaitable(None)
+12769:         return _noop
+
+### Context around line 12844
+12839: 
+12840:     def note_failure(self, symbol=None, reason=None, *args, **kwargs):
+12841:         # fail-safe: do not auto-block unless caller explicitly uses add/mark
+12842:         return None
+12843: 
+12844:     def record_failure(self, symbol=None, reason=None, *args, **kwargs):
+12845:         return self.note_failure(symbol, reason=reason, *args, **kwargs)
+12846: 
+12847:     def note_success(self, symbol=None, *args, **kwargs):
+12848:         return None
+12849: 
+12850:     def record_success(self, symbol=None, *args, **kwargs):
+12851:         return None
+12852: 
+12853:     def get_reason(self, symbol=None, *args, **kwargs):
+12854:         try:
+12855:             key = str(symbol).strip().upper() if symbol is not None else ""
+12856:         except Exception:
+
+### Context around line 12850
+12845:         return self.note_failure(symbol, reason=reason, *args, **kwargs)
+12846: 
+12847:     def note_success(self, symbol=None, *args, **kwargs):
+12848:         return None
+12849: 
+12850:     def record_success(self, symbol=None, *args, **kwargs):
+12851:         return None
+12852: 
+12853:     def get_reason(self, symbol=None, *args, **kwargs):
+12854:         try:
+12855:             key = str(symbol).strip().upper() if symbol is not None else ""
+12856:         except Exception:
+12857:             key = ""
+12858:         return self._reasons.get(key)
+12859: 
+12860:     def snapshot(self, *args, **kwargs):
+12861:         return {
+12862:             "count": len(self._blocked),
+
+### Context around line 14486
+14481:                 try:
+14482:                     self._log.error("event=JANITOR_SWEEP_ERR err=%s", e)
+14483:                 except Exception:
+14484:                     pass
+14485:             dt = time.time() - t0
+14486:             await asyncio.sleep(max(0.2, sweep_sec - dt))
+14487:     async def _sweep(self) -> None:
+14488:         now = time.time()
+14489:         try:
+14490:             bot_ttl_sec = float(_env_float("ORDER_TTL_SEC", 60.0) or 60.0)
+14491:         except Exception:
+14492:             bot_ttl_sec = 60.0
+14493:         bot_ttl_sec = max(10.0, float(bot_ttl_sec))
+14494:         try:
+14495:             orphan_age_sec = float(_env_float("ORPHAN_BOT_ORDER_MAX_AGE_SEC", 900.0) or 900.0)
+14496:         except Exception:
+14497:             orphan_age_sec = 900.0
+14498:         orphan_age_sec = max(60.0, float(orphan_age_sec))
+
+### Context around line 15839
+15834:                 i0 = 0
+15835:                 for sym, rr in it0:
+15836:                     i0 += 1
+15837:                     if (i0 % yield_every) == 0:
+15838:                         try:
+15839:                             await asyncio.sleep(0)
+15840:                         except Exception:
+15841:                             pass
+15842:                     try:
+15843:                         s = _canon_symbol(str(sym or ""))
+15844:                     except Exception:
+15845:                         s = str(sym or "").strip().upper()
+15846:                     if not s:
+15847:                         continue
+15848:                     if not isinstance(rr, dict):
+15849:                         rr = {}
+15850:                     mid = float(_mid_from_row(rr) or 0.0)
+15851:                     if mid <= 0.0:
+
+### Context around line 18324
+18319:                     await _rej("SOFT_BLACKLIST", sym=sym, score=float(soft_score))
+18320:                     if not has_pos:
+18321:                         return
+18322:         except Exception:
+18323:             pass
+18324:         net_pause_sec = 0.0
+18325:         try:
+18326:             if hasattr(self.net, "symbol_pause_remaining") and callable(getattr(self.net, "symbol_pause_remaining")):
+18327:                 net_pause_sec = float(self.net.symbol_pause_remaining(sym) or 0.0)
+18328:             elif hasattr(self.net, "symbol_pause_remaining_sec") and callable(getattr(self.net, "symbol_pause_remaining_sec")):
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+
+### Context around line 18327
+18322:         except Exception:
+18323:             pass
+18324:         net_pause_sec = 0.0
+18325:         try:
+18326:             if hasattr(self.net, "symbol_pause_remaining") and callable(getattr(self.net, "symbol_pause_remaining")):
+18327:                 net_pause_sec = float(self.net.symbol_pause_remaining(sym) or 0.0)
+18328:             elif hasattr(self.net, "symbol_pause_remaining_sec") and callable(getattr(self.net, "symbol_pause_remaining_sec")):
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+18337:         try:
+18338:             hb_state = getattr(w, "_hb_state", None)
+18339:             if isinstance(hb_state, dict):
+
+### Context around line 18329
+18324:         net_pause_sec = 0.0
+18325:         try:
+18326:             if hasattr(self.net, "symbol_pause_remaining") and callable(getattr(self.net, "symbol_pause_remaining")):
+18327:                 net_pause_sec = float(self.net.symbol_pause_remaining(sym) or 0.0)
+18328:             elif hasattr(self.net, "symbol_pause_remaining_sec") and callable(getattr(self.net, "symbol_pause_remaining_sec")):
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+18337:         try:
+18338:             hb_state = getattr(w, "_hb_state", None)
+18339:             if isinstance(hb_state, dict):
+18340:                 rec = hb_state.get(sym) or {}
+18341:                 last_change = float(rec.get("last_change_ts", 0.0) or 0.0)
+
+### Context around line 18331
+18326:             if hasattr(self.net, "symbol_pause_remaining") and callable(getattr(self.net, "symbol_pause_remaining")):
+18327:                 net_pause_sec = float(self.net.symbol_pause_remaining(sym) or 0.0)
+18328:             elif hasattr(self.net, "symbol_pause_remaining_sec") and callable(getattr(self.net, "symbol_pause_remaining_sec")):
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+18337:         try:
+18338:             hb_state = getattr(w, "_hb_state", None)
+18339:             if isinstance(hb_state, dict):
+18340:                 rec = hb_state.get(sym) or {}
+18341:                 last_change = float(rec.get("last_change_ts", 0.0) or 0.0)
+18342:                 if last_change and (time.time() - last_change) >= 300.0:
+18343:                     force_refresh = True
+
+### Context around line 18332
+18327:                 net_pause_sec = float(self.net.symbol_pause_remaining(sym) or 0.0)
+18328:             elif hasattr(self.net, "symbol_pause_remaining_sec") and callable(getattr(self.net, "symbol_pause_remaining_sec")):
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+18337:         try:
+18338:             hb_state = getattr(w, "_hb_state", None)
+18339:             if isinstance(hb_state, dict):
+18340:                 rec = hb_state.get(sym) or {}
+18341:                 last_change = float(rec.get("last_change_ts", 0.0) or 0.0)
+18342:                 if last_change and (time.time() - last_change) >= 300.0:
+18343:                     force_refresh = True
+18344:         except Exception:
+
+### Context around line 18334
+18329:                 net_pause_sec = float(self.net.symbol_pause_remaining_sec(sym) or 0.0)
+18330:         except Exception:
+18331:             net_pause_sec = 0.0
+18332:         if net_pause_sec > 0.0 and (not has_pos):
+18333:             w.last_event = f"NET_SYM_PAUSE {sym}"
+18334:             await _rej("NET_SYM_PAUSE", sym=sym, pause_sec=float(net_pause_sec))
+18335:             return
+18336:         force_refresh = False
+18337:         try:
+18338:             hb_state = getattr(w, "_hb_state", None)
+18339:             if isinstance(hb_state, dict):
+18340:                 rec = hb_state.get(sym) or {}
+18341:                 last_change = float(rec.get("last_change_ts", 0.0) or 0.0)
+18342:                 if last_change and (time.time() - last_change) >= 300.0:
+18343:                     force_refresh = True
+18344:         except Exception:
+18345:             force_refresh = False
+18346:         _depth_latency_ms = None
+
+### Context around line 18899
+18894:                         if bool(soft_blocked):
+18895:                             comps["soft_blacklist"] = 1.0
+18896:                 except Exception:
+18897:                     pass
+18898:                 try:
+18899:                     if float(net_pause_sec) > 0.0:
+18900:                         comps["net_pause"] = 1.0
+18901:                 except Exception:
+18902:                     pass
+18903:                 try:
+18904:                     ss = str(getattr(self, "_snap_state", "OK") or "OK").upper().strip()
+18905:                     sc = float(getattr(self, "_snap_confidence", 100.0) or 100.0)
+18906:                 except Exception:
+18907:                     ss, sc = "OK", 100.0
+18908:                 if ss == "CRITICAL":
+18909:                     comps["snapshot"] = 1.0
+18910:                 elif ss == "DEGRADED":
+18911:                     comps["snapshot"] = float(clamp(1.0 - (sc / 100.0), 0.0, 1.0))
+
+### Context around line 19119
+19114:                 try:
+19115:                     if spot is not None and float(spot) <= 0.0:
+19116:                         spot = None
+19117:                 except Exception:
+19118:                     pass
+19119:             except (TradingHalt, TemporaryPause):
+19120:                 raise
+19121:             except Exception:
+19122:                 spot = None
+19123:         pho = None
+19124:         if bool(getattr(self.cfg, "phoenix_enabled", True)):
+19125:             try:
+19126:                 pho = self.phoenix.update(sym, sig, book, spot, depth_latency_ms=_depth_latency_ms, book_ts=book_ts, spot_ts=spot_ts)
+19127:             except Exception:
+19128:                 pho = PhoenixDecision(
+19129:                     state="FLAT",
+19130:                     confidence=0.0,
+19131:                     composite=0.0,
+
+### Context around line 20619
+20614:                         await asyncio.wait_for(w.ex.cancel_order(oid), timeout=c_to)
+20615:                         canceled += 1
+20616:                         break
+20617:                     except Exception:
+20618:                         if _try == 0:
+20619:                             await asyncio.sleep(0.25)
+20620:                         continue
+20621:             except Exception:
+20622:                 continue
+20623:         if canceled:
+20624:             self._log.warning("event=GLOBAL_EXIT_CANCELLED wallet=%s canceled=%d", w.name, canceled)
+20625:         return int(canceled)
+20626:     async def _liquidate_positions(self, w: WalletRuntime, reason: str) -> dict:
+20627:         if (not self.cfg.dry_run) and (not bool(getattr(self.cfg, "global_exit_armed", False))):
+20628:             self._log.critical("event=GLOBAL_EXIT_NOT_ARMED wallet=%s reason=%s (LIVE) -> HALT_ONLY", w.name, reason)
+20629:             return {"armed": False, "attempted": 0, "closed": 0}
+20630:         sl_bps = float(getattr(self.cfg, "global_exit_slippage_bps", 80.0) or 80.0)
+20631:         attempted = 0
+
+### Context around line 20661
+20656:             except Exception as e:
+20657:                 details.append({"sym": sym, "qty": qty, "ok": False, "err": ExchangeClient._safe_body_for_log(f"{type(e).__name__}: {str(e) or repr(e)}", limit=120)})
+20658:                 continue
+20659:         if not self.cfg.dry_run:
+20660:             try:
+20661:                 await asyncio.sleep(0.4)
+20662:             except Exception:
+20663:                 pass
+20664:         if self.cfg.dry_run:
+20665:             closed = attempted
+20666:             w.positions.clear()
+20667:         else:
+20668:             closed = 0
+20669:         return {"armed": bool(getattr(self.cfg, "global_exit_armed", False)) or self.cfg.dry_run, "attempted": attempted, "closed": closed, "details": details}
+20670:     async def _execute_global_exit(self, trigger: dict) -> None:
+20671:         if self._global_exit_fired:
+20672:             return
+20673:         self._global_exit_fired = True
+
+### Context around line 20842
+20837:                                     w.last_upgrade_ts = float(now_u)
+20838:                                     try:
+20839:                                         w.last_event = "UPGRADE_SELL"
+20840:                                     except Exception:
+20841:                                         pass
+20842:         except (TradingHalt, TemporaryPause):
+20843:             raise
+20844:         except Exception:
+20845:             pass
+20846:         try:
+20847:             try:
+20848:                 try:
+20849:                     import asyncio as _pp_asyncio
+20850:                 except:
+20851:                     pass
+20852:             except:
+20853:                 pass
+20854:         except Exception:
+
+### Context around line 20868
+20863:                 if bool(getattr(w, 'sanity_halt', False)):
+20864:                     break
+20865:         else:
+20866:             sem = _pp_asyncio.Semaphore(max_conc)
+20867:             _halt_t = globals().get("TradingHalt")
+20868:             _pause_t = globals().get("TemporaryPause")
+20869:             async def _hb_one(_sym: str):
+20870:                 async with sem:
+20871:                     return await self._process_symbol_heartbeat(w, _sym, float(cash_irt) * self._focus_weight_for(_sym))
+20872:             for i in range(0, len(syms), max_conc):
+20873:                 if bool(getattr(w, 'sanity_halt', False)):
+20874:                     break
+20875:                 if deadline is not None:
+20876:                     remaining = float(deadline - time.time())
+20877:                     if remaining <= 0.0:
+20878:                         self._log.warning("event=HEARTBEAT_BUDGET_EXCEEDED wallet=%s budget=%.2f", w.name, budget)
+20879:                         break
+20880:                 else:
+
+### Context around line 21055
+21050:                     except Exception:
+21051:                         pass
+21052:                     try:
+21053:                         async def _retry_once() -> None:
+21054:                             try:
+21055:                                 await asyncio.sleep(5)
+21056:                             except Exception:
+21057:                                 pass
+21058:                             try:
+21059:                                 await asyncio.wait_for(self._cancel_open_orders(w), timeout=to)
+21060:                             except Exception:
+21061:                                 pass
+21062:                             try:
+21063:                                 setattr(w, "last_orders_ts", 0.0)
+21064:                             except Exception:
+21065:                                 pass
+21066:                             try:
+21067:                                 await self._refresh_orders_if_needed(w)
+
+### Context around line 23066
+23061:             except Exception:
+23062:                 pass
+23063:             try:
+23064:                 if bool(getattr(self, "_hw_restart_requested", False)) and bool(_env_bool("HEALTH_WD_SELF_RESTART", True)):
+23065:                     try:
+23066:                         await asyncio.sleep(float(_env_float("HEALTH_WD_SELF_RESTART_SLEEP_SEC", 2.0) or 2.0))
+23067:                     except Exception:
+23068:                         pass
+23069:                     try:
+23070:                         self._log.critical(
+23071:                             "event=HEALTH_WD_SELF_RESTART execv=1 reason=%s",
+23072:                             str(getattr(self, "_hw_restart_reason", "") or "")[:80],
+23073:                         )
+23074:                     except Exception:
+23075:                         pass
+23076:                     try:
+23077:                         os.execv(sys.executable, [sys.executable] + list(sys.argv))
+23078:                     except Exception:
+
+### Context around line 23504
+23499:                 await _run_one(sym)
+23500:             except asyncio.CancelledError:
+23501:                 raise
+23502:             except TradingHalt:
+23503:                 raise
+23504:             except TemporaryPause:
+23505:                 raise
+23506:             except Exception as r:
+23507:                 try:
+23508:                     self._log.debug("event=HB_FAIL wallet=%s err=%s", getattr(w, "name", "?"), r)
+23509:                 except Exception:
+23510:                     pass
+23511:         try:
+23512:             if hasattr(w, "exec") and hasattr(w.exec, "deep_prune_ghost_orders"):
+23513:                 await w.exec.deep_prune_ghost_orders(getattr(w, 'positions', None))
+23514:         except Exception:
+23515:             pass
+23516:         try:
+
+### Context around line 29189
+29184:             except Exception as e:
+29185:                 _orch22_log(self._log, logging.ERROR, "ORCH_FAIL", err=str(e)[:200])
+29186:                 self.state = Orch22SystemState.HOLD
+29187:                 self.reason = "ORCH_FAIL"
+29188:                 await self._cancel_all_fail_safe()
+29189:                 await asyncio.sleep(1.0)
+29190:         if self._dash_task:
+29191:             self._dash_task.cancel()
+29192:             with contextlib.suppress(Exception):
+29193:                 await self._dash_task
+29194:         if self._wd_task:
+29195:             self._wd_task.cancel()
+29196:             with contextlib.suppress(Exception):
+29197:                 await self._wd_task
+29198: async def _run_orchestrator22_monitor(args: Any) -> None:
+29199:     cfg = BotConfig()
+29200:     log = Logger(cfg).log
+29201:     slots: Optional[List[int]] = None

@@ -1,0 +1,55 @@
++import os as _s43_audit_os
++def _s43_audit_only_hardstop(*args, **kwargs):
++def _s43_audit_env_guard():
++        import time as _time
++        def _safe_float(x):
++        def _calc_stale(ts_value):
++        def _normalize_snapshot(out):
++        def _find_key(d):
++                    def _g(o, name, default=None):
++            def _cache_get(m):
++            def _price_from(v):
++            def _ts_from(v):
+-        def fmt_mid(x) -> str:
+-        def _tail_warn_err_lines(path: str, max_lines: int = 6) -> List[str]:
+-        def _crashlog_tail(max_items: int = 3) -> List[str]:
+-        def _ring_health(window_sec: float = 600.0) -> dict:
+-        def _short(s: str, n: int = 42) -> str:
++        def _run_short(s: str, n: int = 42) -> str:
+-                def _short(s: str, n: int = 42) -> str:
+-        def _assets_detail(w, max_items: int = 5, compact: bool = False):
++        def _run_assets_detail(w, max_items: int = 5, compact: bool = False):
+-        def _wallet_coins_compact(w, max_items: int = 10) -> str:
+-        def wallet_summary_panel(wname: str, w):
+-        def wallet_detail_panel(wname: str, w):
+-            def _short(s: str, n: int = 28) -> str:
++            def _overview_short(s: str, n: int = 28) -> str:
+-                    def _short(s: str, n: int = 28) -> str:
+-            def _assets_detail(w, max_items: int = 6):
++            def _overview_assets_detail(w, max_items: int = 6):
+-        def top8_panel(symbols):
++        def ai_status_panel():
+-            def _abbr(v: float) -> str:
+-        def ai_status_panel():
+-        def engine_panel():
+-        def top8_compact_panel(symbols):
+-            def _mid_short(x: float) -> str:
+-            def _num(x, default=None):
+-                    def _num(x, default=None):
++def _s43_block_live_order_call(*args, **kwargs):
++async def _s43_block_live_order_call_async(*args, **kwargs):
++def _audit_only_block(*args, **kwargs):
++def _audit_only_block(*args, **kwargs):
++def _s43_safety_env_bool(name: str, default: bool = False) -> bool:
++        import os
++def _s43_safety_float_env(name: str, default: float) -> float:
++        import os
++def _s43_get_safety_coordinator(owner=None):
++        from s43_project.safety import SafetyCoordinator, SafetyConfig
++def _s43_first_market_row(snapshot):
++def _s43_float_from_keys(row, keys, default=0.0):
++def _s43_market_snapshot_for_guard(snapshot, local_ts=None, fallback_symbol="UNKNOWN"):
++        from s43_project.safety import MarketSnapshot
++def _s43_balance_total_from_account_data(account_data):
++def _s43_balance_snapshot_for_guard(account_data, ts=None):
++        from s43_project.safety import BalanceSnapshot

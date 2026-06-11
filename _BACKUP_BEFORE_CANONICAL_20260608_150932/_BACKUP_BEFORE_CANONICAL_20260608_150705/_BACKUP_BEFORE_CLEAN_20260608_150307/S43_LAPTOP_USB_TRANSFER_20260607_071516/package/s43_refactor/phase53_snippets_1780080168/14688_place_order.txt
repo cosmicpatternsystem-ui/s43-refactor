@@ -1,0 +1,28 @@
+14688:     async def place_order(
+14689:         self,
+14690:         symbol: str,
+14691:         side: str,
+14692:         amount: float,
+14693:         price: float,
+14694:         cid: Optional[str] = None,
+14695:         *,
+14696:         fill_type: str = "limit",
+14697:         market: str = "spot",
+14698:         notional_irt: Optional[float] = None,
+14699:         reduce_only: Optional[bool] = None,
+14700:         **kwargs: Any,
+14701:     ) -> dict:
+14702:         sym = _canon_symbol(symbol)
+14703:         res = await self._ex.place_order(
+14704:             symbol=sym,
+14705:             side=side,
+14706:             amount=amount,
+14707:             price=price,
+14708:             cid=cid,
+14709:             fill_type=fill_type,
+14710:             market=market,
+14711:             notional_irt=notional_irt,
+14712:             reduce_only=reduce_only,
+14713:             **kwargs,
+14714:         )
+14715:         return res

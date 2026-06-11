@@ -1,0 +1,42 @@
+### run_hardening_tests.py
+
+     1	#!/usr/bin/env python3
+     2	"""
+     3	Phase 6 hardening test runner.
+     4	
+     5	Purpose:
+     6	- Run only explicitly allowlisted hardening tests.
+     7	- Avoid accidental discovery of unrelated/untracked tests.
+     8	- Keep s43.py unchanged.
+     9	- Provide a stable local/CI entrypoint.
+    10	"""
+    11	
+    12	import sys
+    13	import unittest
+    14	
+    15	
+    16	SAFE_TEST_MODULES = [
+    17	    "test_status_observability_summary",
+    18	    "test_status_observability_wallet_error",
+    19	    "test_status_observability_obs_format",
+    20	    "test_status_observability_failure_consistency",
+    21	    "test_phase7a_status_smoke",
+    22	    "test_phase7b_signal_anchor_smoke",
+    23	]
+    24	
+    25	
+    26	def main() -> int:
+    27	    loader = unittest.TestLoader()
+    28	    suite = unittest.TestSuite()
+    29	
+    30	    for module_name in SAFE_TEST_MODULES:
+    31	        suite.addTests(loader.loadTestsFromName(module_name))
+    32	
+    33	    runner = unittest.TextTestRunner(verbosity=2)
+    34	    result = runner.run(suite)
+    35	
+    36	    return 0 if result.wasSuccessful() else 1
+    37	
+    38	
+    39	if __name__ == "__main__":
+    40	    raise SystemExit(main())

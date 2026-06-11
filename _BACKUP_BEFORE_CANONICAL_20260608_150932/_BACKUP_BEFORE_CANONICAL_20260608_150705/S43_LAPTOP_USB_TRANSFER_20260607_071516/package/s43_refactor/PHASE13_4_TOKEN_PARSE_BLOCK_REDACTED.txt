@@ -1,0 +1,9 @@
+14095:                                _raw = str(_env_tok).strip()
+14096:                                _scheme = "[STR]"
+14097:                                _tok = _raw
+14098:                                if "[STR]" in _raw:
+14099:                                    _a, _b = _raw.split(None, 1)
+14100:                                    if _a.lower() in ("[STR]", "[STR]") and _b.strip():
+14101:                                        _scheme, _tok = _a, _b.strip()
+14102:                                setattr(_req_self, "[STR]", _scheme)
+14103:                                setattr(_req_self, "[STR]", _tok)

@@ -1,0 +1,14 @@
+Branch:
+planning/phase11-readiness-discovery
+
+Recent commits:
+40274b2 docs: add phase 11 final review summary
+9410d09 docs: add phase 11 readiness gate review entry
+ba38fa7 docs: add phase 11 evidence index handoff closure
+e1acbac docs: add phase 11 evidence index handoff closure
+63ef933 docs: add phase 11 reconciliation git context evidence
+b4433ab docs: record phase 11 roadmap reconciliation
+516ea35 docs: define phase 11 scope boundaries
+e1d7e9d docs: record phase 11 readiness discovery baseline
+d5e21bf merge: integrate phase 10 hardening closure
+748db70 docs: close phase 10 hardening verification
