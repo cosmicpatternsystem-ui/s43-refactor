@@ -7,3 +7,6 @@ venv/
 env/
 .env
 *.log
+
+S43_LAPTOP_USB_TRANSFER_20260607_071516/
+*.tar.gz
