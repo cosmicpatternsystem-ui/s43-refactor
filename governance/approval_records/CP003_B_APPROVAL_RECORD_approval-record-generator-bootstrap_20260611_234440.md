@@ -1,47 +1,56 @@
 ﻿# CP003-B Approval Record
 
-## Record Metadata
+## Status
+- Phase: CP003-B
+- Document type: Approval Record
+- Version: v1
+- Branch: cp003-b-integration-planning
+- Governing baseline tag: s43-cp003-a-locked
+- Latest archival checkpoint tag: s43-cp003-b-archival-checkpoint-v1
+- Runtime integration status: UNAUTHORIZED
+- Live trading status: UNAUTHORIZED
+- Broker connectivity status: UNAUTHORIZED
+- Environment activation status: UNAUTHORIZED
+- Executable mutation status: UNAUTHORIZED
 
-- Approval record title: CP003-B Approval Record - approval-record-generator-bootstrap
-- Approval record version: v1
-- Requesting party: USER
-- Reviewing party: GOVERNANCE_REVIEW
+## Approval Metadata
+- Approval record title/version: CP003_B_APPROVAL_RECORD_approval-record-generator-bootstrap / v1
+- Requesting party: CP003-B governance workflow
+- Reviewing party: CP003-B governance review
 - Approval decision: DEFERRED
-- Approval timestamp: 2026-06-11T23:44:40Z
+- Approval timestamp: 2026-06-11T23:44:40
 - Target branch: cp003-b-integration-planning
 - Governing baseline tag: s43-cp003-a-locked
-- Source template: CP003_B_APPROVAL_GATE_TEMPLATE.md
-- Source commit: 204dd06
 
-## Request Scope
+## Mutation Scope
+- Target file: scripts/cp003_b_approval_record_generator.ps1
+- Target function or insertion point: standalone governance utility; no protected baseline insertion point
+- Exact mutation summary: add governance-only approval record generator that materializes approval records from the approved template without authorizing runtime mutation
+- Expected Git diff footprint: scripts/cp003_b_approval_record_generator.ps1 and one generated approval record markdown file only
+- Expected new imports: NONE
+- Expected new dependencies: NONE
 
-- Target file: REQUIRED
-- Target function or insertion point: REQUIRED
-- Exact mutation summary: REQUIRED
-- Expected Git diff footprint: REQUIRED
-- Expected new imports: NONE or REQUIRED
-- Expected new dependencies: NONE or REQUIRED
-- Expected runtime behavior: REQUIRED
-- Expected failure behavior: REQUIRED
-- Expected deny-by-default behavior: REQUIRED
-- Expected audit or logging behavior: REQUIRED
+## Expected Behavior
+- Expected runtime behavior: governance file generation only; no runtime integration, no broker connectivity, no network activation
+- Expected failure behavior: fail closed on missing template, invalid decision value, or output overwrite attempt
+- Expected deny-by-default behavior: preserve DENY_BY_DEFAULT; no record content authorizes runtime mutation
+- Expected audit or logging behavior: generated record captures timestamp, branch, source commit, and source template metadata
 
-## Safety Controls
+## Verification and Rollback
+- Expected rollback command sequence: git revert 3cc7749
+- Expected verification command sequence: git status --short; powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cp003_b_governance_guard.ps1
+- Expected test command sequence: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\cp003_b_approval_record_validator.ps1
 
-- Expected rollback command sequence: REQUIRED
-- Expected verification command sequence: REQUIRED
-- Expected test command sequence: REQUIRED
-- Explicit live trading ruling: UNAUTHORIZED unless explicitly and separately approved
-- Explicit broker connectivity ruling: UNAUTHORIZED unless explicitly and separately approved
-- Explicit environment activation ruling: UNAUTHORIZED unless explicitly and separately approved
-- Explicit order placement ruling: UNAUTHORIZED unless explicitly and separately approved
+## Explicit Rulings
+- Live trading ruling: UNAUTHORIZED
+- Broker connectivity ruling: UNAUTHORIZED
+- Environment activation ruling: UNAUTHORIZED
+- Order placement ruling: UNAUTHORIZED
 
-## Reviewer Notes
-
-- Governance notes: REQUIRED
-- Evidence references: REQUIRED
-- Additional constraints: REQUIRED
-
+## Governance Notes
+- Governance notes: bootstrap approval record for the generator checkpoint only; does not authorize implementation inside protected baselines
+- Evidence references: commit 3cc7749; commit 6e2ff08; commit f0fcf4c; tag s43-cp003-b-approval-record-generator-v1; tag s43-cp003-b-governance-guard-v2
+- Additional constraints: no cp003_scaffold wiring; no protected baseline mutation; no runtime, broker, network, live trading, or executable activation
 ## Template Reference
 
 # CP003-B Approval Gate Template v1
@@ -306,4 +315,5 @@ This template does not authorize broker connectivity.
 This template does not authorize order placement.
 
 Any future mutation without a separate completed approval record must be rejected.
+
 
