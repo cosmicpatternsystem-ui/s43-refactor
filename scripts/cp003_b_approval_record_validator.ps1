@@ -1,21 +1,23 @@
-﻿param()
+﻿param(
+    [string]$RecordsPath = ".\governance\approval_records"
+)
 
+Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+Write-Host ""
 Write-Host "Approval record validation:" -ForegroundColor Cyan
 
-$recordDir = ".\governance\approval_records"
-
-if (-not (Test-Path $recordDir)) {
+if (-not (Test-Path $RecordsPath)) {
     Write-Host "OK  no approval_records directory present"
-    return
+    exit 0
 }
 
-$records = Get-ChildItem -Path $recordDir -Filter "*.md" -File
+$records = Get-ChildItem -Path $RecordsPath -Filter "*.md" -File | Sort-Object Name
 
 if (-not $records) {
-    Write-Host "OK  no approval records present"
-    return
+    Write-Host "OK  no approval record files present"
+    exit 0
 }
 
 $allowedDecisions = @(
