@@ -1,4 +1,4 @@
-﻿# Phase 13 Governance Integration Map
+# Phase 13 Governance Integration Map
 
 ## Status
 
@@ -22,15 +22,15 @@ Generated from branch phase13-governance-integration.
 - GOVERNANCE_MIGRATION_ROADMAP.md:67:dependency-light governance primitives.
 - GOVERNANCE_MIGRATION_ROADMAP.md:71:- dataclasses for governance inputs and decisions
 - GOVERNANCE_MIGRATION_ROADMAP.md:80:s43.py should eventually call one controlled governance hook at a small number
-- GOVERNANCE_MIGRATION_ROADMAP.md:110:Target: s43_governance.py  
-- GOVERNANCE_MIGRATION_ROADMAP.md:135:Target: s43_governance.py  
-- GOVERNANCE_MIGRATION_ROADMAP.md:159:Target: s43_governance.py plus controlled hook  
-- GOVERNANCE_MIGRATION_ROADMAP.md:181:Target: extracted module or s43_governance.py  
+- GOVERNANCE_MIGRATION_ROADMAP.md:110:Target: s43_governance.py
+- GOVERNANCE_MIGRATION_ROADMAP.md:135:Target: s43_governance.py
+- GOVERNANCE_MIGRATION_ROADMAP.md:159:Target: s43_governance.py plus controlled hook
+- GOVERNANCE_MIGRATION_ROADMAP.md:181:Target: extracted module or s43_governance.py
 - GOVERNANCE_MIGRATION_ROADMAP.md:189:- support future policy-based risk governance
-- GOVERNANCE_MIGRATION_ROADMAP.md:203:Target: extracted module or s43_governance.py  
+- GOVERNANCE_MIGRATION_ROADMAP.md:203:Target: extracted module or s43_governance.py
 - GOVERNANCE_MIGRATION_ROADMAP.md:211:- help future automated governance without immediate blocking
 - GOVERNANCE_MIGRATION_ROADMAP.md:218:- add structured governance reports
-- GOVERNANCE_MIGRATION_ROADMAP.md:225:Target: controlled governance module  
+- GOVERNANCE_MIGRATION_ROADMAP.md:225:Target: controlled governance module
 - GOVERNANCE_MIGRATION_ROADMAP.md:239:- ensure governance does not break existing fallback behavior
 - GOVERNANCE_MIGRATION_ROADMAP.md:277:- define governance input dataclasses
 - GOVERNANCE_MIGRATION_ROADMAP.md:278:- define governance decision objects
