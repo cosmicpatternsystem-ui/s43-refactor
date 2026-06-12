@@ -30,6 +30,16 @@ def _decision(
 
 
 def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
+    if not isinstance(context, dict):
+        return _decision(
+            allowed=False,
+            severity="error",
+            rule_id="RG001",
+            reason="invalid_context_type",
+            mode=mode,
+            metadata={"context_type": type(context).__name__},
+        )
+
     if mode == "disabled":
         return _decision(
             allowed=True,
@@ -101,3 +111,4 @@ def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
         mode="dry_run",
         metadata={},
     )
+
