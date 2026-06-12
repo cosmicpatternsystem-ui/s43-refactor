@@ -27,7 +27,8 @@ $requiredTags = @(
     "s43-cp003-b-readiness-review-v1",
     "s43-cp003-b-mutation-proposal-v1",
     "s43-cp003-b-archival-checkpoint-v1",
-    "s43-cp003-b-approval-gate-template-v1"
+    "s43-cp003-b-approval-gate-template-v1",
+    "s43-cp003-b-approval-record-generator-v1"
 )
 
 Write-Host ""
@@ -74,8 +75,16 @@ if (Test-Path ".\governance\CP003_B_APPROVAL_GATE_TEMPLATE.md") {
 }
 
 Write-Host ""
+$validatorScript = ".\scripts\cp003_b_approval_record_validator.ps1"
+if (Test-Path $validatorScript) {
+    & $validatorScript
+} else {
+    throw "Missing .\scripts\cp003_b_approval_record_validator.ps1"
+}
 Write-Host "Current ruling:" -ForegroundColor Cyan
 Write-Host "SAFE  governance chain intact"
 Write-Host "SAFE  runtime mutation absent"
 Write-Host "SAFE  deny-by-default preserved"
 Write-Host "BLOCK  any future mutation requires a separate completed approval record"
+
+
