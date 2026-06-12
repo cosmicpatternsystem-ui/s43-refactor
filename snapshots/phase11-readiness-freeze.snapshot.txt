@@ -1,0 +1,8 @@
+﻿branch=phase11-readiness
+commit=454aeded646e9b26e5aa85493c5ffc22de733dff
+tag=phase11-readiness-freeze
+date=2026-06-12 18:36:31 +03:30
+legacy_reference=legacy_reference/11029_legacy_reference.py
+roadmap=GOVERNANCE_MIGRATION_ROADMAP.md
+governance_scaffold=s43_governance.py
+safety_protocol=SAFETY_PROTOCOL.md
