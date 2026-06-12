@@ -1,4 +1,4 @@
-﻿from datetime import datetime, timezone
+from datetime import datetime, timezone
 
 from .decisions import GovernanceDecision, validate_decision
 
@@ -33,7 +33,7 @@ def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
     if not isinstance(context, dict):
         return _decision(
             allowed=False,
-            severity="error",
+            severity="critical",
             rule_id="RG001",
             reason="invalid_context_type",
             mode=mode,
@@ -111,4 +111,3 @@ def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
         mode="dry_run",
         metadata={},
     )
-
