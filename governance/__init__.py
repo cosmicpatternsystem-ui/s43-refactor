@@ -12,3 +12,8 @@ __all__ = [
     "set_decision_observer",
     "clear_decision_observer",
 ]
+
+from governance.audit_observer import governance_audit_logger
+from governance.risk_guard import set_decision_observer
+
+set_decision_observer(governance_audit_logger)
