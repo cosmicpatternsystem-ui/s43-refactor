@@ -1,4 +1,4 @@
-
+﻿
 
 
 
@@ -3227,6 +3227,31 @@ class ExchangeClient:
         reduce_only: Optional[bool] = None,
         **kwargs: Any,
     ) -> dict:
+        
+        # --- PHASE 16: GOVERNANCE ENFORCEMENT ---
+        try:
+            from governance.risk_guard import RiskGuard
+            _decision = RiskGuard().validate_action({
+                "type": "place_order",
+                "symbol": symbol,
+                "side": side,
+                "amount": amount,
+                "price": price,
+                "market": market,
+                "cid": cid,
+                "fill_type": fill_type,
+                "reduce_only": (reduce_only if 'reduce_only' in locals() else None),
+            })
+            _approved = getattr(_decision, "approved", None)
+            if _approved is None:
+                _approved = str(getattr(_decision, "outcome", "")).lower() in ("approved", "allow", "allowed", "pass", "ok")
+            if not _approved:
+                _reason = getattr(_decision, "reason", "blocked by governance policy")
+                print(f"[GOVERNANCE VETO] Order blocked: {_reason}")
+                return {"status": "error", "code": "GOV_REJECT", "message": f"Governance Veto: {_reason}"}
+        except Exception as _gov_exc:
+            print(f"[GOVERNANCE WARNING] Guard bypass active: {_gov_exc}")
+        # --- END PHASE 16 ---
         try:
             if _termux_env_bool("TERMUX_MODE", False):
                 _termux_mark_order_activity()
@@ -9574,6 +9599,7 @@ class PhoenixEngine:
         except Exception:
             return None
     def _state_to_dict(self, st: "PhoenixEngine._State") -> dict:
+        
         try:
             return {
                 "mids": list(getattr(st, "mids", []) or []),
@@ -30069,3 +30095,4 @@ def _sleep_or_stop(seconds, stop_event=None, *, interval=0.25):
         if remaining <= 0:
             return True
         time.sleep(min(float(interval), remaining))
+
