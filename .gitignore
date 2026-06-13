@@ -1,12 +1,29 @@
-﻿__pycache__/
-*.pyc
-*.pyo
-*.pyd
+﻿# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
 venv/
 env/
-.env
-*.log
 
-S43_LAPTOP_USB_TRANSFER_20260607_071516/
-*.tar.gz
+# Logs
+*.log
+governance_audit.log
+
+# Local backups / generated patch backups
+*.bak
+*.backup
+*.cleanup_backup
+s43.py.bak_*
+s43.py.phase*.bak_*
+*.bak_pre_*
+*.bak_patch*
+*.phase*.bak_*
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
