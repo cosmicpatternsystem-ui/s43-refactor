@@ -39,7 +39,7 @@ function Get-ChangedFilesForScan {
     foreach ($file in $files) {
         if ([string]::IsNullOrWhiteSpace($file)) { continue }
         if ($file -like ".git/*") { continue }
-        if ($file -like "AUTO_SNAPSHOT_LOG.md") { continue }
+        if ($file -eq "AUTO_SNAPSHOT_LOG.md") { continue }
 
         $fullPath = Join-Path $RepoRoot $file
         if (-not (Test-Path $fullPath -PathType Leaf)) { continue }

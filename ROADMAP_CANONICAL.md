@@ -48,3 +48,19 @@
 - Auto snapshot logs are written to AUTO_SNAPSHOT_LOG.md.
 - Baseline and recovery tags must not be overwritten or force-pushed.
 - Manual review is required after any security block, merge conflict, push rejection, or suspicious generated-file change.
+
+## Phase 17 Safe Auto Snapshot Protocol - Corrected Active Rule
+
+- Active working branch: phase17-work-from-restore.
+- Protected restore branch: estore-phase17.
+- Remote snapshot branch: phase17-working-snapshot-20260614.
+- Valid recovery tag: 	ag-phase17-working-snapshot-20260614.
+- Current automatic save target: local laptop Git repository plus GitHub remote branch phase17-work-from-restore.
+- Automatic saving is handled by 	ools/safe_auto_snapshot_phase17.ps1.
+- The auto snapshot loop checks for changes every 120 seconds.
+- If changes exist, it stages files, runs a secret-risk scan, commits, and pushes to GitHub.
+- If a likely secret/token/private key is detected, commit/push is blocked and details are written to AUTO_SNAPSHOT_SECURITY_BLOCK.md.
+- Runtime logs are written to AUTO_SNAPSHOT_LOG.md.
+- Windows Task Scheduler registration failed due to access denial, so user-level Startup shortcut is the active autostart mechanism.
+- Baseline and recovery tags must not be overwritten, force-pushed, or moved.
+- Any security block, push rejection, merge conflict, or suspicious generated-file change requires manual review.
