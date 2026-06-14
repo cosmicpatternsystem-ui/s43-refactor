@@ -1,0 +1,59 @@
+﻿# ROADMAP_vNEXT
+
+## Status
+
+Project has completed the official roadmap through Phase 15.
+No official Phase 16 is currently defined in the existing protocol documents.
+
+## Post-Phase-15 Direction
+
+All future work must be tracked under controlled maintenance, observability, and governance-safe change procedures.
+
+---
+
+## Completed Post-Phase-15 Actions
+
+### [DONE] PATCH_003A_PERFORMANCE_LEDGER_BASELINE
+
+Category: Observability / Performance Ledger / Passive Runtime Instrumentation
+Status: Closed
+Target File: s43.py
+Final SHA256: 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+
+Summary:
+- Added passive JSONL ledger hooks around order submission candidate and blocked-return paths.
+- Preserved original return flow.
+- Preserved governance and AI trading block semantics.
+- Wrapped runtime hooks in try/except isolation.
+- Verified by compile, marker presence, and final hash.
+
+Closure Artifact:
+- PATCH_003A_CLOSURE_REPORT.md
+- s43.py.PATCH_003A_VERIFIED_FINAL.bak
+
+---
+
+## Next Recommended Track
+
+### [PLANNED] CHANGE_CONTROL_LEDGER_ESTABLISHMENT
+
+Goal:
+Create a durable post-Phase-15 change ledger for all future maintenance actions.
+
+Scope:
+- Record patch identity
+- Record file hash before/after
+- Record compile status
+- Record rollback asset
+- Record safety classification
+- Record closure status
+
+### [PLANNED] PASSIVE_RUNTIME_OBSERVABILITY_REVIEW
+
+Goal:
+Validate whether PATCH_003A ledger output is sufficient for future diagnostics without modifying business logic.
+
+### [PLANNED] HASH_GUARD_PRECHECK_STANDARDIZATION
+
+Goal:
+Require hash verification before any future patch is applied to s43.py.

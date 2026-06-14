@@ -1,0 +1,34 @@
+======================================================================
+GOVERNANCE AUDIT LOG INSPECTION REPORT
+======================================================================
+Log File: E:\اخباری\ssl\s43_refactor\governance_audit.log
+Exists: True
+File Size Bytes: 288
+Total Lines: 2
+Empty Lines: 0
+Valid JSON Lines: 0
+Invalid JSON Lines: 2
+
+JSON Shapes:
+  - None
+
+Top-Level Keys:
+  - None
+
+Key Presence:
+  - Outcome-like keys: 0
+  - Action-like keys: 0
+  - Reason-like keys: 0
+
+Sample Valid Records:
+  - None
+
+Sample Invalid Lines:
+  - Line 1: Expecting value: line 1 column 2 (char 1)
+    Raw: [PHASE15] 2026-06-13 09:34:22 | Action: TX-999 | Outcome: REJECTED | Rule: RiskThresholdPolicy | Reason: Risk score 0.95 exceeds threshold 0.7
+  - Line 2: Expecting value: line 1 column 2 (char 1)
+    Raw: [PHASE15] 2026-06-13 11:07:16 | Action: TX-999 | Outcome: REJECTED | Rule: RiskThresholdPolicy | Reason: Risk score 0.95 exceeds threshold 0.7
+
+Recommendations:
+  - No valid JSON lines were detected. The reporter expects JSON Lines format: one valid JSON object per line.
+======================================================================
