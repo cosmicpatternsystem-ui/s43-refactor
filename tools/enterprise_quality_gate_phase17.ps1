@@ -242,7 +242,7 @@ try {
         Add-Failure "Repository is in a merge state."
     }
 
-    if (Test-Path ".git\rebase-merge" -or Test-Path ".git\rebase-apply") {
+    if ((Test-Path ".git\rebase-merge") -or (Test-Path ".git\rebase-apply")) {
         Add-Failure "Repository is in a rebase state."
     }
 
@@ -300,3 +300,4 @@ else {
     }
     exit 1
 }
+

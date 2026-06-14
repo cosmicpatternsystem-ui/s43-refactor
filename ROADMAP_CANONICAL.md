@@ -99,3 +99,11 @@
 - Previous runtime-only auto snapshot commits are preserved for traceability and are not rewritten.
 - Future release promotion must follow:
   work branch -> validated snapshot -> manual review -> stable candidate -> release tag.
+
+## Phase 17 Quality Gate Emergency Fix Rule
+
+- Auto snapshot must not run if 	ools/enterprise_quality_gate_phase17.ps1 fails.
+- All duplicate auto snapshot workers must be stopped before modifying snapshot logic.
+- Runtime lock/log/report files must remain local-only and must not be committed as project state.
+- A quality gate failure must block automatic commit and push.
+- Restarting auto snapshot is allowed only after a local quality gate PASS.
