@@ -27,3 +27,17 @@ s43.py.phase*.bak_*
 Thumbs.db
 .vscode/
 .idea/
+# Phase 17 local runtime artifacts
+AUTO_SNAPSHOT_LOG.md
+AUTO_SNAPSHOT_SECURITY_BLOCK.md
+.auto_snapshot.lock
+QUALITY_GATE_LAST_REPORT.md
+AUTO_SNAPSHOT_LAST_STATUS.json
+# Python/runtime noise
+*.pyc
+.pytest_cache/
+# Temporary/editor noise
+*.tmp
+*.temp
+*.swp
+~$*

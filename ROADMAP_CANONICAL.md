@@ -72,3 +72,30 @@
 - Both files are marked with git update-index --skip-worktree on the local laptop.
 - Source code, roadmap changes, project documents, patches, and recovery artifacts remain protected by automatic commit/push.
 - If a security block occurs, the report must be reviewed manually before any intentional commit.
+
+## Phase 17 Enterprise Operational Governance Gate
+
+- The active work-preservation branch is phase17-work-from-restore.
+- Auto snapshot remains a safety mechanism, not a release mechanism.
+- Runtime files must never be committed as project state:
+  - AUTO_SNAPSHOT_LOG.md
+  - AUTO_SNAPSHOT_SECURITY_BLOCK.md
+  - .auto_snapshot.lock
+  - QUALITY_GATE_LAST_REPORT.md
+  - AUTO_SNAPSHOT_LAST_STATUS.json
+- Auto snapshot is now fail-closed:
+  - wrong branch blocks commit/push
+  - missing Git/Python blocks commit/push
+  - merge/rebase state blocks commit/push
+  - conflict markers block commit/push
+  - suspected secrets block commit/push
+  - runtime/noise-only changes do not create commits
+  - Python syntax failure blocks commit/push
+  - governance audit failure blocks commit/push
+- 	ools/enterprise_quality_gate_phase17.ps1 is the mandatory local quality gate for automatic snapshots.
+- 	ools/safe_auto_snapshot_phase17.ps1 must call the quality gate before staging, committing, or pushing.
+- phase17-work-from-restore is allowed to contain validated auto snapshots.
+- Stable/release/baseline branches or tags must not be created directly from auto snapshots without manual review and a release report.
+- Previous runtime-only auto snapshot commits are preserved for traceability and are not rewritten.
+- Future release promotion must follow:
+  work branch -> validated snapshot -> manual review -> stable candidate -> release tag.
