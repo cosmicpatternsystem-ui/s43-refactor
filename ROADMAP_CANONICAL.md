@@ -64,3 +64,11 @@
 - Windows Task Scheduler registration failed due to access denial, so user-level Startup shortcut is the active autostart mechanism.
 - Baseline and recovery tags must not be overwritten, force-pushed, or moved.
 - Any security block, push rejection, merge conflict, or suspicious generated-file change requires manual review.
+
+## Auto Snapshot Runtime Log Exclusion Rule
+
+- AUTO_SNAPSHOT_LOG.md is a local runtime log and must not trigger repeated auto snapshot commits.
+- AUTO_SNAPSHOT_SECURITY_BLOCK.md may contain sensitive local review details and must not be auto-pushed as routine runtime output.
+- Both files are marked with git update-index --skip-worktree on the local laptop.
+- Source code, roadmap changes, project documents, patches, and recovery artifacts remain protected by automatic commit/push.
+- If a security block occurs, the report must be reviewed manually before any intentional commit.
