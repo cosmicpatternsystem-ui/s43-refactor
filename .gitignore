@@ -51,3 +51,7 @@ AUTO_SNAPSHOT_LAST_STATUS.json
 *.tmp
 *.temp
 *.swp
+# Phase 17 runtime artifacts - never commit
+*.runtime.log
+*.runtime.tmp
+AUDIT/phase17_patch_v2_backups_*/

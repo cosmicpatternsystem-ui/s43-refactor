@@ -42,7 +42,7 @@
 - Meaningful project state must be stored in both locations:
   1. Local laptop Git repository
   2. GitHub remote branch/tag
-- Automatic saving is handled by 	ools/safe_auto_snapshot_phase17.ps1.
+- Automatic saving is handled by tools/safe_auto_snapshot_phase17.ps1.
 - The auto snapshot process checks for changes, stages them, scans for likely secrets, commits, and pushes to GitHub.
 - If a likely secret/token/private key is detected, auto commit/push is blocked and a report is written to AUTO_SNAPSHOT_SECURITY_BLOCK.md.
 - Auto snapshot logs are written to AUTO_SNAPSHOT_LOG.md.
@@ -52,11 +52,11 @@
 ## Phase 17 Safe Auto Snapshot Protocol - Corrected Active Rule
 
 - Active working branch: phase17-work-from-restore.
-- Protected restore branch: estore-phase17.
+- Protected restore branch: restore-phase17.
 - Remote snapshot branch: phase17-working-snapshot-20260614.
-- Valid recovery tag: 	ag-phase17-working-snapshot-20260614.
+- Valid recovery tag: 	tag-phase17-working-snapshot-20260614.
 - Current automatic save target: local laptop Git repository plus GitHub remote branch phase17-work-from-restore.
-- Automatic saving is handled by 	ools/safe_auto_snapshot_phase17.ps1.
+- Automatic saving is handled by tools/safe_auto_snapshot_phase17.ps1.
 - The auto snapshot loop checks for changes every 120 seconds.
 - If changes exist, it stages files, runs a secret-risk scan, commits, and pushes to GitHub.
 - If a likely secret/token/private key is detected, commit/push is blocked and details are written to AUTO_SNAPSHOT_SECURITY_BLOCK.md.
@@ -92,8 +92,8 @@
   - runtime/noise-only changes do not create commits
   - Python syntax failure blocks commit/push
   - governance audit failure blocks commit/push
-- 	ools/enterprise_quality_gate_phase17.ps1 is the mandatory local quality gate for automatic snapshots.
-- 	ools/safe_auto_snapshot_phase17.ps1 must call the quality gate before staging, committing, or pushing.
+- tools/enterprise_quality_gate_phase17.ps1 is the mandatory local quality gate for automatic snapshots.
+- tools/safe_auto_snapshot_phase17.ps1 must call the quality gate before staging, committing, or pushing.
 - phase17-work-from-restore is allowed to contain validated auto snapshots.
 - Stable/release/baseline branches or tags must not be created directly from auto snapshots without manual review and a release report.
 - Previous runtime-only auto snapshot commits are preserved for traceability and are not rewritten.
@@ -102,8 +102,32 @@
 
 ## Phase 17 Quality Gate Emergency Fix Rule
 
-- Auto snapshot must not run if 	ools/enterprise_quality_gate_phase17.ps1 fails.
+- Auto snapshot must not run if tools/enterprise_quality_gate_phase17.ps1 fails.
 - All duplicate auto snapshot workers must be stopped before modifying snapshot logic.
 - Runtime lock/log/report files must remain local-only and must not be committed as project state.
 - A quality gate failure must block automatic commit and push.
 - Restarting auto snapshot is allowed only after a local quality gate PASS.
+
+---
+
+## PHASE17_ENTERPRISE_HARDENING_V2
+
+Decision date: 2026-06-14 09:43:42
+
+Phase 17 development governance is hardened with the following rules:
+
+1. Auto snapshot is a safety backup mechanism only; it is not a release mechanism.
+2. Auto snapshot must commit only validated project changes after the enterprise quality gate passes.
+3. Runtime artifacts must never be committed:
+   - AUTO_SNAPSHOT_LOG.md
+   - AUTO_SNAPSHOT_SECURITY_BLOCK.md
+   - QUALITY_GATE_LAST_REPORT.md
+   - AUTO_SNAPSHOT_LAST_STATUS.json
+   - .auto_snapshot.lock
+4. Any quality gate failure blocks commit and push.
+5. Manual commits are protected by the repository pre-commit hook.
+6. Exactly one auto snapshot worker is allowed.
+7. Worker restart is allowed only after a clean working tree and a passing quality gate.
+8. Release/stable promotion requires separate human review, test execution, and explicit release commit or tag.
+9. Runtime-only historical commits are documented but history is not rewritten on the shared branch.
+10. This roadmap is the canonical governance record for Phase 17 hardening.
