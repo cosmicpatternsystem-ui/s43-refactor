@@ -83,7 +83,13 @@ if ([string]::IsNullOrWhiteSpace($Message)) {
     $Message = "audit: add phase18 autonomous commercial ops evidence $ts"
 }
 
-& .\tools\phase18_approved_sync_wrapper.ps1 -Message $Message -Paths @($auditDir)
+$approvedPaths = Get-ChildItem -Path $auditDir -File |
+    Sort-Object Name |
+    ForEach-Object {
+        (Resolve-Path -Relative $_.FullName) -replace '^[.][\\/]', ''
+    }
+
+& .\tools\phase18_approved_sync_wrapper.ps1 -Message $Message -Paths $approvedPaths
 
 git status --short
 git rev-parse HEAD
