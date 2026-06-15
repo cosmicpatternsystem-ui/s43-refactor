@@ -4,6 +4,42 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+function Normalize-Phase18EvidenceFile {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return
+    }
+
+    $lines = [System.IO.File]::ReadAllLines($Path)
+    $cleaned = foreach ($line in $lines) {
+        $line.TrimEnd([char]0x20, [char]0x09)
+    }
+
+    [System.IO.File]::WriteAllText(
+        $Path,
+        (($cleaned -join "`r`n") + "`r`n"),
+        (New-Object System.Text.UTF8Encoding($false))
+    )
+}
+
+function Get-Phase18ApprovedEvidencePaths {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$AuditDir
+    )
+
+    Get-ChildItem -Path $AuditDir -File |
+        Sort-Object Name |
+        ForEach-Object {
+            Normalize-Phase18EvidenceFile -Path $_.FullName
+            (Resolve-Path -Relative $_.FullName) -replace '^[.][\\/]', '' -replace '\\', '/'
+        }
+}
+
 
 $ts = Get-Date -Format "yyyyMMdd_HHmmss"
 $root = Resolve-Path "."
@@ -83,11 +119,7 @@ if ([string]::IsNullOrWhiteSpace($Message)) {
     $Message = "audit: add phase18 autonomous commercial ops evidence $ts"
 }
 
-$approvedPaths = Get-ChildItem -Path $auditDir -File |
-    Sort-Object Name |
-    ForEach-Object {
-        (Resolve-Path -Relative $_.FullName) -replace '^[.][\\/]', ''
-    }
+$approvedPaths = Get-Phase18ApprovedEvidencePaths -AuditDir $auditDir
 
 & .\tools\phase18_approved_sync_wrapper.ps1 -Message $Message -Paths $approvedPaths
 
