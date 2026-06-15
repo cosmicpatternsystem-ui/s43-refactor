@@ -1,12 +1,17 @@
-﻿# Python cache
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
 
-# Virtual environments
+# Virtual environments and local env
 .venv/
 venv/
 env/
+.env
 
 # Logs
 *.log
@@ -27,31 +32,23 @@ s43.py.phase*.bak_*
 Thumbs.db
 .vscode/
 .idea/
+*.tmp
+*.temp
+*.swp
+~$*
+
 # Phase 17 local runtime artifacts
 AUTO_SNAPSHOT_LOG.md
 AUTO_SNAPSHOT_SECURITY_BLOCK.md
 .auto_snapshot.lock
 QUALITY_GATE_LAST_REPORT.md
 AUTO_SNAPSHOT_LAST_STATUS.json
-# Python/runtime noise
-*.pyc
-.pytest_cache/
-# Temporary/editor noise
-*.tmp
-*.temp
-*.swp
-~$*
-AUTO_SNAPSHOT_LOG.md
-AUTO_SNAPSHOT_SECURITY_BLOCK.md
-.auto_snapshot.lock
-QUALITY_GATE_LAST_REPORT.md
-AUTO_SNAPSHOT_LAST_STATUS.json
-*.pyc
-.pytest_cache/
-*.tmp
-*.temp
-*.swp
+
 # Phase 17 runtime artifacts - never commit
 *.runtime.log
 *.runtime.tmp
 AUDIT/phase17_patch_v2_backups_*/
+
+# Local transfer/archive artifacts
+S43_LAPTOP_USB_TRANSFER_20260607_071516/
+*.tar.gz
