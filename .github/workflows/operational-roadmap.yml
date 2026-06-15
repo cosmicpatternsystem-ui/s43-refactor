@@ -1,0 +1,24 @@
+name: Operational Roadmap Gate
+
+on:
+  push:
+    branches:
+      - master
+      - phase19-operational-roadmap
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  assert-operational-roadmap:
+    name: Assert operational roadmap contract
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Assert operational roadmap
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1"
