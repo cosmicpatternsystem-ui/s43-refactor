@@ -3,9 +3,10 @@ param(
     [string]$Message = "",
     [string]$Branch = "",
     [string]$ApprovalPhrase = "APPROVE_PHASE18",
-    [switch]$AutoApprove
+    [switch]$AutoApprove,
+    [switch]$DryRun,
+    [switch]$NoPush
 )
-
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
@@ -65,13 +66,26 @@ function Exec-Git {
 }
 
 function Get-RepoRoot {
+    $scriptRoot = $PSScriptRoot
+    if ([string]::IsNullOrWhiteSpace($scriptRoot) -and $PSCommandPath) {
+        $scriptRoot = Split-Path -Parent $PSCommandPath
+    }
+    if ([string]::IsNullOrWhiteSpace($scriptRoot)) {
+        Fail 'Could not determine script root.'
+    }
+
+    $repoRoot = Split-Path -Parent $scriptRoot
+    if (Test-Path -LiteralPath (Join-Path $repoRoot '.git')) {
+        return $repoRoot
+    }
+
     $current = (Get-Location).ProviderPath
 
     try {
         $probe = & git -C $current rev-parse --show-toplevel 2>$null
         if ($probe) {
             $joined = ($probe -join "`n").Trim()
-            if ((-not [string]::IsNullOrWhiteSpace($joined)) -and (Test-Path -LiteralPath $joined)) {
+            if (-not [string]::IsNullOrWhiteSpace($joined)) {
                 return $joined
             }
         }
@@ -79,18 +93,8 @@ function Get-RepoRoot {
     catch {
     }
 
-    try {
-        & git -C $current rev-parse --is-inside-work-tree 1>$null 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            return $current
-        }
-    }
-    catch {
-    }
-
-    Fail 'Could not determine repository root from current directory.'
+    Fail ('Could not resolve repository root from script path or current directory. Script root: ' + $scriptRoot)
 }
-
 function Get-CurrentBranch {
     param([string]$RepoRoot)
 
@@ -318,7 +322,7 @@ Info 'PHASE18_VERIFY_OK'
 
 Confirm-FinalApproval -ApprovalPhrase $ApprovalPhrase -Bypass:$AutoApprove
 
-Exec-Git -RepoRoot $repoRoot -Args @('add','--') + $approvedPaths
+Exec-Git -RepoRoot $repoRoot -Args (@('add','--') + $approvedPaths)
 Info 'FINALIZE_STAGE_OK'
 
 $staged = @(Invoke-GitLines -RepoRoot $repoRoot -Args @('diff','--cached','--name-only'))
@@ -332,14 +336,25 @@ if (-not (Test-PathSetEqual -Actual $staged -Expected $approvedPaths)) {
     Fail 'Staged paths do not exactly match approved paths.'
 }
 
-Exec-Git -RepoRoot $repoRoot -Args @('commit','-m',$Message)
-Info 'FINALIZE_COMMIT_OK'
+if ($DryRun) {
+    Info 'DRYRUN_SKIP_COMMIT'
+}
+else {
+    Exec-Git -RepoRoot $repoRoot -Args @('commit','-m',$Message)
+    Info 'FINALIZE_COMMIT_OK'
+}
 
-if (($null -ne $upstream) -and $upstream.Contains('/')) {
+if ($DryRun) {
+    Info 'DRYRUN_SKIP_PUSH'
+}
+elseif ($NoPush) {
+    Info 'NOPUSH_ACTIVE'
+}
+elseif (($null -ne $upstream) -and $upstream.Contains('/')) {
     Exec-Git -RepoRoot $repoRoot -Args @('push')
+    Info 'FINALIZE_PUSH_OK'
 }
 else {
     Exec-Git -RepoRoot $repoRoot -Args @('push','origin',$Branch)
+    Info 'FINALIZE_PUSH_OK'
 }
-
-Info 'FINALIZE_PUSH_OK'
