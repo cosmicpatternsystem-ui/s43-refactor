@@ -1,149 +1,23 @@
-﻿param(
-    [string]$Phase = "PHASE18",
-    [string]$Decision = "Proceed from infrastructure hardening to release-readiness packaging.",
-    [string]$CommercialStatus = "Commercial Readiness: PARTIAL",
-    [string]$TagPrefix = "",
-    [switch]$CreateTag
-)
-
+param([switch]$NoGit,[switch]$SkipAssert)
 $ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
-
-function Fail {
-    param([string]$Text)
-    throw $Text
-}
-
-function Exec-Git {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string[]]$Args
-    )
-    & git @Args
-    if ($LASTEXITCODE -ne 0) {
-        Fail ("git failed: " + ($Args -join " "))
-    }
-}
-
-function Get-RepoRoot {
-    $scriptRoot = $PSScriptRoot
-    if ([string]::IsNullOrWhiteSpace($scriptRoot) -and $PSCommandPath) {
-        $scriptRoot = Split-Path -Parent $PSCommandPath
-    }
-    if (-not [string]::IsNullOrWhiteSpace($scriptRoot)) {
-        $repoRoot = Split-Path -Parent $scriptRoot
-        if (Test-Path -LiteralPath (Join-Path $repoRoot '.git')) {
-            return $repoRoot
-        }
-    }
-
-    $current = (Get-Location).ProviderPath
-    $probe = & git -C $current rev-parse --show-toplevel 2>$null
-    if ($LASTEXITCODE -eq 0 -and $probe) {
-        $joined = ($probe -join "`n").Trim()
-        if (-not [string]::IsNullOrWhiteSpace($joined)) {
-            return $joined
-        }
-    }
-
-    Fail "Could not determine repository root."
-}
-
-$repoRoot = Get-RepoRoot
+$repoRoot = git rev-parse --show-toplevel
+if ($LASTEXITCODE -ne 0 -or -not $repoRoot) { $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..") }
+$repoRoot = "$repoRoot".Trim()
 Set-Location $repoRoot
-
-$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$dateOnly = Get-Date -Format "yyyy-MM-dd"
-$phaseDate = Get-Date -Format "yyyyMMdd"
-
-$statusShort = @(& git status --short)
-if ($LASTEXITCODE -ne 0) {
-    Fail "git status --short failed."
-}
-
-$head = (& git rev-parse HEAD).Trim()
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($head)) {
-    Fail "git rev-parse HEAD failed."
-}
-
-$branch = (& git rev-parse --abbrev-ref HEAD).Trim()
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($branch)) {
-    Fail "git rev-parse --abbrev-ref HEAD failed."
-}
-
-$recentLog = @(& git log --oneline -5)
-if ($LASTEXITCODE -ne 0) {
-    Fail "git log --oneline -5 failed."
-}
-
-$auditDir = Join-Path $repoRoot "AUDIT"
-if (-not (Test-Path -LiteralPath $auditDir)) {
-    New-Item -ItemType Directory -Path $auditDir | Out-Null
-}
-
-$fileName = "{0}_RELEASE_READINESS_DECISION_{1}.md" -f $Phase, $phaseDate
-$outPath = Join-Path $auditDir $fileName
-
-$workingTreeState = if ($statusShort.Count -eq 0) { "clean" } else { "dirty" }
-$tagName = if ($TagPrefix) {
-    "{0}-{1}" -f $TagPrefix, $phaseDate
-} else {
-    "{0}-baseline-{1}" -f $Phase.ToLower(), $phaseDate
-}
-
-$body = @"
-# $Phase Release Readiness Decision
-
-Date: $dateOnly
-Timestamp: $timestamp
-Branch: $branch
-Commit: $head
-
-## Decision
-$Decision
-
-## Technical State
-- Parse validation: PASS
-- Quality gate: PASS
-- Working tree: $workingTreeState
-
-## Commercial Interpretation
-This milestone should be treated as infrastructure hardening completion, not as an end-user feature release.
-
-## Status
-- $CommercialStatus
-- Next step: release-readiness packaging
-- Recommended posture: stop patching, stabilize, document, validate
-
-## Recent Commits
-$($recentLog -join "`r`n")
-
-## Working Tree Snapshot
-$(
-    if ($statusShort.Count -eq 0) {
-        "clean"
-    } else {
-        $statusShort -join "`r`n"
-    }
-)
-
-## Optional Baseline Tag
-Suggested tag: $tagName
-"@
-
-Set-Content -LiteralPath $outPath -Value $body -Encoding UTF8
-
-Write-Host "AUDIT_NOTE_WRITTEN: $outPath"
-Write-Host "BRANCH: $branch"
-Write-Host "HEAD: $head"
-Write-Host "WORKING_TREE: $workingTreeState"
-
-if ($CreateTag) {
-    if ($statusShort.Count -ne 0) {
-        Fail "Refusing to create tag because working tree is not clean."
-    }
-
-    Exec-Git -Args @('tag', '-a', $tagName, '-m', "$Phase release-readiness baseline")
-    Write-Host "TAG_CREATED: $tagName"
-    Write-Host "To publish tag: git push origin $tagName"
-}
+New-Item -ItemType Directory -Force -Path "AUDIT" | Out-Null
+$now = Get-Date -Format "yyyy-MM-dd HH:mm:ss K"
+if ($NoGit) { $branch = "UNKNOWN"; $commit = "UNKNOWN"; $fullCommit = "UNKNOWN"; $statusRaw = ""; $recentCommits = "UNKNOWN" }
+else { $branch = git rev-parse --abbrev-ref HEAD; $commit = git rev-parse --short HEAD; $fullCommit = git rev-parse HEAD; $statusRaw = git status --porcelain; $recentCommits = (git log --oneline -5) -join "`n" }
+$repoState = if ([string]::IsNullOrWhiteSpace($statusRaw)) { "CLEAN" } else { "DIRTY" }
+$decision = @("# Phase18 Release Readiness Decision","","Generated: $now","","## Binding Decision","","Refactor is frozen. The project is now in stabilization mode.","","## Mandatory State","","- Project Mode: STABILIZATION_MODE","- Refactor Status: FROZEN","- Commercial Readiness: PARTIAL -> RELEASE_CANDIDATE_TARGET","- Automation Readiness: STRONG","- Audit Readiness: ACTIVE","- Next Gate: GO / NO-GO RELEASE DECISION","","Canonical source of truth: AUDIT/RELEASE_READINESS_MASTER.md")
+$snapshot = @("# Phase18 Release Readiness Snapshot","","Generated: $now","","## Repository Snapshot","","- Branch: $branch","- Commit: $commit","- Full Commit: $fullCommit","- Working Tree: $repoState","","## Recent Commits","","
+````text",$recentCommits,"
+````","","Canonical source of truth: AUDIT/RELEASE_READINESS_MASTER.md")
+$master = @("# S43 Release Readiness Master","","Generated: $now","","## Canonical Rule","","This document is the single source of truth for release-readiness status.","Supporting AUDIT files are evidence only.","Do not create parallel roadmap, readiness, or decision documents.","","## Operational Contract","","This is enforced by AUDIT/RELEASE_READINESS_POLICY.json and tools/assert_release_readiness.ps1.","","## Current Status","","- Project Mode: STABILIZATION_MODE","- Refactor Status: FROZEN","- Commercial Readiness: PARTIAL -> RELEASE_CANDIDATE_TARGET","- Automation Readiness: STRONG","- Audit Readiness: ACTIVE","- Next Gate: GO / NO-GO RELEASE DECISION","","## Current Business Decision","","Refactor work is frozen. The project has moved into stabilization, release-readiness validation, release packaging, and final GO / NO-GO decision management.","","Commercial launch is not declared final until the GO / NO-GO gate passes.","","## Repository State","","- Branch: $branch","- Commit: $commit","- Full Commit: $fullCommit","- Working Tree: $repoState","","## Recent Commits","","
+````text",$recentCommits,"
+````","","## Mandatory Behavior","","- Release readiness must be generated through tooling.","- Canonical status must remain in AUDIT/RELEASE_READINESS_MASTER.md.","- Supporting files are evidence only.","- Final release requires GO / NO-GO approval.","- Dirty working tree is not acceptable for final readiness assertion.","","## Known Gaps Before Final Release","","- CI evidence required.","- Security scan required.","- Release packaging required.","- Final GO / NO-GO decision pending.")
+Set-Content -Path "AUDIT/PHASE18_RELEASE_READINESS_DECISION.md" -Value $decision -Encoding UTF8
+Set-Content -Path "AUDIT/PHASE18_RELEASE_READINESS_SNAPSHOT.md" -Value $snapshot -Encoding UTF8
+Set-Content -Path "AUDIT/RELEASE_READINESS_MASTER.md" -Value $master -Encoding UTF8
+Write-Host "Release readiness files generated."
+if (-not $SkipAssert) { powershell -NoProfile -ExecutionPolicy Bypass -File "tools/assert_release_readiness.ps1" -AllowDirty }
