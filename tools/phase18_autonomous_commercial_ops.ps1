@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$Message = "",
     [string]$AuditPrefix = "PHASE18_AUTONOMOUS_COMMERCIAL_OPS"
 )
@@ -41,9 +41,9 @@ Write-Capture "03_origin_head.txt" { git rev-parse origin/phase17-work-from-rest
 Write-Capture "04_status_short.txt" { git status --short }
 Write-Capture "05_latest_commit.txt" { git log -1 --pretty=fuller }
 Write-Capture "06_remote.txt" { git remote -v }
-Write-Capture "07_preflight_audit.txt" { & .\tools\phase18_preflight_audit.ps1 }
-Write-Capture "08_security_audit.txt" { & .\tools\phase18_readonly_security_audit.ps1 }
-Write-Capture "09_stability_audit.txt" { & .\tools\phase18_stability_test_readiness_audit.ps1 }
+Write-Capture "07_preflight_audit.txt" { & cmd.exe /d /c "powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\phase18_preflight_audit.ps1 2>&1" }
+Write-Capture "08_security_audit.txt" { & cmd.exe /d /c "powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\phase18_readonly_security_audit.ps1 2>&1" }
+Write-Capture "09_stability_audit.txt" { & cmd.exe /d /c "powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\phase18_stability_test_readiness_audit.ps1 2>&1" }
 
 $openaiStatus = Test-EnvPresence "OPENAI_API_KEY"
 $anthropicStatus = Test-EnvPresence "ANTHROPIC_API_KEY"
