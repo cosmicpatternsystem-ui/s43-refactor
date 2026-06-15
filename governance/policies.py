@@ -1,4 +1,4 @@
-﻿from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod
 from .decisions import GovernanceDecision
 
 class GovernancePolicy(ABC):
@@ -13,7 +13,7 @@ class RiskThresholdPolicy(GovernancePolicy):
     def apply(self, decision: GovernanceDecision) -> GovernanceDecision:
         # استخراج میزان ریسک از Context تراکنش
         risk_score = decision.context.get("risk_score", 0.0)
-        
+
         if risk_score > self.max_allowed_risk:
             decision.outcome = "REJECTED"
             decision.reason = f"Risk score {risk_score} exceeds threshold {self.max_allowed_risk}"
@@ -21,5 +21,5 @@ class RiskThresholdPolicy(GovernancePolicy):
         else:
             decision.outcome = "APPROVED"
             decision.reason = "Risk score within acceptable limits"
-        
+
         return decision

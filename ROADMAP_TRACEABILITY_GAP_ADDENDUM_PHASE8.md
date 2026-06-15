@@ -1,4 +1,4 @@
-﻿# ROADMAP Traceability Gap Addendum: Phase 8
+# ROADMAP Traceability Gap Addendum: Phase 8
 
 Generated: 20260614_003753
 
@@ -8,7 +8,7 @@ Phase 8 is currently classified as:
 
 TRACEABILITY_GAP / NOT_EVIDENCE_CONFIRMED",
     ",
-    
+
 
 The available project evidence does not contain a direct Phase 8 marker or document record.
 

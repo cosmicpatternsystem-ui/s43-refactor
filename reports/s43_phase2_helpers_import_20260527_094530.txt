@@ -16,7 +16,7 @@ _env_float: 1.5
 _env_str: x
 _env_int: 7
 _canon_symbol: BTCIRT
-_ensure_dir: 
+_ensure_dir:
 IMPORT_TEST_OK
 
 [HELP CHECK]

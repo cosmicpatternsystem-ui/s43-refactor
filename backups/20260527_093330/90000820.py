@@ -2270,7 +2270,7 @@ class SoftSymbolBlacklist:
                 rec2["ts"] = float(now)
                 self._state[sym] = rec2
 
-    
+
     def block(self, sym: str, reason: str = "manual") -> None:
         """Force a symbol into blocked state (used by persisted restores)."""
         if not bool(getattr(self, "enable", True)):
@@ -4620,7 +4620,7 @@ class BotConfig:
     sanity_divergence_rsi_thr: float = field(default_factory=lambda: _env_float("SANITY_RSI_THR", 70.0))
     sanity_divergence_shadow_thr: float = field(default_factory=lambda: _env_float("SANITY_SHADOW_THR", 0.40))
     sanity_hold_sec: float = field(default_factory=lambda: _env_float("SANITY_HOLD_SEC", 15.0))
-    
+
     sanity_soft_mid_hold_sec: float = field(default_factory=lambda: _env_float("SANITY_SOFT_MID_HOLD_SEC", 6.0))
     sanity_clear_ok: int = field(default_factory=lambda: int(_env_int("SANITY_CLEAR_OK", 6)))
     sanity_debounce_hits: int = field(default_factory=lambda: int(_env_int("SANITY_DEBOUNCE_HITS", 2)))
@@ -7502,7 +7502,7 @@ class ClockArbiter:
     def _normalize_server_time(st: float) -> float:
         # Backward-compat shim: normalize into unix-epoch seconds.
         return float(ClockArbiter._epoch_to_seconds(st))
-    
+
     def observe(self, local_now_s: float, server_time: float) -> None:
         try:
             st = self._normalize_server_time(float(server_time))
@@ -9352,7 +9352,7 @@ RAZ TRADER PLUS - ENHANCED PRODUCTION MODULE
 
 6-Layer Production-Grade Enhancements:
 1. Latency-Optimized Async Architecture
-2. Advanced Health Monitoring & Anomaly Detection  
+2. Advanced Health Monitoring & Anomaly Detection
 3. Dynamic Position Sizing with Volatility Scaling
 4. Intelligent Signal Filtering (Hybrid EMA+RSI)
 5. Network Resilience with Exponential Backoff
@@ -10119,7 +10119,7 @@ class SovereignCore:
 class Priority(enum.IntEnum):
     """Execution priority for latency-critical operations."""
     CRITICAL = 0      # Health checks, emergency exits
-    REALTIME = 1      # Signal processing, order execution  
+    REALTIME = 1      # Signal processing, order execution
     NORMAL = 2        # Balance updates, state persistence
     BACKGROUND = 3    # Logging, metrics collection
     LOW = 4          # Non-urgent maintenance
@@ -10133,7 +10133,7 @@ class PrioritizedItem:
 
 class LatencyAwareEventLoop:
     """Async event loop with latency monitoring and priority scheduling."""
-    
+
     def __init__(self, max_latency_ms: float = 50.0):
         self.max_latency_ms = max_latency_ms
         self._latency_history = deque(maxlen=1000)
@@ -10150,29 +10150,29 @@ class LatencyAwareEventLoop:
             "overflow_count": 0,
             "total_processed": 0
         }
-        
+
     async def monitor_loop(self):
         """Monitor event loop latency and detect stalls."""
         for _ULTRA_GUARD in range(120000):
             try:
                 await asyncio.sleep(0.5)
                 loop = asyncio.get_running_loop()
-                
+
                 # Measure loop iteration time
                 start = time.perf_counter()
                 await asyncio.sleep(0)
                 end = time.perf_counter()
                 latency_ms = (end - start) * 1000
-                
+
                 self._latency_history.append(latency_ms)
-                
+
                 # Update statistics
                 if len(self._latency_history) >= 10:
                     self._stats["avg_latency_ms"] = statistics.mean(self._latency_history)
                     self._stats["p95_latency_ms"] = np.percentile(
                         list(self._latency_history), 95
                     )
-                    
+
                 # Detect loop stall
                 if latency_ms > self.max_latency_ms * 2:
                     self._stats["overflow_count"] += 1
@@ -10180,12 +10180,12 @@ class LatencyAwareEventLoop:
                         f"Event loop latency spike: {latency_ms:.1f}ms",
                         RuntimeWarning
                     )
-                    
+
             except asyncio.CancelledError:
                 break
             except Exception:
                 continue
-                
+
     async def submit_priority_task(
         self,
         coro: Awaitable,
@@ -10195,21 +10195,21 @@ class LatencyAwareEventLoop:
         """Submit task with priority scheduling."""
         if task_id in self._pending_tasks:
             return self._pending_tasks[task_id]
-            
+
         async def _wrapped():
             try:
                 return await coro
             finally:
                 if task_id:
                     self._pending_tasks.pop(task_id, None)
-                    
+
         task = asyncio.create_task(_wrapped(), name=f"priority_{priority.name}_{task_id}")
-        
+
         if task_id:
             self._pending_tasks[task_id] = task
-            
+
         return task
-        
+
     async def run_blocking(self, func: Callable[..., Any], *args, **kwargs) -> Any:
         """Run blocking function in executor without blocking event loop."""
         loop = asyncio.get_running_loop()
@@ -10217,14 +10217,14 @@ class LatencyAwareEventLoop:
             self._executor,
             functools.partial(func, *args, **kwargs)
         )
-        
+
     def get_stats(self) -> Dict[str, Any]:
         """Get current latency statistics."""
         return self._stats.copy()
 
 class AsyncRateLimiter:
     """Smart rate limiter with exponential backoff and burst handling."""
-    
+
     def __init__(
         self,
         requests_per_minute: int,
@@ -10240,26 +10240,26 @@ class AsyncRateLimiter:
         self._lock = asyncio.Lock()
         self._consecutive_failures = 0
         self._backoff_factor = 1.0
-        
+
     async def acquire(self, weight: int = 1) -> None:
         """Acquire rate limit tokens with adaptive backoff."""
         async with self._lock:
             now = time.monotonic()
             elapsed = now - self._last_update
-            
+
             # Replenish tokens
             self._tokens = min(
                 self.burst_size,
                 self._tokens + elapsed / self._interval
             )
             self._last_update = now
-            
+
             # Calculate required wait
             required = weight
             if self._tokens < required:
                 deficit = required - self._tokens
                 wait_time = deficit * self._interval
-                
+
                 # Apply backoff for consecutive failures
                 if self._consecutive_failures > 0:
                     backoff = min(
@@ -10267,7 +10267,7 @@ class AsyncRateLimiter:
                         self._backoff_factor * (2 ** self._consecutive_failures)
                     )
                     wait_time = max(wait_time, backoff)
-                    
+
                 if wait_time > 0:
                     await asyncio.sleep(wait_time)
                     self._tokens = 0
@@ -10277,11 +10277,11 @@ class AsyncRateLimiter:
                 self._tokens -= required
                 self._consecutive_failures = 0
                 self._backoff_factor = 1.0
-                
+
     async def __aenter__(self):
         await self.acquire()
         return self
-        
+
     async def __aexit__(self, *args):
         pass
 
@@ -10295,26 +10295,26 @@ class HealthMetric:
     name: str
     values: Deque[float] = field(default_factory=lambda: deque(maxlen=1000))
     timestamps: Deque[float] = field(default_factory=lambda: deque(maxlen=1000))
-    
+
     def add(self, value: float, timestamp: Optional[float] = None):
         ts = timestamp or time.time()
         self.values.append(value)
         self.timestamps.append(ts)
-        
+
     def get_stats(self, window_seconds: float = 300) -> Dict[str, float]:
         """Get statistics for recent window."""
         if not self.values:
             return {}
-            
+
         cutoff = time.time() - window_seconds
         recent = [
             v for v, t in zip(self.values, self.timestamps)
             if t >= cutoff
         ]
-        
+
         if not recent:
             return {}
-            
+
         return {
             "mean": float(np.mean(recent)),
             "std": float(np.std(recent)),
@@ -10324,7 +10324,7 @@ class HealthMetric:
             "current": float(recent[-1]),
             "count": len(recent)
         }
-        
+
     def detect_anomaly(
         self,
         current_value: float,
@@ -10335,26 +10335,26 @@ class HealthMetric:
         stats = self.get_stats(window_seconds)
         if not stats or stats["std"] == 0:
             return False, stats
-            
+
         z_score = abs(current_value - stats["mean"]) / stats["std"]
         is_anomaly = z_score > sigma_threshold
-        
+
         anomaly_info = {
             **stats,
             "z_score": z_score,
             "threshold": sigma_threshold,
             "is_anomaly": is_anomaly
         }
-        
+
         return is_anomaly, anomaly_info
 
 class SymbolHealthMonitor:
     """Per-symbol health monitoring with anomaly detection."""
-    
+
     def __init__(self, symbol: str, config: Dict[str, Any]):
         self.symbol = symbol
         self.config = config
-        
+
         # Health metrics
         self.metrics = {
             "latency": HealthMetric("latency_ms"),
@@ -10363,33 +10363,33 @@ class SymbolHealthMonitor:
             "price_change": HealthMetric("price_change_bps"),
             "orderbook_depth": HealthMetric("orderbook_depth")
         }
-        
+
         # Anomaly counters
         self.anomaly_counters = defaultdict(int)
         self.last_anomaly_time = 0.0
         self.health_score = 100.0  # 0-100 scale
         self.status = "HEALTHY"
         self._lock = threading.RLock()
-        
+
         # Flash crash detection
         self.price_history = deque(maxlen=100)
         self._flash_crash_threshold = config.get("flash_crash_threshold", -0.05)
-        
+
     def update(self, market_data: Dict[str, Any]):
         """Update health metrics with new market data."""
         with self._lock:
             ts = time.time()
-            
+
             # Update metrics
             if "latency_ms" in market_data:
                 self.metrics["latency"].add(market_data["latency_ms"], ts)
-                
+
             if "spread_bps" in market_data:
                 self.metrics["spread"].add(market_data["spread_bps"], ts)
-                
+
             if "volume_irt" in market_data:
                 self.metrics["volume"].add(market_data["volume_irt"], ts)
-                
+
             if "mid_price" in market_data:
                 current_price = market_data["mid_price"]
                 if self.price_history:
@@ -10397,7 +10397,7 @@ class SymbolHealthMonitor:
                     if prev_price > 0:
                         change = (current_price - prev_price) / prev_price
                         self.metrics["price_change"].add(change * 10000, ts)
-                        
+
                         # Flash crash detection
                         if change < self._flash_crash_threshold:
                             self._record_anomaly("FLASH_CRASH", {
@@ -10405,24 +10405,24 @@ class SymbolHealthMonitor:
                                 "threshold": self._flash_crash_threshold * 100
                             })
                 self.price_history.append(current_price)
-                
+
             # Update health score
             self._calculate_health_score()
-            
+
     def _record_anomaly(self, anomaly_type: str, details: Dict[str, Any]):
         """Record and log anomaly."""
         self.anomaly_counters[anomaly_type] += 1
         self.last_anomaly_time = time.time()
-        
+
         logging.warning(
             f"Symbol health anomaly: {self.symbol} | "
             f"Type: {anomaly_type} | Details: {details}"
         )
-        
+
     def _calculate_health_score(self):
         """Calculate overall health score (0-100)."""
         scores = []
-        
+
         # Latency score (lower is better)
         latency_stats = self.metrics["latency"].get_stats(60)
         if latency_stats:
@@ -10430,7 +10430,7 @@ class SymbolHealthMonitor:
             current = latency_stats.get("current", target)
             score = max(0, 100 - (current / target * 100))
             scores.append(min(100, score * 1.5))  # Weighted
-            
+
         # Spread score (lower is better)
         spread_stats = self.metrics["spread"].get_stats(60)
         if spread_stats:
@@ -10438,26 +10438,26 @@ class SymbolHealthMonitor:
             current = spread_stats.get("current", target)
             score = max(0, 100 - (current / target * 100))
             scores.append(min(100, score))
-            
+
         # Volume consistency score
         volume_stats = self.metrics["volume"].get_stats(300)
         if volume_stats and volume_stats.get("std", 0) > 0:
             cv = volume_stats["std"] / volume_stats["mean"]
             score = max(0, 100 - (cv * 100))
             scores.append(min(100, score))
-            
+
         # Recent anomalies penalty
         anomaly_penalty = 0
         for anomaly_type, count in self.anomaly_counters.items():
             if time.time() - self.last_anomaly_time < 300:  # Last 5 minutes
                 anomaly_penalty += min(30, count * 10)
-                
+
         if scores:
             base_score = statistics.mean(scores)
             self.health_score = max(0, base_score - anomaly_penalty)
         else:
             self.health_score = 100 - anomaly_penalty
-            
+
         # Update status
         if self.health_score >= 80:
             self.status = "HEALTHY"
@@ -10465,25 +10465,25 @@ class SymbolHealthMonitor:
             self.status = "DEGRADED"
         else:
             self.status = "UNHEALTHY"
-            
+
     def should_trade(self) -> Tuple[bool, str]:
         """Determine if trading should be allowed for this symbol."""
         with self._lock:
             if self.status == "UNHEALTHY":
                 return False, f"Symbol {self.symbol} is UNHEALTHY (score: {self.health_score:.1f})"
-                
+
             # Check for recent flash crash
             if self.anomaly_counters.get("FLASH_CRASH", 0) > 0:
                 if time.time() - self.last_anomaly_time < 60:
                     return False, "Flash crash detected recently"
-                    
+
             # Check latency
             latency_stats = self.metrics["latency"].get_stats(30)
             if latency_stats and latency_stats.get("current", 0) > 500:  # 500ms
                 return False, f"High latency: {latency_stats['current']:.0f}ms"
-                
+
             return True, self.status
-        
+
     def get_health_report(self) -> Dict[str, Any]:
         """Generate comprehensive health report."""
         with self._lock:
@@ -10495,15 +10495,15 @@ class SymbolHealthMonitor:
                 "last_anomaly": self.last_anomaly_time,
                 "metrics": {}
             }
-            
+
             for name, metric in self.metrics.items():
                 report["metrics"][name] = metric.get_stats(300)
-                
+
             return report
 
 class GlobalHealthMonitor:
     """System-wide health monitoring with coordinated response."""
-    
+
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.symbol_monitors: Dict[str, SymbolHealthMonitor] = {}
@@ -10511,14 +10511,14 @@ class GlobalHealthMonitor:
         self.circuit_breakers: Dict[str, bool] = {}
         self._lock = threading.RLock()
         self._last_system_check = 0.0
-        
+
         # Health thresholds
         self.thresholds = {
             "system_health_min": config.get("system_health_min", 70.0),
             "unhealthy_symbols_max": config.get("unhealthy_symbols_max", 2),
             "degraded_symbols_max": config.get("degraded_symbols_max", 4)
         }
-        
+
     def get_or_create_symbol_monitor(self, symbol: str) -> SymbolHealthMonitor:
         """Get or create health monitor for symbol."""
         with self._lock:
@@ -10527,46 +10527,46 @@ class GlobalHealthMonitor:
                     symbol, self.config
                 )
             return self.symbol_monitors[symbol]
-            
+
     def update_symbol_health(self, symbol: str, market_data: Dict[str, Any]):
         """Update health metrics for specific symbol."""
         monitor = self.get_or_create_symbol_monitor(symbol)
         monitor.update(market_data)
-        
+
     def check_system_health(self) -> Dict[str, Any]:
         """Perform comprehensive system health check."""
         with self._lock:
             now = _rt_now(self.bot)
-            
+
             # Throttle system checks
             if now - self._last_system_check < 5.0:
                 return self._last_system_report or {}
-                
+
             self._last_system_check = now
-            
+
             # Collect symbol health
             symbol_reports = {}
             unhealthy_count = 0
             degraded_count = 0
             avg_health_score = 0.0
-            
+
             for symbol, monitor in self.symbol_monitors.items():
                 report = monitor.get_health_report()
                 symbol_reports[symbol] = report
-                
+
                 if monitor.status == "UNHEALTHY":
                     unhealthy_count += 1
                 elif monitor.status == "DEGRADED":
                     degraded_count += 1
-                    
+
                 avg_health_score += monitor.health_score
-                
+
             if self.symbol_monitors:
                 avg_health_score /= len(self.symbol_monitors)
-                
+
             # Update system metric
             self.system_metrics.add(avg_health_score, now)
-            
+
             # Check thresholds
             system_status = "HEALTHY"
             if unhealthy_count > self.thresholds["unhealthy_symbols_max"]:
@@ -10575,11 +10575,11 @@ class GlobalHealthMonitor:
                 system_status = "DEGRADED"
             elif avg_health_score < self.thresholds["system_health_min"]:
                 system_status = "DEGRADED"
-                
+
             # Update circuit breakers
             if system_status == "CRITICAL":
                 self._activate_circuit_breaker("SYSTEM_HEALTH")
-                
+
             report = {
                 "timestamp": now,
                 "system_status": system_status,
@@ -10589,27 +10589,27 @@ class GlobalHealthMonitor:
                 "symbol_reports": symbol_reports,
                 "circuit_breakers": dict(self.circuit_breakers)
             }
-            
+
             self._last_system_report = report
             return report
-            
+
     def _activate_circuit_breaker(self, breaker_id: str):
         """Activate circuit breaker with automatic reset."""
         self.circuit_breakers[breaker_id] = True
-        
+
         # Schedule automatic reset
         reset_delay = self.config.get("circuit_breaker_reset_sec", 60)
-        
+
         def reset_breaker():
             time.sleep(reset_delay)
             with self._lock:
                 if self.circuit_breakers.get(breaker_id):
                     self.circuit_breakers[breaker_id] = False
                     logging.info(f"Circuit breaker {breaker_id} reset automatically")
-                    
+
         threading.Thread(target=reset_breaker, daemon=True).start()
         logging.critical(f"Circuit breaker {breaker_id} activated")
-        
+
     def is_circuit_breaker_active(self, breaker_id: str) -> bool:
         """Check if circuit breaker is active."""
         return self.circuit_breakers.get(breaker_id, False)
@@ -10630,60 +10630,60 @@ class VolatilityRegime(enum.Enum):
 @dataclass
 class VolatilityMetrics:
     """Comprehensive volatility metrics for position sizing."""
-    
+
     # Basic metrics
     current_volatility: float = 0.0  # Annualized volatility
     average_volatility: float = 0.0  # Long-term average
     volatility_ratio: float = 1.0    # current / average
-    
+
     # Regime detection
     regime: VolatilityRegime = VolatilityRegime.NORMAL
-    
+
     # Statistical metrics
     atr: float = 0.0                 # Average True Range
     atr_percent: float = 0.0         # ATR as percentage of price
     std_dev: float = 0.0            # Standard deviation of returns
     var_95: float = 0.0             # 95% Value at Risk
     cvar_95: float = 0.0            # Conditional VaR
-    
+
     # Trend metrics
     trend_strength: float = 0.0     # -1 to 1 (bearish to bullish)
     trend_consistency: float = 0.0  # 0 to 1 (noise to trend)
-    
+
     # Market state
     is_mean_reverting: bool = False
     is_trending: bool = False
     is_choppy: bool = False
-    
+
     # Timestamps
     calculation_time: float = 0.0
     valid_until: float = 0.0
 
 class DynamicPositionSizer:
     """Dynamic position sizing based on volatility and market regime."""
-    
+
     def __init__(self, config: Dict[str, Any]):
         self.config = config
-        
+
         # Base parameters
         self.base_position_size = config.get("base_position_size", 0.1)  # 10% of capital
         self.max_position_size = config.get("max_position_size", 0.25)   # 25% max
         self.min_position_size = config.get("min_position_size", 0.01)   # 1% min
-        
+
         # Volatility scaling
         self.volatility_scaling = config.get("volatility_scaling", True)
         self.volatility_lookback = config.get("volatility_lookback_days", 20)
-        
+
         # Risk parameters
         self.max_daily_loss = config.get("max_daily_loss", 0.02)  # 2% max daily loss
         self.target_risk_reward = config.get("target_risk_reward", 2.0)
         self.kelly_fraction = config.get("kelly_fraction", 0.5)   # Half-Kelly
-        
+
         # Position history
         self.position_history: Deque[Dict[str, Any]] = deque(maxlen=1000)
         self.volatility_cache: Dict[str, VolatilityMetrics] = {}
         self._lock = threading.RLock()
-        
+
     def calculate_position_size(
         self,
         symbol: str,
@@ -10695,60 +10695,60 @@ class DynamicPositionSizer:
     ) -> Dict[str, Any]:
         """
         Calculate dynamic position size based on multiple factors.
-        
+
         Returns:
             Dictionary with position size and all calculation details
         """
         with self._lock:
             # Base size from config
             base_size = self.base_position_size * capital
-            
+
             # 1. Volatility scaling
             if self.volatility_scaling:
                 vol_scale = self._calculate_volatility_scale(volatility_metrics)
                 base_size *= vol_scale
-                
+
             # 2. Signal strength scaling (0.5 to 1.5)
             signal_scale = 0.5 + abs(signal_strength)
             base_size *= min(1.5, max(0.5, signal_scale))
-            
+
             # 3. Market regime adjustment
             regime_scale = self._get_regime_scale(market_regime)
             base_size *= regime_scale
-            
+
             # 4. Current exposure penalty
             exposure_penalty = self._calculate_exposure_penalty(current_exposure, capital)
             base_size *= exposure_penalty
-            
+
             # 5. Kelly criterion adjustment
             kelly_size = self._calculate_kelly_size(
                 capital, volatility_metrics, signal_strength
             )
-            
+
             # Combine with Kelly
             if kelly_size > 0:
                 final_size = min(base_size, kelly_size)
             else:
                 final_size = base_size
-                
+
             # 6. Apply hard limits
             final_size = max(
                 self.min_position_size * capital,
                 min(final_size, self.max_position_size * capital)
             )
-            
+
             # 7. Risk-based final check
             daily_loss_limit = capital * self.max_daily_loss
             max_position_for_loss = daily_loss_limit / (
                 volatility_metrics.atr_percent * self.target_risk_reward
             )
-            
+
             if max_position_for_loss > 0:
                 final_size = min(final_size, max_position_for_loss)
-                
+
             # Round to appropriate precision
             final_size = self._round_position_size(final_size, symbol)
-            
+
             return {
                 "position_size": final_size,
                 "position_pct": final_size / capital if capital > 0 else 0,
@@ -10762,7 +10762,7 @@ class DynamicPositionSizer:
                 "calculation_time": time.time(),
                 "risk_reward_ratio": self.target_risk_reward
             }
-            
+
     def _calculate_volatility_scale(self, metrics: VolatilityMetrics) -> float:
         """Scale position based on volatility regime."""
         if metrics.regime == VolatilityRegime.VERY_LOW:
@@ -10777,7 +10777,7 @@ class DynamicPositionSizer:
             return 0.4
         else:  # EXTREME
             return 0.1  # Drastically reduce in extreme volatility
-            
+
     def _get_regime_scale(self, market_regime: str) -> float:
         """Adjust position based on overall market regime."""
         regime_scales = {
@@ -10791,12 +10791,12 @@ class DynamicPositionSizer:
             "RALLY": 1.3
         }
         return regime_scales.get(market_regime, 1.0)
-        
+
     def _calculate_exposure_penalty(self, current_exposure: float, capital: float) -> float:
         """Reduce position size if already heavily exposed."""
         if capital == 0:
             return 1.0
-            
+
         exposure_ratio = current_exposure / capital
         if exposure_ratio < 0.1:
             return 1.0  # No penalty for low exposure
@@ -10808,7 +10808,7 @@ class DynamicPositionSizer:
             return 0.5
         else:
             return 0.3  # Heavy penalty for high exposure
-            
+
     def _calculate_kelly_size(
         self,
         capital: float,
@@ -10816,10 +10816,10 @@ class DynamicPositionSizer:
         signal_strength: float
     ) -> float:
         """Calculate position size using Kelly criterion."""
-        
+
         # Estimate win probability from signal strength (0.5 to 0.75)
         win_prob = 0.5 + 0.25 * min(1.0, abs(signal_strength))
-        
+
         # Estimate win/loss ratio from volatility
         # In trending markets, aim for better risk/reward
         if metrics.is_trending:
@@ -10828,23 +10828,23 @@ class DynamicPositionSizer:
             win_loss_ratio = 1.5
         else:
             win_loss_ratio = 1.2
-            
+
         # Kelly formula: f = p - q/b
         # where p = win probability, q = loss probability, b = win/loss ratio
         p = win_prob
         q = 1 - win_prob
         b = win_loss_ratio
-        
+
         kelly_fraction = (p * b - q) / b
-        
+
         # Apply half-Kelly for safety
         kelly_fraction *= self.kelly_fraction
-        
+
         # Cap at reasonable level
         kelly_fraction = max(0.01, min(0.25, kelly_fraction))
-        
+
         return kelly_fraction * capital
-        
+
     def _round_position_size(self, size: float, symbol: str) -> float:
         """Round position size to appropriate precision for symbol."""
         # Different precision for different assets
@@ -10854,16 +10854,16 @@ class DynamicPositionSizer:
             "USDT": 1.0,     # 1 USDT precision
             "IRT": 1000.0,   # 1000 IRT precision for Iranian Toman
         }
-        
+
         # Find matching rule
         for asset, precision in precision_rules.items():
             if asset in symbol:
                 rounded = round(size / precision) * precision
                 return max(precision, rounded)  # Ensure minimum size
-                
+
         # Default rounding
         return round(size, 2)
-        
+
     def update_volatility_metrics(
         self,
         symbol: str,
@@ -10872,24 +10872,24 @@ class DynamicPositionSizer:
         low_prices: Optional[List[float]] = None
     ) -> VolatilityMetrics:
         """Calculate comprehensive volatility metrics."""
-        
+
         if len(prices) < 20:
             # Insufficient data, return default
             return VolatilityMetrics()
-            
+
         returns = []
         for i in range(1, len(prices)):
             if prices[i-1] > 0:
                 ret = (prices[i] - prices[i-1]) / prices[i-1]
                 returns.append(ret)
-                
+
         if not returns:
             return VolatilityMetrics()
-            
+
         # Calculate basic volatility (annualized)
         std_daily = statistics.stdev(returns) if len(returns) > 1 else 0
         volatility_annual = std_daily * math.sqrt(252)  # Trading days
-        
+
         # Calculate ATR if we have high/low data
         atr = 0.0
         if high_prices and low_prices and len(high_prices) == len(low_prices) == len(prices):
@@ -10900,14 +10900,14 @@ class DynamicPositionSizer:
                 low_close = abs(low_prices[i] - prices[i-1])
                 true_range = max(high_low, high_close, low_close)
                 true_ranges.append(true_range)
-                
+
             if true_ranges:
                 atr = statistics.mean(true_ranges[-14:])  # 14-day ATR
-                
+
         # Determine volatility regime
         avg_volatility = self._get_average_volatility(symbol)
         vol_ratio = volatility_annual / avg_volatility if avg_volatility > 0 else 1.0
-        
+
         if vol_ratio < 0.5:
             regime = VolatilityRegime.VERY_LOW
         elif vol_ratio < 0.8:
@@ -10920,15 +10920,15 @@ class DynamicPositionSizer:
             regime = VolatilityRegime.VERY_HIGH
         else:
             regime = VolatilityRegime.EXTREME
-            
+
         # Calculate trend metrics
         trend_strength, trend_consistency = self._calculate_trend_metrics(prices)
-        
+
         # Determine market state
         is_mean_reverting = self._is_mean_reverting(returns)
         is_trending = trend_strength > 0.3 and trend_consistency > 0.6
         is_choppy = not is_trending and not is_mean_reverting
-        
+
         metrics = VolatilityMetrics(
             current_volatility=volatility_annual,
             average_volatility=avg_volatility,
@@ -10947,12 +10947,12 @@ class DynamicPositionSizer:
             calculation_time=time.time(),
             valid_until=time.time() + 300  # Valid for 5 minutes
         )
-        
+
         # Cache the metrics
         self.volatility_cache[symbol] = metrics
-        
+
         return metrics
-        
+
     def _get_average_volatility(self, symbol: str) -> float:
         """Get long-term average volatility for symbol."""
         # In production, this would come from historical database
@@ -10963,35 +10963,35 @@ class DynamicPositionSizer:
             "USDT": 0.05,
             "IRT": 0.10,
         }
-        
+
         for asset, vol in default_volatilities.items():
             if asset in symbol:
                 return vol
-                
+
         return 0.50  # Default 50% volatility
-        
+
     def _calculate_trend_metrics(self, prices: List[float]) -> Tuple[float, float]:
         """Calculate trend strength and consistency."""
         if len(prices) < 20:
             return 0.0, 0.0
-            
+
         # Simple linear regression for trend
         x = list(range(len(prices)))
         y = prices
-        
+
         n = len(x)
         sum_x = sum(x)
         sum_y = sum(y)
         sum_xy = sum(xi * yi for xi, yi in zip(x, y))
         sum_x2 = sum(xi * xi for xi in x)
-        
+
         # Calculate slope (trend strength)
         denominator = n * sum_x2 - sum_x * sum_x
         if denominator == 0:
             slope = 0
         else:
             slope = (n * sum_xy - sum_x * sum_y) / denominator
-            
+
         # Normalize slope to -1 to 1 range
         price_range = max(y) - min(y)
         if price_range > 0:
@@ -10999,14 +10999,14 @@ class DynamicPositionSizer:
             trend_strength = max(-1, min(1, normalized_slope))
         else:
             trend_strength = 0
-            
+
         # Calculate trend consistency (R-squared)
         if len(y) > 1:
             y_mean = statistics.mean(y)
             ss_total = sum((yi - y_mean) ** 2 for yi in y)
-            ss_residual = sum((yi - (slope * xi + (sum_y/n - slope * sum_x/n))) ** 2 
+            ss_residual = sum((yi - (slope * xi + (sum_y/n - slope * sum_x/n))) ** 2
                             for xi, yi in zip(x, y))
-            
+
             if ss_total > 0:
                 r_squared = 1 - (ss_residual / ss_total)
                 trend_consistency = max(0, min(1, r_squared))
@@ -11014,48 +11014,48 @@ class DynamicPositionSizer:
                 trend_consistency = 0
         else:
             trend_consistency = 0
-            
+
         return trend_strength, trend_consistency
-        
+
     def _is_mean_reverting(self, returns: List[float]) -> bool:
         """Check if returns show mean-reverting behavior."""
         if len(returns) < 30:
             return False
-            
+
         # Calculate autocorrelation at lag 1
         mean = statistics.mean(returns)
         variance = statistics.variance(returns) if len(returns) > 1 else 0
-        
+
         if variance == 0:
             return False
-            
+
         autocov = sum(
             (returns[i] - mean) * (returns[i-1] - mean)
             for i in range(1, len(returns))
         ) / (len(returns) - 1)
-        
+
         autocorr = autocov / variance
-        
+
         # Negative autocorrelation suggests mean reversion
         return autocorr < -0.3
-        
+
     def _calculate_var(self, returns: List[float], confidence: float) -> float:
         """Calculate Value at Risk."""
         if not returns:
             return 0.0
-            
+
         sorted_returns = sorted(returns)
         index = int((1 - confidence) * len(sorted_returns))
         return sorted_returns[max(0, index)] if index < len(sorted_returns) else sorted_returns[-1]
-        
+
     def _calculate_cvar(self, returns: List[float], confidence: float) -> float:
         """Calculate Conditional Value at Risk (Expected Shortfall)."""
         if not returns:
             return 0.0
-            
+
         var = self._calculate_var(returns, confidence)
         tail_returns = [r for r in returns if r <= var]
-        
+
         if tail_returns:
             return statistics.mean(tail_returns)
         return var
@@ -11067,7 +11067,7 @@ class DynamicPositionSizer:
 class SignalConfidence(enum.Enum):
     """Signal confidence levels."""
     VERY_LOW = 0.2    # 20% confidence
-    LOW = 0.4         # 40% confidence  
+    LOW = 0.4         # 40% confidence
     MEDIUM = 0.6      # 60% confidence
     HIGH = 0.8        # 80% confidence
     VERY_HIGH = 1.0   # 100% confidence
@@ -11075,36 +11075,36 @@ class SignalConfidence(enum.Enum):
 @dataclass
 class FilteredSignal:
     """Enhanced signal with filtering metadata."""
-    
+
     # Original signal
     action: str  # BUY, SELL, HOLD
     symbol: str
     raw_score: float
     raw_confidence: float
-    
+
     # Filtering results
     filtered_score: float
     filtered_confidence: float
     confidence_level: SignalConfidence
-    
+
     # Filter metadata
     filters_applied: List[str]
     filter_scores: Dict[str, float]
-    
+
     # Market context
     market_regime: str
     volatility_regime: VolatilityRegime
     trend_strength: float
-    
+
     # Risk metrics
     expected_win_rate: float
     expected_risk_reward: float
     position_size_pct: float
-    
+
     # Timestamps
     generated_time: float
     valid_until: float
-    
+
     def should_execute(self, min_confidence: float = 0.6) -> bool:
         """Determine if signal should be executed."""
         return (
@@ -11112,7 +11112,7 @@ class FilteredSignal:
             self.confidence_level.value >= SignalConfidence.MEDIUM.value and
             time.time() <= self.valid_until
         )
-        
+
     def get_execution_priority(self) -> Priority:
         """Get execution priority based on signal strength."""
         if self.confidence_level == SignalConfidence.VERY_HIGH:
@@ -11124,10 +11124,10 @@ class FilteredSignal:
 
 class HybridSignalFilter:
     """Intelligent signal filtering with multiple confirmation layers."""
-    
+
     def __init__(self, config: Dict[str, Any]):
         self.config = config
-        
+
         # Filter configurations
         self.filters = {
             "trend_filter": config.get("enable_trend_filter", True),
@@ -11137,18 +11137,18 @@ class HybridSignalFilter:
             "price_action_filter": config.get("enable_price_action_filter", True),
             "market_structure_filter": config.get("enable_market_structure_filter", True)
         }
-        
+
         # Technical indicator parameters
         self.ema_periods = {
             "fast": config.get("ema_fast", 9),
             "medium": config.get("ema_medium", 21),
             "slow": config.get("ema_slow", 50)
         }
-        
+
         self.rsi_period = config.get("rsi_period", 14)
         self.rsi_overbought = config.get("rsi_overbought", 70)
         self.rsi_oversold = config.get("rsi_oversold", 30)
-        
+
         # Filter weights (sum to 1.0)
         self.filter_weights = {
             "trend": config.get("trend_filter_weight", 0.25),
@@ -11158,13 +11158,13 @@ class HybridSignalFilter:
             "market_structure": config.get("market_structure_weight", 0.15),
             "time_based": config.get("time_filter_weight", 0.10)
         }
-        
+
         # Signal history for pattern recognition
         self.signal_history: Dict[str, Deque[FilteredSignal]] = defaultdict(
             lambda: deque(maxlen=100)
         )
         self._lock = threading.RLock()
-        
+
     def filter_signal(
         self,
         raw_signal: Dict[str, Any],
@@ -11173,17 +11173,17 @@ class HybridSignalFilter:
     ) -> FilteredSignal:
         """
         Apply intelligent filtering to raw trading signal.
-        
+
         Returns enhanced signal with confidence scoring.
         """
         with self._lock:
             filters_applied = []
             filter_scores = {}
-            
+
             # Initialize scores
             total_score = 0.0
             weight_sum = 0.0
-            
+
             # 1. Trend Filter
             if self.filters["trend_filter"]:
                 trend_score = self._apply_trend_filter(
@@ -11193,7 +11193,7 @@ class HybridSignalFilter:
                 total_score += trend_score * self.filter_weights["trend"]
                 weight_sum += self.filter_weights["trend"]
                 filters_applied.append("trend")
-                
+
             # 2. Momentum Filter (RSI-based)
             if self.filters["volatility_filter"]:  # Using volatility filter for momentum
                 momentum_score = self._apply_momentum_filter(market_data)
@@ -11201,7 +11201,7 @@ class HybridSignalFilter:
                 total_score += momentum_score * self.filter_weights["momentum"]
                 weight_sum += self.filter_weights["momentum"]
                 filters_applied.append("momentum")
-                
+
             # 3. Volume Filter
             if self.filters["volume_filter"] and "volume" in market_data:
                 volume_score = self._apply_volume_filter(market_data)
@@ -11209,7 +11209,7 @@ class HybridSignalFilter:
                 total_score += volume_score * self.filter_weights["volume"]
                 weight_sum += self.filter_weights["volume"]
                 filters_applied.append("volume")
-                
+
             # 4. Volatility Filter
             if self.filters["volatility_filter"]:
                 volatility_score = self._apply_volatility_filter(
@@ -11219,7 +11219,7 @@ class HybridSignalFilter:
                 total_score += volatility_score * self.filter_weights["volatility"]
                 weight_sum += self.filter_weights["volatility"]
                 filters_applied.append("volatility")
-                
+
             # 5. Market Structure Filter
             if self.filters["market_structure_filter"]:
                 structure_score = self._apply_market_structure_filter(market_data)
@@ -11227,7 +11227,7 @@ class HybridSignalFilter:
                 total_score += structure_score * self.filter_weights["market_structure"]
                 weight_sum += self.filter_weights["market_structure"]
                 filters_applied.append("market_structure")
-                
+
             # 6. Time-based Filter
             if self.filters["time_filter"]:
                 time_score = self._apply_time_filter(raw_signal["symbol"])
@@ -11235,32 +11235,32 @@ class HybridSignalFilter:
                 total_score += time_score * self.filter_weights["time_based"]
                 weight_sum += self.filter_weights["time_based"]
                 filters_applied.append("time_based")
-                
+
             # Normalize final score
             if weight_sum > 0:
                 final_score = total_score / weight_sum
             else:
                 final_score = raw_signal.get("score", 0.0)
-                
+
             # Calculate confidence level
             confidence_level = self._score_to_confidence(final_score)
-            
+
             # Adjust score based on raw signal strength
             raw_score = raw_signal.get("score", 0.0)
             raw_confidence = raw_signal.get("confidence", 0.0)
-            
+
             # Blend filtered score with raw score
             filtered_score = (final_score * 0.7) + (raw_score * 0.3)
             filtered_confidence = (final_score * 0.6) + (raw_confidence * 0.4)
-            
+
             # Determine market regime
             market_regime = self._determine_market_regime(market_data, volatility_metrics)
-            
+
             # Calculate expected metrics
             expected_win_rate, expected_risk_reward = self._calculate_expected_metrics(
                 raw_signal["symbol"], filtered_score, market_regime
             )
-            
+
             # Create filtered signal
             filtered_signal = FilteredSignal(
                 action=raw_signal["action"],
@@ -11281,24 +11281,24 @@ class HybridSignalFilter:
                 generated_time=time.time(),
                 valid_until=time.time() + 60  # Valid for 1 minute
             )
-            
+
             # Store in history
             self.signal_history[raw_signal["symbol"]].append(filtered_signal)
-            
+
             return filtered_signal
-            
+
     def _apply_trend_filter(self, market_data: Dict[str, Any], action: str) -> float:
         """Filter signal based on trend alignment."""
-        
+
         # Get EMA values from market data
         ema_fast = market_data.get("ema_fast")
         ema_medium = market_data.get("ema_medium")
         ema_slow = market_data.get("ema_slow")
         current_price = market_data.get("price")
-        
+
         if None in (ema_fast, ema_medium, ema_slow, current_price):
             return 0.5  # Neutral score if data missing
-            
+
         # Determine trend direction
         is_uptrend = (
             current_price > ema_fast > ema_medium > ema_slow
@@ -11306,7 +11306,7 @@ class HybridSignalFilter:
         is_downtrend = (
             current_price < ema_fast < ema_medium < ema_slow
         )
-        
+
         # Score based on alignment with trend
         if action == "BUY":
             if is_uptrend:
@@ -11324,14 +11324,14 @@ class HybridSignalFilter:
                 return 0.3  # Counter-trend
         else:
             return 0.5  # HOLD signals get neutral score
-            
+
     def _apply_momentum_filter(self, market_data: Dict[str, Any]) -> float:
         """Filter based on RSI momentum."""
-        
+
         rsi = market_data.get("rsi")
         if rsi is None:
             return 0.5  # Neutral if RSI not available
-            
+
         # RSI scoring
         if rsi > self.rsi_overbought:
             return 0.2  # Overbought, likely to reverse
@@ -11343,18 +11343,18 @@ class HybridSignalFilter:
             return 0.6  # Approaching extremes
         else:
             return 0.4  # Middle ground
-            
+
     def _apply_volume_filter(self, market_data: Dict[str, Any]) -> float:
         """Filter based on volume confirmation."""
-        
+
         volume = market_data.get("volume")
         avg_volume = market_data.get("avg_volume")
-        
+
         if volume is None or avg_volume is None or avg_volume == 0:
             return 0.5
-            
+
         volume_ratio = volume / avg_volume
-        
+
         # Score based on volume confirmation
         if volume_ratio > 1.5:
             return 1.0  # High volume confirms move
@@ -11366,16 +11366,16 @@ class HybridSignalFilter:
             return 0.4  # Low volume
         else:
             return 0.2  # Very low volume
-            
+
     def _apply_volatility_filter(
         self,
         volatility_metrics: VolatilityMetrics,
         action: str
     ) -> float:
         """Filter based on volatility regime."""
-        
+
         regime = volatility_metrics.regime
-        
+
         # Different strategies for different volatility regimes
         if regime == VolatilityRegime.VERY_LOW:
             # Low volatility: good for mean reversion
@@ -11390,26 +11390,26 @@ class HybridSignalFilter:
             return 0.4  # High risk
         else:  # EXTREME
             return 0.1  # Avoid trading
-            
+
     def _apply_market_structure_filter(self, market_data: Dict[str, Any]) -> float:
         """Filter based on market structure (support/resistance)."""
-        
+
         # Check if price is at key levels
         price = market_data.get("price")
         support = market_data.get("support_level")
         resistance = market_data.get("resistance_level")
-        
+
         if None in (price, support, resistance):
             return 0.5
-            
+
         # Calculate distance from key levels as percentage of range
         price_range = resistance - support
         if price_range == 0:
             return 0.5
-            
+
         distance_to_support = (price - support) / price_range
         distance_to_resistance = (resistance - price) / price_range
-        
+
         # Score highest near support/resistance (for reversal trades)
         # or in middle of range (for breakout trades)
         if distance_to_support < 0.1 or distance_to_resistance < 0.1:
@@ -11418,18 +11418,18 @@ class HybridSignalFilter:
             return 0.7  # Middle of range, could break either way
         else:
             return 0.5  # No clear structure advantage
-            
+
     def _apply_time_filter(self, symbol: str) -> float:
         """Filter based on time patterns and recent signal history."""
-        
+
         recent_signals = list(self.signal_history.get(symbol, []))
         if not recent_signals:
             return 0.7  # No history, slightly positive
-            
+
         # Count recent signals
-        recent_count = len([s for s in recent_signals 
+        recent_count = len([s for s in recent_signals
                           if time.time() - s.generated_time < 3600])  # Last hour
-                          
+
         # Avoid overtrading
         if recent_count > 5:
             return 0.3  # Too many recent signals
@@ -11437,7 +11437,7 @@ class HybridSignalFilter:
             return 0.6
         else:
             return 0.9
-            
+
     def _score_to_confidence(self, score: float) -> SignalConfidence:
         """Convert numerical score to confidence level."""
         if score >= 0.9:
@@ -11450,16 +11450,16 @@ class HybridSignalFilter:
             return SignalConfidence.LOW
         else:
             return SignalConfidence.VERY_LOW
-            
+
     def _determine_market_regime(
         self,
         market_data: Dict[str, Any],
         volatility_metrics: VolatilityMetrics
     ) -> str:
         """Determine current market regime."""
-        
+
         trend_strength = abs(volatility_metrics.trend_strength)
-        
+
         if volatility_metrics.is_trending:
             if volatility_metrics.trend_strength > 0:
                 return "TRENDING_UP"
@@ -11477,7 +11477,7 @@ class HybridSignalFilter:
                 return "TRENDING"
         else:
             return "NEUTRAL"
-            
+
     def _calculate_expected_metrics(
         self,
         symbol: str,
@@ -11485,15 +11485,15 @@ class HybridSignalFilter:
         market_regime: str
     ) -> Tuple[float, float]:
         """Calculate expected win rate and risk/reward ratio."""
-        
+
         # Base expectations
         base_win_rate = 0.55  # 55% baseline
         base_rr = 1.5  # 1.5:1 baseline
-        
+
         # Adjust based on signal score
         win_rate_adjustment = (signal_score - 0.5) * 0.3  # +/-15%
         rr_adjustment = (signal_score - 0.5) * 0.5  # +/-0.5
-        
+
         # Adjust based on market regime
         regime_multipliers = {
             "TRENDING_UP": (1.1, 1.2),
@@ -11503,17 +11503,17 @@ class HybridSignalFilter:
             "CHOPPY": (0.9, 0.8),
             "NEUTRAL": (1.0, 1.0)
         }
-        
+
         regime_mult = regime_multipliers.get(market_regime, (1.0, 1.0))
-        
-        expected_win_rate = min(0.85, max(0.4, 
+
+        expected_win_rate = min(0.85, max(0.4,
             base_win_rate + win_rate_adjustment * regime_mult[0]
         ))
-        
+
         expected_rr = min(3.0, max(1.0,
             base_rr + rr_adjustment * regime_mult[1]
         ))
-        
+
         return expected_win_rate, expected_rr
 
 # ============================================================================
@@ -11536,7 +11536,7 @@ class RetryConfig:
     max_delay: float
     jitter: bool = True
     backoff_factor: float = 2.0
-    
+
     # Special configurations
     timeout_multiplier: float = 1.5
     circuit_breaker_threshold: int = 5
@@ -11550,7 +11550,7 @@ class CircuitBreakerState(enum.Enum):
 
 class SmartCircuitBreaker:
     """Intelligent circuit breaker with adaptive thresholds."""
-    
+
     def __init__(self, name: str, config: RetryConfig):
         self.name = name
         self.config = config
@@ -11560,13 +11560,13 @@ class SmartCircuitBreaker:
         self.success_count = 0
         self._lock = threading.RLock()
         self._state_change_time = time.time()
-        
+
     def record_success(self):
         """Record successful operation."""
         with self._lock:
             if self.state == CircuitBreakerState.HALF_OPEN:
                 self.success_count += 1
-                
+
                 # If enough successes, close the circuit
                 if self.success_count >= 3:
                     self.state = CircuitBreakerState.CLOSED
@@ -11574,39 +11574,39 @@ class SmartCircuitBreaker:
                     self.success_count = 0
                     self._state_change_time = time.time()
                     logging.info(f"Circuit breaker {self.name} closed")
-                    
+
             elif self.state == CircuitBreakerState.CLOSED:
                 # Decay failure count over time
                 if self.failure_count > 0:
                     elapsed = time.time() - self.last_failure_time
                     if elapsed > 30:  # 30 seconds decay period
                         self.failure_count = max(0, self.failure_count - 1)
-                        
+
     def record_failure(self):
         """Record failed operation."""
         with self._lock:
             self.failure_count += 1
             self.last_failure_time = time.time()
             self.success_count = 0
-            
+
             # Check if we should open the circuit
-            if (self.state == CircuitBreakerState.CLOSED and 
+            if (self.state == CircuitBreakerState.CLOSED and
                 self.failure_count >= self.config.circuit_breaker_threshold):
-                
+
                 self.state = CircuitBreakerState.OPEN
                 self._state_change_time = time.time()
                 logging.warning(f"Circuit breaker {self.name} opened")
-                
+
                 # Schedule transition to half-open
                 self._schedule_half_open()
-                
+
             elif self.state == CircuitBreakerState.HALF_OPEN:
                 # Failed again in half-open state, go back to open
                 self.state = CircuitBreakerState.OPEN
                 self._state_change_time = time.time()
                 logging.warning(f"Circuit breaker {self.name} re-opened")
                 self._schedule_half_open()
-                
+
     def _schedule_half_open(self):
         """Schedule transition to half-open state."""
         def transition():
@@ -11616,14 +11616,14 @@ class SmartCircuitBreaker:
                     self.state = CircuitBreakerState.HALF_OPEN
                     self._state_change_time = time.time()
                     logging.info(f"Circuit breaker {self.name} half-open")
-                    
+
         threading.Thread(target=transition, daemon=True).start()
-        
+
     def can_execute(self) -> bool:
         """Check if operation can be executed."""
         with self._lock:
             return self.state != CircuitBreakerState.OPEN
-            
+
     def get_state(self) -> Dict[str, Any]:
         """Get current state of circuit breaker."""
         with self._lock:
@@ -11638,19 +11638,19 @@ class SmartCircuitBreaker:
 
 class AdaptiveRetryHandler:
     """Intelligent retry handler with multiple strategies."""
-    
+
     def __init__(self):
         self.breakers: Dict[str, SmartCircuitBreaker] = {}
         self.retry_stats: Dict[str, Dict[str, int]] = defaultdict(
             lambda: {"success": 0, "failures": 0, "retries": 0}
         )
-        
+
     def get_circuit_breaker(self, endpoint: str, config: RetryConfig) -> SmartCircuitBreaker:
         """Get or create circuit breaker for endpoint."""
         if endpoint not in self.breakers:
             self.breakers[endpoint] = SmartCircuitBreaker(endpoint, config)
         return self.breakers[endpoint]
-        
+
     async def execute_with_retry(
         self,
         coro_func: Callable[..., Awaitable[Any]],
@@ -11661,55 +11661,55 @@ class AdaptiveRetryHandler:
     ) -> Any:
         """
         Execute coroutine with intelligent retry logic.
-        
+
         Args:
             coro_func: Coroutine function to execute
             endpoint: Endpoint name for circuit breaking
             retry_config: Retry configuration
             *args, **kwargs: Arguments to pass to coro_func
-            
+
         Returns:
             Result of successful execution
-            
+
         Raises:
             Exception: If all retries fail
         """
         breaker = self.get_circuit_breaker(endpoint, retry_config)
-        
+
         for attempt in range(1, retry_config.max_attempts + 1):
             # Check circuit breaker
             if not breaker.can_execute():
                 raise Exception(f"Circuit breaker open for {endpoint}")
-                
+
             try:
                 # Calculate timeout for this attempt
                 timeout = retry_config.base_delay * retry_config.timeout_multiplier
-                
+
                 # Execute with timeout
                 result = await asyncio.wait_for(
                     coro_func(*args, **kwargs),
                     timeout=timeout
                 )
-                
+
                 # Record success
                 breaker.record_success()
                 self.retry_stats[endpoint]["success"] += 1
-                
+
                 return result
-                
+
             except asyncio.TimeoutError:
                 self.retry_stats[endpoint]["failures"] += 1
                 logging.warning(
                     f"Timeout on {endpoint} (attempt {attempt}/{retry_config.max_attempts})"
                 )
-                
+
             except aiohttp.ClientError as e:
                 self.retry_stats[endpoint]["failures"] += 1
                 logging.warning(
                     f"Client error on {endpoint}: {e} "
                     f"(attempt {attempt}/{retry_config.max_attempts})"
                 )
-                
+
             except Exception as e:
                 self.retry_stats[endpoint]["failures"] += 1
                 breaker.record_failure()
@@ -11717,48 +11717,48 @@ class AdaptiveRetryHandler:
                     f"Error on {endpoint}: {e} "
                     f"(attempt {attempt}/{retry_config.max_attempts})"
                 )
-                
+
             # Calculate delay before next retry
             if attempt < retry_config.max_attempts:
                 delay = self._calculate_delay(attempt, retry_config)
                 logging.info(f"Retrying {endpoint} in {delay:.2f}s")
                 await asyncio.sleep(delay)
-                
+
         # All retries failed
         raise Exception(
             f"Failed to execute {endpoint} after {retry_config.max_attempts} attempts"
         )
-        
+
     def _calculate_delay(self, attempt: int, config: RetryConfig) -> float:
         """Calculate delay based on retry strategy."""
-        
+
         if config.strategy == RetryStrategy.IMMEDIATE:
             delay = 0.1  # Minimal delay
-            
+
         elif config.strategy == RetryStrategy.EXPONENTIAL:
             delay = config.base_delay * (config.backoff_factor ** (attempt - 1))
-            
+
         elif config.strategy == RetryStrategy.FIBONACCI:
             # Fibonacci sequence for delay
             fib = [1, 1]
             for _ in range(attempt):
                 fib.append(fib[-1] + fib[-2])
             delay = config.base_delay * fib[attempt]
-            
+
         elif config.strategy == RetryStrategy.FIXED:
             delay = config.base_delay
-            
+
         else:
             delay = config.base_delay
-            
+
         # Apply jitter
         if config.jitter:
             jitter_amount = delay * 0.1  # 10% jitter
             delay += secrets.SystemRandom().uniform(-jitter_amount, jitter_amount)
-            
+
         # Cap at maximum delay
         return min(max(0.1, delay), config.max_delay)
-        
+
     def get_stats(self) -> Dict[str, Any]:
         """Get retry statistics."""
         return {
@@ -11775,7 +11775,7 @@ class AdaptiveRetryHandler:
 
 class ResilientAPIClient:
     """HTTP client with built-in resilience patterns."""
-    
+
     def __init__(
         self,
         base_url: str,
@@ -11786,7 +11786,7 @@ class ResilientAPIClient:
         self.rate_limiter = rate_limiter
         self.retry_handler = retry_handler
         self.session: Optional[aiohttp.ClientSession] = None
-        
+
         # Endpoint-specific configurations
         self.endpoint_configs = {
             "/market/depth/": RetryConfig(
@@ -11811,7 +11811,7 @@ class ResilientAPIClient:
                 circuit_breaker_threshold=5
             )
         }
-        
+
     async def ensure_session(self):
         """Ensure HTTP session exists."""
         if self.session is None or self.session.closed:
@@ -11823,7 +11823,7 @@ class ResilientAPIClient:
                     "Accept": "application/json"
                 }
             )
-            
+
     async def request(
         self,
         method: str,
@@ -11832,7 +11832,7 @@ class ResilientAPIClient:
     ) -> Dict[str, Any]:
         """Make resilient HTTP request."""
         await self.ensure_session()
-        
+
         # Get endpoint configuration
         config = self.endpoint_configs.get(
             endpoint,
@@ -11843,11 +11843,11 @@ class ResilientAPIClient:
                 max_delay=10.0
             )
         )
-        
+
         async def _make_request():
             async with self.rate_limiter:
                 url = f"{self.base_url}{endpoint}"
-                
+
                 async with self.session.request(method, url, **kwargs) as resp:
                     if resp.status >= 500:
                         # Server error, should retry
@@ -11858,22 +11858,22 @@ class ResilientAPIClient:
                     elif resp.status == 429:
                         # Rate limited
                         raise aiohttp.ClientError("Rate limited")
-                        
+
                     data = await resp.json()
-                    
+
                     # Check for API-level errors
                     if isinstance(data, dict) and not data.get("ok", True):
                         raise Exception(f"API error: {data.get('error', 'Unknown')}")
-                        
+
                     return data
-                    
+
         # Execute with retry logic
         return await self.retry_handler.execute_with_retry(
             _make_request,
             endpoint,
             config
         )
-        
+
     async def close(self):
         """Close HTTP session."""
         if self.session and not self.session.closed:
@@ -11886,55 +11886,55 @@ class ResilientAPIClient:
 @dataclass
 class RiskMetrics:
     """Comprehensive risk metrics for dashboard."""
-    
+
     # Portfolio metrics
     total_equity: float = 0.0
     total_exposure: float = 0.0
     cash_balance: float = 0.0
-    
+
     # Performance metrics
     daily_pnl: float = 0.0
     daily_return: float = 0.0
     unrealized_pnl: float = 0.0
     realized_pnl: float = 0.0
-    
+
     # Risk metrics
     var_95: float = 0.0
     expected_shortfall: float = 0.0
     sharpe_ratio: float = 0.0
     max_drawdown: float = 0.0
     current_drawdown: float = 0.0
-    
+
     # Trade metrics
     total_trades: int = 0
     win_rate: float = 0.0
     avg_win: float = 0.0
     avg_loss: float = 0.0
     profit_factor: float = 0.0
-    
+
     # Position metrics
     open_positions: int = 0
     largest_position: float = 0.0
     concentration_ratio: float = 0.0
-    
+
     # System metrics
     system_health: float = 0.0
     latency_ms: float = 0.0
     error_rate: float = 0.0
-    
+
     # Timestamp
     timestamp: float = field(default_factory=time.time)
 
 class DashboardRenderer:
     """Real-time dashboard renderer with risk metrics."""
-    
+
     def __init__(self, refresh_interval: float = 1.0):
         self.refresh_interval = refresh_interval
         self.metrics_history: Deque[RiskMetrics] = deque(maxlen=1000)
         self._stop_event = threading.Event()
         self._render_thread: Optional[threading.Thread] = None
         self._last_render = 0.0
-        
+
         # Color codes for terminal output
         self.colors = {
             "green": "\033[92m",
@@ -11947,7 +11947,7 @@ class DashboardRenderer:
             "bold": "\033[1m",
             "dim": "\033[2m"
         }
-        
+
     def start(self):
         """Start dashboard rendering thread."""
         if self._render_thread is None:
@@ -11958,18 +11958,18 @@ class DashboardRenderer:
                 daemon=True
             )
             self._render_thread.start()
-            
+
     def stop(self):
         """Stop dashboard rendering."""
         self._stop_event.set()
         if self._render_thread:
             self._render_thread.join(timeout=2.0)
             self._render_thread = None
-            
+
     def update_metrics(self, metrics: RiskMetrics):
         """Update dashboard metrics."""
         self.metrics_history.append(metrics)
-        
+
     def _render_loop(self):
         """Main rendering loop."""
         for _ULTRA_GUARD in range(120000):
@@ -11977,25 +11977,25 @@ class DashboardRenderer:
                 if self.metrics_history:
                     latest = self.metrics_history[-1]
                     self._render_frame(latest)
-                    
+
                 time.sleep(self.refresh_interval)
-                
+
             except Exception as e:
                 logging.error(f"Dashboard render error: {e}")
-                
+
     def _render_frame(self, metrics: RiskMetrics):
         """Render single dashboard frame."""
-        
+
         # Clear screen (Unix/Linux/MacOS)
         print("\033[2J\033[H", end="")
-        
+
         # Header
         print(f"{self.colors['bold']}{self.colors['blue']}")
         print("+====================================================================+")
         print("|                    RAZ TRADER PLUS - LIVE DASHBOARD                |")
         print("+====================================================================+")
         print(f"{self.colors['reset']}")
-        
+
         # System Status
         system_health = metrics.system_health
         health_color = self.colors["green"]
@@ -12003,13 +12003,13 @@ class DashboardRenderer:
             health_color = self.colors["yellow"]
         if system_health < 50:
             health_color = self.colors["red"]
-            
+
         print(f"{self.colors['bold']}SYSTEM STATUS:{self.colors['reset']}")
         print(f"  Health: {health_color}{system_health:.1f}%{self.colors['reset']} | "
               f"Latency: {self._colorize_latency(metrics.latency_ms)} | "
               f"Errors: {self._colorize_error_rate(metrics.error_rate)}")
         print()
-        
+
         # Portfolio Overview
         print(f"{self.colors['bold']}PORTFOLIO:{self.colors['reset']}")
         print(f"  Equity: {self.colors['cyan']}{metrics.total_equity:,.0f} IRT{self.colors['reset']} | "
@@ -12018,18 +12018,18 @@ class DashboardRenderer:
         print(f"  Open Positions: {metrics.open_positions} | "
               f"Largest: {metrics.largest_position:,.0f} IRT")
         print()
-        
+
         # Performance
         daily_pnl_color = self.colors["green"] if metrics.daily_pnl >= 0 else self.colors["red"]
         unrealized_color = self.colors["green"] if metrics.unrealized_pnl >= 0 else self.colors["red"]
-        
+
         print(f"{self.colors['bold']}PERFORMANCE:{self.colors['reset']}")
         print(f"  Daily P&L: {daily_pnl_color}{metrics.daily_pnl:+,.0f} IRT{self.colors['reset']} "
               f"({metrics.daily_return:+.2f}%)")
         print(f"  Unrealized: {unrealized_color}{metrics.unrealized_pnl:+,.0f} IRT{self.colors['reset']} | "
               f"Realized: {metrics.realized_pnl:+,.0f} IRT")
         print()
-        
+
         # Risk Metrics
         print(f"{self.colors['bold']}RISK METRICS:{self.colors['reset']}")
         print(f"  VaR (95%): {metrics.var_95:.2f}% | "
@@ -12038,14 +12038,14 @@ class DashboardRenderer:
               f"Max Drawdown: {metrics.max_drawdown:.2f}%")
         print(f"  Current Drawdown: {self._colorize_drawdown(metrics.current_drawdown)}")
         print()
-        
+
         # Trade Statistics
         win_rate_color = self.colors["green"]
         if metrics.win_rate < 0.5:
             win_rate_color = self.colors["yellow"]
         if metrics.win_rate < 0.4:
             win_rate_color = self.colors["red"]
-            
+
         print(f"{self.colors['bold']}TRADE STATS:{self.colors['reset']}")
         print(f"  Total Trades: {metrics.total_trades} | "
               f"Win Rate: {win_rate_color}{metrics.win_rate:.1%}{self.colors['reset']}")
@@ -12053,13 +12053,13 @@ class DashboardRenderer:
               f"Avg Loss: {metrics.avg_loss:.2f}% | "
               f"Profit Factor: {self._colorize_profit_factor(metrics.profit_factor)}")
         print()
-        
+
         # Footer with timestamp
         timestamp = datetime.fromtimestamp(metrics.timestamp).strftime("%Y-%m-%d %H:%M:%S")
         print(f"{self.colors['dim']}Last update: {timestamp} | Press Ctrl+C to exit{self.colors['reset']}")
-        
+
         self._last_render = time.time()
-        
+
     def _colorize_latency(self, latency_ms: float) -> str:
         """Color code latency value."""
         if latency_ms < 100:
@@ -12069,7 +12069,7 @@ class DashboardRenderer:
         else:
             color = self.colors["red"]
         return f"{color}{latency_ms:.0f}ms{self.colors['reset']}"
-        
+
     def _colorize_error_rate(self, error_rate: float) -> str:
         """Color code error rate."""
         if error_rate < 0.01:  # 1%
@@ -12079,7 +12079,7 @@ class DashboardRenderer:
         else:
             color = self.colors["red"]
         return f"{color}{error_rate:.1%}{self.colors['reset']}"
-        
+
     def _colorize_sharpe(self, sharpe: float) -> str:
         """Color code Sharpe ratio."""
         if sharpe > 1.5:
@@ -12089,7 +12089,7 @@ class DashboardRenderer:
         else:
             color = self.colors["red"]
         return f"{color}{sharpe:.2f}{self.colors['reset']}"
-        
+
     def _colorize_drawdown(self, drawdown: float) -> str:
         """Color code drawdown."""
         if drawdown < 0.02:  # 2%
@@ -12099,7 +12099,7 @@ class DashboardRenderer:
         else:
             color = self.colors["red"]
         return f"{color}{drawdown:.2f}%{self.colors['reset']}"
-        
+
     def _colorize_profit_factor(self, pf: float) -> str:
         """Color code profit factor."""
         if pf > 1.5:
@@ -12112,12 +12112,12 @@ class DashboardRenderer:
 
 class RiskMetricsCalculator:
     """Calculate comprehensive risk metrics for dashboard."""
-    
+
     def __init__(self):
         self.trade_history: List[Dict[str, Any]] = []
         self.equity_history: Deque[float] = deque(maxlen=10000)
         self.max_equity = 0.0
-        
+
     def calculate_metrics(
         self,
         portfolio_data: Dict[str, Any],
@@ -12125,178 +12125,178 @@ class RiskMetricsCalculator:
         system_data: Dict[str, Any]
     ) -> RiskMetrics:
         """Calculate all risk metrics."""
-        
+
         metrics = RiskMetrics()
-        
+
         # Portfolio metrics
         metrics.total_equity = portfolio_data.get("total_equity", 0.0)
         metrics.total_exposure = portfolio_data.get("total_exposure", 0.0)
         metrics.cash_balance = portfolio_data.get("cash_balance", 0.0)
         metrics.open_positions = portfolio_data.get("open_positions", 0)
         metrics.largest_position = portfolio_data.get("largest_position", 0.0)
-        
+
         # Update equity history for drawdown calculation
         self.equity_history.append(metrics.total_equity)
         self.max_equity = max(self.max_equity, metrics.total_equity)
-        
+
         # Performance metrics
         metrics.daily_pnl = portfolio_data.get("daily_pnl", 0.0)
         metrics.daily_return = portfolio_data.get("daily_return", 0.0)
         metrics.unrealized_pnl = portfolio_data.get("unrealized_pnl", 0.0)
         metrics.realized_pnl = portfolio_data.get("realized_pnl", 0.0)
-        
+
         # Risk metrics
         metrics.var_95 = self._calculate_var_95()
         metrics.expected_shortfall = self._calculate_expected_shortfall()
         metrics.sharpe_ratio = self._calculate_sharpe_ratio()
         metrics.max_drawdown = self._calculate_max_drawdown()
         metrics.current_drawdown = self._calculate_current_drawdown()
-        
+
         # Trade metrics
         if trade_data:
             self.trade_history.extend(trade_data)
-            
+
         metrics.total_trades = len(self.trade_history)
         metrics.win_rate = self._calculate_win_rate()
         metrics.avg_win, metrics.avg_loss = self._calculate_avg_win_loss()
         metrics.profit_factor = self._calculate_profit_factor()
-        
+
         # Position concentration
         if metrics.total_equity > 0:
             metrics.concentration_ratio = metrics.largest_position / metrics.total_equity
-            
+
         # System metrics
         metrics.system_health = system_data.get("system_health", 0.0)
         metrics.latency_ms = system_data.get("latency_ms", 0.0)
         metrics.error_rate = system_data.get("error_rate", 0.0)
-        
+
         return metrics
-        
+
     def _calculate_var_95(self) -> float:
         """Calculate 95% Value at Risk from equity history."""
         if len(self.equity_history) < 20:
             return 0.0
-            
+
         returns = []
         for i in range(1, len(self.equity_history)):
             if self.equity_history[i-1] > 0:
                 ret = (self.equity_history[i] - self.equity_history[i-1]) / self.equity_history[i-1]
                 returns.append(ret)
-                
+
         if not returns:
             return 0.0
-            
+
         sorted_returns = sorted(returns)
         index = int(0.05 * len(sorted_returns))
         var = sorted_returns[max(0, index)]
-        
+
         return abs(var) * 100  # Return as percentage
-        
+
     def _calculate_expected_shortfall(self) -> float:
         """Calculate Expected Shortfall (CVaR) at 95% confidence."""
         if len(self.equity_history) < 20:
             return 0.0
-            
+
         returns = []
         for i in range(1, len(self.equity_history)):
             if self.equity_history[i-1] > 0:
                 ret = (self.equity_history[i] - self.equity_history[i-1]) / self.equity_history[i-1]
                 returns.append(ret)
-                
+
         if not returns:
             return 0.0
-            
+
         sorted_returns = sorted(returns)
         cutoff_index = int(0.05 * len(sorted_returns))
         tail_returns = sorted_returns[:max(1, cutoff_index)]
-        
+
         if tail_returns:
             es = statistics.mean(tail_returns)
             return abs(es) * 100
         return 0.0
-        
+
     def _calculate_sharpe_ratio(self) -> float:
         """Calculate Sharpe ratio (annualized)."""
         if len(self.equity_history) < 20:
             return 0.0
-            
+
         returns = []
         for i in range(1, len(self.equity_history)):
             if self.equity_history[i-1] > 0:
                 ret = (self.equity_history[i] - self.equity_history[i-1]) / self.equity_history[i-1]
                 returns.append(ret)
-                
+
         if len(returns) < 2:
             return 0.0
-            
+
         mean_return = statistics.mean(returns)
         std_return = statistics.stdev(returns) if len(returns) > 1 else 0
-        
+
         if std_return == 0:
             return 0.0
-            
+
         # Annualize (assuming daily returns)
         sharpe = (mean_return / std_return) * math.sqrt(252)
         return sharpe
-        
+
     def _calculate_max_drawdown(self) -> float:
         """Calculate maximum drawdown from equity history."""
         if len(self.equity_history) < 2:
             return 0.0
-            
+
         peak = self.equity_history[0]
         max_dd = 0.0
-        
+
         for equity in self.equity_history:
             if equity > peak:
                 peak = equity
             dd = (peak - equity) / peak if peak > 0 else 0
             max_dd = max(max_dd, dd)
-            
+
         return max_dd * 100
-        
+
     def _calculate_current_drawdown(self) -> float:
         """Calculate current drawdown from peak equity."""
         if len(self.equity_history) < 1 or self.max_equity == 0:
             return 0.0
-            
+
         current_equity = self.equity_history[-1] if self.equity_history else 0
         drawdown = (self.max_equity - current_equity) / self.max_equity
-        
+
         return drawdown * 100
-        
+
     def _calculate_win_rate(self) -> float:
         """Calculate win rate from trade history."""
         if not self.trade_history:
             return 0.0
-            
+
         wins = sum(1 for trade in self.trade_history if trade.get("pnl", 0) > 0)
         return wins / len(self.trade_history)
-        
+
     def _calculate_avg_win_loss(self) -> Tuple[float, float]:
         """Calculate average win and average loss percentages."""
         if not self.trade_history:
             return 0.0, 0.0
-            
+
         wins = [t.get("pnl_pct", 0) for t in self.trade_history if t.get("pnl", 0) > 0]
         losses = [t.get("pnl_pct", 0) for t in self.trade_history if t.get("pnl", 0) < 0]
-        
+
         avg_win = statistics.mean(wins) if wins else 0.0
         avg_loss = abs(statistics.mean(losses)) if losses else 0.0
-        
+
         return avg_win * 100, avg_loss * 100  # Return as percentages
-        
+
     def _calculate_profit_factor(self) -> float:
         """Calculate profit factor (gross profits / gross losses)."""
         if not self.trade_history:
             return 0.0
-            
+
         gross_profits = sum(t.get("pnl", 0) for t in self.trade_history if t.get("pnl", 0) > 0)
         gross_losses = abs(sum(t.get("pnl", 0) for t in self.trade_history if t.get("pnl", 0) < 0))
-        
+
         if gross_losses == 0:
             return float("inf") if gross_profits > 0 else 0.0
-            
+
         return gross_profits / gross_losses
 
 # ============================================================================
@@ -12306,187 +12306,187 @@ class RiskMetricsCalculator:
 class RazTraderEnhanced:
     """
     Main integration class for 6-layer enhancements.
-    
+
     This class integrates all enhanced components into the existing
     RazTrader architecture without breaking existing functionality.
     """
-    
+
     def __init__(self, original_config: Dict[str, Any]):
         self.original_config = original_config
-        
+
         # Initialize enhanced components
         self.latency_loop = LatencyAwareEventLoop(
             max_latency_ms=original_config.get("max_latency_ms", 50.0)
         )
-        
+
         self.health_monitor = GlobalHealthMonitor(
             config=original_config.get("health_monitor", {})
         )
-        
+
         self.position_sizer = DynamicPositionSizer(
             config=original_config.get("position_sizing", {})
         )
-        
+
         self.signal_filter = HybridSignalFilter(
             config=original_config.get("signal_filtering", {})
         )
-        
+
         self.retry_handler = AdaptiveRetryHandler()
-        
+
         self.rate_limiter = AsyncRateLimiter(
             requests_per_minute=original_config.get("requests_per_minute", 100),
             burst_size=original_config.get("burst_size", 5)
         )
-        
+
         self.api_client = ResilientAPIClient(
             base_url=original_config.get("base_url", "https://api.arzplus.net/api/v1"),
             rate_limiter=self.rate_limiter,
             retry_handler=self.retry_handler
         )
-        
+
         self.metrics_calculator = RiskMetricsCalculator()
         self.dashboard = DashboardRenderer(
             refresh_interval=original_config.get("dashboard_refresh", 1.0)
         )
-        
+
         # State
         self.is_running = False
         self._main_task: Optional[asyncio.Task] = None
-        
+
     async def start(self):
         """Start enhanced trading system."""
         if self.is_running:
             return
-            
+
         self.is_running = True
-        
+
         # Start latency monitoring
         self.latency_loop._loop_monitor_task = asyncio.create_task(
             self.latency_loop.monitor_loop()
         )
-        
+
         # Start dashboard
         self.dashboard.start()
-        
+
         # Start main enhanced trading loop
         self._main_task = asyncio.create_task(
             self._enhanced_trading_loop()
         )
-        
+
         logging.info("Enhanced RazTrader started with 6-layer improvements")
-        
+
     async def stop(self):
         """Stop enhanced trading system."""
         self.is_running = False
-        
+
         # Cancel tasks
         if self.latency_loop._loop_monitor_task:
             self.latency_loop._loop_monitor_task.cancel()
-            
+
         if self._main_task:
             self._main_task.cancel()
-            
+
         # Stop dashboard
         self.dashboard.stop()
-        
+
         # Close API client
         await self.api_client.close()
-        
+
         logging.info("Enhanced RazTrader stopped")
-        
+
     async def _enhanced_trading_loop(self):
         """Enhanced main trading loop with all improvements."""
-        
+
         for _ULTRA_GUARD in range(120000):
             try:
                 start_time = time.time()
-                
+
                 # 1. Check system health
                 health_report = self.health_monitor.check_system_health()
-                
+
                 if health_report.get("system_status") == "CRITICAL":
                     logging.critical("System health critical, pausing trading")
                     await asyncio.sleep(5)
                     continue
-                    
+
                 # 2. Process symbols with priority
                 symbols = self._get_trading_symbols()
-                
+
                 # Process high-priority symbols first
                 priority_symbols = self._prioritize_symbols(symbols, health_report)
-                
+
                 for symbol in priority_symbols:
                     await self._process_symbol_enhanced(symbol)
-                    
+
                 # 3. Update dashboard
                 await self._update_dashboard()
-                
+
                 # 4. Manage loop timing
                 loop_duration = time.time() - start_time
                 target_interval = self.original_config.get("loop_interval_sec", 2.0)
-                
+
                 if loop_duration < target_interval:
                     await asyncio.sleep(target_interval - loop_duration)
-                    
+
             except asyncio.CancelledError:
                 break
             except Exception as e:
                 logging.error(f"Enhanced trading loop error: {e}")
                 await asyncio.sleep(1)
-                
+
     def _get_trading_symbols(self) -> List[str]:
         """Get list of symbols to trade."""
         # This should integrate with original symbol selection logic
         return self.original_config.get("symbols", ["BTCIRT", "ETHIRT", "USDTIRT"])
-        
+
     def _prioritize_symbols(
         self,
         symbols: List[str],
         health_report: Dict[str, Any]
     ) -> List[str]:
         """Prioritize symbols based on health and opportunity."""
-        
+
         prioritized = []
-        
+
         for symbol in symbols:
             # Check symbol health
             symbol_report = health_report.get("symbol_reports", {}).get(symbol, {})
             health_score = symbol_report.get("health_score", 0)
-            
+
             # Only trade healthy symbols
             if health_score >= 70:
                 prioritized.append(symbol)
-                
+
         # Sort by health score (descending)
         prioritized.sort(
             key=lambda s: health_report.get("symbol_reports", {}).get(s, {}).get("health_score", 0),
             reverse=True
         )
-        
+
         return prioritized
-        
+
     async def _process_symbol_enhanced(self, symbol: str):
         """Process single symbol with enhanced logic."""
-        
+
         try:
             # Get market data with resilience
             market_data = await self._get_market_data(symbol)
-            
+
             # Update health monitor
             self.health_monitor.update_symbol_health(symbol, market_data)
-            
+
             # Check if we should trade this symbol
             can_trade, reason = self.health_monitor.get_or_create_symbol_monitor(
                 symbol
             ).should_trade()
-            
+
             if not can_trade:
                 logging.debug(f"Skipping {symbol}: {reason}")
                 return
-                
+
             # Get raw signal (from original system)
             raw_signal = await self._get_raw_signal(symbol, market_data)
-            
+
             # Calculate volatility metrics
             volatility_metrics = self.position_sizer.update_volatility_metrics(
                 symbol,
@@ -12494,18 +12494,18 @@ class RazTraderEnhanced:
                 market_data.get("highs", []),
                 market_data.get("lows", [])
             )
-            
+
             # Filter signal
             filtered_signal = self.signal_filter.filter_signal(
                 raw_signal,
                 market_data,
                 volatility_metrics
             )
-            
+
             # Check if signal should be executed
             if not filtered_signal.should_execute():
                 return
-                
+
             # Calculate position size
             portfolio_data = await self._get_portfolio_data()
             position_size = self.position_sizer.calculate_position_size(
@@ -12516,22 +12516,22 @@ class RazTraderEnhanced:
                 current_exposure=portfolio_data.get("exposure", 0),
                 market_regime=filtered_signal.market_regime
             )
-            
+
             # Update signal with position size
             filtered_signal.position_size_pct = position_size["position_pct"]
-            
+
             # Execute trade with priority
             priority = filtered_signal.get_execution_priority()
-            
+
             await self.latency_loop.submit_priority_task(
                 self._execute_trade(filtered_signal, position_size),
                 priority=priority,
                 task_id=f"trade_{symbol}_{time.time()}"
             )
-            
+
         except Exception as e:
             logging.error(f"Error processing symbol {symbol}: {e}")
-            
+
     async def _get_market_data(self, symbol: str) -> Dict[str, Any]:
         """Get market data with resilience."""
         try:
@@ -12540,15 +12540,15 @@ class RazTraderEnhanced:
                 "GET",
                 f"/market/depth/{symbol}"
             )
-            
+
             trades_data = await self.api_client.request(
                 "GET",
                 f"/market/trades/{symbol}"
             )
-            
+
             # Calculate technical indicators
             prices = [float(t["price"]) for t in trades_data.get("trades", [])[-100:]]
-            
+
             return {
                 "symbol": symbol,
                 "bid": float(depth_data.get("bids", [{}])[0].get("price", 0)),
@@ -12562,11 +12562,11 @@ class RazTraderEnhanced:
                 "ema_slow": self._calculate_ema(prices, 50) if len(prices) >= 50 else None,
                 "rsi": self._calculate_rsi(prices) if len(prices) >= 14 else None
             }
-            
+
         except Exception as e:
             logging.error(f"Failed to get market data for {symbol}: {e}")
             return {}
-            
+
     async def _get_raw_signal(self, symbol: str, market_data: Dict[str, Any]) -> Dict[str, Any]:
         """Get raw trading signal from original system."""
         # This should integrate with the original signal generation logic
@@ -12577,7 +12577,7 @@ class RazTraderEnhanced:
             "score": 0.75,    # -1 to 1
             "confidence": 0.8  # 0 to 1
         }
-        
+
     async def _get_portfolio_data(self) -> Dict[str, Any]:
         """Get current portfolio data."""
         try:
@@ -12585,26 +12585,26 @@ class RazTraderEnhanced:
                 "GET",
                 "/wallet/balance/"
             )
-            
+
             # Parse balance data
             cash = float(balance_data.get("IRT", {}).get("available", 0))
-            
+
             return {
                 "capital": cash,
                 "exposure": 0.0,  # Would need position data
                 "positions": []
             }
-            
+
         except Exception:
             return {"capital": 0, "exposure": 0, "positions": []}
-            
+
     async def _execute_trade(
         self,
         signal: FilteredSignal,
         position_size: Dict[str, Any]
     ):
         """Execute trade with enhanced logic."""
-        
+
         try:
             # Prepare order
             order_data = {
@@ -12614,32 +12614,32 @@ class RazTraderEnhanced:
                 "price": 0,  # Would need current price
                 "client_order_id": f"enhanced_{int(time.time() * 1000)}"
             }
-            
+
             # Execute with resilience
             result = await self.api_client.request(
                 "POST",
                 "/market/orders/",
                 json=order_data
             )
-            
+
             logging.info(
                 f"Executed {signal.action} order for {signal.symbol}: "
                 f"Size={position_size['position_size']:.2f}, "
                 f"Confidence={signal.filtered_confidence:.2f}"
             )
-            
+
         except Exception as e:
             logging.error(f"Failed to execute trade for {signal.symbol}: {e}")
-            
+
     async def _update_dashboard(self):
         """Update dashboard with latest metrics."""
-        
+
         # Collect data for metrics calculation
         portfolio_data = await self._get_portfolio_data()
-        
+
         # Get system stats
         system_stats = self.latency_loop.get_stats()
-        
+
         # Calculate metrics
         metrics = self.metrics_calculator.calculate_metrics(
             portfolio_data=portfolio_data,
@@ -12650,31 +12650,31 @@ class RazTraderEnhanced:
                 "error_rate": 0.0  # Would need error tracking
             }
         )
-        
+
         # Update dashboard
         self.dashboard.update_metrics(metrics)
-        
+
     def _calculate_ema(self, prices: List[float], period: int) -> float:
         """Calculate Exponential Moving Average."""
         if len(prices) < period:
             return prices[-1] if prices else 0
-            
+
         multiplier = 2 / (period + 1)
         ema = prices[0]
-        
+
         for price in prices[1:]:
             ema = (price - ema) * multiplier + ema
-            
+
         return ema
-        
+
     def _calculate_rsi(self, prices: List[float]) -> float:
         """Calculate Relative Strength Index."""
         if len(prices) < 15:
             return 50.0
-            
+
         gains = []
         losses = []
-        
+
         for i in range(1, len(prices)):
             change = prices[i] - prices[i-1]
             if change > 0:
@@ -12683,16 +12683,16 @@ class RazTraderEnhanced:
             else:
                 gains.append(0)
                 losses.append(abs(change))
-                
+
         avg_gain = statistics.mean(gains[-14:]) if gains else 0
         avg_loss = statistics.mean(losses[-14:]) if losses else 0
-        
+
         if avg_loss == 0:
             return 100.0
-            
+
         rs = avg_gain / avg_loss
         rsi = 100 - (100 / (1 + rs))
-        
+
         return rsi
 
 # ============================================================================
@@ -14117,7 +14117,7 @@ class RiskManager:
         self._logger.critical("SAFE MODE: %s", reason)
         # Persist kill-switch state immediately (crash-proof)
         self._save_risk_journal(force=True)
-        
+
 
     def safe_level(self) -> str:
         """Return SAFE mode severity.
@@ -17002,7 +17002,7 @@ class TradingBotBase:
         pen = n * ((c.fee_bps + c.slippage_bps + c.order_safety_bps) / 10000.0)
         return float(gross - pen)
 
-    
+
 
     # =========================================================================
     # v126 Autonomous Intelligence (Dynamic Market Focus)
@@ -22620,7 +22620,7 @@ async def _rtp_tradingbot_run(self: "TradingBot") -> None:
                                 dq = deque(maxlen=4096)
                                 setattr(self, "_wd_wallet_exec_fail_ts", dq)
                             dq.append(now_ts)
-                    
+
                             # Per-wallet counts (for dashboard hints)
                             dqw = getattr(self, "_wd_wallet_exec_fail_by_wallet", None)
                             if dqw is None or not isinstance(dqw, dict):
@@ -22628,7 +22628,7 @@ async def _rtp_tradingbot_run(self: "TradingBot") -> None:
                                 setattr(self, "_wd_wallet_exec_fail_by_wallet", dqw)
                             wn = str(getattr(w, "name", "?") or "?")
                             dqw[wn] = int(dqw.get(wn, 0) or 0) + 1
-                    
+
                             # Throttle the warning to prevent log spam under weak internet
                             lt = getattr(self, "_wd_wallet_exec_fail_log_ts", None)
                             if lt is None or not isinstance(lt, dict):
@@ -23641,7 +23641,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("tokenbot", help="Run Telegram token bot (set/status tokens)")
 
 
-    
+
     # stress (idempotency / network cut simulation)
     s = sub.add_parser("stress", help="Stress test idempotency under simulated network outage (safe mock exchange)")
     s.add_argument("--offline-sec", type=float, default=30.0, help="Simulated outage duration (seconds)")
@@ -26596,7 +26596,7 @@ class WallStreetDashboardManager(DashboardManager):
                 _hist = getattr(ana, "_hist", {}) or {}
             except Exception:
                 _hist = {}
-            
+
             def _canon_local(x: str) -> str:
                 try:
                     return _canon_symbol(x)
@@ -27145,7 +27145,7 @@ class WallStreetDashboardManager(DashboardManager):
                             pass
 
                     if sh_v0 is not None:
-                        sh_txt = f"{sh_lbl}{float(sh_v0):+.2f}" 
+                        sh_txt = f"{sh_lbl}{float(sh_v0):+.2f}"
                 except Exception:
                     sh_txt, sh_lbl = "--", ""
 

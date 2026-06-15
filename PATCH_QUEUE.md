@@ -1,7 +1,7 @@
-﻿# PATCH_QUEUE
+# PATCH_QUEUE
 
-**Generated:** 2026-06-13 21:58:56 +03:30  
-**Patch ID:** PATCH_DOC_003_ROADMAP_LOCK_V1  
+**Generated:** 2026-06-13 21:58:56 +03:30
+**Patch ID:** PATCH_DOC_003_ROADMAP_LOCK_V1
 **Status:** Active
 
 ---
@@ -13,7 +13,7 @@ PATCH_003_DISCOVERY_REPORT
 
 ### Type
 
-Discovery-only.  
+Discovery-only.
 No runtime trading logic modification is allowed.
 
 ### Required Output

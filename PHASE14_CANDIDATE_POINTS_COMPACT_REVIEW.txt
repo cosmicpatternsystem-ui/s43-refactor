@@ -33,20 +33,20 @@ Showing first 400 filtered matches with context 1,1.
 ----- filtered context around L4 -----
    L3: ## Purpose
 >> L4: Identify the lowest-risk code-level observation point for Slice 14.1 (Governance Decision Observation Wiring).
-   L5: 
+   L5:
 
 ----- filtered context around L9 -----
    L8: ## Branch
 >> L9: phase14-governance-integration-implementation
-   L10: 
+   L10:
 
 ----- filtered context around L13 -----
-   L12: 
+   L12:
 >> L13: ### RiskGuard
    L14: legacy_reference/11029_legacy_reference.py:96939:class _PPIdealRiskGuard:
 
 ----- filtered context around L17 -----
-   L16: 
+   L16:
 >> L17: ### GovernanceDecision
    L18: governance/__init__.py:1:n++from .decisions import GovernanceDecision, validate_decision
 
@@ -123,10 +123,10 @@ Showing first 400 filtered matches with context 1,1.
 ----- filtered context around L32 -----
    L31: tests/test_risk_guard_validation.py:28:    decision = GovernanceDecision(
 >> L32: tests/test_risk_guard_validation.py:42:    decision = GovernanceDecision(
-   L33: 
+   L33:
 
 ----- filtered context around L34 -----
-   L33: 
+   L33:
 >> L34: ### safety
    L35: backups/20260527_093330/90000820.py:97:Safety/Async
 
@@ -188,7 +188,7 @@ Showing first 400 filtered matches with context 1,1.
 ----- filtered context around L400 -----
    L399: s43.py:20310:            spend = _fee_aware_spend(cash_irt, notional, w.cfg.fee_bps, w.cfg.slippage_bps, w.cfg.order_safety_bps)
 >> L400: s43.py:20646:                # Exit safety: never send an exit SELL while there are outstanding BUY orders for this symbol.
-   L401: 
+   L401:
 
 ----- filtered context around L635 -----
    L634: s43.py:7632:            raise SystemExit("ALERT [KILL-SWITCH] Risk Threshold Exceeded.")
@@ -273,7 +273,7 @@ Showing first 400 filtered matches with context 1,1.
 ----- filtered context around L651 -----
    L650: s43_governance.py:83:        return self._killed
 >> L651: s43_governance.py:88:            "killed": self._killed,
-   L652: 
+   L652:
 
 ----- filtered context around L856 -----
    L855: s43.py:14464:        Used to allow immediate retry after transient execution errors.

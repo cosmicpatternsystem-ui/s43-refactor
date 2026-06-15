@@ -31,11 +31,11 @@ must not be treated as evidence of active production enforcement.
 
 # Post-Phase 15 Roadmap Lock
 
-**Patch ID:** PATCH_DOC_003_ROADMAP_LOCK_V1  
-**Status:** Active  
-**Type:** Documentation-only / Safety-preserving / Roadmap lock  
-**Canonical runtime trunk:** s43.py  
-**Safety reference:** SAFETY_PROTOCOL.md  
+**Patch ID:** PATCH_DOC_003_ROADMAP_LOCK_V1
+**Status:** Active
+**Type:** Documentation-only / Safety-preserving / Roadmap lock
+**Canonical runtime trunk:** s43.py
+**Safety reference:** SAFETY_PROTOCOL.md
 **Change-control rule:** No runtime patch may be executed unless its next action, target anchors, verification method, rollback method, and ledger events are pre-declared.
 
 ---
@@ -52,7 +52,7 @@ The current canonical baseline includes the following completed audit and safety
 | Phase 4 live trading gate | LIVE_TRADING_OFF_BLOCKED_ORDER | Active |
 | AI live trading gate | AI_LIVE_TRADING_OFF_BLOCKED_ORDER | Active |
 
-The current system is treated as a post-Phase-15 hardening baseline.  
+The current system is treated as a post-Phase-15 hardening baseline.
 Legacy files such as 11029.py and 11029_legacy_reference.py may be used only as historical references and must not be treated as production enforcement sources.
 
 ---
@@ -148,7 +148,7 @@ The engineering objective is to evolve the system toward:
 - controlled refactoring
 - evidence-based quality improvement
 
-The system must never rely on assumed profitability.  
+The system must never rely on assumed profitability.
 Performance must be measured, logged, reviewed, and validated before any expansion of live trading behavior.
 
 <!-- PATCH_DOC_003_ROADMAP_LOCK_V1_END -->

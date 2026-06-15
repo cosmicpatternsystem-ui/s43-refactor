@@ -1,4 +1,4 @@
-﻿import datetime
+import datetime
 from .decisions import GovernanceDecision
 
 def audit_log_observer(decision, *args):
@@ -10,6 +10,6 @@ def audit_log_observer(decision, *args):
 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"[PHASE15] {timestamp} | Action: {decision.action_id} | Outcome: {decision.outcome} | Rule: {decision.source_rule} | Reason: {decision.reason}\n"
-    
+
     with open("governance_audit.log", "a") as f:
         f.write(log_entry)
