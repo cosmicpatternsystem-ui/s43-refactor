@@ -76,7 +76,7 @@ if ($LASTEXITCODE -ne 0) {
     Fail "git log --oneline -5 failed."
 }
 
-$auditDir = Join-Path $repoRoot "audit"
+$auditDir = Join-Path $repoRoot "AUDIT"
 if (-not (Test-Path -LiteralPath $auditDir)) {
     New-Item -ItemType Directory -Path $auditDir | Out-Null
 }
