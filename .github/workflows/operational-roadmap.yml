@@ -1,0 +1,42 @@
+name: Operational Roadmap Gate
+
+on:
+  push:
+    branches:
+      - master
+      - phase19-operational-roadmap
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  assert-operational-roadmap:
+    name: Assert operational roadmap contract
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Normalize CI workspace
+        shell: powershell
+        run: |
+          git config --global core.autocrlf false
+          git reset --hard HEAD
+          git clean -fd
+          Write-Host "Workspace status after normalization:"
+          git status --short
+
+      - name: Assert operational roadmap on push
+        if: github.event_name == 'push'
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1"
+
+      - name: Assert operational roadmap on pull request
+        if: github.event_name == 'pull_request'
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1" -AllowDirty
