@@ -1,0 +1,24 @@
+{
+  "total_transactions": 2,
+  "outcomes": {
+    "REJECTED": 2
+  },
+  "outcome_percentages": {
+    "REJECTED": 100.0
+  },
+  "risk_denials": 2,
+  "top_rejection_reasons": [
+    [
+      "Risk score 0.95 exceeds threshold 0.7",
+      2
+    ]
+  ],
+  "actions": {
+    "TX-999": 2
+  },
+  "action_outcomes": {
+    "TX-999": {
+      "REJECTED": 2
+    }
+  }
+}

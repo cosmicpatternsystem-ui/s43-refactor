@@ -1,0 +1,9 @@
+RECOVERY BASELINE PRE-PUSH SUMMARY
+Generated: 2026-06-14T08:04:06.2361237+03:30
+Repo: E:\اخباری\ssl\s43_refactor
+Branch: phase16-core-governance-integration
+Remote: git@github.com:cosmicpatternsystem-ui/s43-refactor.git
+HEAD before: e6877dd55032bb19464b5a4081a4ceb1a08e5453
+Canonical file: s43.py
+SHA256: 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+Line count: 29856

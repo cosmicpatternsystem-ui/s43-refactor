@@ -1,0 +1,1 @@
+﻿{"status":"OPEN","notes":"Legacy hidden and visible capabilities must be reviewed and migrated under audit-first process","canonical_target":"s43_instrumented_LATEST.py","legacy_sources":["11029.py","11029_legacy_reference.py"],"event_type":"LEGACY_SOURCE_REGISTERED","decision":"REGISTERED","ts":"2026-06-13T16:25:39.1914491Z","patch_id":"PATCH_000_AUDIT_FOUNDATION"}

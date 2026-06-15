@@ -1,0 +1,8 @@
+﻿
+
+Algorithm : SHA256
+Hash      : 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+Path      : E:\اخباری\ssl\s43_refactor\s43.py
+
+
+

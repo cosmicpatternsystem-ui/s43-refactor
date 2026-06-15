@@ -1,0 +1,33 @@
+﻿# PATCH_003_DISCOVERY_REPORT
+
+**Patch ID:** PATCH_003_DISCOVERY_REPORT_V1  
+**Generated:** 2026-06-13 22:16:50 +03:30  
+**Root:** $Root  
+**Target runtime file:** s43.py  
+**Target SHA256 before discovery:** $TargetHashBefore  
+**Runtime modification:** alse  
+**Python files modified:** alse expected and verified at end  
+
+---
+
+## 1. Discovery Summary
+
+| Category | Total Matches | Runtime Candidates | Commented / Non-runtime Candidates |
+|---|---:|---:|---:|
+| $(@{Category=BALANCE_REFRESH_CANDIDATE; Total=43; Runtime=39; Commented=4}.Category) | 43 | 39 | 4 |
+| $(@{Category=EXCEPTION_AUDIT_CANDIDATE; Total=5582; Runtime=5418; Commented=164}.Category) | 5582 | 5418 | 164 |
+| $(@{Category=GOVERNANCE_GATE_CANDIDATE; Total=24; Runtime=23; Commented=}.Category) | 24 | 23 |  |
+| $(@{Category=ORDER_CREATION_CANDIDATE; Total=1; Runtime=; Commented=0}.Category) | 1 |  | 0 |
+| $(@{Category=ORDER_RESULT_HANDLING_CANDIDATE; Total=7; Runtime=7; Commented=0}.Category) | 7 | 7 | 0 |
+| $(@{Category=ORDER_SUBMIT_CANDIDATE; Total=13; Runtime=10; Commented=3}.Category) | 13 | 10 | 3 |
+| $(@{Category=PERFORMANCE_PNL_CANDIDATE; Total=41; Runtime=39; Commented=2}.Category) | 41 | 39 | 2 |
+| $(@{Category=PHASE_PATCH_MARKER_CANDIDATE; Total=25; Runtime=4; Commented=21}.Category) | 25 | 4 | 21 |
+| $(@{Category=RISK_CONTROL_CANDIDATE; Total=128; Runtime=127; Commented=}.Category) | 128 | 127 |  |
+
+---
+
+## 2. Runtime Candidate Anchors
+
+These matches are not on lines beginning with #. They still require human review before any runtime patch.
+
+But only after human review of this discovery report.

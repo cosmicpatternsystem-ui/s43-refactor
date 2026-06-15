@@ -1,0 +1,8 @@
+﻿commit 87f07c958e1e7bea7d898de1598c060d3c8d2c7f
+Author:     S.Saead Lajevardy <cosmicpatternsystem@gmail.com>
+AuthorDate: Mon Jun 15 09:22:48 2026 +0330
+Commit:     S.Saead Lajevardy <cosmicpatternsystem@gmail.com>
+CommitDate: Mon Jun 15 09:22:48 2026 +0330
+
+    fix: expand phase18 evidence bundle into approved file paths
+EXIT_CODE=0

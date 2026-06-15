@@ -1,0 +1,3 @@
+#!/bin/sh
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/enterprise_quality_gate_phase17.ps1 -ExpectedBranch phase17-work-from-restore -Mode PreCommit
+exit $?
