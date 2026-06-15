@@ -5,8 +5,14 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (git rev-parse --show-toplevel).Trim()
-Set-Location $repoRoot
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$repoRoot = [System.IO.Path]::GetFullPath((Join-Path $scriptDir '..'))
+
+if (-not (Test-Path -LiteralPath (Join-Path $repoRoot '.git'))) {
+    throw "Unable to resolve repository root from script location: $repoRoot"
+}
+
+Set-Location -LiteralPath $repoRoot
 
 $failures = New-Object System.Collections.Generic.List[string]
 $warnings = New-Object System.Collections.Generic.List[string]

@@ -2,7 +2,7 @@
 param(
     [string]$Message = "",
     [string]$Branch = "",
-    [string]$ApprovalToken = "APPROVE_PHASE18",
+    [string]$ApprovalPhrase = "APPROVE_PHASE18",
     [switch]$AutoApprove
 )
 
@@ -248,7 +248,7 @@ function Assert-ApprovedPathsExist {
 
 function Confirm-FinalApproval {
     param(
-        [string]$Token,
+        [string]$ApprovalPhrase,
         [switch]$Bypass
     )
 
@@ -259,11 +259,11 @@ function Confirm-FinalApproval {
 
     Info ''
     Info 'FINAL APPROVAL REQUIRED'
-    Info ('Type exactly: ' + $Token)
+    Info ('Type exactly: ' + $ApprovalPhrase)
     $entered = Read-Host 'Approval'
 
-    if ($entered -cne $Token) {
-        Fail 'Final approval token mismatch. Aborting.'
+    if ($entered -cne $ApprovalPhrase) {
+        Fail 'Final approval phrase mismatch. Aborting.'
     }
 
     Info 'FINAL APPROVAL ACCEPTED'
@@ -316,7 +316,7 @@ if (-not (Test-PathSetEqual -Actual $dirtyBefore -Expected $approvedPaths)) {
 Exec-Git -RepoRoot $repoRoot -Args @('diff','--check')
 Info 'PHASE18_VERIFY_OK'
 
-Confirm-FinalApproval -Token $ApprovalToken -Bypass:$AutoApprove
+Confirm-FinalApproval -ApprovalPhrase $ApprovalPhrase -Bypass:$AutoApprove
 
 Exec-Git -RepoRoot $repoRoot -Args @('add','--') + $approvedPaths
 Info 'FINALIZE_STAGE_OK'
