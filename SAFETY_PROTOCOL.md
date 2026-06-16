@@ -152,3 +152,16 @@ The system must never rely on assumed profitability.
 Performance must be measured, logged, reviewed, and validated before any expansion of live trading behavior.
 
 <!-- PATCH_DOC_003_ROADMAP_LOCK_V1_END -->
+
+## Sensitive Data Redaction Policy
+
+All logs, crash reports, audit artifacts, and diagnostic outputs must redact
+sensitive values before persistence.
+
+Sensitive values include API keys, access tokens, refresh tokens, passwords,
+private keys, wallet keys, seed phrases, mnemonics, authorization headers,
+cookies, session identifiers, bearer tokens, and secret configuration values.
+
+Crash-reporting paths must not persist raw CLI arguments, environment variables,
+credentials, authentication material, wallet material, or secrets without
+sanitization/redaction.

@@ -30029,13 +30029,62 @@ def _phoenix_selftests() -> None:
     d1 = ph.update("BTCIRT", sig, book=None, spot=100.0, spot_ts=now)
     assert d1.reason != "NO_DEPTH_PRICE", f"Scenario5b expected not depth-blocked: {d1}"
     print("PHOENIX_SELFTEST: OK")
+
+def _redact_argv_for_report(args):
+    sensitive_keys = (
+        "token",
+        "secret",
+        "password",
+        "passwd",
+        "api-key",
+        "apikey",
+        "api_key",
+        "authorization",
+        "auth",
+        "cookie",
+        "session",
+        "private",
+        "private-key",
+        "private_key",
+        "wallet",
+        "seed",
+        "mnemonic",
+        "bearer",
+    )
+
+    redacted = []
+    skip_next = False
+
+    for item in list(args or []):
+        s = str(item)
+
+        if skip_next:
+            redacted.append("<redacted>")
+            skip_next = False
+            continue
+
+        low = s.lower()
+
+        if any(k in low for k in sensitive_keys):
+            if "=" in s:
+                key = s.split("=", 1)[0]
+                redacted.append(key + "=<redacted>")
+            else:
+                redacted.append(s)
+                skip_next = True
+            continue
+
+        redacted.append(s)
+
+    return redacted
+
 def main(argv: list[str] | None = None) -> None:
     """Entry point with crash reporting (no sys.excepthook monkey-patch)."""
     try:
         run(argv)
     except BaseException as e:
         try:
-            _pp200_report(e, tag="FATAL", ctx={"argv": (argv if argv is not None else sys.argv[1:])})
+            _pp200_report(e, tag="FATAL", ctx={"argv": _redact_argv_for_report(argv if argv is not None else sys.argv[1:])})
         except Exception:
             pass
         raise
@@ -30223,10 +30272,4 @@ def _sleep_or_stop(seconds, stop_event=None, *, interval=0.25):
         remaining = end_at - _rt_now()
         if remaining <= 0:
             return True
-        time.sleep(min(float(interval), remaining))
-
-
-
-
-
-
+        time.sleep(min(float(interval), remaining))

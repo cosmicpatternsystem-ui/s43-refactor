@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param()
 
 $ErrorActionPreference = 'Stop'
@@ -16,12 +16,12 @@ function Test-AuditEvidenceForPhase {
         return $false
     }
 
-    $phaseToken = "PHASE$PhaseNumber"
+    $phaseMarker = "PHASE$PhaseNumber"
 
     $auditMatches = Get-ChildItem -Path 'AUDIT' -Recurse -File -ErrorAction SilentlyContinue |
         Where-Object {
-            $_.Name -like "*$phaseToken*" -or
-            $_.FullName -like "*$phaseToken*"
+            $_.Name -like "*$phaseMarker*" -or
+            $_.FullName -like "*$phaseMarker*"
         }
 
     if (@($auditMatches).Count -gt 0) {
@@ -62,11 +62,11 @@ foreach ($phase in $requiredPhases) {
 }
 
 if (@($missing).Count -gt 0) {
-    Write-Host 'PHASE31_FINAL_OPERATIONAL_READINESS_DRY_RUN_FAIL'
+    Write-Host 'P31_DRY_RUN_FAIL'
     Write-Host 'Missing evidence:'
     $missing | ForEach-Object { Write-Host "- $_" }
     exit 1
 }
 
-Write-Host 'PHASE31_FINAL_OPERATIONAL_READINESS_DRY_RUN_PASS'
+Write-Host 'P31_DRY_RUN_PASS'
 exit 0
