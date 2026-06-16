@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$CommitMessage = "",
     [string]$BackupRoot = "E:\saead\ssl\s43_project_backups",
@@ -27,7 +27,7 @@ function Get-GitText {
 
     $out = & git @Args
     if ($LASTEXITCODE -ne 0) {
-        throw "git $($NativeArgs -join ' ') failed"
+        throw "git $($Args -join ' ') failed"
     }
     return $out
 }
