@@ -1,0 +1,90 @@
+PHASE17 ENTRYPOINT SCAN
+UTC=2026-06-16T10:35:55Z
+
+===== FILE: s43.py =====
+s43.py:599: user_agent: str = "RazTraderPlus/1.0"
+s43.py:603: dry_run: bool = field(default_factory=lambda: _env_bool("DRY_RUN", False) or (not _env_bool("LIVE_TRADING", True)))
+s43.py:661: top8_trades_lookback_sec: float = field(default_factory=lambda: max(10.0, _env_float("TOP8_TRADES_LOOKBACK_SEC", 300.0)))
+s43.py:683: live_trading_armed: bool = field(default_factory=lambda: _env_bool("LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False)))
+s43.py:685: ai_live_trading_armed: bool = field(default_factory=lambda: _env_bool("AI_LIVE_TRADING_ARMED", False))
+s43.py:687: dzh_ai_rescues_armed: bool = field(default_factory=lambda: _env_bool("DZH_AI_RESCUES_ARMED", _env_bool("AI_LIVE_TRADING_ARMED", _env_bool("ARZPLUS_LIVE_ARMED", False))))
+s43.py:1457: "TOP8", "TOP8_SWAP", "FOCUS", "WHY_NO_TRADE", "VETO", "PHOENIX"
+s43.py:1643: """Temporarily replace sys.argv (restored on exit)."""
+s43.py:1645: old = sys.argv[:]
+s43.py:1649: sys.argv = list(argv)
+s43.py:1655: sys.argv = old
+s43.py:1723: self.log = logging.getLogger("RazTraderPlus")
+s43.py:2047: class ExchangeClient:
+s43.py:2077: m = ExchangeClient._RE_AUTH_SCHEME.match(t)
+s43.py:2123: _s43_debug_print("### EXCHANGECLIENT_INIT_ENTER ###", flush=True)
+s43.py:2403: self._logger = logging.getLogger("RazTraderPlus")
+s43.py:2419: self._logger if isinstance(getattr(self, "_logger", None), logging.Logger) else logging.getLogger("RazTraderPlus"),
+s43.py:3629: "event=ARZPLUS_CLOCK_SKEW_WARN exchange=arzplus endpoint=%s drift_s=%.3f local_ts=%.3f server_ts=%.3f",
+s43.py:3789: "event=ARZPLUS_HTTP_403 exchange=arzplus endpoint=%s method=%s http_status=%s body=%s headers=%s api_key=%s api_secret=%s auth_fp=%s cause=%s drift_s=%s",
+s43.py:4093: raise TemporaryPause("Rate limited by exchange (HTTP 429).", pause_sec=pause)
+s43.py:4153: exchange=("arzplus" if self._is_arzplus() else ""),
+s43.py:4755: "mid", "mark", "markPrice", "last", "last_price", "lastPrice", "last_trade_price", "lastTradePrice",
+s43.py:4757: "price", "close", "closePrice", "c", "p", "rate", "value", "latest", "ltp", "tradePrice",
+s43.py:5047: s = s.translate(getattr(ExchangeClient, "_PERSIAN_DIGITS"))
+s43.py:5981: # ---- repaired candidate method: get_trades from lines 2993-3011 ----
+s43.py:5983: async def get_trades(self, symbol: str) -> dict:
+s43.py:6003: for ep in ("/market/trades/", "/market/trades"):
+s43.py:6673: if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+s43.py:6683: audit_event("LIVE_TRADING_OFF_BLOCKED_ORDER", {
+s43.py:6689: "reason": "LIVE_TRADING_IS_OFF",
+s43.py:6713: "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+s43.py:6753: not bool(getattr(self, "_ai_live_trading_armed", False))
+s43.py:6763: # === PATCH_001B_AI_LIVE_TRADING_OFF_HOOK ===
+s43.py:6767: audit_event("AI_LIVE_TRADING_OFF_BLOCKED_ORDER", {
+s43.py:6773: "reason": "AI_LIVE_TRADING_IS_OFF",
+s43.py:6791: # === END PATCH_001B_AI_LIVE_TRADING_OFF_HOOK ===
+s43.py:6797: "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+s43.py:6807: # PATCH_003A_PERFORMANCE_LEDGER_BASELINE: AI_LIVE_TRADING_BLOCKED
+s43.py:6813: 'AI_LIVE_TRADING_BLOCKED',
+s43.py:8123: # QUARANTINED BROKEN NESTED BLOCK: get_trades original lines 2993-3011, owner AsyncFunctionDef:_arzplus_market_snapshot@2628-3557
+s43.py:8133: #     async def get_trades(self, symbol: str) -> dict:
+s43.py:8153: #         for ep in ("/market/trades/", "/market/trades"):
+s43.py:8609: #         if (not bool(getattr(self, "_dry_run", False))) and (not bool(getattr(self, "_live_trading_armed", False))):
+s43.py:8619: #                         "event=LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=LIVE_TRADING_IS_OFF",
+s43.py:8635: #             not bool(getattr(self, "_ai_live_trading_armed", False))
+s43.py:8649: #                         "event=AI_LIVE_TRADING_OFF_BLOCKED_ORDER sym=%s side=%s qty=%s price=%s cid=%s reason=AI_LIVE_TRADING_IS_OFF",
+s43.py:9439: def __init__(self, ex_public: ExchangeClient, logger: logging.Logger):
+s43.py:9971: last_trade_price: Optional[float] = None
+s43.py:10021: def __init__(self, ex: ExchangeClient, logger: logging.Logger, ttl_sec: float = 1.2, price_cache_path: str = "raz_price_cache.json"):
+s43.py:10205: # Core fix: ensure best bid/ask selection is deterministic even if the exchange returns unsorted arrays.
+s43.py:10301: last_trade_px = 0.0
+s43.py:10309: lt_src = data.get("last_trade") or data.get("lastTrade") or data.get("last") or data.get("last_price") or data.get("lastPrice")
+s43.py:10313: lt_src = obj.get("last_trade") or obj.get("lastTrade") or obj.get("last") or obj.get("last_price") or obj.get("lastPrice")
+s43.py:10317: last_trade_px = float(_safe_float(lt_src.get("price") or lt_src.get("p") or lt_src.get("rate") or lt_src.get("last"), 0.0) or 0.0)
+s43.py:10321: last_trade_px = float(_safe_float(lt_src, 0.0) or 0.0)
+s43.py:10325: last_trade_px = 0.0
+s43.py:10395: if bid <= 0.0 and ask <= 0.0 and last_trade_px > 0.0:
+s43.py:10397: bid = ask = last_trade_px
+s43.py:10481: last_trade_price=(float(last_trade_px) if last_trade_px > 0.0 else None),
+s43.py:10831: setattr(top, "_source", "live")
+s43.py:11249: "last_trade", "lastTrade", "lastTradePrice",
+s43.py:11251: "last_traded_price", "last_traded", "final",
+s43.py:11393: tmo = float(_env_float("TRADES_REQ_TIMEOUT", _env_float("TICKERS_REQ_TIMEOUT", 6.5)) or 5.0)
+s43.py:11405: raw = await asyncio.wait_for(self._ex.get_trades(_canon_symbol(cand)), timeout=tmo)
+s43.py:11877: class TradeHealth:
+s43.py:12111: class TradeHealthController:
+s43.py:12299: ) -> TradeHealth:
+s43.py:12429: return TradeHealth("HALT", 0.0, sev, reasons)
+s43.py:12433: return TradeHealth("DEGRADED", 0.45, sev, reasons)
+s43.py:12435: return TradeHealth("HALT", 0.0, sev, reasons)
+s43.py:12441: return TradeHealth("DEGRADED", 0.45, sev, reasons)
+s43.py:12445: return TradeHealth("SOFT", 0.75, sev, reasons)
+s43.py:12447: return TradeHealth("NORMAL", 1.0, sev, reasons)
+s43.py:14849: if os.environ.get("ARZPLUS_LIVE_ARMED") != "YES":
+s43.py:14851: raise RuntimeError("ALERT SECURITY_BREACH: LIVE_MODE_NOT_ARMED")
+s43.py:15215: def check_lag(self, exchange_ts_ms: float) -> "Tuple[bool, float]":
+s43.py:15219: ts = float(exchange_ts_ms)
+s43.py:16135: def should_trade(self) -> Tuple[bool, str]:
+s43.py:18067: "User-Agent": "RazTraderPlus/2.0",
+s43.py:18211: total_trades: int = 0
+
+===== FILE: s43_instrumented_LATEST.py =====
+FILE_MISSING
+
+===== FILE: MY_S43_LATEST.py =====
+FILE_MISSING
