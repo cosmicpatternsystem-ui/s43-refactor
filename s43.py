@@ -30031,52 +30031,51 @@ def _phoenix_selftests() -> None:
     print("PHOENIX_SELFTEST: OK")
 
 def _redact_argv_for_report(args):
+    marker = "<redacted>"
     sensitive_keys = (
+        "authorization",
         "token",
         "secret",
         "password",
-        "passwd",
-        "api-key",
-        "apikey",
-        "api_key",
-        "authorization",
-        "auth",
-        "cookie",
-        "session",
-        "private",
-        "private-key",
-        "private_key",
-        "wallet",
-        "seed",
-        "mnemonic",
         "bearer",
+        "api-key",
+        "api_key",
+        "apikey",
+        "x-api-key",
     )
-
     redacted = []
-    skip_next = False
+    redact_next = False
 
-    for item in list(args or []):
-        s = str(item)
+    for arg in args:
+        item = str(arg)
 
-        if skip_next:
-            redacted.append("<redacted>")
-            skip_next = False
+        if redact_next:
+            redacted.append(marker)
+            redact_next = False
             continue
 
-        low = s.lower()
+        lowered = item.lower()
+        is_sensitive = any(key in lowered for key in sensitive_keys)
 
-        if any(k in low for k in sensitive_keys):
-            if "=" in s:
-                key = s.split("=", 1)[0]
-                redacted.append(key + "=<redacted>")
-            else:
-                redacted.append(s)
-                skip_next = True
+        if not is_sensitive:
+            redacted.append(item)
             continue
 
-        redacted.append(s)
+        if "=" in item:
+            prefix, _value = item.split("=", 1)
+            redacted.append(prefix + "=" + marker)
+            continue
+
+        if ":" in item:
+            prefix, _value = item.split(":", 1)
+            redacted.append(prefix + ": " + marker)
+            continue
+
+        redacted.append(item)
+        redact_next = True
 
     return redacted
+
 
 def main(argv: list[str] | None = None) -> None:
     """Entry point with crash reporting (no sys.excepthook monkey-patch)."""
