@@ -60,3 +60,18 @@ No disaster recovery workflow is considered mature until at least one successful
 - tracked_source_extract: passed
 - restored_pytest: passed
 - result: validated
+
+## Restore Drill Evidence - 20260616_233441
+
+- backup_path: E:\saead\ssl\s43_project_backups\phase17-controlled-development_20260616_232541_e171b3754c12
+- restore_target: E:\saead\ssl\s43_restore_drills\restore_drill_20260616_233441
+- source_commit: e171b3754c1227e415399861d301208c3fd0a424
+- branch: phase17-controlled-development
+- upstream: origin/phase17-controlled-development
+- artifacts_sha256: passed
+- repo_bundle_verify: passed
+- bundle_clone: passed
+- restored_head_match: passed
+- tracked_source_extract: passed
+- restored_pytest: passed
+- result: validated
