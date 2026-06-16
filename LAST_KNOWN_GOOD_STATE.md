@@ -5,15 +5,17 @@ This file records the latest manually confirmed good state that is known to be:
 - committed
 - pushed
 - backed up
-- restorable in principle
+- restore-drilled
 
 ## Current Confirmed State
 - branch: phase17-controlled-development
-- commit: 4f0ca1f31db7d4ba8c2e6de6bd1ef73067fee2cc
+- commit: dceee5f3b3c7e97e435283ccd355399fba9a4319
 - upstream: origin/phase17-controlled-development
-- backup_path: E:\saead\ssl\s43_project_backups\phase17-controlled-development_20260616_231027_4f0ca1f31db7
+- backup_path: E:\saead\ssl\s43_project_backups\phase17-controlled-development_20260616_231529_dceee5f3b3c7
+- restore_drill_path: E:\saead\ssl\s43_restore_drills\restore_drill_20260616_232209
 - workspace: clean
 - remote: synced
+- restore_drill: validated
 
 ## Update Rule
 Update this file only after:
@@ -23,6 +25,7 @@ Update this file only after:
 4. workspace is clean
 5. remote is synced
 6. disaster recovery backup was created
+7. restore drill was completed when required
 
 ## Replacement Rule
 When this file is updated, the previous state is superseded by the new confirmed state.

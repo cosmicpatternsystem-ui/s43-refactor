@@ -56,3 +56,9 @@ The agent must not claim execution occurred. The agent must explicitly state the
 
 ## Handoff Rule
 A future agent must be able to continue the project using only the repository, the committed documentation, and the latest validated backup artifacts.
+
+## Shell Interaction Protocol
+
+All future shell instructions must follow `SHELL_INTERACTION_PROTOCOL.md`.
+
+Executable shell blocks must not contain Persian prose, markdown-only bullets, or explanatory text. Human explanations must be outside executable blocks.
