@@ -93,3 +93,17 @@ If there is a conflict between local success and audit evidence, audit evidence 
 If there is a conflict between manual action and operational runner closure, operational runner closure wins.
 
 Proceed only with Phase 21 release automation dry-run design.
+
+# Non-Negotiable Completion Rule
+
+Every meaningful change must end with the agent running:
+
+    .\tools\Invoke-SafeSyncAndBackup.ps1 -CommitMessage "<completed change>"
+
+The agent must not mark work as complete unless the workflow reports:
+
+    SAFE SYNC AND DISASTER RECOVERY BACKUP COMPLETE
+    Workspace: clean
+    Remote: synced
+
+The final answer must include the final commit hash and physical backup path.
