@@ -41,3 +41,24 @@ provide the exact command sequence required to complete the operation.
 
 This policy is mandatory and overrides informal summaries, chat-only assurances,
 or partial completion statements.
+
+## Definition Of Done
+
+A meaningful change is done only when all of the following are true:
+
+1. The intended change is implemented.
+2. Required validation passes.
+3. `git diff --check` passes.
+4. The change is committed.
+5. The change is pushed to the configured upstream.
+6. The workspace is clean.
+7. The remote is synced.
+8. A disaster recovery backup is created with:
+   - tracked_source.zip
+   - repo.bundle
+   - manifest.sha256
+   - artifacts.sha256
+   - status.json
+   - verification.txt
+   - RESTORE_INSTRUCTIONS.txt
+9. The final report records branch, commit, upstream, backup path, and validation result.
