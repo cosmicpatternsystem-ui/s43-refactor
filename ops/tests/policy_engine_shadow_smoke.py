@@ -127,6 +127,22 @@ def main():
         "rule descriptions should preserve configured rule order",
     )
 
+    safe_trace = engine.evaluate_with_trace(safe_context)
+    assert_serializable_trace(safe_trace)
+    assert_true(
+        [item["policy_rule_id"] for item in safe_trace["decisions"]]
+        == [item["rule_id"] for item in rule_descriptions],
+        "safe trace decisions should preserve configured rule order",
+    )
+    assert_true(
+        [item["policy_action"] for item in safe_trace["decisions"]] == ["ALLOW", "ALLOW", "ALLOW"],
+        "safe trace should preserve each rule decision action",
+    )
+    assert_true(
+        safe_trace["final_decision"]["policy_action"] == "ALLOW",
+        "safe trace final decision should remain ALLOW",
+    )
+
     final_halt = engine.final_decision(high_notional_context)
     assert_true(final_halt.action == PolicyAction.HALT, "high notional should HALT")
     assert_true(
@@ -196,18 +212,36 @@ def main():
     )
 
     trace = engine.evaluate_with_trace(high_notional_context)
+    assert_serializable_trace(trace)
     assert_true(isinstance(trace["decisions"], list), "trace decisions should be a list")
+    assert_true(
+        [item["policy_rule_id"] for item in trace["decisions"]]
+        == [item["rule_id"] for item in rule_descriptions],
+        "trace decisions should preserve configured rule order",
+    )
     assert_true(
         trace["final_decision"] == engine.final_decision(high_notional_context).to_audit_payload(),
         "trace final decision should match final_decision audit payload",
+    )
+    assert_true(
+        trace["final_decision"] == trace["decisions"][0],
+        "trace final decision should match highest-precedence rule payload",
     )
     assert_true(
         trace["final_decision"]["policy_action"] == "HALT",
         "trace should preserve HALT final action",
     )
     assert_true(
-        any(item["policy_rule_id"] == "shadow.max_notional" for item in trace["decisions"]),
-        "trace should include max-notional rule result",
+        trace["decisions"][0]["policy_rule_id"] == "shadow.max_notional",
+        "trace should include max-notional rule result in rule order",
+    )
+    assert_true(
+        trace["decisions"][0]["policy_details"] == {"notional": 10000.0, "limit": 1000.0},
+        "trace should preserve max-notional HALT details",
+    )
+    assert_true(
+        trace["decisions"][2]["policy_details"] == {"override": False},
+        "trace should preserve missing operator override detail",
     )
 
     empty_trace = empty_engine.evaluate_with_trace(safe_context)
@@ -220,6 +254,14 @@ def main():
     assert_true(
         empty_trace["final_decision"]["policy_rule_id"] == "policy.default_allow",
         "empty trace should use default allow rule id",
+    )
+    assert_true(
+        empty_trace["final_decision"]["policy_reason"] == "no policy rules configured",
+        "empty trace should preserve default allow reason",
+    )
+    assert_true(
+        empty_trace["final_decision"]["policy_details"] == {},
+        "empty trace should preserve empty default details",
     )
 
     override_trace = override_engine.evaluate_with_trace(override_context)
@@ -235,7 +277,7 @@ def main():
 
     print(
         "OK: shadow policy engine evaluated max-notional, wallet-cycle, precedence, "
-        "default decisions, audit payload, operator override, structured trace, trace serialization contract, and rule registry introspection"
+        "default decisions, audit payload, operator override, structured trace, trace order contract, trace serialization contract, and rule registry introspection"
     )
 
 
