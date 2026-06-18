@@ -152,3 +152,9 @@ The system must never rely on assumed profitability.
 Performance must be measured, logged, reviewed, and validated before any expansion of live trading behavior.
 
 <!-- PATCH_DOC_003_ROADMAP_LOCK_V1_END -->
+
+## Update 2026-06-18: G11 Wallet Cycle Guard Activated
+- **Status:** ACTIVE
+- **Mechanism:** Sliding window detection (Window: 10, Max Repeats: 3)
+- **Action:** Immediate `TradingHalt` on violation.
+- **Audit Key:** `G11_VIOLATION_WALLET_CYCLE`
