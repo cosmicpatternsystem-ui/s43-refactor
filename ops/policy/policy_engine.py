@@ -173,6 +173,15 @@ class PolicyEngine:
     def evaluate(self, context: PolicyContext) -> List[PolicyDecision]:
         return [rule.evaluate(context) for rule in self.rules]
 
+    def evaluate_with_trace(self, context: PolicyContext) -> Dict[str, Any]:
+        decisions = self.evaluate(context)
+        final_decision = self.final_decision(context)
+
+        return {
+            "decisions": [decision.to_audit_payload() for decision in decisions],
+            "final_decision": final_decision.to_audit_payload(),
+        }
+
     def final_decision(self, context: PolicyContext) -> PolicyDecision:
         decisions = self.evaluate(context)
 
