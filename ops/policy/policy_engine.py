@@ -27,6 +27,14 @@ class PolicyDecision:
     rule_id: str
     details: Dict[str, Any] = field(default_factory=dict)
 
+    def to_audit_payload(self) -> Dict[str, Any]:
+        return {
+            "policy_action": self.action.value,
+            "policy_reason": self.reason,
+            "policy_rule_id": self.rule_id,
+            "policy_details": dict(self.details),
+        }
+
 
 class PolicyRule(Protocol):
     rule_id: str
