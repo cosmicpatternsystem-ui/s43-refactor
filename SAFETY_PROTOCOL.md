@@ -176,3 +176,54 @@ Performance must be measured, logged, reviewed, and validated before any expansi
 ### Next Decision Gate
 - Run a controlled runtime smoke test for repeated wallet-cycle signatures.
 - After successful smoke validation, proceed to Abstract Policy Engine activation and integration review.
+
+
+
+
+## G11 Runtime Smoke Test Evidence
+
+Date: 2026-06-18
+
+### Compile Check
+
+Command:
+
+~~~bash
+python3 -m py_compile s43.py
+~~~
+
+Status: PASSED
+
+### WalletCycleGuard
+
+Runtime smoke test:
+
+~~~bash
+python3 ops/tests/g11_wallet_cycle_smoke.py
+~~~
+
+Observed result:
+
+- attempt 1: PASS
+- attempt 2: PASS
+- attempt 3: HALTED
+- audit event: `G11_VIOLATION_WALLET_CYCLE`
+- halt reason: `G11_WALLET_CYCLE_PROTECTION`
+
+Status: PASSED
+
+### CapitalKillSwitch
+
+Runtime smoke test:
+
+~~~bash
+python3 ops/tests/g11_capital_kill_switch_smoke.py
+~~~
+
+Observed result:
+
+- oversized notional order blocked
+- audit event: `G11_VIOLATION_LARGE_ORDER`
+- halt reason: `G11_CAPITAL_PROTECTION`
+
+Status: PASSED
