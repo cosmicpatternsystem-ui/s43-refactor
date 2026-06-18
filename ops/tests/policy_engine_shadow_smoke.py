@@ -37,10 +37,18 @@ safe_decisions_1 = engine.evaluate(safe_context)
 safe_decisions_2 = engine.evaluate(safe_context)
 cycle_decisions = engine.evaluate(safe_context)
 halt_decisions = engine.evaluate(halt_context)
+final_halt = engine.final_decision(halt_context)
 
 assert safe_decisions_1[0].action == policy_engine.PolicyAction.ALLOW
 assert safe_decisions_2[1].action == policy_engine.PolicyAction.ALLOW
 assert cycle_decisions[1].action == policy_engine.PolicyAction.HALT
 assert halt_decisions[0].action == policy_engine.PolicyAction.HALT
+assert final_halt.action == policy_engine.PolicyAction.HALT
 
-print("OK: shadow policy engine evaluated max-notional and wallet-cycle decisions")
+empty_engine = policy_engine.PolicyEngine()
+default_decision = empty_engine.final_decision(safe_context)
+
+assert default_decision.action == policy_engine.PolicyAction.ALLOW
+assert default_decision.rule_id == "policy.default_allow"
+
+print("OK: shadow policy engine evaluated precedence and default decisions")

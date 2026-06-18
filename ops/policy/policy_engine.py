@@ -129,8 +129,28 @@ class WalletCycleShadowRule:
 
 
 class PolicyEngine:
+    _precedence = {
+        PolicyAction.ALLOW: 0,
+        PolicyAction.WARN: 1,
+        PolicyAction.BLOCK: 2,
+        PolicyAction.HALT: 3,
+    }
+
     def __init__(self, rules: List[PolicyRule] | None = None) -> None:
         self.rules = list(rules or [])
 
     def evaluate(self, context: PolicyContext) -> List[PolicyDecision]:
         return [rule.evaluate(context) for rule in self.rules]
+
+    def final_decision(self, context: PolicyContext) -> PolicyDecision:
+        decisions = self.evaluate(context)
+
+        if not decisions:
+            return PolicyDecision(
+                action=PolicyAction.ALLOW,
+                reason="no policy rules configured",
+                rule_id="policy.default_allow",
+                details={},
+            )
+
+        return max(decisions, key=lambda decision: self._precedence[decision.action])
