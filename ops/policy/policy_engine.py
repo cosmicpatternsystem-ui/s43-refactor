@@ -136,6 +136,29 @@ class WalletCycleShadowRule:
         )
 
 
+
+class OperatorOverrideShadowRule:
+    def __init__(self, valid_code: str):
+        self.rule_id = "shadow.operator_override"
+        self.valid_code = valid_code
+
+    def evaluate(self, context: PolicyContext) -> PolicyDecision:
+        provided_code = context.metadata.get("operator_override_code")
+        if provided_code == self.valid_code:
+            return PolicyDecision(
+                action=PolicyAction.ALLOW,
+                reason="operator override validated",
+                rule_id=self.rule_id,
+                details={"override": True}
+            )
+        return PolicyDecision(
+            action=PolicyAction.ALLOW,
+            reason="no valid operator override provided",
+            rule_id=self.rule_id,
+            details={"override": False}
+        )
+
+
 class PolicyEngine:
     _precedence = {
         PolicyAction.ALLOW: 0,
