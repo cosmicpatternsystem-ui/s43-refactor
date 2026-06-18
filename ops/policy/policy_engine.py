@@ -185,16 +185,14 @@ class PolicyEngine:
 
     def evaluate_with_trace(self, context: PolicyContext) -> Dict[str, Any]:
         decisions = self.evaluate(context)
-        final_decision = self.final_decision(context)
+        final_decision = self._final_decision_from_decisions(decisions)
 
         return {
             "decisions": [decision.to_audit_payload() for decision in decisions],
             "final_decision": final_decision.to_audit_payload(),
         }
 
-    def final_decision(self, context: PolicyContext) -> PolicyDecision:
-        decisions = self.evaluate(context)
-
+    def _final_decision_from_decisions(self, decisions: List[PolicyDecision]) -> PolicyDecision:
         if not decisions:
             return PolicyDecision(
                 action=PolicyAction.ALLOW,
@@ -204,3 +202,7 @@ class PolicyEngine:
             )
 
         return max(decisions, key=lambda decision: self._precedence[decision.action])
+
+    def final_decision(self, context: PolicyContext) -> PolicyDecision:
+        decisions = self.evaluate(context)
+        return self._final_decision_from_decisions(decisions)
