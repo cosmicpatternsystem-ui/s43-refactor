@@ -51,6 +51,21 @@ def assert_serializable_trace(trace):
         assert isinstance(decision_payload["policy_reason"], str), "policy_reason should be a string"
         assert isinstance(decision_payload["policy_details"], dict), "policy_details should be a dict"
 
+
+REQUIRED_RULE_DESCRIPTION_KEYS = {"rule_id", "rule_class"}
+
+
+def assert_serializable_rule_descriptions(rule_descriptions):
+    json.dumps(rule_descriptions, sort_keys=True)
+
+    assert isinstance(rule_descriptions, list), "rule descriptions should be a list"
+    for rule_description in rule_descriptions:
+        assert set(rule_description) == REQUIRED_RULE_DESCRIPTION_KEYS, (
+            "rule description should expose stable keys"
+        )
+        assert isinstance(rule_description["rule_id"], str), "rule_id should be a string"
+        assert isinstance(rule_description["rule_class"], str), "rule_class should be a string"
+
 def main():
     safe_context = PolicyContext(
         symbol="BTCUSDT",
@@ -97,6 +112,21 @@ def main():
         "safe context should be allowed by all rules",
     )
 
+
+    assert_true(hasattr(engine, "describe_rules"), "policy engine should expose describe_rules")
+    rule_descriptions = engine.describe_rules()
+    assert_serializable_rule_descriptions(rule_descriptions)
+    assert_true(len(rule_descriptions) == len(engine.rules), "rule descriptions should match rules")
+    assert_true(
+        rule_descriptions
+        == [
+            {"rule_id": "shadow.max_notional", "rule_class": "MaxNotionalShadowRule"},
+            {"rule_id": "shadow.wallet_cycle", "rule_class": "WalletCycleShadowRule"},
+            {"rule_id": "shadow.operator_override", "rule_class": "OperatorOverrideShadowRule"},
+        ],
+        "rule descriptions should preserve configured rule order",
+    )
+
     final_halt = engine.final_decision(high_notional_context)
     assert_true(final_halt.action == PolicyAction.HALT, "high notional should HALT")
     assert_true(
@@ -115,6 +145,11 @@ def main():
     )
 
     empty_engine = PolicyEngine()
+
+    empty_rule_descriptions = empty_engine.describe_rules()
+    assert_serializable_rule_descriptions(empty_rule_descriptions)
+    assert_true(empty_rule_descriptions == [], "empty engine should describe no rules")
+
     default_decision = empty_engine.final_decision(safe_context)
     assert_true(default_decision.action == PolicyAction.ALLOW, "empty engine defaults to ALLOW")
     assert_true(
@@ -200,7 +235,7 @@ def main():
 
     print(
         "OK: shadow policy engine evaluated max-notional, wallet-cycle, precedence, "
-        "default decisions, audit payload, operator override, structured trace, and trace serialization contract"
+        "default decisions, audit payload, operator override, structured trace, trace serialization contract, and rule registry introspection"
     )
 
 

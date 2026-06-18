@@ -170,6 +170,16 @@ class PolicyEngine:
     def __init__(self, rules: List[PolicyRule] | None = None) -> None:
         self.rules = list(rules or [])
 
+
+    def describe_rules(self) -> List[Dict[str, str]]:
+        return [
+            {
+                "rule_id": rule.rule_id,
+                "rule_class": rule.__class__.__name__,
+            }
+            for rule in self.rules
+        ]
+
     def evaluate(self, context: PolicyContext) -> List[PolicyDecision]:
         return [rule.evaluate(context) for rule in self.rules]
 
