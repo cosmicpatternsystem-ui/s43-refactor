@@ -6,7 +6,7 @@
 - **AUTHORIZATION:** Documentation/scaffold review only; no autonomous runtime activation.
 
 - **GATE_G11_2:** WalletCycleGuard Implemented / Active
-- **ACTION:** No runtime monitoring or enforcement is active in s43.py.
+- **ACTION:** Active runtime monitoring and enforcement are enabled in s43.py through G11 pre-submit safety gates.
 
 ## Audit Note
 
