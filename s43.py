@@ -23120,7 +23120,8 @@ class ExecutionEngine:
 
         self.ghost_order_count: int = 0
         self._g11_capital_kill_switch = None
-        self._g11_wallet_cycle_guard = None
+        self._g11_wallet_cycle_guard = {"enabled": True, "window": 10, "max_repeats": 3}
+        self._g11_wallet_history = []
         self._g11_safety_gates_enabled = True
 
 
@@ -23139,10 +23140,53 @@ class ExecutionEngine:
             audit_event("G11_VIOLATION_LARGE_ORDER", {"symbol": symbol, "notional": notional_irt})
             raise TradingHalt(f"G11_CAPITAL_PROTECTION: Order size {notional_irt} exceeds limit {MAX_ORDER_IRT}")
 
-        # 3. Placeholder for Wallet Cycle Guard (Future Implementation)
-        if self._g11_wallet_cycle_guard is not None:
-            # Logic for high-frequency loop detection will go here
-            pass
+        # 3. Wallet Cycle Guard
+        if self._g11_wallet_cycle_guard is not None and self._g11_wallet_cycle_guard.get("enabled", True):
+            import time
+
+            wallet_keys = (
+                "wallet", "wallet_id", "source_wallet", "destination_wallet",
+                "from_wallet", "to_wallet", "account", "subaccount",
+            )
+            wallet_state = tuple(
+                (key, str(kwargs.get(key)))
+                for key in wallet_keys
+                if kwargs.get(key) is not None
+            )
+            cycle_signature = (
+                _canon_symbol(symbol),
+                str(side).lower(),
+                round(float(qty), 8),
+                round(float(price), 2),
+                wallet_state,
+            )
+
+            now = time.time()
+            self._g11_wallet_history.append((now, cycle_signature))
+
+            window = int(self._g11_wallet_cycle_guard.get("window", 10))
+            max_repeats = int(self._g11_wallet_cycle_guard.get("max_repeats", 3))
+            self._g11_wallet_history = self._g11_wallet_history[-window:]
+
+            repeat_count = sum(
+                1 for _, signature in self._g11_wallet_history
+                if signature == cycle_signature
+            )
+            if repeat_count >= max_repeats:
+                audit_event("G11_VIOLATION_WALLET_CYCLE", {
+                    "symbol": symbol,
+                    "side": side,
+                    "qty": qty,
+                    "price": price,
+                    "notional": notional_irt,
+                    "repeat_count": repeat_count,
+                    "window": window,
+                    "wallet_state": wallet_state,
+                })
+                raise TradingHalt(
+                    f"G11_WALLET_CYCLE_PROTECTION: repeated order cycle detected "
+                    f"for {symbol} {side}; repeats={repeat_count}/{window}"
+                )
 
     def _regime_multiplier(self, symbol: str, notional_irt: float) -> float:
 
