@@ -57,6 +57,17 @@ def main():
         "valid override flow should remain allow in shadow mode",
     )
 
+    original_config = {
+        "max_notional": {"enabled": True, "limit": "1000.0"},
+        "wallet_cycle": {"enabled": True, "window": "10", "max_repeats": "99"},
+    }
+    original_config_snapshot = json.dumps(original_config, sort_keys=True)
+    build_policy_engine(original_config)
+    assert_true(
+        json.dumps(original_config, sort_keys=True) == original_config_snapshot,
+        "factory should not mutate input config",
+    )
+
     try:
         build_policy_engine({"max_notional": {"enabled": True}})
         raise AssertionError("should fail on missing 'limit'")
@@ -66,6 +77,12 @@ def main():
     try:
         build_policy_engine({"max_notional": {"limit": "not-a-number"}})
         raise AssertionError("should fail on invalid float")
+    except ValueError as exc:
+        assert_true("invalid parameter type" in str(exc), f"wrong error: {exc}")
+
+    try:
+        build_policy_engine({"wallet_cycle": {"window": "not-an-int", "max_repeats": 3}})
+        raise AssertionError("should fail on invalid int")
     except ValueError as exc:
         assert_true("invalid parameter type" in str(exc), f"wrong error: {exc}")
 
@@ -85,8 +102,20 @@ def main():
         "factory should skip disabled rules",
     )
 
+    disabled_missing_engine = build_policy_engine(
+        {
+            "wallet_cycle": {"enabled": False},
+            "operator_override": {"enabled": False},
+        }
+    )
+    assert_true(
+        disabled_missing_engine.describe_rules() == [],
+        "disabled rules should not require parameters",
+    )
+
     empty_engine = build_policy_engine({})
     assert_true(len(empty_engine.rules) == 0, "empty config should return empty engine")
+    assert_true(empty_engine.describe_rules() == [], "missing config should return empty engine")
     assert_true(empty_engine.describe_rules() == [], "empty config should describe no rules")
 
     try:
