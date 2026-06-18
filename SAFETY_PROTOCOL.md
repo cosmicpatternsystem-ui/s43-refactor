@@ -1,11 +1,11 @@
 
 ## [PHASE_11_LIVE] - 2026-06-12 14:12
 - **STATUS:** G11_ACTIVE_GUARDED_MODE
-- **GATE_G11_1:** CapitalKillSwitch Pending Implementation
+- **GATE_G11_1:** CapitalKillSwitch Implemented / Active
 - **LOGIC_ORIGIN:** Extracted from 11029.py (Legacy Restoration)
 - **AUTHORIZATION:** Documentation/scaffold review only; no autonomous runtime activation.
 
-- **GATE_G11_2:** WalletCycleGuard Pending Implementation
+- **GATE_G11_2:** WalletCycleGuard Implemented / Active
 - **ACTION:** No runtime monitoring or enforcement is active in s43.py.
 
 ## Audit Note
