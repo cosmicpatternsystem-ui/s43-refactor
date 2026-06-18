@@ -52,3 +52,34 @@ Existing G11 guards remain the source of truth until the policy engine passes is
 ## Next Gate
 
 Create a shadow-mode policy engine prototype that can evaluate synthetic contexts without touching live execution paths.
+
+## Checkpoint: Audit Payload Normalization
+
+Date: 2026-06-18
+Baseline tag: abstract-policy-engine-audit-payload-20260618
+Commit: ccec291
+
+### Status
+
+Policy Engine remains in shadow mode only. No runtime behavior in s43.py is changed.
+
+### Completed Capabilities
+
+- Max-notional shadow rule
+- Wallet-cycle shadow rule
+- Decision precedence: HALT > BLOCK > WARN > ALLOW
+- Default ALLOW decision when no policy rules are configured
+- Audit-normalized PolicyDecision payload via to_audit_payload()
+
+### Audit Payload Contract
+
+Each PolicyDecision can produce a normalized audit payload with:
+
+- policy_action
+- policy_reason
+- policy_rule_id
+- policy_details
+
+### Runtime Safety Rule
+
+G11 runtime guards remain the source of truth until the Policy Engine has independent shadow-mode evidence and explicit promotion approval.
