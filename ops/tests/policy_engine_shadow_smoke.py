@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import importlib.util
 
 
@@ -24,6 +25,31 @@ def assert_true(condition, message):
     if not condition:
         raise AssertionError(message)
 
+
+
+REQUIRED_TRACE_KEYS = {"decisions", "final_decision"}
+REQUIRED_DECISION_KEYS = {"policy_rule_id", "policy_action", "policy_reason", "policy_details"}
+
+
+def assert_serializable_trace(trace):
+    json.dumps(trace, sort_keys=True)
+
+    assert set(trace) == REQUIRED_TRACE_KEYS, "trace should expose stable top-level keys"
+    assert isinstance(trace["decisions"], list), "trace decisions should be a list"
+    assert isinstance(trace["final_decision"], dict), "trace final_decision should be a dict"
+
+    for decision_payload in trace["decisions"] + [trace["final_decision"]]:
+        assert set(decision_payload) == REQUIRED_DECISION_KEYS, (
+            "decision audit payload should expose stable keys"
+        )
+        assert isinstance(decision_payload["policy_rule_id"], str), (
+            "policy_rule_id should be a string"
+        )
+        assert isinstance(decision_payload["policy_action"], str), (
+            "policy_action should be a string"
+        )
+        assert isinstance(decision_payload["policy_reason"], str), "policy_reason should be a string"
+        assert isinstance(decision_payload["policy_details"], dict), "policy_details should be a dict"
 
 def main():
     safe_context = PolicyContext(
@@ -150,6 +176,7 @@ def main():
     )
 
     empty_trace = empty_engine.evaluate_with_trace(safe_context)
+    assert_serializable_trace(empty_trace)
     assert_true(empty_trace["decisions"] == [], "empty trace should have no rule decisions")
     assert_true(
         empty_trace["final_decision"]["policy_action"] == "ALLOW",
@@ -161,6 +188,7 @@ def main():
     )
 
     override_trace = override_engine.evaluate_with_trace(override_context)
+    assert_serializable_trace(override_trace)
     assert_true(
         override_trace["final_decision"]["policy_action"] == "ALLOW",
         "operator override trace should remain ALLOW",
@@ -172,7 +200,7 @@ def main():
 
     print(
         "OK: shadow policy engine evaluated max-notional, wallet-cycle, precedence, "
-        "default decisions, audit payload, operator override, and structured trace"
+        "default decisions, audit payload, operator override, structured trace, and trace serialization contract"
     )
 
 
