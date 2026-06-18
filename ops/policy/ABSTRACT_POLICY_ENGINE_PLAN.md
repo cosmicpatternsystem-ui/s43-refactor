@@ -83,3 +83,38 @@ Each PolicyDecision can produce a normalized audit payload with:
 ### Runtime Safety Rule
 
 G11 runtime guards remain the source of truth until the Policy Engine has independent shadow-mode evidence and explicit promotion approval.
+
+## Checkpoint: Operator Override Shadow Rule
+
+Date: 2026-06-18
+Baseline tag: abstract-policy-engine-operator-override-20260618
+Commit: 5a22647
+
+### Status
+
+Operator override support is introduced in shadow mode only. No runtime behavior in s43.py is changed.
+
+### Completed Capability
+
+- Added OperatorOverrideShadowRule
+- Evaluates operator-provided override metadata
+- Emits a shadow ALLOW decision when a valid override code is present
+- Preserves independent HALT decisions from other shadow rules
+- Does not yet change final_decision precedence semantics
+
+### Current Override Semantics
+
+Operator override is observable as a shadow decision, but it does not suppress or downgrade HALT decisions from capital, wallet-cycle, or other safety rules.
+
+### Runtime Safety Rule
+
+G11 runtime guards remain the source of truth. Operator override must not affect runtime behavior unless explicitly promoted after independent shadow-mode evidence and approval.
+
+### Open Design Question
+
+Decide whether a validated operator override should:
+
+- remain audit-only
+- downgrade HALT to WARN
+- bypass selected non-critical BLOCK decisions
+- never bypass capital or wallet-cycle HALT decisions
