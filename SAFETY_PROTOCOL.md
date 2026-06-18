@@ -1,6 +1,6 @@
 
 ## [PHASE_11_LIVE] - 2026-06-12 14:12
-- **STATUS:** READINESS_ONLY_NOT_ACTIVE
+- **STATUS:** G11_ACTIVE_GUARDED_MODE
 - **GATE_G11_1:** CapitalKillSwitch Pending Implementation
 - **LOGIC_ORIGIN:** Extracted from 11029.py (Legacy Restoration)
 - **AUTHORIZATION:** Documentation/scaffold review only; no autonomous runtime activation.
@@ -158,3 +158,21 @@ Performance must be measured, logged, reviewed, and validated before any expansi
 - **Mechanism:** Sliding window detection (Window: 10, Max Repeats: 3)
 - **Action:** Immediate `TradingHalt` on violation.
 - **Audit Key:** `G11_VIOLATION_WALLET_CYCLE`
+
+## Roadmap Update 2026-06-18: G11 Active Guarded Mode
+
+### Completed
+- `GATE_G11_1 CapitalKillSwitch` is implemented as a pre-submit notional limit.
+- `GATE_G11_2 WalletCycleGuard` is implemented with sliding-window repeat detection.
+- Violations emit audit events and raise `TradingHalt`.
+- `s43.py` passed `python3 -m py_compile`.
+- Changes were pushed to `origin/master`.
+
+### Current Operating Mode
+- System status is now `G11_ACTIVE_GUARDED_MODE`.
+- G11 guards are active inside the execution pre-submit path.
+- Documentation and code are now expected to remain synchronized before further roadmap expansion.
+
+### Next Decision Gate
+- Run a controlled runtime smoke test for repeated wallet-cycle signatures.
+- After successful smoke validation, proceed to Abstract Policy Engine activation and integration review.
