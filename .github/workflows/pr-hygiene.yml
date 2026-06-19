@@ -1,0 +1,24 @@
+name: PR Hygiene Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - automation/pr-hygiene-validation-gate
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  assert-pr-hygiene:
+    name: Assert PR hygiene contract
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Assert PR hygiene files and required phrases
+        shell: pwsh
+        run: ./tools/assert_pr_hygiene.ps1
