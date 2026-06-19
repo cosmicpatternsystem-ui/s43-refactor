@@ -9,6 +9,7 @@ POLICY_SMOKE_TESTS = [
     "ops/tests/policy_engine_factory_smoke.py",
     "ops/tests/policy_engine_shadow_smoke.py",
     "ops/tests/policy_decision_audit_contract_smoke.py",
+    "ops/tests/g11_capital_kill_switch_smoke.py",
 ]
 
 
