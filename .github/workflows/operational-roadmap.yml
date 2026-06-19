@@ -1,13 +1,14 @@
 name: Operational Roadmap Gate
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - master
+      - main
       - phase19-operational-roadmap
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   assert-operational-roadmap:
@@ -37,6 +38,12 @@ jobs:
 
       - name: Assert operational roadmap on pull request
         if: github.event_name == 'pull_request'
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1" -AllowDirty
+
+      - name: Assert operational roadmap on manual dispatch
+        if: github.event_name == 'workflow_dispatch'
         shell: powershell
         run: |
           powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1" -AllowDirty
