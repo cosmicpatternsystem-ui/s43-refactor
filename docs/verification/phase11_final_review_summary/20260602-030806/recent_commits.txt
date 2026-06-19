@@ -1,0 +1,10 @@
+9410d09 (HEAD -> planning/phase11-readiness-discovery, origin/planning/phase11-readiness-discovery) docs: add phase 11 readiness gate review entry
+ba38fa7 docs: add phase 11 evidence index handoff closure
+e1acbac docs: add phase 11 evidence index handoff closure
+63ef933 docs: add phase 11 reconciliation git context evidence
+b4433ab docs: record phase 11 roadmap reconciliation
+516ea35 docs: define phase 11 scope boundaries
+e1d7e9d (tag: phase11-readiness-discovery-baseline) docs: record phase 11 readiness discovery baseline
+d5e21bf (tag: phase10-merged-to-master, origin/master, master) merge: integrate phase 10 hardening closure
+748db70 (tag: phase10-hardening-closure, origin/hardening/phase10-post-freeze-local-edits, origin/HEAD, hardening/phase10-post-freeze-local-edits) docs: close phase 10 hardening verification
+936345c docs: add phase10 post-freeze local hardening handoff
