@@ -1,0 +1,3 @@
+M  tools/phase18_autonomous_commercial_ops.ps1
+?? AUDIT/PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_091840/
+EXIT_CODE=0

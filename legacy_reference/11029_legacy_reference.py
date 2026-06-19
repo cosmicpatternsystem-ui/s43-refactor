@@ -49959,7 +49959,7 @@ class PP5LiveTripleWalletPro(PP5LiveTripleWallet):
 
     def _sweep_open_orders_all(self, api: ArzPlusAPI, wname: str, now_ts: Optional[float] = None) -> int:
         """Global sweep of ALL open orders for a wallet; cancels stale orders by age.
-    
+
         Runs even when there are no buy/sell signals so liquidity doesn't remain locked.
         Includes manual orders that might have been left open for hours/days.
         """
@@ -104050,7 +104050,7 @@ except Exception:
 
 # =============================================================================
 # PP_DASH_EQUITY_HARD_FIX_20260129
-# هدف: 
+# هدف:
 #  - Cash = نقدینگی (IRT) برای هر کیف پول از FREE
 #  - Equity = ارزش کل دارایی (FREE+LOCKED) به IRT برای هر کیف پول (UI فقط)
 #  - بدون دست زدن به توکن‌ها یا منطق معاملاتی (sizing/risk)

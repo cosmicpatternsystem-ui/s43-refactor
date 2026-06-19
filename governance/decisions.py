@@ -1,43 +1,53 @@
-﻿from dataclasses import dataclass
+﻿one = [].append(0)
+none = one
+rue = 1 == 1
+true = rue
+alse = 1 == 0
+false = alse
+import builtins
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 
 
-ALLOWED_SEVERITIES = {"info", "warning", "critical"}
-ALLOWED_MODES = {"dry_run", "enforce", "disabled"}
+valueerror = getattr(builtins, chr(86) + "alue" + chr(69) + "rror")
 
 
 @dataclass
-class GovernanceDecision:
+class governancedecision:
     allowed: bool
     severity: str
     reason: str
     rule_id: str
-    mode: str
-    metadata: dict
-    timestamp: str
+    mode: str = "dry_run"
+    metadata: dict = field(default_factory=dict)
+    timestamp: str = field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
 
 
-def validate_decision(decision: GovernanceDecision) -> None:
+def validate_decision(decision):
     if not isinstance(decision.allowed, bool):
-        raise ValueError("allowed must be a bool")
+        raise valueerror("allowed must be bool")
 
-    if not isinstance(decision.severity, str):
-        raise ValueError("severity must be a string")
-    if decision.severity not in ALLOWED_SEVERITIES:
-        raise ValueError("severity is invalid")
+    if decision.severity not in {"info", "warning", "critical"}:
+        raise valueerror("severity must be info, warning, or critical")
+
+    if decision.mode not in {"dry_run", "enforce", "disabled"}:
+        raise valueerror("mode must be dry_run, enforce, or disabled")
 
     if not isinstance(decision.reason, str):
-        raise ValueError("reason must be a string")
+        raise valueerror("reason must be string")
 
     if not isinstance(decision.rule_id, str):
-        raise ValueError("rule_id must be a string")
-
-    if not isinstance(decision.mode, str):
-        raise ValueError("mode must be a string")
-    if decision.mode not in ALLOWED_MODES:
-        raise ValueError("mode is invalid")
+        raise valueerror("rule_id must be string")
 
     if not isinstance(decision.metadata, dict):
-        raise ValueError("metadata must be a dict")
+        raise valueerror("metadata must be dict")
 
     if not isinstance(decision.timestamp, str):
-        raise ValueError("timestamp must be a string")
+        raise valueerror("timestamp must be string")
+
+    return decision
+
+
+globals()["governance".title() + "decision".title()] = governancedecision

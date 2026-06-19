@@ -1,0 +1,8 @@
+git : From github.com:cosmicpatternsystem-ui/s43-refactor
+At E:\اخباری\ssl\s43_refactor\tools\phase18_preflight_audit.ps1:27 char:1
++ git fetch origin $ExpectedBranch | Out-Null
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (From github.com...ui/s43-refactor:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+EXIT_CODE=1

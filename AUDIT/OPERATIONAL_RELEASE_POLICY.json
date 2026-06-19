@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "phase": "19",
+  "status": "active",
+  "name": "Unified Operational Roadmap Policy",
+  "required_files": [
+    "AUDIT/OPERATIONAL_ROADMAP.md",
+    "AUDIT/PHASE19_OPERATIONAL_ROADMAP_DECISION.md",
+    "AUDIT/OPERATIONAL_RELEASE_POLICY.json",
+    "AUDIT/RELEASE_READINESS_MASTER.md",
+    "AUDIT/RELEASE_READINESS_POLICY.json",
+    "AUDIT/PHASE18_RELEASE_READINESS_DECISION.md",
+    "AUDIT/PHASE18_RELEASE_READINESS_SNAPSHOT.md",
+    "tools/assert_release_readiness.ps1",
+    "tools/assert_operational_roadmap.ps1",
+    ".github/workflows/release-readiness.yml",
+    ".github/workflows/operational-roadmap.yml"
+  ],
+  "required_roadmap_phrases": [
+    "Phase 19 Operational Contract",
+    "Release Readiness Gate Dependency",
+    "CI Enforcement",
+    "Branch Protection Required",
+    "Commercial Automation Backlog",
+    "Security Automation Backlog",
+    "Release Automation Backlog",
+    "Observability Backlog",
+    "Audit Evidence Continuity"
+  ],
+  "required_decision_phrases": [
+    "Release readiness enforcement: complete.",
+    "Unified operational roadmap: active.",
+    "Full commercial delivery automation: pending.",
+    "Branch protection enforcement: pending GitHub configuration."
+  ],
+  "ci_enforcement": {
+    "operational_roadmap_gate_required": true,
+    "release_readiness_gate_required": true,
+    "hardening_tests_required": true
+  },
+  "branch_protection": {
+    "required": true,
+    "status": "documented_pending_github_enforcement",
+    "target_branch": "master"
+  },
+  "commercial_automation": {
+    "status": "backlog",
+    "full_end_to_end_automation_claim_allowed": false
+  }
+}

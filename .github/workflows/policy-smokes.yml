@@ -1,0 +1,35 @@
+name: Policy Smoke Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  policy-smokes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile smoke test entrypoints
+        run: |
+          python3 -m py_compile ops/tests/g11_safety_gate_smoke.py
+          python3 -m py_compile ops/tests/run_policy_smokes.py
+
+      - name: Run G11 safety gate smoke
+        run: |
+          python3 ops/tests/g11_safety_gate_smoke.py
+
+      - name: Run policy smoke tests
+        run: |
+          python3 ops/tests/run_policy_smokes.py

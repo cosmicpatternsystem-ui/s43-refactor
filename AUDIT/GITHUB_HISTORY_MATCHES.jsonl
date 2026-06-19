@@ -1,0 +1,61 @@
+﻿
+{"timestamp":"2026-06-14T07:11:52.6202151+03:30","term":"PHASE 8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:52.7361484+03:30","term":"Phase 8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:52.8676974+03:30","term":"phase 8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.0057888+03:30","term":"PHASE8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.1284313+03:30","term":"phase8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.2481838+03:30","term":"phase_8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.4266959+03:30","term":"END PHASE 8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.5614213+03:30","term":"--- PHASE 8","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.6915064+03:30","term":"PHASE 16","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.8223409+03:30","term":"Phase 16","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:53.9464081+03:30","term":"phase 16","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.0765145+03:30","term":"PHASE16","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.2009043+03:30","term":"phase16","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.3310266+03:30","term":"PHASE 17","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.4733001+03:30","term":"Phase 17","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.6149318+03:30","term":"phase 17","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.7777327+03:30","term":"PHASE17","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:54.9049501+03:30","term":"phase17","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.0460070+03:30","term":"TRACEABILITY","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.1783595+03:30","term":"traceability","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.3125102+03:30","term":"AUDIT FOUNDATION","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.4349701+03:30","term":"audit foundation","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.6281610+03:30","term":"_omega_guard","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.8213084+03:30","term":"omega_guard","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:55.9534320+03:30","term":"CHANGE_CONTROL_LEDGER","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:56.0959669+03:30","term":"SAFETY_PROTOCOL","commit_match_count":0,"type":"pickaxe"}
+{"timestamp":"2026-06-14T07:11:56.5896725+03:30","term":"PHASE 8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:56.7278193+03:30","term":"Phase 8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:56.8593949+03:30","term":"phase 8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.0287914+03:30","term":"PHASE8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.2003254+03:30","term":"phase8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.4039425+03:30","term":"phase_8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.5545672+03:30","term":"END PHASE 8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.6988544+03:30","term":"--- PHASE 8","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:57.8796220+03:30","term":"PHASE 16","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.0445320+03:30","term":"Phase 16","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.1744826+03:30","term":"phase 16","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.3174470+03:30","term":"PHASE16","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.4808096+03:30","term":"phase16","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.6641678+03:30","term":"PHASE 17","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.8248992+03:30","term":"Phase 17","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:58.9692465+03:30","term":"phase 17","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.1504313+03:30","term":"PHASE17","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.3030605+03:30","term":"phase17","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.4581829+03:30","term":"TRACEABILITY","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.6086661+03:30","term":"traceability","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.7529920+03:30","term":"AUDIT FOUNDATION","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:11:59.8956404+03:30","term":"audit foundation","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:12:00.0483822+03:30","term":"_omega_guard","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:12:00.2011185+03:30","term":"omega_guard","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:12:00.3414707+03:30","term":"CHANGE_CONTROL_LEDGER","line_match_count":6,"type":"head_grep"}
+{"timestamp":"2026-06-14T07:12:00.4857319+03:30","term":"SAFETY_PROTOCOL","line_match_count":6,"type":"head_grep"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.1411016+03:30","file":"s43.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.3022236+03:30","file":"MY_S43_LATEST.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.4443937+03:30","file":"s43_instrumented_LATEST.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.5854855+03:30","file":"s43_latest_refactor.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.7174893+03:30","file":"11029.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:01.8799736+03:30","file":"11029_legacy_reference.py","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:02.0750559+03:30","file":"SAFETY_PROTOCOL.md","type":"file_history"}
+{"commit_count":0,"timestamp":"2026-06-14T07:12:02.2154332+03:30","file":"CHANGE_CONTROL_LEDGER.jsonl","type":"file_history"}

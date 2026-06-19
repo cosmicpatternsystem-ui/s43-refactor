@@ -1,0 +1,23 @@
+name: Release Readiness Gate
+
+on:
+  push:
+    branches:
+      - phase17-work-from-restore
+      - main
+      - master
+  pull_request:
+
+jobs:
+  release-readiness:
+    name: Assert release readiness contract
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assert release readiness
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_release_readiness.ps1" -AllowDirty

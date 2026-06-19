@@ -1,0 +1,35 @@
+﻿PHASE 16 / PHASE 17 DISCOVERY REPORT
+Generated UTC: 2026-06-13T20:40:22Z
+
+Target:
+- s43.py
+
+SHA256:
+- Expected: 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+- Actual  : 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+- Status  : MATCH
+
+Compile:
+- py_compile PASS
+
+Phase 16:
+- Present    : True
+- Start line : 6549
+- End line   : 6657
+- Start marker: # --- PHASE 16: GOVERNANCE ENFORCEMENT ---
+- End marker  : # --- END PHASE 16 ---
+
+Phase 17:
+- Present    : True
+- Start line : 21
+- End line   : 25
+- Start marker: # === PHASE 17 AUDIT FOUNDATION IMPORT ===
+- End marker  : # === END PHASE 17 AUDIT FOUNDATION IMPORT ===
+
+Decision:
+- Phase 15 remains closed.
+- Phase 16 is code-present if marker pair is present.
+- Phase 17 is code-present if marker pair is present.
+- No rollback to Phase 15.
+- Continue from current active baseline.
+- Behavioral verification remains recommended before further invasive patches.

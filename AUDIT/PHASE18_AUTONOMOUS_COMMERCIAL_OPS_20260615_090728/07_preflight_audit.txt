@@ -1,0 +1,10 @@
+From github.com:cosmicpatternsystem-ui/s43-refactor
+ * branch            phase17-work-from-restore -> FETCH_HEAD
+Working tree is not clean: ?? AUDIT/PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_090728/
+At E:\اخباری\ssl\s43_refactor\tools\phase18_preflight_audit.ps1:37 char:5
++     throw ("Working tree is not clean: " + ($Status -join " | "))
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Working tree is...0260615_090728/:String) [], RuntimeException
+    + FullyQualifiedErrorId : Working tree is not clean: ?? AUDIT/PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_090728/
+
+EXIT_CODE=1

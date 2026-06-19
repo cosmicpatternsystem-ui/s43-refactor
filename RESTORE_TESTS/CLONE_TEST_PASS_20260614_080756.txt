@@ -1,0 +1,11 @@
+﻿RESTORE_CLONE_TEST=PASS
+Generated: 2026-06-14T08:08:10.3057595+03:30
+Remote: git@github.com:cosmicpatternsystem-ui/s43-refactor.git
+Branch: phase16-core-governance-integration
+Clone HEAD: 36eaf383e7a8650c3c1ebdf69eca9175ce35ac70
+Pack HEAD: 36eaf383e7a8650c3c1ebdf69eca9175ce35ac70
+Canonical file: s43.py
+SHA256: 3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C
+Line count: 29856
+Baseline tag: recovery-baseline-20260614
+Temp clone path: C:\Users\USer\AppData\Local\Temp\s43_restore_test_20260614_080756\repo

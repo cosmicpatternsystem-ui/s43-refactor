@@ -1,0 +1,13 @@
+{
+    "generated_at":  "2026-06-14T08:04:05.8882685+03:30",
+    "repo_path":  "E:\\اخباری\\ssl\\s43_refactor",
+    "branch":  "phase16-core-governance-integration",
+    "remote":  "git@github.com:cosmicpatternsystem-ui/s43-refactor.git",
+    "head_before":  "e6877dd55032bb19464b5a4081a4ceb1a08e5453",
+    "canonical_file":  "s43.py",
+    "sha256":  "3DDFCF94CCC1A641AC98ADD90A4338D7138BED681AE0894C7E91E6941A8BEB4C",
+    "line_count":  29856,
+    "baseline_tag_base":  "recovery-baseline-20260614",
+    "verified_tag_base":  "recovery-baseline-verified-20260614",
+    "audit_reports_path":  "E:\\اخباری\\ssl\\SAFE_GITHUB_TRACEABILITY_AUDIT_20260614_071140\\reports"
+}
