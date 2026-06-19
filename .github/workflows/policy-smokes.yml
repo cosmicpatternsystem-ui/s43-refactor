@@ -14,11 +14,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify policy files exist
-        run: |
-          test -f S43_ROADMAP_CHANGE_CONTROL_POLICY.md
-          test -f S43_ROADMAP_DECISION_LOG.md
-
-      - name: Verify roadmap files exist
-        run: |
-          test -f ROADMAP_vNEXT.md || test -f ROADMAP_CANONICAL.md
+      - name: Run policy smoke checks
+        run: bash run_safe.sh policy
