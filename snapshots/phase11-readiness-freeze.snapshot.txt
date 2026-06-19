@@ -1,4 +1,4 @@
-﻿branch=phase11-readiness
+branch=phase11-readiness
 commit=454aeded646e9b26e5aa85493c5ffc22de733dff
 tag=phase11-readiness-freeze
 date=2026-06-12 18:36:31 +03:30

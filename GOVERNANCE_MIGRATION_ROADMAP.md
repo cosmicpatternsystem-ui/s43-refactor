@@ -105,9 +105,9 @@ Recommended controls:
 
 ### G11.1 CapitalKillSwitch
 
-Status: candidate for review
-Source: 11029.py
-Target: s43_governance.py
+Status: candidate for review  
+Source: 11029.py  
+Target: s43_governance.py  
 Default mode: disabled or dry-run only
 
 Purpose:
@@ -130,9 +130,9 @@ Required before activation:
 
 ### G11.2 WalletCycleGuard
 
-Status: candidate for review
-Source: 11029.py
-Target: s43_governance.py
+Status: candidate for review  
+Source: 11029.py  
+Target: s43_governance.py  
 Default mode: disabled or dry-run only
 
 Purpose:
@@ -154,9 +154,9 @@ Required before activation:
 
 ### G11.3 Circuit Breaker And Temporary Pause
 
-Status: candidate for review
-Source: 11029.py and current runtime behavior
-Target: s43_governance.py plus controlled hook
+Status: candidate for review  
+Source: 11029.py and current runtime behavior  
+Target: s43_governance.py plus controlled hook  
 Default mode: disabled or dry-run only
 
 Purpose:
@@ -176,9 +176,9 @@ Required before activation:
 
 ### G11.4 Risk And Exposure Sentinel
 
-Status: candidate for review
-Source: 11029.py
-Target: extracted module or s43_governance.py
+Status: candidate for review  
+Source: 11029.py  
+Target: extracted module or s43_governance.py  
 Default mode: dry-run only
 
 Purpose:
@@ -198,9 +198,9 @@ Required before activation:
 
 ### G11.5 Anomaly And Flux Monitor
 
-Status: candidate for review
-Source: 11029.py
-Target: extracted module or s43_governance.py
+Status: candidate for review  
+Source: 11029.py  
+Target: extracted module or s43_governance.py  
 Default mode: dry-run only
 
 Purpose:
@@ -220,9 +220,9 @@ Required before activation:
 
 ### G11.6 Recovery, Fallback, And Quarantine Controls
 
-Status: candidate for review
-Source: 11029.py and current fallback behavior
-Target: controlled governance module
+Status: candidate for review  
+Source: 11029.py and current fallback behavior  
+Target: controlled governance module  
 Default mode: disabled or dry-run only
 
 Purpose:
