@@ -1,0 +1,49 @@
+name: Automation request
+description: Request a CI, governance, or repository automation improvement
+title: "automation: "
+labels:
+  - automation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for CI, workflow, governance, or repository automation improvements.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What should be automated or improved?
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What files, workflows, or checks are involved?
+    validations:
+      required: true
+
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety considerations
+      description: Could this block merges, alter branch protection, or affect required checks?
+      placeholder: |
+        - Does not modify required checks.
+        - Does not change protected branch settings.
+        - Runs as non-required signal only.
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan
+      description: How should this be tested?
+      placeholder: |
+        - Create branch
+        - Open PR
+        - Verify existing required checks
+        - Confirm new automation behavior

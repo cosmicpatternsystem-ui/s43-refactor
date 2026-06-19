@@ -1,0 +1,5 @@
+# Repository ownership defaults.
+# This file documents review ownership but does not by itself make reviews required
+# unless GitHub branch/ruleset settings enforce code owner reviews.
+
+* @cosmicpatternsystem-ui
