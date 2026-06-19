@@ -14,14 +14,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Assert required release files exist
-        run: |
-          test -f S43_ROADMAP_CHANGE_CONTROL_POLICY.md
-          test -f S43_ROADMAP_DECISION_LOG.md
-          test -f run_hardening_tests.py
-
-      - name: Assert required automation workflow files exist
-        run: |
-          test -f .github/workflows/hardening-tests.yml
-          test -f .github/workflows/policy-smokes.yml
-          test -f .github/workflows/release-readiness.yml
+      - name: Assert release readiness contract
+        run: bash run_safe.sh release

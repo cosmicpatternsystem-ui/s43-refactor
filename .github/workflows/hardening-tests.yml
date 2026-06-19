@@ -20,4 +20,4 @@ jobs:
           python-version: "3.11"
 
       - name: Run hardening tests
-        run: python run_hardening_tests.py
+        run: bash run_safe.sh hardening
