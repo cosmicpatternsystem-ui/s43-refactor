@@ -1,0 +1,24 @@
+﻿*** SAFE REVIEW PATCH TEMPLATE ***
+هدف:
+- حفظ legacy log
+- افزودن JSONL sink
+- بدون دستکاری trading logic
+
+نقاط هدف شناساییشده:
+1) logging setup
+2) legacy action lines
+3) direct append sink
+4) runtime file handler
+
+پیشنهاد فنی:
+- افزودن import های json/threading/datetime
+- افزودن _emit_governance_audit_jsonl(event)
+- mirror کردن action lines به JSONL
+- mirror کردن legacy append line در صورت داشتن ACTION:
+
+نمونه event:
+{"ts":"...","schema":"governance.audit.v1","action":"SAFE_MODE","message":"ACTION: SAFE_MODE | ..."}
+
+ENV:
+- PP181_LOG_PATH
+- GOVERNANCE_AUDIT_JSONL_PATH=governance_audit.jsonl

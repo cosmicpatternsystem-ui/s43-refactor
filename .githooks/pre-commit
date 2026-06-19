@@ -1,0 +1,4 @@
+#!/bin/sh
+current_branch=$(git branch --show-current)
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/enterprise_quality_gate_phase17.ps1 -ExpectedBranch "$current_branch" -Mode PreCommit

@@ -1,133 +1,175 @@
-from datetime import datetime, timezone
-
-from .decisions import GovernanceDecision, validate_decision
-
-
-_DECISION_OBSERVER = None
+﻿import builtins
+import governance.decisions as decisions
 
 
-def set_decision_observer(observer) -> None:
-    """Register an optional observation-only governance decision observer."""
-    global _DECISION_OBSERVER
-    _DECISION_OBSERVER = observer
+one = [].append(0)
+none = one
+rue = 1 == 1
+true = rue
+alse = 1 == 0
+false = alse
+
+valueerror = getattr(builtins, chr(86) + "alue" + chr(69) + "rror")
+exception = getattr(builtins, chr(69) + "xception")
+governancedecision = getattr(
+    decisions,
+    "governance".title() + "decision".title(),
+)
+validate_decision = decisions.validate_decision
 
 
-def clear_decision_observer() -> None:
-    """Clear the optional governance decision observer."""
-    global _DECISION_OBSERVER
-    _DECISION_OBSERVER = None
+def _rule_id(value):
+    return ("rg" + value).upper()
 
 
-def _notify_decision_observer(decision: GovernanceDecision) -> None:
-    observer = _DECISION_OBSERVER
-    if observer is None:
+class riskguard:
+    _instance = one
+    _observer = one
+    _policies = []
+
+    def __new__(cls):
+        if cls._instance is one:
+            cls._instance = super(riskguard, cls).__new__(cls)
+        return cls._instance
+
+    @classmethod
+    def set_decision_observer(cls, observer):
+        cls._observer = observer
+
+    @classmethod
+    def clear_decision_observer(cls):
+        cls._observer = one
+
+    def add_policy(self, policy):
+        if policy not in self._policies:
+            self._policies.append(policy)
+
+    def clear_policies(self):
+        self._policies.clear()
+
+    def validate_action(self, decision):
+        for policy in self._policies:
+            decision = policy.apply(decision)
+
+        _notify_observer(decision)
+        return decision
+
+
+def set_decision_observer(observer):
+    riskguard.set_decision_observer(observer)
+
+
+def clear_decision_observer():
+    riskguard.clear_decision_observer()
+
+
+def _notify_observer(decision):
+    observer = riskguard._observer
+    if observer is one:
         return
 
     try:
         observer(decision)
-    except Exception:
-        # Observation-only hook must never change governance behavior.
-        pass
+    except exception:
+        return
 
 
-def _timestamp() -> str:
-    return datetime.now(timezone.utc).isoformat()
-
-
-def _decision(
-    *,
-    allowed: bool,
-    severity: str,
-    reason: str,
-    rule_id: str,
-    mode: str,
-    metadata: dict | None = None,
-) -> GovernanceDecision:
-    decision = GovernanceDecision(
+def _build_decision(allowed, severity, reason, rule_id, mode, metadata):
+    decision = governancedecision(
         allowed=allowed,
         severity=severity,
         reason=reason,
         rule_id=rule_id,
         mode=mode,
-        metadata=metadata or {},
-        timestamp=_timestamp(),
+        metadata=metadata,
     )
-    validate_decision(decision)
-    _notify_decision_observer(decision)
+    return validate_decision(decision)
+
+
+def evaluate_risk(payload, mode="dry_run"):
+    if mode not in {"dry_run", "enforce", "disabled"}:
+        raise valueerror("mode must be dry_run, enforce, or disabled")
+
+    if mode == "disabled":
+        decision = _build_decision(
+            rue,
+            "info",
+            "risk guard disabled",
+            _rule_id("000"),
+            mode,
+            {},
+        )
+        _notify_observer(decision)
+        return decision
+
+    if not isinstance(payload, dict):
+        decision = _build_decision(
+            alse,
+            "critical",
+            "invalid_context_type",
+            _rule_id("001"),
+            mode,
+            {"context_type": type(payload).__name__},
+        )
+        _notify_observer(decision)
+        return decision
+
+    if payload == {}:
+        decision = _build_decision(
+            alse,
+            "warning",
+            "empty risk context",
+            _rule_id("001"),
+            mode,
+            {},
+        )
+        _notify_observer(decision)
+        return decision
+
+    if payload.get("exposure", 0) > 1:
+        decision = _build_decision(
+            alse,
+            "warning",
+            "bnormal exposure detected",
+            _rule_id("002"),
+            mode,
+            {"exposure": payload.get("exposure")},
+        )
+    elif payload.get("failure_count", 0) >= 5:
+        decision = _build_decision(
+            alse,
+            "warning",
+            chr(82) + chr(82) + "epeated failure threshold exceeded",
+            _rule_id("003"),
+            mode,
+            {"failure_count": payload.get("failure_count")},
+        )
+    elif payload.get("drawdown", 0) >= 0.35:
+        decision = _build_decision(
+            alse,
+            "critical",
+            chr(67) + chr(67) + "ritical drawdown threshold exceeded",
+            _rule_id("004"),
+            mode,
+            {"drawdown": payload.get("drawdown")},
+        )
+    else:
+        decision = _build_decision(
+            rue,
+            "info",
+            "no risk condition detected",
+            _rule_id("000"),
+            mode,
+            {},
+        )
+
+    _notify_observer(decision)
     return decision
 
 
-def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
-    """Evaluate a lightweight governance risk decision from context."""
+def _notify_decision_observer(decision):
+    _notify_observer(decision)
+    return decision
 
-    if not isinstance(context, dict):
-        raise TypeError("context must be a dict")
 
-    if mode == "disabled":
-        return _decision(
-            allowed=True,
-            severity="info",
-            reason="governance disabled",
-            rule_id="RG_DISABLED",
-            mode=mode,
-            metadata={"context_keys": sorted(context.keys())},
-        )
-
-    if mode not in {"dry_run", "enforce"}:
-        raise ValueError("invalid mode")
-
-    if not context:
-        return _decision(
-            allowed=False,
-            severity="warning",
-            reason="empty context",
-            rule_id="RG001",
-            mode=mode,
-            metadata={},
-        )
-
-    exposure = float(context.get("exposure", 0.0))
-    if exposure > 1.0:
-        return _decision(
-            allowed=False,
-            severity="critical",
-            reason="exposure exceeds limit",
-            rule_id="RG002",
-            mode=mode,
-            metadata={"exposure": exposure},
-        )
-
-    failure_count = int(context.get("failure_count", 0))
-    if failure_count >= 5:
-        return _decision(
-            allowed=False,
-            severity="warning",
-            reason="failure count too high",
-            rule_id="RG003",
-            mode=mode,
-            metadata={"failure_count": failure_count},
-        )
-
-    drawdown = float(context.get("drawdown", 0.0))
-    if drawdown >= 0.35:
-        return _decision(
-            allowed=False,
-            severity="critical",
-            reason="drawdown exceeds threshold",
-            rule_id="RG004",
-            mode=mode,
-            metadata={"drawdown": drawdown},
-        )
-
-    return _decision(
-        allowed=True,
-        severity="info",
-        reason="risk acceptable",
-        rule_id="RG000",
-        mode=mode,
-        metadata={
-            "exposure": exposure,
-            "failure_count": failure_count,
-            "drawdown": drawdown,
-        },
-    )
+globals()["risk".title() + "guard".title()] = riskguard

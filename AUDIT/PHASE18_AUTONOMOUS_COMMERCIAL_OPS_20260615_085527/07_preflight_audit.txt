@@ -1,0 +1,8 @@
+powershell.exe : From github.com:cosmicpatternsystem-ui/s43-refactor
+At E:\اخباری\ssl\s43_refactor\tools\phase18_autonomous_commercial_ops.ps1:44 char:42
++ ... udit.txt" { & powershell -NoProfile -ExecutionPolicy Bypass -File .\t ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (From github.com...ui/s43-refactor:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+EXIT_CODE=1

@@ -691,7 +691,7 @@ AI TO ORDER PROXIMITY TRACE
 00545:                 s = "🛑 " + s
 00546:             fixed.append(s)
 00547:         return fixed if fixed else ["(no events)"]
-00548: 
+00548:
 00549: def _ensure_dir(path):
 00550:     """Ensure parent directory for a file path exists."""
 00551:     try:
@@ -864,7 +864,7 @@ AI TO ORDER PROXIMITY TRACE
 03193:                 _termux_mark_order_activity()
 03194:         except Exception:
 03195:             pass
-03196: 
+03196:
 03197:         q = str(getattr(self.cfg, "quote", "") or "").upper().strip()
 03198:         try:
 03199:             sym = _canon_pair(symbol, default_quote=q)
@@ -873,7 +873,7 @@ AI TO ORDER PROXIMITY TRACE
 03202:                 sym = _canon_symbol(symbol)
 03203:             except Exception:
 03204:                 sym = str(symbol or "")
-03205: 
+03205:
 03206:         market_raw = market
 03207:         market_norm = str(market or "spot").lower().strip()
 03208:         market_aliases = {
@@ -899,7 +899,7 @@ AI TO ORDER PROXIMITY TRACE
 03218:         if market_norm not in ("spot", "futures"):
 03219:             self._logger.error("Unsupported market type requested: %s -> %s", market_raw, market_norm)
 03220:             raise ValueError(f"Unsupported market type: {market_raw}")
-03221: 
+03221:
 03222:         fill_norm = str(fill_type or "limit").lower().strip()
 03223:         fill_aliases = {
 03224:             "limit": "limit",
@@ -911,10 +911,10 @@ AI TO ORDER PROXIMITY TRACE
 03230:         if fill_norm not in ("limit", "market"):
 03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
 03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
-03233: 
+03233:
 03234:         if fill_norm == "limit" and price is None:
 03235:             raise ValueError("Price must be specified for LIMIT orders.")
-03236: 
+03236:
 03237:         payload: Dict[str, Any] = {
 03238:             "symbol": sym,
 
@@ -930,10 +930,10 @@ AI TO ORDER PROXIMITY TRACE
 03230:         if fill_norm not in ("limit", "market"):
 03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
 03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
-03233: 
+03233:
 03234:         if fill_norm == "limit" and price is None:
 03235:             raise ValueError("Price must be specified for LIMIT orders.")
-03236: 
+03236:
 03237:         payload: Dict[str, Any] = {
 03238:             "symbol": sym,
 03239:             "amount": self._as_payload_number(amount),
@@ -941,12 +941,12 @@ AI TO ORDER PROXIMITY TRACE
 03241:             "fill_type": fill_norm,
 03242:             "market": market_norm,
 03243:         }
-03244: 
+03244:
 03245:         if price is not None:
 03246:             payload["price"] = self._as_payload_number(price)
 03247:         else:
 03248:             payload["price"] = None
-03249: 
+03249:
 03250:         if cid:
 
 --- AI/ORDER PROXIMITY AROUND LINE 3235 ---
@@ -958,10 +958,10 @@ AI TO ORDER PROXIMITY TRACE
 03230:         if fill_norm not in ("limit", "market"):
 03231:             self._logger.error("Unsupported fill_type requested: %s -> %s", fill_type, fill_norm)
 03232:             raise ValueError(f"Unsupported fill_type: {fill_type}")
-03233: 
+03233:
 03234:         if fill_norm == "limit" and price is None:
 03235:             raise ValueError("Price must be specified for LIMIT orders.")
-03236: 
+03236:
 03237:         payload: Dict[str, Any] = {
 03238:             "symbol": sym,
 03239:             "amount": self._as_payload_number(amount),
@@ -969,26 +969,26 @@ AI TO ORDER PROXIMITY TRACE
 03241:             "fill_type": fill_norm,
 03242:             "market": market_norm,
 03243:         }
-03244: 
+03244:
 03245:         if price is not None:
 03246:             payload["price"] = self._as_payload_number(price)
 03247:         else:
 03248:             payload["price"] = None
-03249: 
+03249:
 03250:         if cid:
 03251:             payload["client_id"] = str(cid)
-03252: 
+03252:
 03253:         extra: Dict[str, Any] = dict(kwargs or {})
 
 --- AI/ORDER PROXIMITY AROUND LINE 3278 ---
 03268:                 self._logger.warning("reduce_only=True ignored for spot order.")
 03269:             extra.pop("reduce_only", None)
-03270: 
+03270:
 03271:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
 03272:             extra.pop(protected_key, None)
-03273: 
+03273:
 03274:         payload.update(extra)
-03275: 
+03275:
 03276:         try:
 03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
 03278:                 ok, rtt_ms, code = await self.conn_check()
@@ -1003,7 +1003,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1014,9 +1014,9 @@ AI TO ORDER PROXIMITY TRACE
 --- AI/ORDER PROXIMITY AROUND LINE 3281 ---
 03271:         for protected_key in ("symbol", "amount", "price", "side", "fill_type", "market", "client_id"):
 03272:             extra.pop(protected_key, None)
-03273: 
+03273:
 03274:         payload.update(extra)
-03275: 
+03275:
 03276:         try:
 03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
 03278:                 ok, rtt_ms, code = await self.conn_check()
@@ -1031,7 +1031,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1039,13 +1039,13 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 
 --- AI/ORDER PROXIMITY AROUND LINE 3283 ---
-03273: 
+03273:
 03274:         payload.update(extra)
-03275: 
+03275:
 03276:         try:
 03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
 03278:                 ok, rtt_ms, code = await self.conn_check()
@@ -1060,7 +1060,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1068,14 +1068,14 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
 
 --- AI/ORDER PROXIMITY AROUND LINE 3284 ---
 03274:         payload.update(extra)
-03275: 
+03275:
 03276:         try:
 03277:             if bool(_env_bool("CONN_CHECK_BEFORE_ORDER", True)):
 03278:                 ok, rtt_ms, code = await self.conn_check()
@@ -1090,7 +1090,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1098,7 +1098,7 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
@@ -1119,7 +1119,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1127,7 +1127,7 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
@@ -1147,7 +1147,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1155,7 +1155,7 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
@@ -1173,7 +1173,7 @@ AI TO ORDER PROXIMITY TRACE
 03287:         except Exception as e:
 03288:             pause = float(_env_float("CONN_CHECK_PAUSE_SEC", 4.0) or 4.0)
 03289:             raise TemporaryPause(f"NET_CONN_CHECK_ERR {type(e).__name__}", pause_sec=pause)
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1181,7 +1181,7 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
@@ -1198,7 +1198,7 @@ AI TO ORDER PROXIMITY TRACE
 03312:         reduce_only: Optional[bool] = None,
 
 --- AI/ORDER PROXIMITY AROUND LINE 3300 ---
-03290: 
+03290:
 03291:         last_exc: Optional[Exception] = None
 03292:         for ep in ("/market/orders/", "/market/orders"):
 03293:             try:
@@ -1206,7 +1206,7 @@ AI TO ORDER PROXIMITY TRACE
 03295:             except Exception as e:
 03296:                 last_exc = e
 03297:                 continue
-03298: 
+03298:
 03299:         if last_exc:
 03300:             raise last_exc
 03301:         return {}
@@ -1238,7 +1238,7 @@ AI TO ORDER PROXIMITY TRACE
 03316:         extra: Dict[str, Any] = dict(kwargs or {})
 03317:         if notional_irt is not None and "notional_irt" not in extra:
 03318:             extra["notional_irt"] = notional_irt
-03319: 
+03319:
 03320:         return await self.place_order(
 03321:             symbol=symbol,
 03322:             side=side,
@@ -1251,7 +1251,7 @@ AI TO ORDER PROXIMITY TRACE
 03329:             leverage=leverage,
 03330:             **extra,
 03331:         )
-03332: 
+03332:
 03333:     async def place_market(
 03334:         self,
 03335:         symbol: str,
@@ -1269,7 +1269,7 @@ AI TO ORDER PROXIMITY TRACE
 03346:         extra: Dict[str, Any] = dict(kwargs or {})
 03347:         if notional_irt is not None and "notional_irt" not in extra:
 03348:             extra["notional_irt"] = notional_irt
-03349: 
+03349:
 03350:         return await self.place_order(
 03351:             symbol=symbol,
 03352:             side=side,

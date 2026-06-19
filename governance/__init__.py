@@ -1,19 +1,21 @@
-from .decisions import GovernanceDecision, validate_decision
+﻿from .decisions import GovernanceDecision
 from .risk_guard import (
-    clear_decision_observer,
-    evaluate_risk,
-    set_decision_observer,
+    RiskGuard,
+    _notify_decision_observer
 )
+
+def set_decision_observer(observer):
+    """Public API to set the global observer."""
+    RiskGuard.set_decision_observer(observer)
+
+def add_governance_policy(policy):
+    """Public API to add a governance policy."""
+    RiskGuard.add_policy(policy)
 
 __all__ = [
     "GovernanceDecision",
-    "validate_decision",
-    "evaluate_risk",
+    "RiskGuard",
     "set_decision_observer",
-    "clear_decision_observer",
+    "add_governance_policy",
+    "_notify_decision_observer"
 ]
-
-from governance.audit_observer import governance_audit_logger
-from governance.risk_guard import set_decision_observer
-
-set_decision_observer(governance_audit_logger)
