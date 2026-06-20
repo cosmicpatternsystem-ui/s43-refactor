@@ -1,10 +1,10 @@
 # Current Living Roadmap
 
 Status: ACTIVE
-Roadmap Version: 2026-06-20.phase22.5
+Roadmap Version: 2026-06-20.phase22.6
 Source Of Truth: Repository files only
-Current Phase: 22.5
-Current Focus: Sanitized Deferred Files Manifest
+Current Phase: 22.6
+Current Focus: Deferred AI Artifacts CI Guard
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
@@ -15,7 +15,7 @@ This file is the mandatory living roadmap for autonomous repository work. It rep
 
 ## Current Authorized Scope
 
-Phase 22.5 authorizes only non-destructive, repository-local, sync-aware deferred file manifest work:
+Phase 22.6 authorizes only non-destructive, repository-local, sync-aware deferred artifact guard work:
 
 1. Maintain this living roadmap in markdown and JSON form.
 2. Verify roadmap files exist before autonomous cycles proceed.
@@ -26,6 +26,7 @@ Phase 22.5 authorizes only non-destructive, repository-local, sync-aware deferre
 7. Generate sanitized AI audit summaries under `AUDIT/` without committing raw `AI_AUDIT/` artifacts.
 8. Define approval requirements before deferred AI bridge or supervisor tools can be committed or executed.
 9. Maintain a commit-safe manifest of deferred files using sanitized metadata only.
+10. Enforce a tracked-file CI guard that fails if raw deferred AI artifacts or deferred AI tools are committed.
 
 ## Mandatory Guardrails
 
@@ -64,6 +65,9 @@ AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md
 AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json
 AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md
 AUDIT/PHASE22_DEFERRED_FILES_MANIFEST.md
+AUDIT/PHASE22_DEFERRED_AI_ARTIFACTS_CI_GUARD.md
+tools/ai/check_no_deferred_ai_artifacts.py
+.github/workflows/deferred-ai-artifacts-guard.yml
 ```
 
 ## Phase 22 Exit Criteria
@@ -81,10 +85,11 @@ Phase 22 is ready for review when:
 9. Sanitized summaries pass leak checks for local paths, raw prompts, raw responses, token metadata, API material, metadata URLs, and unsafe command examples.
 10. Deferred AI tool approval gate exists and defines network, secret, redaction, artifact-writing, and pre-commit approval requirements.
 11. Deferred files manifest exists and records only sanitized metadata: file identifier, disposition, reason category, approval gate, and commit policy.
+12. Deferred AI artifacts CI guard fails if forbidden deferred paths are tracked and passes when deferred files remain untracked.
 
 ## Next Action
 
-Review the deferred files manifest, then decide whether to harden bridge/supervisor tools or enforce sanitized evidence generation in automation.
+Review the deferred AI artifacts CI guard, then decide whether to harden bridge/supervisor tools or enforce sanitized evidence generation in automation.
 
 ## Phase 22.3 Status
 
@@ -92,6 +97,16 @@ Review the deferred files manifest, then decide whether to harden bridge/supervi
 - Generator path: `tools/ai/generate_sanitized_audit_evidence.py`.
 - Generated summaries: `AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md`, `AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json`.
 - Validation status: AST validation passed; generated summaries passed leak checks.
+- Sync status: `main...origin/main` is `0 0`.
+- Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
+
+## Phase 22.6 Status
+
+- Objective: Deferred AI Artifacts CI Guard.
+- Guard path: `tools/ai/check_no_deferred_ai_artifacts.py`.
+- Workflow path: `.github/workflows/deferred-ai-artifacts-guard.yml`.
+- Audit note: `AUDIT/PHASE22_DEFERRED_AI_ARTIFACTS_CI_GUARD.md`.
+- Validation target: guard inspects tracked files only using `git ls-files`.
 - Sync status: `main...origin/main` is `0 0`.
 - Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
 

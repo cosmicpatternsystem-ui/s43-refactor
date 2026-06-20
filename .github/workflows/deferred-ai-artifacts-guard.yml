@@ -1,0 +1,16 @@
+name: Deferred AI Artifacts Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  deferred-ai-artifacts-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Verify deferred AI artifacts are not tracked
+        run: python tools/ai/check_no_deferred_ai_artifacts.py
