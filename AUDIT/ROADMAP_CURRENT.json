@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "roadmap_version": "2026-06-20.phase22.3",
+  "roadmap_version": "2026-06-20.phase22.4",
   "source_of_truth": "repository_files_only",
-  "current_phase": "22.3",
-  "current_focus": "Sanitized AI Audit Evidence Generator",
+  "current_phase": "22.4",
+  "current_focus": "Deferred AI Tool Approval Gate",
   "status": "active",
   "authorized_scope": [
     "maintain_living_roadmap",
@@ -14,7 +14,10 @@
     "preserve_deferred_files",
     "generate_sanitized_ai_audit_evidence",
     "write_sanitized_summaries_under_audit",
-    "preserve_raw_ai_audit_as_untracked_deferred_evidence"
+    "preserve_raw_ai_audit_as_untracked_deferred_evidence",
+    "define_deferred_ai_tool_approval_gate",
+    "document_network_secret_redaction_artifact_write_approval_requirements",
+    "preserve_deferred_tools_until_approved"
   ],
   "blocked_actions": [
     "use_chat_memory_as_source_of_truth",
@@ -27,7 +30,10 @@
     "force_push",
     "execute_network_ai_bridge_without_approval_model",
     "commit_raw_provider_prompt_response_artifacts",
-    "create_pycache_during_validation"
+    "create_pycache_during_validation",
+    "commit_deferred_ai_tools_without_approval_gate",
+    "execute_deferred_ai_tools_without_network_approval",
+    "commit_unsanitized_ai_audit_outputs"
   ],
   "deferred_paths": [
     "AI_AUDIT/",
@@ -44,7 +50,8 @@
     "tools/ai/write_state_snapshot.py",
     "tools/ai/generate_sanitized_audit_evidence.py",
     "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md",
-    "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json"
+    "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json",
+    "AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md"
   ],
   "exit_criteria": [
     "roadmap_markdown_and_json_exist",
@@ -57,7 +64,10 @@
     "sanitized_generator_ast_validation_passed",
     "sanitized_summaries_pass_leak_checks",
     "main_origin_main_sync_0_0",
-    "deferred_files_preserved_untracked"
+    "deferred_files_preserved_untracked",
+    "deferred_ai_tool_approval_gate_documented",
+    "network_secret_redaction_artifact_write_requirements_defined",
+    "deferred_bridge_supervisor_tools_remain_untracked"
   ],
   "phase22_3_status": {
     "objective": "Sanitized AI Audit Evidence Generator",
@@ -70,5 +80,13 @@
     "sync_status_main_origin_main": "0 0",
     "deferred_files_status": "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved",
     "next_objective_suggestion": "approval gate for AI bridge/supervisor tools or sanitized evidence enforcement"
+  },
+  "phase22_4_status": {
+    "objective": "Deferred AI Tool Approval Gate",
+    "policy_path": "AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md",
+    "validation_target": "commit-safe documentation only; deferred bridge/supervisor tools remain untouched",
+    "sync_status_main_origin_main": "0 0",
+    "deferred_files_status": "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved",
+    "next_objective_suggestion": "harden bridge/supervisor tools or enforce sanitized evidence generation in automation"
   }
 }
