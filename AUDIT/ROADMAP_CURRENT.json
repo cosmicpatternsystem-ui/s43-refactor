@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "roadmap_version": "2026-06-20.phase22.5",
+  "roadmap_version": "2026-06-20.phase22.6",
   "source_of_truth": "repository_files_only",
-  "current_phase": "22.5",
-  "current_focus": "Sanitized Deferred Files Manifest",
+  "current_phase": "22.6",
+  "current_focus": "Deferred AI Artifacts CI Guard",
   "status": "active",
   "authorized_scope": [
     "maintain_living_roadmap",
@@ -20,7 +20,10 @@
     "preserve_deferred_tools_until_approved",
     "maintain_sanitized_deferred_files_manifest",
     "record_deferred_disposition_reason_gate_commit_policy",
-    "avoid_reading_raw_deferred_sensitive_contents"
+    "avoid_reading_raw_deferred_sensitive_contents",
+    "enforce_deferred_ai_artifacts_tracked_file_guard",
+    "validate_deferred_paths_with_git_ls_files_only",
+    "preserve_untracked_deferred_files_while_blocking_tracked_deferred_paths"
   ],
   "blocked_actions": [
     "use_chat_memory_as_source_of_truth",
@@ -39,7 +42,9 @@
     "commit_unsanitized_ai_audit_outputs",
     "commit_deferred_manifest_with_raw_file_contents",
     "stage_ai_audit_raw_artifacts",
-    "stage_deferred_bridge_supervisor_tools_without_approval"
+    "stage_deferred_bridge_supervisor_tools_without_approval",
+    "track_ai_audit_raw_artifacts",
+    "track_deferred_ai_bridge_supervisor_tools"
   ],
   "deferred_paths": [
     "AI_AUDIT/",
@@ -58,7 +63,10 @@
     "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md",
     "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json",
     "AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md",
-    "AUDIT/PHASE22_DEFERRED_FILES_MANIFEST.md"
+    "AUDIT/PHASE22_DEFERRED_FILES_MANIFEST.md",
+    "AUDIT/PHASE22_DEFERRED_AI_ARTIFACTS_CI_GUARD.md",
+    "tools/ai/check_no_deferred_ai_artifacts.py",
+    ".github/workflows/deferred-ai-artifacts-guard.yml"
   ],
   "exit_criteria": [
     "roadmap_markdown_and_json_exist",
@@ -77,7 +85,10 @@
     "deferred_bridge_supervisor_tools_remain_untracked",
     "deferred_files_manifest_documented",
     "manifest_contains_sanitized_metadata_only",
-    "raw_deferred_file_contents_not_read_or_committed"
+    "raw_deferred_file_contents_not_read_or_committed",
+    "deferred_ai_artifacts_ci_guard_documented",
+    "ci_guard_fails_on_tracked_forbidden_deferred_paths",
+    "ci_guard_passes_with_untracked_deferred_files"
   ],
   "phase22_3_status": {
     "objective": "Sanitized AI Audit Evidence Generator",
@@ -106,5 +117,14 @@
     "sync_status_main_origin_main": "0 0",
     "deferred_files_status": "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved",
     "next_objective_suggestion": "harden bridge/supervisor tools or enforce sanitized evidence generation in automation"
+  },
+  "phase22_6_status": {
+    "objective": "Deferred AI Artifacts CI Guard",
+    "guard_path": "tools/ai/check_no_deferred_ai_artifacts.py",
+    "workflow_path": ".github/workflows/deferred-ai-artifacts-guard.yml",
+    "audit_note": "AUDIT/PHASE22_DEFERRED_AI_ARTIFACTS_CI_GUARD.md",
+    "validation_target": "guard inspects tracked files only using git ls-files",
+    "sync_status_main_origin_main": "0 0",
+    "deferred_files_status": "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved"
   }
 }
