@@ -1,10 +1,10 @@
 # Current Living Roadmap
 
 Status: ACTIVE
-Roadmap Version: 2026-06-20.phase22
+Roadmap Version: 2026-06-20.phase22.3
 Source Of Truth: Repository files only
-Current Phase: 22
-Current Focus: Persistent autonomous control plane and mandatory living roadmap
+Current Phase: 22.3
+Current Focus: Sanitized AI Audit Evidence Generator
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
@@ -15,7 +15,7 @@ This file is the mandatory living roadmap for autonomous repository work. It rep
 
 ## Current Authorized Scope
 
-Phase 22 authorizes only non-destructive, repository-local, sync-aware control-plane work:
+Phase 22.3 authorizes only non-destructive, repository-local, sync-aware sanitized evidence work:
 
 1. Maintain this living roadmap in markdown and JSON form.
 2. Verify roadmap files exist before autonomous cycles proceed.
@@ -23,6 +23,7 @@ Phase 22 authorizes only non-destructive, repository-local, sync-aware control-p
 4. Append timestamped roadmap event JSON files under `AI_AUDIT/roadmap_events/` when explicitly invoked.
 5. Validate Python syntax with no-artifact AST parsing.
 6. Preserve deferred raw AI outputs and deferred bridge/supervisor scripts.
+7. Generate sanitized AI audit summaries under `AUDIT/` without committing raw `AI_AUDIT/` artifacts.
 
 ## Mandatory Guardrails
 
@@ -56,6 +57,9 @@ AUDIT/PHASE22_PERSISTENT_AUTONOMOUS_CONTROL_PLANE.md
 tools/ai/state_journal.py
 tools/ai/roadmap_guard.py
 tools/ai/write_state_snapshot.py
+tools/ai/generate_sanitized_audit_evidence.py
+AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md
+AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json
 ```
 
 ## Phase 22 Exit Criteria
@@ -69,7 +73,18 @@ Phase 22 is ready for review when:
 5. AST validation passes without cache artifacts.
 6. Deferred files remain preserved and untracked unless separately approved.
 7. `main` remains synchronized with `origin/main` unless an approved branch has been created.
+8. Sanitized AI audit evidence generator exists and emits only commit-safe summary fields.
+9. Sanitized summaries pass leak checks for local paths, raw prompts, raw responses, token metadata, API material, metadata URLs, and unsafe command examples.
 
 ## Next Action
 
-Review Phase 22 control-plane artifacts, then request explicit approval before staging or committing candidate files.
+Request approval gate for AI bridge/supervisor tools or sanitized evidence enforcement after Phase 22.3 candidate review.
+
+## Phase 22.3 Status
+
+- Objective: Sanitized AI Audit Evidence Generator.
+- Generator path: `tools/ai/generate_sanitized_audit_evidence.py`.
+- Generated summaries: `AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md`, `AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json`.
+- Validation status: AST validation passed; generated summaries passed leak checks.
+- Sync status: `main...origin/main` is `0 0`.
+- Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.

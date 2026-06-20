@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "roadmap_version": "2026-06-20.phase22",
+  "roadmap_version": "2026-06-20.phase22.3",
   "source_of_truth": "repository_files_only",
-  "current_phase": 22,
-  "current_focus": "Persistent autonomous control plane and mandatory living roadmap",
+  "current_phase": "22.3",
+  "current_focus": "Sanitized AI Audit Evidence Generator",
   "status": "active",
   "authorized_scope": [
     "maintain_living_roadmap",
@@ -11,7 +11,10 @@
     "write_local_state_snapshot_when_invoked",
     "append_roadmap_event_when_invoked",
     "ast_parse_validation_without_cache_artifacts",
-    "preserve_deferred_files"
+    "preserve_deferred_files",
+    "generate_sanitized_ai_audit_evidence",
+    "write_sanitized_summaries_under_audit",
+    "preserve_raw_ai_audit_as_untracked_deferred_evidence"
   ],
   "blocked_actions": [
     "use_chat_memory_as_source_of_truth",
@@ -38,7 +41,10 @@
     "AUDIT/PHASE22_PERSISTENT_AUTONOMOUS_CONTROL_PLANE.md",
     "tools/ai/state_journal.py",
     "tools/ai/roadmap_guard.py",
-    "tools/ai/write_state_snapshot.py"
+    "tools/ai/write_state_snapshot.py",
+    "tools/ai/generate_sanitized_audit_evidence.py",
+    "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md",
+    "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json"
   ],
   "exit_criteria": [
     "roadmap_markdown_and_json_exist",
@@ -47,6 +53,22 @@
     "state_journal_appends_timestamped_event_when_invoked",
     "ast_validation_passes_without_cache_artifacts",
     "deferred_files_preserved",
-    "main_synced_with_origin_main_or_approved_branch_active"
-  ]
+    "main_synced_with_origin_main_or_approved_branch_active",
+    "sanitized_generator_ast_validation_passed",
+    "sanitized_summaries_pass_leak_checks",
+    "main_origin_main_sync_0_0",
+    "deferred_files_preserved_untracked"
+  ],
+  "phase22_3_status": {
+    "objective": "Sanitized AI Audit Evidence Generator",
+    "generator_path": "tools/ai/generate_sanitized_audit_evidence.py",
+    "generated_summaries": [
+      "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.md",
+      "AUDIT/AI_AUDIT_SANITIZED_SUMMARY.json"
+    ],
+    "validation_status": "AST validation passed; generated summaries passed leak checks",
+    "sync_status_main_origin_main": "0 0",
+    "deferred_files_status": "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved",
+    "next_objective_suggestion": "approval gate for AI bridge/supervisor tools or sanitized evidence enforcement"
+  }
 }
