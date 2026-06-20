@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "roadmap_version": "2026-06-20.phase22",
+  "source_of_truth": "repository_files_only",
+  "current_phase": 22,
+  "current_focus": "Persistent autonomous control plane and mandatory living roadmap",
+  "status": "active",
+  "authorized_scope": [
+    "maintain_living_roadmap",
+    "verify_roadmap_files",
+    "write_local_state_snapshot_when_invoked",
+    "append_roadmap_event_when_invoked",
+    "ast_parse_validation_without_cache_artifacts",
+    "preserve_deferred_files"
+  ],
+  "blocked_actions": [
+    "use_chat_memory_as_source_of_truth",
+    "stage_without_approval",
+    "commit_without_approval",
+    "push_without_approval",
+    "git_clean",
+    "git_reset_without_explicit_recovery_approval",
+    "branch_deletion",
+    "force_push",
+    "execute_network_ai_bridge_without_approval_model",
+    "commit_raw_provider_prompt_response_artifacts",
+    "create_pycache_during_validation"
+  ],
+  "deferred_paths": [
+    "AI_AUDIT/",
+    "tools/ai/bridge_claude.py",
+    "tools/ai/bridge_claude_repo.py",
+    "tools/ai/s43_supervisor.py"
+  ],
+  "required_artifacts": [
+    "AUDIT/ROADMAP_CURRENT.md",
+    "AUDIT/ROADMAP_CURRENT.json",
+    "AUDIT/PHASE22_PERSISTENT_AUTONOMOUS_CONTROL_PLANE.md",
+    "tools/ai/state_journal.py",
+    "tools/ai/roadmap_guard.py",
+    "tools/ai/write_state_snapshot.py"
+  ],
+  "exit_criteria": [
+    "roadmap_markdown_and_json_exist",
+    "roadmap_guard_fails_when_roadmap_missing",
+    "state_snapshot_writer_writes_current_repo_state_when_invoked",
+    "state_journal_appends_timestamped_event_when_invoked",
+    "ast_validation_passes_without_cache_artifacts",
+    "deferred_files_preserved",
+    "main_synced_with_origin_main_or_approved_branch_active"
+  ]
+}
