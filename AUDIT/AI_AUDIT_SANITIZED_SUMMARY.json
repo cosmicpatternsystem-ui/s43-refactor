@@ -1,0 +1,49 @@
+{
+  "decision": "SAFE_TO_COMMIT",
+  "decision_reason": "Generated summary includes only categories, normalized timestamps, sync status, booleans, and classification metadata.",
+  "generated_at_utc": "2026-06-20T17:27:38+00:00",
+  "phase_id": "22.3",
+  "redaction": {
+    "absolute_paths_emitted": false,
+    "raw_prompts_emitted": false,
+    "raw_provider_responses_emitted": false,
+    "redaction_flags": [
+      "absolute_path"
+    ],
+    "sensitive_content_detected": true,
+    "token_metadata_emitted": false,
+    "unsafe_commands_emitted": false
+  },
+  "sanitized_fields": {
+    "clean_operation_used": false,
+    "deferred_file_categories": [
+      "network_bridge_tools",
+      "raw_ai_audit_outputs",
+      "roadmap_events",
+      "state_snapshot"
+    ],
+    "destructive_commands_used": false,
+    "force_push_used": false,
+    "hard_reset_operation_used": false,
+    "latest_commit_short": "01b56f6",
+    "latest_event_timestamp": "2026-06-20T17:21Z",
+    "latest_event_type": "phase22_2_post_merge_sync",
+    "repo_sync_state": "synced",
+    "validation_results": [
+      "phase22_1_deferred_artifact_audit",
+      "phase22_2_post_merge_sync"
+    ]
+  },
+  "schema_version": 1,
+  "source_evidence": {
+    "ai_audit_file_categories": {
+      "other": 0,
+      "raw_provider_json": 4,
+      "raw_provider_markdown": 4,
+      "roadmap_event_json": 3,
+      "state_snapshot_json": 1
+    },
+    "roadmap_event_count": 3,
+    "state_snapshot_present": true
+  }
+}
