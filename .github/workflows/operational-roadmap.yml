@@ -1,49 +1,44 @@
 name: Operational Roadmap Gate
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - phase19-operational-roadmap
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
-  assert-operational-roadmap:
+  assert-operational-roadmap-contract:
     name: Assert operational roadmap contract
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
+          python-version: "3.x"
 
-      - name: Normalize CI workspace
-        shell: powershell
+      - name: Assert roadmap files exist
+        shell: bash
         run: |
-          git config --global core.autocrlf false
-          git reset --hard HEAD
-          git clean -fd
-          Write-Host "Workspace status after normalization:"
-          git status --short
+          test -f ROADMAP/ROADMAP_STATE.json
+          test -f ROADMAP/ROADMAP_CANONICAL.md
+          test -f AUDIT/ROADMAP_CURRENT.json
+          test -f AUDIT/ROADMAP_CURRENT.md
 
-      - name: Assert operational roadmap on push
-        if: github.event_name == 'push'
-        shell: powershell
-        run: |
-          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1"
+      - name: Validate roadmap state JSON
+        shell: bash
+        run: python tools/validate_roadmap_state.py
 
-      - name: Assert operational roadmap on pull request
-        if: github.event_name == 'pull_request'
-        shell: powershell
-        run: |
-          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1" -AllowDirty
-
-      - name: Assert operational roadmap on manual dispatch
-        if: github.event_name == 'workflow_dispatch'
-        shell: powershell
-        run: |
-          powershell -NoProfile -ExecutionPolicy Bypass -File ".\tools\assert_operational_roadmap.ps1" -AllowDirty
+      - name: Assert no stale roadmap state remains
+        shell: bash
+        run: python tools/assert_no_stale_roadmap.py

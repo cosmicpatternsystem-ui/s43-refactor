@@ -11,5 +11,10 @@
   "previous_phase_status": "merged",
   "roadmap_sync_status": "in_progress",
   "next_action": "Harden Operational Roadmap Gate and enforce post-merge roadmap sync on main",
+  "required_gates": [
+    "Operational Roadmap Gate",
+    "PR Hygiene Gate",
+    "Release Readiness Gate"
+  ],
   "updated_at": "2026-06-21"
 }
