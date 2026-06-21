@@ -1,11 +1,11 @@
 # Current Living Roadmap
 
 Status: ACTIVE
-Roadmap Version: 2026-06-21.phase22.11
+Roadmap Version: 22.12
 Source Of Truth: Repository files only
-Current Phase: 22.11
-Current Focus: Release Readiness Closeout
-Current Branch: phase22-11-release-readiness-closeout
+Current Phase: Phase 22.12 - Post-Closeout Baseline Verification
+Current Focus: Post-closeout baseline verification
+Current Branch: phase22-12-post-closeout-baseline-verification
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
@@ -16,7 +16,7 @@ This file is the mandatory living roadmap for autonomous repository work. It rep
 
 ## Current Authorized Scope
 
-Phase 22.11 authorizes only non-destructive, repository-local, sync-aware release-readiness closeout and final audit alignment work:
+Phase 22.12 authorizes only non-destructive, repository-local, sync-aware post-closeout baseline verification and roadmap alignment work:
 
 - Confirm roadmap metadata is aligned after Phase 22.10 merge.
 - Confirm release-readiness artifacts remain present and internally consistent.
@@ -86,7 +86,7 @@ Phase 22 is ready for review when:
 
 ## Next Action
 
-Complete Phase 22.11 release-readiness closeout validation, record final audit status, and prepare the closeout PR.
+Complete Phase 22.12 post-closeout baseline verification, confirm roadmap guardrails remain preserved, and prepare the baseline verification PR.
 
 ## Phase 22.3 Status
 
@@ -159,14 +159,14 @@ Deferred Files Status: `AI_AUDIT/` and deferred bridge/supervisor scripts remain
 - Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
 
 
-## Phase 22.11 Status
+## Phase 22.12 Status
 
 Status: In progress
 
 Closeout checklist:
 
-- [ ] Roadmap metadata confirms Phase 22.11 closeout scope
-- [ ] Phase 22.11 closeout artifact is present
+- [ ] Roadmap metadata confirms Phase 22.12 post-closeout baseline verification scope
+- [ ] Phase 22.12 baseline verification artifact is present
 - [ ] ROADMAP_CURRENT.json is synchronized with ROADMAP_CURRENT.md
 - [ ] Deferred AI artifacts guard passes
 - [ ] Whitespace diff check passes
