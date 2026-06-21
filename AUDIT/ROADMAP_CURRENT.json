@@ -1,38 +1,16 @@
 {
     "schema_version":  1,
-    "roadmap_version":  "2026-06-21.phase22.9",
+    "roadmap_version":  "2026-06-21.phase22.10",
     "source_of_truth":  "repository_files_only",
-    "current_phase":  "22.9",
-    "current_focus":  "Release Readiness Follow-up Validation",
+    "current_phase":  "22.10",
+    "current_focus":  "Release Readiness Final Validation",
     "status":  "active",
     "authorized_scope":  [
-                             "maintain_living_roadmap",
-                             "verify_roadmap_files",
-                             "write_local_state_snapshot_when_invoked",
-                             "append_roadmap_event_when_invoked",
-                             "ast_parse_validation_without_cache_artifacts",
-                             "preserve_deferred_files",
-                             "generate_sanitized_ai_audit_evidence",
-                             "write_sanitized_summaries_under_audit",
-                             "preserve_raw_ai_audit_as_untracked_deferred_evidence",
-                             "define_deferred_ai_tool_approval_gate",
-                             "document_network_secret_redaction_artifact_write_approval_requirements",
-                             "preserve_deferred_tools_until_approved",
-                             "maintain_sanitized_deferred_files_manifest",
-                             "record_deferred_disposition_reason_gate_commit_policy",
-                             "avoid_reading_raw_deferred_sensitive_contents",
-                             "enforce_deferred_ai_artifacts_tracked_file_guard",
-                             "validate_deferred_paths_with_git_ls_files_only",
-                             "preserve_untracked_deferred_files_while_blocking_tracked_deferred_paths",
-                             "record_phase22_6_merge_evidence",
-                             "sync_release_readiness_roadmap_state",
-                             "document_clean_worktree_after_deferred_artifact_cleanup",
-                             "perform_release_readiness_doc_hygiene",
-                             "align_roadmap_markdown_and_json_for_phase22_8",
-                             "document_phase22_8_doc_hygiene_status",
-                             "perform_release_readiness_followup_validation",
-                             "align_roadmap_markdown_and_json_for_phase22_9",
-                             "document_phase22_9_followup_validation_status"
+                             "Confirm final release-readiness roadmap consistency after phase 22.9.",
+                             "Verify AUDIT/ROADMAP_CURRENT.md and AUDIT/ROADMAP_CURRENT.json remain aligned for phase 22.10.",
+                             "Record final validation outcomes in AUDIT/PHASE22_10_RELEASE_READINESS_FINAL_VALIDATION.md.",
+                             "Keep all changes documentation-only unless a separately authorized fix is required.",
+                             "Preserve deferred AI_AUDIT files and deferred bridge/supervisor scripts as untracked artifacts."
                          ],
     "blocked_actions":  [
                             "use_chat_memory_as_source_of_truth",
@@ -78,7 +56,8 @@
                                ".github/workflows/deferred-ai-artifacts-guard.yml",
                                "AUDIT/PHASE22_7_RELEASE_READINESS_ROADMAP_SYNC.md",
                                "AUDIT/PHASE22_8_RELEASE_READINESS_DOC_HYGIENE.md",
-                               "AUDIT/PHASE22_9_RELEASE_READINESS_FOLLOWUP_VALIDATION.md"
+                               "AUDIT/PHASE22_9_RELEASE_READINESS_FOLLOWUP_VALIDATION.md",
+                               "AUDIT/PHASE22_10_RELEASE_READINESS_FINAL_VALIDATION.md"
                            ],
     "exit_criteria":  [
                           "roadmap_markdown_and_json_exist",
@@ -171,7 +150,7 @@
                              "sync_status_main_origin_main":  "0 0 at clean baseline before doc-hygiene edits",
                              "deferred_files_status":  "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved"
                          },
-    "current_branch":  "phase22-9-release-readiness-followup-validation",
+    "current_branch":  "phase22-10-release-readiness-final-validation",
     "phase22_9_status":  {
                              "status":  "in_progress",
                              "objective":  "Validate post-merge release-readiness follow-up documentation consistency after phase 22.8.",
@@ -180,5 +159,18 @@
                                            "Validation remains documentation-only unless a separately authorized fix is required.",
                                            "Audit artifact for this phase records findings and any required follow-up."
                                        ]
-                         }
+                         },
+    "phase22_10_status":  {
+                              "status":  "in_progress",
+                              "objective":  "Perform final release-readiness validation after phase 22.9.",
+                              "branch":  "phase22-10-release-readiness-final-validation",
+                              "base":  "main after PR #61 merge",
+                              "validation_target":  "documentation-only final validation and roadmap alignment; no runtime code changes",
+                              "deferred_files":  [
+                                                     "AI_AUDIT/",
+                                                     "tools/ai/bridge_claude.py",
+                                                     "tools/ai/bridge_claude_repo.py",
+                                                     "tools/ai/s43_supervisor.py"
+                                                 ]
+                          }
 }
