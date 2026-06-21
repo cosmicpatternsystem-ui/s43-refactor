@@ -1,14 +1,14 @@
 {
     "schema_version":  1,
-    "roadmap_version":  "2026-06-21.phase22.11",
+    "roadmap_version":  "2026-06-21.phase22.12",
     "source_of_truth":  "repository_files_only",
-    "current_phase":  "22.11",
-    "current_focus":  "Release Readiness Closeout",
+    "current_phase":  "22.12",
+    "current_focus":  "Post-closeout baseline verification",
     "status":  "active",
     "authorized_scope":  [
-                             "Confirm final release-readiness roadmap consistency after phase 22.9.",
-                             "Verify AUDIT/ROADMAP_CURRENT.md and AUDIT/ROADMAP_CURRENT.json remain aligned for phase 22.10.",
-                             "Record final validation outcomes in AUDIT/PHASE22_10_RELEASE_READINESS_FINAL_VALIDATION.md.",
+                             "Confirm post-closeout roadmap consistency after phase 22.11.",
+                             "Verify AUDIT/ROADMAP_CURRENT.md and AUDIT/ROADMAP_CURRENT.json remain aligned for phase 22.12.",
+                             "Record baseline verification outcomes in AUDIT/PHASE22_12_POST_CLOSEOUT_BASELINE_VERIFICATION.md.",
                              "Keep all changes documentation-only unless a separately authorized fix is required.",
                              "Preserve deferred AI_AUDIT files and deferred bridge/supervisor scripts as untracked artifacts."
                          ],
@@ -150,7 +150,7 @@
                              "sync_status_main_origin_main":  "0 0 at clean baseline before doc-hygiene edits",
                              "deferred_files_status":  "AI_AUDIT and deferred bridge/supervisor scripts remain untracked and preserved"
                          },
-    "current_branch":  "phase22-11-release-readiness-closeout",
+    "current_branch":  "phase22-12-post-closeout-baseline-verification",
     "phase22_9_status":  {
                              "status":  "in_progress",
                              "objective":  "Validate post-merge release-readiness follow-up documentation consistency after phase 22.8.",
@@ -188,5 +188,6 @@
                                                           "python tools/ai/check_no_deferred_ai_artifacts.py",
                                                           "git --no-pager diff --check"
                                                       ]
-                          }
+                          },
+    "next_action":  "Validate Phase 22.12 baseline state, preserve roadmap guardrails, and prepare PR."
 }
