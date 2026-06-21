@@ -40,6 +40,7 @@ $roadmap = [ordered]@{
 }
 
 $json = $roadmap | ConvertTo-Json -Depth 20
-Set-Content -Path "ROADMAP_CURRENT.json" -Value $json -Encoding UTF8
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText((Join-Path (Get-Location) "ROADMAP_CURRENT.json"), $json + "`n", $utf8NoBom)
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
