@@ -1,10 +1,11 @@
 # Current Living Roadmap
 
 Status: ACTIVE
-Roadmap Version: 2026-06-21.phase22.8
+Roadmap Version: 2026-06-21.phase22.9
 Source Of Truth: Repository files only
-Current Phase: 22.8
-Current Focus: Release Readiness Doc Hygiene
+Current Phase: 22.9
+Current Focus: Release Readiness Follow-up Validation
+Current Branch: phase22-9-release-readiness-followup-validation
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
@@ -15,18 +16,13 @@ This file is the mandatory living roadmap for autonomous repository work. It rep
 
 ## Current Authorized Scope
 
-Phase 22.8 authorizes only non-destructive, repository-local, sync-aware documentation hygiene and roadmap alignment work:
+Phase 22.9 authorizes only non-destructive, repository-local, sync-aware release-readiness follow-up validation and roadmap alignment work:
 
-1. Maintain this living roadmap in markdown and JSON form.
-2. Verify roadmap files exist before autonomous cycles proceed.
-3. Write local state snapshots under `AI_AUDIT/current_state_snapshot.json` when explicitly invoked.
-4. Append timestamped roadmap event JSON files under `AI_AUDIT/roadmap_events/` when explicitly invoked.
-5. Validate Python syntax with no-artifact AST parsing.
-6. Preserve deferred raw AI outputs and deferred bridge/supervisor scripts.
-7. Generate sanitized AI audit summaries under `AUDIT/` without committing raw `AI_AUDIT/` artifacts.
-8. Define approval requirements before deferred AI bridge or supervisor tools can be committed or executed.
-9. Maintain a commit-safe manifest of deferred files using sanitized metadata only.
-10. Enforce a tracked-file CI guard that fails if raw deferred AI artifacts or deferred AI tools are committed.
+- Validate post-merge release-readiness documentation consistency after phase 22.8.
+- Confirm `AUDIT/ROADMAP_CURRENT.md` and `AUDIT/ROADMAP_CURRENT.json` remain aligned for phase 22.9.
+- Record findings in `AUDIT/PHASE22_9_RELEASE_READINESS_FOLLOWUP_VALIDATION.md`.
+- Keep all changes documentation-only unless a separately authorized fix is required.
+- Preserve deferred `AI_AUDIT/` files and deferred bridge/supervisor scripts as untracked artifacts.
 
 ## Mandatory Guardrails
 
@@ -90,7 +86,7 @@ Phase 22 is ready for review when:
 
 ## Next Action
 
-Complete documentation hygiene for release-readiness artifacts, keep deferred AI files untracked, and decide in a later approved phase whether bridge/supervisor hardening or sanitized evidence enforcement should proceed.
+Execute phase 22.9 release-readiness follow-up validation, confirm roadmap markdown/json alignment, validate deferred artifact guard status, and record outcomes in the phase 22.9 audit artifact.
 
 ## Phase 22.3 Status
 
@@ -147,3 +143,11 @@ Deferred Files Status: `AI_AUDIT/` and deferred bridge/supervisor scripts remain
 - Validation target: documentation-only hygiene and roadmap alignment; no runtime code changes.
 - Sync status: branch created from a clean release-readiness baseline.
 - Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
+## Phase 22.9 Status
+- Status: In Progress
+- Objective: Validate post-merge release-readiness follow-up documentation consistency after phase 22.8.
+- Branch: `phase22-9-release-readiness-followup-validation`
+- Base: `main` after PR #60 merge.
+- Validation target: documentation-only follow-up validation and roadmap alignment; no runtime code changes.
+- Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
+
