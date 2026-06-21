@@ -1,10 +1,10 @@
 # Current Living Roadmap
 
 Status: ACTIVE
-Roadmap Version: 2026-06-20.phase22.7
+Roadmap Version: 2026-06-21.phase22.8
 Source Of Truth: Repository files only
-Current Phase: 22.7
-Current Focus: Release Readiness and Roadmap Sync
+Current Phase: 22.8
+Current Focus: Release Readiness Doc Hygiene
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
@@ -15,7 +15,7 @@ This file is the mandatory living roadmap for autonomous repository work. It rep
 
 ## Current Authorized Scope
 
-Phase 22.6 authorizes only non-destructive, repository-local, sync-aware deferred artifact guard work:
+Phase 22.8 authorizes only non-destructive, repository-local, sync-aware documentation hygiene and roadmap alignment work:
 
 1. Maintain this living roadmap in markdown and JSON form.
 2. Verify roadmap files exist before autonomous cycles proceed.
@@ -67,6 +67,7 @@ AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md
 AUDIT/PHASE22_DEFERRED_FILES_MANIFEST.md
 AUDIT/PHASE22_DEFERRED_AI_ARTIFACTS_CI_GUARD.md
 tools/ai/check_no_deferred_ai_artifacts.py
+AUDIT/PHASE22_8_RELEASE_READINESS_DOC_HYGIENE.md
 .github/workflows/deferred-ai-artifacts-guard.yml
 ```
 
@@ -89,7 +90,7 @@ Phase 22 is ready for review when:
 
 ## Next Action
 
-Review the deferred AI artifacts CI guard, then decide whether to harden bridge/supervisor tools or enforce sanitized evidence generation in automation.
+Complete documentation hygiene for release-readiness artifacts, keep deferred AI files untracked, and decide in a later approved phase whether bridge/supervisor hardening or sanitized evidence enforcement should proceed.
 
 ## Phase 22.3 Status
 
@@ -138,4 +139,11 @@ Deferred Files Status: `AI_AUDIT/` and deferred bridge/supervisor scripts remain
 - Policy path: `AUDIT/PHASE22_DEFERRED_AI_TOOL_APPROVAL_GATE.md`.
 - Validation target: commit-safe documentation only; deferred bridge/supervisor tools remain untouched.
 - Sync status: `main...origin/main` is `0 0`.
+- Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
+## Phase 22.8 Status
+
+- Objective: Release Readiness Doc Hygiene.
+- Audit note: `AUDIT/PHASE22_8_RELEASE_READINESS_DOC_HYGIENE.md`.
+- Validation target: documentation-only hygiene and roadmap alignment; no runtime code changes.
+- Sync status: branch created from a clean release-readiness baseline.
 - Deferred files: `AI_AUDIT/` and deferred bridge/supervisor scripts remain untracked and preserved.
