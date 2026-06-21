@@ -1,0 +1,23 @@
+﻿name: Operational Roadmap Smoke Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  roadmap-smoke-test:
+    name: Roadmap generator and validator smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run operational roadmap smoke test
+        shell: pwsh
+        run: ./scripts/test-roadmap.ps1
