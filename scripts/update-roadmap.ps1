@@ -1,4 +1,4 @@
-﻿param()
+param()
 
 $ErrorActionPreference = "Stop"
 
@@ -40,6 +40,7 @@ $roadmap = [ordered]@{
 }
 
 $json = $roadmap | ConvertTo-Json -Depth 20
+$json = $json -replace "`r`n", "`n"
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText((Join-Path (Get-Location) "ROADMAP_CURRENT.json"), $json + "`n", $utf8NoBom)
 
