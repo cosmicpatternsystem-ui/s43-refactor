@@ -1,4 +1,4 @@
-param()
+﻿param()
 
 $ErrorActionPreference = "Stop"
 
@@ -26,16 +26,32 @@ foreach ($file in $phaseFiles) {
     file = $file.Name
     status = $status
     documentation_only = [bool]$noOperationalChange
+
+    # Operational metadata is intentionally nullable until phase docs carry explicit ownership data.
+    owner = $null
+    priority = $null
+    depends_on = @()
+    acceptance_criteria = @()
+    evidence = @()
+    last_verified_at = $null
   }
 }
 
 $roadmap = [ordered]@{
-  schema_version = 1
+  schema_version = 2
   source_of_truth = "repository phase documents"
   generated_by = "scripts/update-roadmap.ps1"
   enforcement_model = "generated-and-diff-enforced-in-pr"
   updated_at_utc = "GENERATED"
   phase_count = $phases.Count
+  operational_metadata_schema = [ordered]@{
+    owner = "string|null"
+    priority = "critical|high|medium|low|null"
+    depends_on = "string[]"
+    acceptance_criteria = "string[]"
+    evidence = "string[]"
+    last_verified_at = "ISO-8601 UTC string|null"
+  }
   phases = $phases
 }
 
