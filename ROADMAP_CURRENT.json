@@ -1,90 +1,194 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_of_truth": "repository phase documents",
   "generated_by": "scripts/update-roadmap.ps1",
   "enforcement_model": "generated-and-diff-enforced-in-pr",
   "updated_at_utc": "GENERATED",
   "phase_count": 16,
+  "operational_metadata_schema": {
+    "owner": "string|null",
+    "priority": "critical|high|medium|low|null",
+    "depends_on": "string[]",
+    "acceptance_criteria": "string[]",
+    "evidence": "string[]",
+    "last_verified_at": "ISO-8601 UTC string|null"
+  },
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
       "status": "recorded",
-      "documentation_only": false
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_02_PACKAGING_COMMAND_DISCOVERY.md",
       "status": "complete",
-      "documentation_only": false
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_03_PACKAGING_DRY_RUN_PROTOCOL.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_04_PACKAGING_NOOP_DRY_RUN.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_05_PACKAGING_DEPLOYMENT_DRY_RUN_CLOSURE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_26_RC_PACKAGING_DRY_RUN.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_27_02_POST_PHASE_26_INTEGRITY_EVIDENCE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_27_03_POST_PHASE_26_INTEGRITY_CLOSURE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_28_02_POST_CLOSURE_RELEASE_READINESS_EVIDENCE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_28_03_POST_CLOSURE_RELEASE_READINESS_CLOSURE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_29_02_POST_PHASE_28_MAINLINE_VERIFICATION_EVIDENCE.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_29_03_POST_PHASE_28_MAINLINE_VERIFICATION_CLOSURE.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_30_02_POST_PHASE_29_INTEGRITY_EVIDENCE.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md",
       "status": "complete",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     },
     {
       "file": "PHASE_30_04_AUDIT_CORRECTION.md",
       "status": "recorded",
-      "documentation_only": true
+      "documentation_only": true,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
     }
   ]
 }
