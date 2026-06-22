@@ -84,7 +84,7 @@ $phases = foreach ($phaseFile in $phaseFiles) {
 
 $roadmap = [ordered]@{
     schema_version = 2
-    source_of_truth = "PHASE_*.md"
+    source_of_truth = "repository phase documents"
     generated_by = "scripts/update-roadmap.ps1"
     enforcement_model = "generated-and-diff-enforced-in-pr"
     operational_metadata_schema = [ordered]@{
@@ -95,7 +95,7 @@ $roadmap = [ordered]@{
         evidence = "string[]"
         last_verified_at = "ISO-8601 UTC string|null"
     }
-    updated_at_utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    updated_at_utc = "GENERATED"
     phase_count = @($phases).Count
     phases = @($phases)
 }
@@ -110,4 +110,5 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 )
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+
 

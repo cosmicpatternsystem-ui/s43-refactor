@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "source_of_truth": "PHASE_*.md",
+  "source_of_truth": "repository phase documents",
   "generated_by": "scripts/update-roadmap.ps1",
   "enforcement_model": "generated-and-diff-enforced-in-pr",
   "operational_metadata_schema": {
@@ -11,7 +11,7 @@
     "evidence": "string[]",
     "last_verified_at": "ISO-8601 UTC string|null"
   },
-  "updated_at_utc": "2026-06-22T05:00:16Z",
+  "updated_at_utc": "GENERATED",
   "phase_count": 16,
   "phases": [
     {
