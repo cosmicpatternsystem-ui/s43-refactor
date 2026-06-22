@@ -1,4 +1,4 @@
-﻿param()
+param()
 
 $ErrorActionPreference = "Stop"
 
@@ -72,7 +72,7 @@ if (!(Test-Path $path)) {
 }
 
 try {
-  $json = Get-Content $path -Raw | ConvertFrom-Json
+  $json = Get-Content $path -Raw | ConvertFrom-Json -DateKind String
 } catch {
   Fail "ROADMAP_CURRENT.json is not valid JSON."
 }
