@@ -70,6 +70,7 @@ try {
         throw "Expected roadmap validator to reject a missing dependency reference."
     }
 
+    $global:LASTEXITCODE = 0
     Write-Host "OK: Reject missing roadmap dependency"
 }
 finally {
