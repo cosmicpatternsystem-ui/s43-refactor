@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 23,
+  "phase_count": 24,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -397,6 +397,29 @@
         "AUDIT/AI_DECISION_LIFECYCLE_AUDIT_READINESS_STANDARD.md",
         "AUDIT/AI_DECISION_LIFECYCLE_ENFORCEMENT_GATE_CONTRACT.md",
         "AUDIT/AI_DECISION_LIFECYCLE_EXCEPTION_CONTRACT.md",
+        "ROADMAP_CURRENT.json"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_08_AI_DECISION_LIFECYCLE_ENFORCEMENT_EVIDENCE_GOVERNANCE.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "enterprise-governance",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_31_07_AI_DECISION_LIFECYCLE_AUDIT_ENFORCEMENT_READINESS_GOVERNANCE.md"
+      ],
+      "acceptance_criteria": [
+        "AI decision lifecycle enforcement evidence expectations are documented.",
+        "AI decision lifecycle evidence completeness expectations are documented.",
+        "AI decision lifecycle evidence failure expectations are documented.",
+        "No runtime trading, wallet, execution, or secret-handling logic is modified."
+      ],
+      "evidence": [
+        "AUDIT/AI_DECISION_LIFECYCLE_ENFORCEMENT_EVIDENCE_STANDARD.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_EVIDENCE_COMPLETENESS_CONTRACT.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_EVIDENCE_FAILURE_CONTRACT.md",
         "ROADMAP_CURRENT.json"
       ],
       "last_verified_at": "2026-06-22T00:00:00Z"
