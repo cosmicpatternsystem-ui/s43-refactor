@@ -77,5 +77,50 @@ finally {
     [System.IO.File]::WriteAllBytes($roadmapPath, $originalRoadmapBytes)
 }
 
+function Invoke-ExpectedRoadmapValidationFailure {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $StepName,
+
+        [Parameter(Mandatory = $true)]
+        [scriptblock] $MutateRoadmap
+    )
+
+    Write-Host "==> $StepName"
+
+    $roadmapPath = Join-Path $repoRoot "ROADMAP_CURRENT.json"
+    $originalRoadmapBytes = [System.IO.File]::ReadAllBytes($roadmapPath)
+
+    try {
+        $roadmap = Get-Content -Raw $roadmapPath | ConvertFrom-Json
+        & $MutateRoadmap $roadmap
+        $roadmap | ConvertTo-Json -Depth 20 | Set-Content -Path $roadmapPath -Encoding utf8BOM
+
+        & pwsh -NoProfile -File (Join-Path $repoRoot "scripts/validate-roadmap.ps1") *> $null
+
+        if ($LASTEXITCODE -eq 0) {
+            throw "Expected roadmap validator to reject: $StepName"
+        }
+
+        $global:LASTEXITCODE = 0
+        Write-Host "OK: $StepName"
+    }
+    finally {
+        [System.IO.File]::WriteAllBytes($roadmapPath, $originalRoadmapBytes)
+    }
+}
+
+Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
+    param($Roadmap)
+
+    $Roadmap.phases[0].status = "__INVALID_STATUS__"
+}
+
+Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase priority" -MutateRoadmap {
+    param($Roadmap)
+
+    $Roadmap.phases[0].priority = "__INVALID_PRIORITY__"
+}
+
 Write-Host "Operational roadmap smoke test passed."
 
