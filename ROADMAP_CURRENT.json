@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 25,
+  "phase_count": 26,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -443,6 +443,29 @@
         "AUDIT/AI_DECISION_LIFECYCLE_GATE_MAPPING_STANDARD.md",
         "AUDIT/AI_DECISION_LIFECYCLE_GATE_OUTCOME_CONTRACT.md",
         "AUDIT/AI_DECISION_LIFECYCLE_GATE_FAILURE_MAPPING_CONTRACT.md",
+        "ROADMAP_CURRENT.json"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_10_AI_DECISION_LIFECYCLE_GATE_AUDIT_REPORTING_GOVERNANCE.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "enterprise-governance",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_31_09_AI_DECISION_LIFECYCLE_ENFORCEMENT_GATE_MAPPING_GOVERNANCE.md"
+      ],
+      "acceptance_criteria": [
+        "AI decision lifecycle gate audit reporting expectations are documented.",
+        "AI decision lifecycle gate report content expectations are documented.",
+        "AI decision lifecycle gate report failure expectations are documented.",
+        "No runtime trading, wallet, execution, CI enforcement, or secret-handling logic is modified."
+      ],
+      "evidence": [
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_REPORT_STANDARD.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_REPORT_CONTENT_CONTRACT.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_REPORT_FAILURE_CONTRACT.md",
         "ROADMAP_CURRENT.json"
       ],
       "last_verified_at": "2026-06-22T00:00:00Z"
