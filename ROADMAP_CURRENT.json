@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 20,
+  "phase_count": 21,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -328,6 +328,29 @@
         "AUDIT/AI_DECISION_ENFORCEMENT_READINESS_STANDARD.md",
         "AUDIT/AI_DECISION_REJECTION_CONTRACT.md",
         "AUDIT/AI_DECISION_PROMOTION_GATE_CONTRACT.md",
+        "ROADMAP_CURRENT.json"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_05_AI_DECISION_ENFORCEMENT_AUDIT_EVIDENCE_GOVERNANCE.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "enterprise-governance",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_31_04_AI_DECISION_ENFORCEMENT_READINESS_GOVERNANCE.md"
+      ],
+      "acceptance_criteria": [
+        "AI decision audit evidence requirements are documented.",
+        "AI decision evidence retention expectations are documented.",
+        "AI decision evidence review expectations are documented.",
+        "No runtime trading, wallet, execution, or secret-handling logic is modified."
+      ],
+      "evidence": [
+        "AUDIT/AI_DECISION_AUDIT_EVIDENCE_STANDARD.md",
+        "AUDIT/AI_DECISION_EVIDENCE_RETENTION_CONTRACT.md",
+        "AUDIT/AI_DECISION_EVIDENCE_REVIEW_CONTRACT.md",
         "ROADMAP_CURRENT.json"
       ],
       "last_verified_at": "2026-06-22T00:00:00Z"
