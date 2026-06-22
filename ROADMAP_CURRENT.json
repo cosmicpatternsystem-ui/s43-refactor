@@ -1,10 +1,8 @@
 {
   "schema_version": 2,
-  "source_of_truth": "repository phase documents",
+  "source_of_truth": "PHASE_*.md",
   "generated_by": "scripts/update-roadmap.ps1",
   "enforcement_model": "generated-and-diff-enforced-in-pr",
-  "updated_at_utc": "GENERATED",
-  "phase_count": 16,
   "operational_metadata_schema": {
     "owner": "string|null",
     "priority": "critical|high|medium|low|null",
@@ -13,27 +11,47 @@
     "evidence": "string[]",
     "last_verified_at": "ISO-8601 UTC string|null"
   },
+  "updated_at_utc": "2026-06-22T05:00:16Z",
+  "phase_count": 16,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
       "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "release-ops",
+      "priority": "critical",
       "depends_on": [],
-      "acceptance_criteria": [],
-      "evidence": [],
+      "acceptance_criteria": [
+        "RC readiness verdict is recorded as an auditable phase artifact.",
+        "Release readiness evidence is traceable through the roadmap.",
+        "Roadmap generation and validation pass in CI."
+      ],
+      "evidence": [
+        "PHASE_25_RC_READINESS_VERDICT.md",
+        "ROADMAP_CURRENT.json",
+        "scripts/validate-roadmap.ps1"
+      ],
       "last_verified_at": null
     },
     {
       "file": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
       "status": "recorded",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
-      "depends_on": [],
-      "acceptance_criteria": [],
-      "evidence": [],
+      "owner": "release-ops",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_25_RC_READINESS_VERDICT.md"
+      ],
+      "acceptance_criteria": [
+        "RC packaging dry-run evidence is recorded without requiring deployment.",
+        "Packaging dry-run evidence remains documentation-only when no runtime change is performed.",
+        "Generated roadmap captures the phase as operational evidence."
+      ],
+      "evidence": [
+        "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
+        "PHASE_26_RC_PACKAGING_DRY_RUN.md",
+        "ROADMAP_CURRENT.json"
+      ],
       "last_verified_at": null
     },
     {
@@ -183,11 +201,21 @@
       "file": "PHASE_30_04_AUDIT_CORRECTION.md",
       "status": "recorded",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
-      "depends_on": [],
-      "acceptance_criteria": [],
-      "evidence": [],
+      "owner": "quality-ops",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md"
+      ],
+      "acceptance_criteria": [
+        "Audit correction is recorded as a dedicated phase artifact.",
+        "Post-phase integrity closure remains traceable from the roadmap.",
+        "Roadmap validator accepts the enriched operational metadata."
+      ],
+      "evidence": [
+        "PHASE_30_04_AUDIT_CORRECTION.md",
+        "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md",
+        "scripts/test-roadmap.ps1"
+      ],
       "last_verified_at": null
     }
   ]

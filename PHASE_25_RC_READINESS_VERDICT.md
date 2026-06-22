@@ -42,3 +42,22 @@ has been clarified as token-based.
 Recommended next phase:
 
 Phase 26: Release Candidate Packaging & Deployment Dry Run
+
+<!-- roadmap-metadata
+{
+  "owner": "release-ops",
+  "priority": "critical",
+  "depends_on": [],
+  "acceptance_criteria": [
+    "RC readiness verdict is recorded as an auditable phase artifact.",
+    "Release readiness evidence is traceable through the roadmap.",
+    "Roadmap generation and validation pass in CI."
+  ],
+  "evidence": [
+    "PHASE_25_RC_READINESS_VERDICT.md",
+    "ROADMAP_CURRENT.json",
+    "scripts/validate-roadmap.ps1"
+  ],
+  "last_verified_at": null
+}
+-->
