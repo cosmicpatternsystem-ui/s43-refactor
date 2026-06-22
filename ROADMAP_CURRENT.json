@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 18,
+  "phase_count": 19,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -283,6 +283,29 @@
         "AUDIT/COMMERCIAL_INTELLIGENCE_GOVERNANCE_STANDARD.md",
         "AUDIT/AI_SIGNAL_REWARD_PUNISHMENT_CONTRACT.md",
         "AUDIT/EXTERNAL_AI_DATA_SOURCE_CONTRACT.md"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_03_AI_DECISION_TRACEABILITY_GOVERNANCE.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "enterprise-governance",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_31_02_COMMERCIAL_INTELLIGENCE_GOVERNANCE.md"
+      ],
+      "acceptance_criteria": [
+        "AI decision traceability requirements are documented.",
+        "AI recommendation evidence requirements are documented.",
+        "Operator override governance requirements are documented.",
+        "No runtime trading, wallet, execution, or secret-handling logic is modified."
+      ],
+      "evidence": [
+        "AUDIT/AI_DECISION_TRACEABILITY_STANDARD.md",
+        "AUDIT/AI_DECISION_EVIDENCE_CONTRACT.md",
+        "AUDIT/AI_OPERATOR_OVERRIDE_CONTRACT.md",
+        "ROADMAP_CURRENT.json"
       ],
       "last_verified_at": "2026-06-22T00:00:00Z"
     }
