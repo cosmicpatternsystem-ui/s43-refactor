@@ -46,3 +46,16 @@ Operational roadmap, release readiness, PR hygiene, policy smoke, and hardening
 contracts are enforced before changes can enter `main`.
 
 No pull request should be considered merge-ready unless all required checks pass.
+
+## Operational Roadmap Phase Metadata and RC Packaging Dry-Run Evidence
+
+All roadmap phases must preserve valid operational metadata required by roadmap generation and validation. Each phase record must define: `file`, `status`, `documentation_only`, `owner`, `priority`, `depends_on`, `acceptance_criteria`, `evidence`, and `last_verified_at`.
+
+For `PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md`, completion requires verifiable dry-run evidence aligned with the release readiness contract. At minimum, recorded evidence must include the repository revision or `commit SHA`, execution timestamp, command or workflow reference, and outcome summary.
+
+Phase 26 dry-run evidence must also explicitly confirm all of the following:
+- No production deployment was performed.
+- No package publishing was performed.
+- All dry-run activity was non-destructive and simulation-only.
+
+In the absence of verifiable evidence, Phase 26 must not be marked `complete` or `approved`. `ROADMAP_CURRENT.json` must only be updated through the documented roadmap generation workflow.
