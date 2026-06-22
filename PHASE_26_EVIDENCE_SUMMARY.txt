@@ -1,30 +1,3 @@
-# Phase 26: Release Candidate Packaging & Deployment Dry Run
-
-## Objective
-Execute and record a non-destructive dry-run of the RC packaging and deployment workflow to verify readiness without performing any production actions.
-
-<!-- roadmap-metadata
-{
-    "file": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
-    "status": "complete",
-    "documentation_only": false,
-    "owner": "release-ops",
-    "priority": "high",
-    "depends_on": ["PHASE_25_RC_READINESS_VERDICT.md"],
-    "acceptance_criteria": [
-        "Dry-run packaging execution is recorded",
-        "No production deployment is performed",
-        "No package publishing is performed",
-        "Evidence includes commit SHA and outcome summary"
-    ],
-    "evidence": [
-        "PHASE_26_EVIDENCE_SUMMARY.txt"
-    ],
-    "last_verified_at": "2026-06-22T11:57:42Z"
-}
--->
-
-## Execution Record
 ============================================================
 PHASE 26: RC PACKAGING DRY-RUN EVIDENCE SUMMARY
 ============================================================

@@ -25,7 +25,7 @@ function Get-RoadmapMetadata {
         return $defaults
     }
 
-    $metadata = $match.Groups[1].Value | ConvertFrom-Json
+    $metadata = $match.Groups[1].Value | ConvertFrom-Json -DateKind String
 
     foreach ($key in @("owner", "priority", "depends_on", "acceptance_criteria", "evidence", "last_verified_at")) {
         if ($metadata.PSObject.Properties.Name -contains $key) {
