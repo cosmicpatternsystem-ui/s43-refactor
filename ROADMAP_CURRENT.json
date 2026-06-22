@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 17,
+  "phase_count": 18,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -260,6 +260,29 @@
       "evidence": [
         "AUDIT/ENTERPRISE_ROADMAP_GOVERNANCE_STANDARD.md",
         "AUDIT/ROADMAP_SERVER_CONTRACT.md"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_02_COMMERCIAL_INTELLIGENCE_GOVERNANCE.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "enterprise-governance",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_31_01_ENTERPRISE_ROADMAP_GOVERNANCE_HARDENING.md"
+      ],
+      "acceptance_criteria": [
+        "Commercial intelligence governance standard is documented",
+        "AI signal reward and punishment contract is documented",
+        "External AI data source contract is documented",
+        "No runtime trading, wallet, execution, or secret-handling logic is changed",
+        "ROADMAP_CURRENT.json is regenerated and validates successfully"
+      ],
+      "evidence": [
+        "AUDIT/COMMERCIAL_INTELLIGENCE_GOVERNANCE_STANDARD.md",
+        "AUDIT/AI_SIGNAL_REWARD_PUNISHMENT_CONTRACT.md",
+        "AUDIT/EXTERNAL_AI_DATA_SOURCE_CONTRACT.md"
       ],
       "last_verified_at": "2026-06-22T00:00:00Z"
     }
