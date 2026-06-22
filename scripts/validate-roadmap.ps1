@@ -155,4 +155,41 @@ for ($i = 0; $i -lt $json.phases.Count; $i++) {
   }
 }
 
+# Validate dependency references after all phase files are known.
+$phaseFileSet = @{}
+
+foreach ($phase in @($json.phases)) {
+    $phaseFile = [string]$phase.file
+
+    if ([string]::IsNullOrWhiteSpace($phaseFile)) {
+        throw "Roadmap phase has an empty file value."
+    }
+
+    if ($phaseFileSet.ContainsKey($phaseFile)) {
+        throw "Duplicate roadmap phase file: $phaseFile"
+    }
+
+    $phaseFileSet[$phaseFile] = $true
+}
+
+foreach ($phase in @($json.phases)) {
+    $phaseFile = [string]$phase.file
+
+    foreach ($dependency in @($phase.depends_on)) {
+        $dependencyFile = [string]$dependency
+
+        if ([string]::IsNullOrWhiteSpace($dependencyFile)) {
+            throw "Roadmap phase '$phaseFile' has an empty depends_on entry."
+        }
+
+        if ($dependencyFile -eq $phaseFile) {
+            throw "Roadmap phase '$phaseFile' cannot depend on itself."
+        }
+
+        if (-not $phaseFileSet.ContainsKey($dependencyFile)) {
+            throw "Roadmap phase '$phaseFile' depends on missing phase '$dependencyFile'."
+        }
+    }
+}
 Write-Host "ROADMAP_CURRENT.json schema validation passed"
+
