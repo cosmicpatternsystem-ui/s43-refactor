@@ -16,7 +16,7 @@
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
-      "status": "recorded",
+      "status": "complete",
       "documentation_only": false,
       "owner": "release-ops",
       "priority": "critical",
