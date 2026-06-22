@@ -35,24 +35,23 @@
     },
     {
       "file": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
-      "status": "recorded",
-      "documentation_only": true,
+      "status": "complete",
+      "documentation_only": false,
       "owner": "release-ops",
       "priority": "high",
       "depends_on": [
         "PHASE_25_RC_READINESS_VERDICT.md"
       ],
       "acceptance_criteria": [
-        "RC packaging dry-run evidence is recorded without requiring deployment.",
-        "Packaging dry-run evidence remains documentation-only when no runtime change is performed.",
-        "Generated roadmap captures the phase as operational evidence."
+        "Dry-run packaging execution is recorded",
+        "No production deployment is performed",
+        "No package publishing is performed",
+        "Evidence includes commit SHA and outcome summary"
       ],
       "evidence": [
-        "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
-        "PHASE_26_RC_PACKAGING_DRY_RUN.md",
-        "ROADMAP_CURRENT.json"
+        "PHASE_26_EVIDENCE_SUMMARY.txt"
       ],
-      "last_verified_at": null
+      "last_verified_at": "2026-06-22T11:57:42Z"
     },
     {
       "file": "PHASE_26_02_PACKAGING_COMMAND_DISCOVERY.md",
