@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 16,
+  "phase_count": 17,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -241,6 +241,27 @@
         "scripts/test-roadmap.ps1"
       ],
       "last_verified_at": "2026-06-22T09:11:06Z"
+    },
+    {
+      "file": "PHASE_31_01_ENTERPRISE_ROADMAP_GOVERNANCE_HARDENING.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "release-ops",
+      "priority": "high",
+      "depends_on": [
+        "PHASE_30_02_POST_PHASE_29_INTEGRITY_EVIDENCE.md"
+      ],
+      "acceptance_criteria": [
+        "Enterprise roadmap governance standard is documented.",
+        "Server-ready roadmap contract expectations are documented.",
+        "Existing roadmap gates remain valid.",
+        "Release readiness remains unaffected."
+      ],
+      "evidence": [
+        "AUDIT/ENTERPRISE_ROADMAP_GOVERNANCE_STANDARD.md",
+        "AUDIT/ROADMAP_SERVER_CONTRACT.md"
+      ],
+      "last_verified_at": "2026-06-22T00:00:00Z"
     }
   ]
 }
