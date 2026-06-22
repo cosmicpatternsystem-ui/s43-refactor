@@ -69,3 +69,24 @@ Phase 26.01 records a successful documentation-only RC packaging dry-run
 evidence snapshot.
 
 No production deployment is authorized by this record.
+
+<!-- roadmap-metadata
+{
+  "owner": "release-ops",
+  "priority": "high",
+  "depends_on": [
+    "PHASE_25_RC_READINESS_VERDICT.md"
+  ],
+  "acceptance_criteria": [
+    "RC packaging dry-run evidence is recorded without requiring deployment.",
+    "Packaging dry-run evidence remains documentation-only when no runtime change is performed.",
+    "Generated roadmap captures the phase as operational evidence."
+  ],
+  "evidence": [
+    "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
+    "PHASE_26_RC_PACKAGING_DRY_RUN.md",
+    "ROADMAP_CURRENT.json"
+  ],
+  "last_verified_at": null
+}
+-->
