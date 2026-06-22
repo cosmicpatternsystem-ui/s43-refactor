@@ -58,3 +58,24 @@ No operational behavior is changed:
 
 Phase 30.04 records and closes the Phase 30.03 audit correction as documentation-only / no-op.
 
+
+<!-- roadmap-metadata
+{
+  "owner": "quality-ops",
+  "priority": "high",
+  "depends_on": [
+    "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md"
+  ],
+  "acceptance_criteria": [
+    "Audit correction is recorded as a dedicated phase artifact.",
+    "Post-phase integrity closure remains traceable from the roadmap.",
+    "Roadmap validator accepts the enriched operational metadata."
+  ],
+  "evidence": [
+    "PHASE_30_04_AUDIT_CORRECTION.md",
+    "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md",
+    "scripts/test-roadmap.ps1"
+  ],
+  "last_verified_at": null
+}
+-->
