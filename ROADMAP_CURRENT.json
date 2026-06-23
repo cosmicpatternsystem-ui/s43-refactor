@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 64,
+  "phase_count": 65,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -900,6 +900,17 @@
     },
     {
       "file": "PHASE_39_01_POST_RELEASE_OBSERVABILITY_AND_STABILIZATION_ARCHITECTURE.md",
+      "status": "complete",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_39_02_STABILIZATION_SIGNAL_EVALUATION_AND_ALERT_TRIAGE.md",
       "status": "complete",
       "documentation_only": false,
       "owner": null,
