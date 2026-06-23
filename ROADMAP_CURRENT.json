@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 42,
+  "phase_count": 43,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -658,6 +658,17 @@
     },
     {
       "file": "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS.md",
+      "status": "recorded",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP.md",
       "status": "recorded",
       "documentation_only": false,
       "owner": null,
