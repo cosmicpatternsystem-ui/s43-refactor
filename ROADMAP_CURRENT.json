@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 79,
+  "phase_count": 80,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -992,7 +992,9 @@
       "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_40_04_IMPROVEMENT_DECISION_CLOSURE_AND_FEEDBACK_LOOP_HANDOFF.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1003,7 +1005,9 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1014,7 +1018,9 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1025,7 +1031,9 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1036,7 +1044,9 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1047,7 +1057,9 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
@@ -1069,7 +1081,22 @@
       "documentation_only": false,
       "owner": "Operations / Governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_42_03_ROADMAP_METADATA_COMPLETENESS_AND_ENTERPRISE_READINESS_HARDENING.md"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md",
+      "status": "recorded",
+      "documentation_only": false,
+      "owner": "Operations / Governance",
+      "priority": "High",
+      "depends_on": [
+        "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null

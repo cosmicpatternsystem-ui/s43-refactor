@@ -117,7 +117,7 @@ function Get-MetadataValue {
         [string]$Name
     )
 
-    $pattern = "(?im)^\s*" + [regex]::Escape($Name) + "\s*:\s*(.+?)\s*$"
+    $pattern = "(?im)^[ \t]*" + [regex]::Escape($Name) + "[ \t]*:[ \t]*([^\r\n]*)[ \t]*$"
     $match = [regex]::Match($Content, $pattern)
 
     if ($match.Success) {
@@ -126,7 +126,85 @@ function Get-MetadataValue {
 
     return $null
 }
+
+function Normalize-RoadmapList {
+    param(
+        [object]$Value
+    )
+
+    if ($null -eq $Value) {
+        return @()
+    }
+
+    $items = @()
+
+    foreach ($item in @($Value)) {
+        if ($null -eq $item) {
+            continue
+        }
+
+        $parts = ([string]$item) -split "[,;]"
+
+        foreach ($part in $parts) {
+            $normalized = Normalize-RoadmapScalar $part
+
+            if ($null -ne $normalized) {
+                $items += $normalized
+            }
+        }
+    }
+
+    return @($items)
+}
+
+function Get-PhaseReferenceMap {
+    param(
+        [object[]]$PhaseFiles
+    )
+
+    $map = @{}
+
+    foreach ($phaseFile in $PhaseFiles) {
+        $key = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+
+        if ($key -match '^PHASE_(\d+)_(\d+)_') {
+            $label = "Phase $([int]$Matches[1]).$('{0:D2}' -f [int]$Matches[2])"
+            $map[$label.ToLowerInvariant()] = $phaseFile.Name
+        }
+    }
+
+    return $map
+}
+
+function Resolve-RoadmapDependsOn {
+    param(
+        [object]$Value,
+        [hashtable]$PhaseReferenceMap
+    )
+
+    $resolved = @()
+
+    foreach ($item in @(Normalize-RoadmapList $Value)) {
+        $normalized = Normalize-RoadmapScalar $item
+
+        if ($null -eq $normalized) {
+            continue
+        }
+
+        $lookupKey = $normalized.ToLowerInvariant()
+
+        if ($PhaseReferenceMap.ContainsKey($lookupKey)) {
+            $resolved += $PhaseReferenceMap[$lookupKey]
+        }
+        else {
+            $resolved += $normalized
+        }
+    }
+
+    return @($resolved)
+}
 $phaseFiles = Get-ChildItem -Path . -Filter "PHASE_*.md" -File | Sort-Object Name
+$phaseReferenceMap = Get-PhaseReferenceMap -PhaseFiles $phaseFiles
 
 $phases = foreach ($phaseFile in $phaseFiles) {
     $content = Get-Content -Raw -Path $phaseFile.FullName
@@ -174,8 +252,13 @@ $phases = foreach ($phaseFile in $phaseFiles) {
             $metadata["priority"] = Get-MetadataValue -Content $content -Name "Priority"
         }
 
+        if (@($metadata["depends_on"]).Count -eq 0) {
+            $metadata["depends_on"] = Get-MetadataValue -Content $content -Name "Depends On"
+        }
+
         $metadata["owner"] = Normalize-RoadmapScalar $metadata["owner"]
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
+        $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $metadata["depends_on"] -PhaseReferenceMap $phaseReferenceMap
 
     [ordered]@{
         file = $phaseFile.Name
@@ -218,6 +301,9 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 )
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+
+
+
 
 
 

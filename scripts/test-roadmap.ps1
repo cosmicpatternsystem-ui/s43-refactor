@@ -1,4 +1,4 @@
-﻿param(
+param(
   [switch]$SkipUpdate
 )
 
@@ -41,6 +41,19 @@ if (-not $SkipUpdate) {
 
 Invoke-Step "Validate operational roadmap" {
   & "scripts/validate-roadmap.ps1"
+}
+
+Invoke-Step "Assert Depends On header metadata is generated" {
+  $roadmap = Get-Content -Raw "ROADMAP_CURRENT.json" | ConvertFrom-Json
+  $phase = @($roadmap.phases) | Where-Object { $_.file -eq "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md" } | Select-Object -First 1
+
+  if ($null -eq $phase) {
+    throw "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md not found in ROADMAP_CURRENT.json."
+  }
+
+  if (@($phase.depends_on) -notcontains "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md") {
+    throw "Depends On header was not generated into depends_on for PHASE_42_05."
+  }
 }
 
 Invoke-Step "Assert generated roadmap is committed" {
@@ -123,4 +136,5 @@ Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase 
 }
 
 Write-Host "Operational roadmap smoke test passed."
+
 
