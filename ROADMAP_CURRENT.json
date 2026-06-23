@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 50,
+  "phase_count": 51,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -746,6 +746,17 @@
     },
     {
       "file": "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT.md",
+      "status": "recorded",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW.md",
       "status": "recorded",
       "documentation_only": false,
       "owner": null,
