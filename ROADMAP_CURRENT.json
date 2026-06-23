@@ -12,14 +12,14 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 77,
+  "phase_count": 78,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
       "status": "complete",
       "documentation_only": false,
       "owner": "release-ops",
-      "priority": "critical",
+      "priority": "Critical",
       "depends_on": [],
       "acceptance_criteria": [
         "RC readiness verdict is recorded as an auditable phase artifact.",
@@ -38,7 +38,7 @@
       "status": "complete",
       "documentation_only": false,
       "owner": "release-ops",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_25_RC_READINESS_VERDICT.md"
       ],
@@ -102,7 +102,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "release-ops",
-      "priority": "medium",
+      "priority": "Medium",
       "depends_on": [
         "PHASE_25_RC_READINESS_VERDICT.md"
       ],
@@ -169,7 +169,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "release-ops",
-      "priority": "medium",
+      "priority": "Medium",
       "depends_on": [
         "PHASE_28_03_POST_CLOSURE_RELEASE_READINESS_CLOSURE.md"
       ],
@@ -191,7 +191,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "release-ops",
-      "priority": "medium",
+      "priority": "Medium",
       "depends_on": [
         "PHASE_29_02_POST_PHASE_28_MAINLINE_VERIFICATION_EVIDENCE.md"
       ],
@@ -203,8 +203,8 @@
       "file": "PHASE_30_02_POST_PHASE_29_INTEGRITY_EVIDENCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "release-ops",
+      "priority": "Medium",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -226,7 +226,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "quality-ops",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md"
       ],
@@ -247,7 +247,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "release-ops",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_30_02_POST_PHASE_29_INTEGRITY_EVIDENCE.md"
       ],
@@ -268,7 +268,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_01_ENTERPRISE_ROADMAP_GOVERNANCE_HARDENING.md"
       ],
@@ -291,7 +291,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_02_COMMERCIAL_INTELLIGENCE_GOVERNANCE.md"
       ],
@@ -314,7 +314,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_03_AI_DECISION_TRACEABILITY_GOVERNANCE.md"
       ],
@@ -337,7 +337,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_04_AI_DECISION_ENFORCEMENT_READINESS_GOVERNANCE.md"
       ],
@@ -360,7 +360,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_05_AI_DECISION_ENFORCEMENT_AUDIT_EVIDENCE_GOVERNANCE.md"
       ],
@@ -383,7 +383,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_06_AI_DECISION_LIFECYCLE_GOVERNANCE.md"
       ],
@@ -406,7 +406,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_07_AI_DECISION_LIFECYCLE_AUDIT_ENFORCEMENT_READINESS_GOVERNANCE.md"
       ],
@@ -429,7 +429,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_08_AI_DECISION_LIFECYCLE_ENFORCEMENT_EVIDENCE_GOVERNANCE.md"
       ],
@@ -452,7 +452,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_09_AI_DECISION_LIFECYCLE_ENFORCEMENT_GATE_MAPPING_GOVERNANCE.md"
       ],
@@ -475,7 +475,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [
         "PHASE_31_10_AI_DECISION_LIFECYCLE_GATE_AUDIT_REPORTING_GOVERNANCE.md"
       ],
@@ -497,8 +497,8 @@
       "file": "PHASE_31_12_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -508,8 +508,8 @@
       "file": "PHASE_31_13_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_MAPPING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -519,8 +519,8 @@
       "file": "PHASE_31_14_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -530,8 +530,8 @@
       "file": "PHASE_31_15_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -541,8 +541,8 @@
       "file": "PHASE_31_16_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_MAPPING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -552,8 +552,8 @@
       "file": "PHASE_31_17_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "enterprise-governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -564,7 +564,7 @@
       "status": "complete",
       "documentation_only": true,
       "owner": "governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [
         "Define readiness expectations for future verification of enforcement outcomes.",
@@ -584,7 +584,7 @@
       "status": "complete",
       "documentation_only": false,
       "owner": "governance",
-      "priority": "high",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -594,8 +594,8 @@
       "file": "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT.md",
       "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -988,10 +988,10 @@
     },
     {
       "file": "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": true,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -999,10 +999,10 @@
     },
     {
       "file": "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -1010,10 +1010,10 @@
     },
     {
       "file": "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -1021,10 +1021,10 @@
     },
     {
       "file": "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -1032,10 +1032,10 @@
     },
     {
       "file": "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
@@ -1043,10 +1043,21 @@
     },
     {
       "file": "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT.md",
-      "status": "complete",
+      "status": "recorded",
       "documentation_only": false,
-      "owner": null,
-      "priority": null,
+      "owner": "Operations / Governance",
+      "priority": "High",
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_42_03_ROADMAP_METADATA_COMPLETENESS_AND_ENTERPRISE_READINESS_HARDENING.md",
+      "status": "recorded",
+      "documentation_only": false,
+      "owner": "Operations / Governance",
+      "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],

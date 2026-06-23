@@ -44,15 +44,111 @@ function Get-RoadmapMetadata {
     return $defaults
 }
 
+
+
+function Normalize-RoadmapPriority {
+    param(
+        [object]$Value
+    )
+
+    if ($null -eq $Value) {
+        return $null
+    }
+
+    $normalized = [string]$Value
+    $normalized = $normalized.Trim()
+    $normalized = $normalized.Trim('"')
+    $normalized = $normalized.Trim("'")
+    $normalized = $normalized.Trim().ToLowerInvariant()
+
+    switch ($normalized) {
+        "critical" { return "Critical" }
+        "high" { return "High" }
+        "medium" { return "Medium" }
+        "low" { return "Low" }
+        default { return $Value }
+    }
+}
+
+function Normalize-RoadmapScalar {
+    param(
+        [object]$Value
+    )
+
+    if ($null -eq $Value) {
+        return $null
+    }
+
+    $normalized = [string]$Value
+    $normalized = $normalized.Trim()
+    $normalized = $normalized.Trim('"')
+    $normalized = $normalized.Trim("'")
+    $normalized = $normalized.Trim()
+
+    if ($normalized -eq "") {
+        return $null
+    }
+
+    return $normalized
+}
+
+function Normalize-RoadmapPriority {
+    param(
+        [object]$Value
+    )
+
+    $normalized = Normalize-RoadmapScalar $Value
+
+    if ($null -eq $normalized) {
+        return $null
+    }
+
+    switch ($normalized.ToLowerInvariant()) {
+        "critical" { return "Critical" }
+        "high" { return "High" }
+        "medium" { return "Medium" }
+        "low" { return "Low" }
+        default { return $normalized }
+    }
+}
+function Get-MetadataValue {
+    param(
+        [string]$Content,
+        [string]$Name
+    )
+
+    $pattern = "(?im)^\s*" + [regex]::Escape($Name) + "\s*:\s*(.+?)\s*$"
+    $match = [regex]::Match($Content, $pattern)
+
+    if ($match.Success) {
+        return $match.Groups[1].Value.Trim()
+    }
+
+    return $null
+}
 $phaseFiles = Get-ChildItem -Path . -Filter "PHASE_*.md" -File | Sort-Object Name
 
 $phases = foreach ($phaseFile in $phaseFiles) {
     $content = Get-Content -Raw -Path $phaseFile.FullName
-    $status = "recorded"
+    $statusValue = Get-MetadataValue -Content $content -Name "Status"
+        $status = "recorded"
 
-    if ($content -match "\bCOMPLETE\b") {
-        $status = "complete"
-    }
+        if ($statusValue) {
+            $normalizedStatus = $statusValue.Trim().ToLowerInvariant()
+
+            if ($normalizedStatus -match "\brecorded\b") {
+                $status = "recorded"
+            }
+            elseif (
+                $normalizedStatus -match "\bcomplete\b" -or
+                $normalizedStatus -match "\bcompleted\b"
+            ) {
+                $status = "complete"
+            }
+        }
+        elseif ($content -match "\bCOMPLETE\b") {
+            $status = "complete"
+        }
 
     $documentationOnly = $false
     if (
@@ -68,6 +164,18 @@ $phases = foreach ($phaseFile in $phaseFiles) {
     }
 
     $metadata = Get-RoadmapMetadata -Content $content
+
+        # Phase 42.03 header metadata backfill
+        if (-not $metadata["owner"]) {
+            $metadata["owner"] = Get-MetadataValue -Content $content -Name "Owner"
+        }
+
+        if (-not $metadata["priority"]) {
+            $metadata["priority"] = Get-MetadataValue -Content $content -Name "Priority"
+        }
+
+        $metadata["owner"] = Normalize-RoadmapScalar $metadata["owner"]
+        $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
 
     [ordered]@{
         file = $phaseFile.Name
@@ -110,5 +218,8 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 )
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+
+
+
 
 
