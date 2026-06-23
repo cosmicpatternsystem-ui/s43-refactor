@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 37,
+  "phase_count": 38,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -604,6 +604,17 @@
     {
       "file": "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT.md",
       "status": "recorded",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_32_03_OPERATIONAL_INTELLIGENCE_EVIDENCE_AND_ESCALATION_FLOW.md",
+      "status": "complete",
       "documentation_only": false,
       "owner": null,
       "priority": null,
