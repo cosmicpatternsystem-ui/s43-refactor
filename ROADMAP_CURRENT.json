@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 34,
+  "phase_count": 35,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -577,6 +577,17 @@
         "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_READINESS_EVIDENCE_CONTRACT.md",
         "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_READINESS_EXCEPTION_CONTRACT.md"
       ],
+      "last_verified_at": "2026-06-23T00:00:00Z"
+    },
+    {
+      "file": "PHASE_31_CLOSURE_REVIEW.md",
+      "status": "complete",
+      "documentation_only": false,
+      "owner": "governance",
+      "priority": "high",
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
       "last_verified_at": "2026-06-23T00:00:00Z"
     }
   ]
