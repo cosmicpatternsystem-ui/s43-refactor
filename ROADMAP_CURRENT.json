@@ -12,7 +12,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "GENERATED",
-  "phase_count": 53,
+  "phase_count": 54,
   "phases": [
     {
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
@@ -780,6 +780,17 @@
     {
       "file": "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING.md",
       "status": "recorded",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "file": "PHASE_36_03_MODEL_AND_STRATEGY_UPDATE_GOVERNANCE.md",
+      "status": "complete",
       "documentation_only": false,
       "owner": null,
       "priority": null,
