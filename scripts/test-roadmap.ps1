@@ -58,6 +58,9 @@ Invoke-Step "Assert Depends On header metadata is generated" {
 
 Invoke-Step "Assert generated roadmap is committed" {
   git diff --exit-code -- ROADMAP_CURRENT.json
+  if ($LASTEXITCODE -ne 0) {
+    throw "Generated ROADMAP_CURRENT.json has uncommitted changes. Run scripts/update-roadmap.ps1 and commit the result."
+  }
 }
 
 Write-Host "==> Reject missing roadmap dependency"
