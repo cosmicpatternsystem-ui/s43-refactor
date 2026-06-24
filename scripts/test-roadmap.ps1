@@ -240,6 +240,59 @@ Invoke-Step "Trim canonical filename Depends On header target" {
   }
 }
 
+Invoke-Step "Resolve mixed Depends On header targets" {
+  $tempMixedDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_94_TEMP_MIXED_DEPENDS_ON_HEADER.md"
+  $mixedDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $mixedDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $expectedDependsOn = @(
+    "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
+    "PHASE_42_05_ROADMAP_REGRESSION_TESTING.md"
+  )
+  $originalMixedDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($mixedDependsRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.94 TEMP MIXED DEPENDS ON HEADER"
+      ""
+      "Status: Proposed"
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Depends On: Phase 42.04, PHASE_42_05_ROADMAP_REGRESSION_TESTING.md"
+      ""
+      "## Summary"
+      "Temporary regression fixture for mixed Depends On header target resolution."
+    ) | Set-Content -Path $tempMixedDependsPhasePath -Encoding utf8
+
+    & $mixedDependsUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $mixedDependsRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_94_TEMP_MIXED_DEPENDS_ON_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary mixed Depends On phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $actualDependsOn = @($phase.depends_on)
+
+    if ($actualDependsOn.Count -ne $expectedDependsOn.Count) {
+      throw "Mixed Depends On header produced $($actualDependsOn.Count) dependencies, expected $($expectedDependsOn.Count). Actual: $($actualDependsOn -join ', ')"
+    }
+
+    for ($i = 0; $i -lt $expectedDependsOn.Count; $i++) {
+      if ($actualDependsOn[$i] -ne $expectedDependsOn[$i]) {
+        throw "Mixed Depends On header dependency mismatch at index $i. Expected: $($expectedDependsOn[$i]). Actual: $($actualDependsOn[$i])"
+      }
+    }
+  }
+  finally {
+    if (Test-Path $tempMixedDependsPhasePath) {
+      Remove-Item $tempMixedDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($mixedDependsRoadmapPath, $originalMixedDependsRoadmapBytes)
+  }
+}
 Invoke-Step "Reject missing Depends On header target" {
   $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
   $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
@@ -359,5 +412,3 @@ Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase 
 }
 
 Write-Host "Operational roadmap smoke test passed."
-
-
