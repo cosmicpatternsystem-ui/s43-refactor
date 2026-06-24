@@ -117,7 +117,7 @@ function Get-MetadataValue {
         [string]$Name
     )
 
-    $pattern = "(?im)^[ \t]*" + [regex]::Escape($Name) + "[ \t]*:[ \t]*([^\r\n]*)[ \t]*$"
+    $pattern = "(?im)^[ \t]*" + [regex]::Escape($Name) + "[ \t]*:[ \t]*([^\r\n]*?)[ \t]*\r?$"
     $match = [regex]::Match($Content, $pattern)
 
     if ($match.Success) {
@@ -166,10 +166,24 @@ function Get-PhaseReferenceMap {
 
     foreach ($phaseFile in $PhaseFiles) {
         $key = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+        $map[$phaseFile.Name.ToLowerInvariant()] = $phaseFile.Name
+        $map[$key.ToLowerInvariant()] = $phaseFile.Name
 
         if ($key -match '^PHASE_(\d+)_(\d+)_') {
-            $label = "Phase $([int]$Matches[1]).$('{0:D2}' -f [int]$Matches[2])"
-            $map[$label.ToLowerInvariant()] = $phaseFile.Name
+            $major = [int]$Matches[1]
+            $minor = [int]$Matches[2]
+            $minorPadded = '{0:D2}' -f $minor
+
+            foreach ($label in @(
+                "Phase $major.$minorPadded",
+                "PHASE $major.$minorPadded",
+                "$major.$minorPadded",
+                "Phase $major.$minor",
+                "PHASE $major.$minor",
+                "$major.$minor"
+            )) {
+                $map[$label.ToLowerInvariant()] = $phaseFile.Name
+            }
         }
     }
 
@@ -252,13 +266,15 @@ $phases = foreach ($phaseFile in $phaseFiles) {
             $metadata["priority"] = Get-MetadataValue -Content $content -Name "Priority"
         }
 
-        if (@($metadata["depends_on"]).Count -eq 0) {
-            $metadata["depends_on"] = Get-MetadataValue -Content $content -Name "Depends On"
+        $dependsOn = @(Normalize-RoadmapList $metadata["depends_on"])
+
+        if ($dependsOn.Count -eq 0) {
+            $dependsOn = @(Normalize-RoadmapList (Get-MetadataValue -Content $content -Name "Depends On"))
         }
 
         $metadata["owner"] = Normalize-RoadmapScalar $metadata["owner"]
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
-        $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $metadata["depends_on"] -PhaseReferenceMap $phaseReferenceMap
+        $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $dependsOn -PhaseReferenceMap $phaseReferenceMap
 
     [ordered]@{
         file = $phaseFile.Name

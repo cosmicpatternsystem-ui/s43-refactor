@@ -105,6 +105,51 @@ Invoke-Step "Ignore empty Depends On header value" {
   }
 }
 
+Invoke-Step "Resolve human-readable Depends On header label" {
+  $tempLabelDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_97_TEMP_LABEL_DEPENDS_ON_HEADER.md"
+  $labelDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $labelDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
+  $originalLabelDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($labelDependsRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.97 TEMP LABEL DEPENDS ON HEADER"
+      ""
+      "Status: Proposed"
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Depends On: Phase 42.04"
+      ""
+      "## Summary"
+      "Temporary regression fixture for human-readable Depends On label resolution."
+    ) | Set-Content -Path $tempLabelDependsPhasePath -Encoding utf8
+
+    & $labelDependsUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $labelDependsRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_97_TEMP_LABEL_DEPENDS_ON_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary label Depends On phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $actualDependsOn = @($phase.depends_on)
+
+    if ($actualDependsOn.Count -ne 1 -or $actualDependsOn[0] -ne $expectedDependsOn) {
+      throw "Human-readable Depends On header was not resolved to $expectedDependsOn. Actual: $($actualDependsOn -join ', ')"
+    }
+  }
+  finally {
+    if (Test-Path $tempLabelDependsPhasePath) {
+      Remove-Item $tempLabelDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($labelDependsRoadmapPath, $originalLabelDependsRoadmapBytes)
+  }
+}
+
 Invoke-Step "Reject missing Depends On header target" {
   $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
   $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
