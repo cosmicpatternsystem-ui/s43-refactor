@@ -63,6 +63,49 @@ Invoke-Step "Assert generated roadmap is committed" {
   }
 }
 
+Invoke-Step "Reject missing Depends On header target" {
+  $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
+  $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $dependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $dependsValidatorPath = Join-Path $PSScriptRoot "validate-roadmap.ps1"
+  $originalDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($dependsRoadmapPath)
+
+  try {
+    @'
+# PHASE 99.99 TEMP MISSING DEPENDS ON HEADER TARGET
+
+Status: Proposed
+Documentation Only: Yes
+Owner: Operations / Governance
+Priority: High
+Depends On: PHASE_DOES_NOT_EXIST.md
+
+## Summary
+Temporary negative test fixture. This file must be removed by the test.
+'@ | Set-Content -Path $tempDependsPhasePath -NoNewline
+
+    & $dependsUpdatePath | Out-Null
+    $validatorRejectedMissingDependency = $false
+    try {
+      & $dependsValidatorPath *> $null
+    }
+    catch {
+      $validatorRejectedMissingDependency = $true
+    }
+
+    if (-not $validatorRejectedMissingDependency -and $LASTEXITCODE -eq 0) {
+      throw "Validator accepted a missing Depends On header target."
+    }
+  }
+  finally {
+    if (Test-Path $tempDependsPhasePath) {
+      Remove-Item $tempDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($dependsRoadmapPath, $originalDependsRoadmapBytes)
+  }
+}
+
 Write-Host "==> Reject missing roadmap dependency"
 $roadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
 $validatorPath = Join-Path $PSScriptRoot "validate-roadmap.ps1"
