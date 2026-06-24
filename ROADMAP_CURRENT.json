@@ -1002,7 +1002,7 @@
     {
       "file": "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [
@@ -1015,7 +1015,7 @@
     {
       "file": "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [
@@ -1028,7 +1028,7 @@
     {
       "file": "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [
@@ -1041,7 +1041,7 @@
     {
       "file": "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [
@@ -1054,7 +1054,7 @@
     {
       "file": "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [
@@ -1091,7 +1091,7 @@
     {
       "file": "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md",
       "status": "recorded",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "Operations / Governance",
       "priority": "High",
       "depends_on": [

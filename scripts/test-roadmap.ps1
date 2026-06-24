@@ -606,8 +606,8 @@ Invoke-Step "Trim roadmap Documentation Only header value" {
       throw "Trimmed Documentation Only phase did not include expected JSON property: documentation_only"
     }
 
-    if ([string]$documentationOnlyProperty.Value -ne "False") {
-      throw "Trimmed Documentation Only header produced unexpected value. Expected: False. Actual: $($documentationOnlyProperty.Value)"
+    if ([string]$documentationOnlyProperty.Value -ne "True") {
+      throw "Trimmed Documentation Only header produced unexpected value. Expected: True. Actual: $($documentationOnlyProperty.Value)"
     }
   }
   finally {
@@ -616,6 +616,52 @@ Invoke-Step "Trim roadmap Documentation Only header value" {
     }
 
     [System.IO.File]::WriteAllBytes($trimDocumentationOnlyRoadmapPath, $originalTrimDocumentationOnlyRoadmapBytes)
+  }
+}
+
+Invoke-Step "Treat Documentation Only Yes as true" {
+  $tempDocumentationOnlyYesPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_88_TEMP_DOCUMENTATION_ONLY_YES.md"
+  $documentationOnlyYesRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $documentationOnlyYesUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalDocumentationOnlyYesRoadmapBytes = [System.IO.File]::ReadAllBytes($documentationOnlyYesRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.88 TEMP DOCUMENTATION ONLY YES"
+      ""
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Documentation Only: Yes"
+      ""
+      "## Summary"
+      "Temporary regression fixture for Documentation Only Yes semantics."
+    ) | Set-Content -Path $tempDocumentationOnlyYesPhasePath -Encoding utf8
+
+    & $documentationOnlyYesUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $documentationOnlyYesRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_88_TEMP_DOCUMENTATION_ONLY_YES.md" }
+
+    if (-not $phase) {
+      throw "Temporary Documentation Only Yes phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $documentationOnlyProperty = $phase.PSObject.Properties["documentation_only"]
+
+    if (-not $documentationOnlyProperty) {
+      throw "Documentation Only Yes phase did not include expected JSON property: documentation_only"
+    }
+
+    if ($documentationOnlyProperty.Value -ne $true) {
+      throw "Documentation Only: Yes produced unexpected value. Expected: True. Actual: $($documentationOnlyProperty.Value)"
+    }
+  }
+  finally {
+    if (Test-Path $tempDocumentationOnlyYesPhasePath) {
+      Remove-Item $tempDocumentationOnlyYesPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($documentationOnlyYesRoadmapPath, $originalDocumentationOnlyYesRoadmapBytes)
   }
 }
 Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
@@ -631,3 +677,5 @@ Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase 
 }
 
 Write-Host "Operational roadmap smoke test passed."
+
+

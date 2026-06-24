@@ -111,6 +111,34 @@ function Normalize-RoadmapPriority {
         default { return $normalized }
     }
 }
+
+function Normalize-RoadmapBoolean {
+    param(
+        [object]$Value
+    )
+
+    $normalized = Normalize-RoadmapScalar $Value
+
+    if ($null -eq $normalized) {
+        return $null
+    }
+
+    switch ($normalized.ToLowerInvariant()) {
+        "true" { return $true }
+        "yes" { return $true }
+        "y" { return $true }
+        "1" { return $true }
+        "on" { return $true }
+
+        "false" { return $false }
+        "no" { return $false }
+        "n" { return $false }
+        "0" { return $false }
+        "off" { return $false }
+
+        default { return $null }
+    }
+}
 function Get-MetadataValue {
     param(
         [string]$Content,
@@ -266,6 +294,18 @@ $phases = foreach ($phaseFile in $phaseFiles) {
             $metadata["priority"] = Get-MetadataValue -Content $content -Name "Priority"
         }
 
+        $documentationOnlyValue = $metadata["documentation_only"]
+
+        if ($null -eq $documentationOnlyValue) {
+            $documentationOnlyValue = Get-MetadataValue -Content $content -Name "Documentation Only"
+        }
+
+        $normalizedDocumentationOnly = Normalize-RoadmapBoolean $documentationOnlyValue
+
+        if ($null -ne $normalizedDocumentationOnly) {
+            $documentationOnly = $normalizedDocumentationOnly
+        }
+
         $dependsOn = @(Normalize-RoadmapList $metadata["depends_on"])
 
         if ($dependsOn.Count -eq 0) {
@@ -317,6 +357,7 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 )
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+
 
 
 
