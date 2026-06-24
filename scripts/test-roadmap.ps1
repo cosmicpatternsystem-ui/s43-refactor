@@ -572,6 +572,52 @@ Invoke-Step "Trim roadmap Owner header value" {
     [System.IO.File]::WriteAllBytes($trimOwnerRoadmapPath, $originalTrimOwnerRoadmapBytes)
   }
 }
+
+Invoke-Step "Trim roadmap Documentation Only header value" {
+  $tempTrimDocumentationOnlyPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_89_TEMP_TRIMMED_DOCUMENTATION_ONLY_HEADER.md"
+  $trimDocumentationOnlyRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $trimDocumentationOnlyUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalTrimDocumentationOnlyRoadmapBytes = [System.IO.File]::ReadAllBytes($trimDocumentationOnlyRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.89 TEMP TRIMMED DOCUMENTATION ONLY HEADER"
+      ""
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Documentation Only:   Yes   "
+      ""
+      "## Summary"
+      "Temporary regression fixture for trimmed Documentation Only header normalization."
+    ) | Set-Content -Path $tempTrimDocumentationOnlyPhasePath -Encoding utf8
+
+    & $trimDocumentationOnlyUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $trimDocumentationOnlyRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_89_TEMP_TRIMMED_DOCUMENTATION_ONLY_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary trimmed Documentation Only phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $documentationOnlyProperty = $phase.PSObject.Properties["documentation_only"]
+
+    if (-not $documentationOnlyProperty) {
+      throw "Trimmed Documentation Only phase did not include expected JSON property: documentation_only"
+    }
+
+    if ([string]$documentationOnlyProperty.Value -ne "False") {
+      throw "Trimmed Documentation Only header produced unexpected value. Expected: False. Actual: $($documentationOnlyProperty.Value)"
+    }
+  }
+  finally {
+    if (Test-Path $tempTrimDocumentationOnlyPhasePath) {
+      Remove-Item $tempTrimDocumentationOnlyPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($trimDocumentationOnlyRoadmapPath, $originalTrimDocumentationOnlyRoadmapBytes)
+  }
+}
 Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
     param($Roadmap)
 
