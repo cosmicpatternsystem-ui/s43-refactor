@@ -452,6 +452,46 @@ function Invoke-ExpectedRoadmapValidationFailure {
     }
 }
 
+Invoke-Step "Trim roadmap Status header value" {
+  $tempTrimStatusPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_92_TEMP_TRIMMED_STATUS_HEADER.md"
+  $trimStatusRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $trimStatusUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalTrimStatusRoadmapBytes = [System.IO.File]::ReadAllBytes($trimStatusRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.92 TEMP TRIMMED STATUS HEADER"
+      ""
+      "Status:   Proposed   "
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      ""
+      "## Summary"
+      "Temporary regression fixture for trimmed Status header normalization."
+    ) | Set-Content -Path $tempTrimStatusPhasePath -Encoding utf8
+
+    & $trimStatusUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $trimStatusRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_92_TEMP_TRIMMED_STATUS_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary trimmed Status phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    if ($phase.status -ne "recorded") {
+      throw "Trimmed Status header produced unexpected status. Expected: recorded. Actual: $($phase.status)"
+    }
+  }
+  finally {
+    if (Test-Path $tempTrimStatusPhasePath) {
+      Remove-Item $tempTrimStatusPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($trimStatusRoadmapPath, $originalTrimStatusRoadmapBytes)
+  }
+}
 Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
     param($Roadmap)
 
