@@ -63,6 +63,48 @@ Invoke-Step "Assert generated roadmap is committed" {
   }
 }
 
+Invoke-Step "Ignore empty Depends On header value" {
+  $tempEmptyDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md"
+  $emptyDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $emptyDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalEmptyDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($emptyDependsRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.98 TEMP EMPTY DEPENDS ON HEADER"
+      ""
+      "Status: Proposed"
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Depends On:"
+      ""
+      "## Summary"
+      "Temporary regression fixture for empty Depends On header parsing."
+    ) | Set-Content -Path $tempEmptyDependsPhasePath
+
+    & $emptyDependsUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $emptyDependsRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary empty Depends On phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    if (@($phase.depends_on).Count -ne 0) {
+      throw "Empty Depends On header produced unexpected dependencies: $($phase.depends_on -join ', ')"
+    }
+  }
+  finally {
+    if (Test-Path $tempEmptyDependsPhasePath) {
+      Remove-Item $tempEmptyDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($emptyDependsRoadmapPath, $originalEmptyDependsRoadmapBytes)
+  }
+}
+
 Invoke-Step "Reject missing Depends On header target" {
   $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
   $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
