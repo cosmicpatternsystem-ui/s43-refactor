@@ -150,7 +150,12 @@ for ($i = 0; $i -lt $json.phases.Count; $i++) {
     Fail "$scope has invalid priority: $($phase.priority)"
   }
 
-  if (($null -ne $phase.last_verified_at) -and ($phase.last_verified_at -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
+  $lastVerifiedAt = $phase.last_verified_at
+  if ($lastVerifiedAt -is [datetime]) {
+    $lastVerifiedAt = $lastVerifiedAt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+  }
+
+  if (($null -ne $lastVerifiedAt) -and ($lastVerifiedAt -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
     Fail "$scope last_verified_at must be an ISO-8601 UTC timestamp ending with Z."
   }
 }
