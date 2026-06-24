@@ -195,6 +195,51 @@ Invoke-Step "Resolve canonical filename Depends On header target" {
   }
 }
 
+Invoke-Step "Trim canonical filename Depends On header target" {
+  $tempTrimmedFilenameDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_95_TEMP_TRIMMED_FILENAME_DEPENDS_ON_HEADER.md"
+  $trimmedFilenameDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $trimmedFilenameDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
+  $originalTrimmedFilenameDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($trimmedFilenameDependsRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.95 TEMP TRIMMED FILENAME DEPENDS ON HEADER"
+      ""
+      "Status: Proposed"
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Depends On:   PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md   "
+      ""
+      "## Summary"
+      "Temporary regression fixture for trimmed canonical filename Depends On resolution."
+    ) | Set-Content -Path $tempTrimmedFilenameDependsPhasePath -Encoding utf8
+
+    & $trimmedFilenameDependsUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $trimmedFilenameDependsRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_95_TEMP_TRIMMED_FILENAME_DEPENDS_ON_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary trimmed filename Depends On phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $actualDependsOn = @($phase.depends_on)
+
+    if ($actualDependsOn.Count -ne 1 -or $actualDependsOn[0] -ne $expectedDependsOn) {
+      throw "Trimmed canonical filename Depends On header was not resolved to $expectedDependsOn. Actual: $($actualDependsOn -join ', ')"
+    }
+  }
+  finally {
+    if (Test-Path $tempTrimmedFilenameDependsPhasePath) {
+      Remove-Item $tempTrimmedFilenameDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($trimmedFilenameDependsRoadmapPath, $originalTrimmedFilenameDependsRoadmapBytes)
+  }
+}
+
 Invoke-Step "Reject missing Depends On header target" {
   $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
   $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
