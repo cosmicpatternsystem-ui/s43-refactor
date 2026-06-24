@@ -72,9 +72,9 @@ if (!(Test-Path $path)) {
 }
 
 try {
-  $json = Get-Content $path -Raw | ConvertFrom-Json -DateKind String
+  $json = Get-Content $path -Raw | ConvertFrom-Json
 } catch {
-  Fail "ROADMAP_CURRENT.json is not valid JSON."
+  Fail ("ROADMAP_CURRENT.json parse failed: " + $PSItem.Exception.Message)
 }
 
 $required = @(
@@ -192,4 +192,5 @@ foreach ($phase in @($json.phases)) {
     }
 }
 Write-Host "ROADMAP_CURRENT.json schema validation passed"
+
 
