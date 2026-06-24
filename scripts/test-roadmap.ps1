@@ -492,6 +492,46 @@ Invoke-Step "Trim roadmap Status header value" {
     [System.IO.File]::WriteAllBytes($trimStatusRoadmapPath, $originalTrimStatusRoadmapBytes)
   }
 }
+
+Invoke-Step "Trim roadmap Priority header value" {
+  $tempTrimPriorityPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_91_TEMP_TRIMMED_PRIORITY_HEADER.md"
+  $trimPriorityRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $trimPriorityUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalTrimPriorityRoadmapBytes = [System.IO.File]::ReadAllBytes($trimPriorityRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.91 TEMP TRIMMED Priority HEADER"
+      ""
+      "Priority:   High   "
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      ""
+      "## Summary"
+      "Temporary regression fixture for trimmed Priority header normalization."
+    ) | Set-Content -Path $tempTrimPriorityPhasePath -Encoding utf8
+
+    & $trimPriorityUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $trimPriorityRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_91_TEMP_TRIMMED_PRIORITY_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary trimmed Priority phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    if ($phase.Priority -ne "high") {
+      throw "Trimmed Priority header produced unexpected Priority. Expected: high. Actual: $($phase.Priority)"
+    }
+  }
+  finally {
+    if (Test-Path $tempTrimPriorityPhasePath) {
+      Remove-Item $tempTrimPriorityPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($trimPriorityRoadmapPath, $originalTrimPriorityRoadmapBytes)
+  }
+}
 Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
     param($Roadmap)
 
