@@ -676,6 +676,51 @@ Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase 
     $Roadmap.phases[0].priority = "__INVALID_PRIORITY__"
 }
 
-Write-Host "Operational roadmap smoke test passed."
+Invoke-Step "Treat Documentation Only No as false" {
+  $tempDocumentationOnlyNoPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_87_TEMP_DOCUMENTATION_ONLY_NO.md"
+  $documentationOnlyNoRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $documentationOnlyNoUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalDocumentationOnlyNoRoadmapBytes = [System.IO.File]::ReadAllBytes($documentationOnlyNoRoadmapPath)
 
+  try {
+    @(
+      "# PHASE 99.87 TEMP DOCUMENTATION ONLY NO"
+      ""
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Documentation Only: No"
+      ""
+      "## Summary"
+      "Temporary regression fixture for Documentation Only No semantics."
+    ) | Set-Content -Path $tempDocumentationOnlyNoPhasePath -Encoding utf8
+
+    & $documentationOnlyNoUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $documentationOnlyNoRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_87_TEMP_DOCUMENTATION_ONLY_NO.md" }
+
+    if (-not $phase) {
+      throw "Temporary Documentation Only No phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $documentationOnlyProperty = $phase.PSObject.Properties["documentation_only"]
+
+    if (-not $documentationOnlyProperty) {
+      throw "Temporary Documentation Only No phase did not include documentation_only."
+    }
+
+    if ($documentationOnlyProperty.Value -ne $false) {
+      throw "Documentation Only: No produced unexpected value. Expected: False. Actual: $($documentationOnlyProperty.Value)"
+    }
+  }
+  finally {
+    if (Test-Path $tempDocumentationOnlyNoPhasePath) {
+      Remove-Item -Path $tempDocumentationOnlyNoPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($documentationOnlyNoRoadmapPath, $originalDocumentationOnlyNoRoadmapBytes)
+  }
+}
+
+Write-Host "Operational roadmap smoke test passed."
 
