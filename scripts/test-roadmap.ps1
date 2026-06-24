@@ -293,6 +293,59 @@ Invoke-Step "Resolve mixed Depends On header targets" {
     [System.IO.File]::WriteAllBytes($mixedDependsRoadmapPath, $originalMixedDependsRoadmapBytes)
   }
 }
+Invoke-Step "Resolve semicolon Depends On header targets" {
+  $tempSemicolonDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_93_TEMP_SEMICOLON_DEPENDS_ON_HEADER.md"
+  $semicolonDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $semicolonDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $expectedDependsOn = @(
+    "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
+    "PHASE_42_05_ROADMAP_REGRESSION_TESTING.md"
+  )
+  $originalSemicolonDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($semicolonDependsRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.93 TEMP SEMICOLON DEPENDS ON HEADER"
+      ""
+      "Status: Proposed"
+      "Documentation Only: Yes"
+      "Owner: Operations / Governance"
+      "Priority: High"
+      "Depends On: Phase 42.04; PHASE_42_05_ROADMAP_REGRESSION_TESTING.md"
+      ""
+      "## Summary"
+      "Temporary regression fixture for semicolon Depends On header target resolution."
+    ) | Set-Content -Path $tempSemicolonDependsPhasePath -Encoding utf8
+
+    & $semicolonDependsUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $semicolonDependsRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_93_TEMP_SEMICOLON_DEPENDS_ON_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary semicolon Depends On phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    $actualDependsOn = @($phase.depends_on)
+
+    if ($actualDependsOn.Count -ne $expectedDependsOn.Count) {
+      throw "Semicolon Depends On header produced $($actualDependsOn.Count) dependencies, expected $($expectedDependsOn.Count). Actual: $($actualDependsOn -join ', ')"
+    }
+
+    for ($i = 0; $i -lt $expectedDependsOn.Count; $i++) {
+      if ($actualDependsOn[$i] -ne $expectedDependsOn[$i]) {
+        throw "Semicolon Depends On header dependency mismatch at index $i. Expected: $($expectedDependsOn[$i]). Actual: $($actualDependsOn[$i])"
+      }
+    }
+  }
+  finally {
+    if (Test-Path $tempSemicolonDependsPhasePath) {
+      Remove-Item $tempSemicolonDependsPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($semicolonDependsRoadmapPath, $originalSemicolonDependsRoadmapBytes)
+  }
+}
 Invoke-Step "Reject missing Depends On header target" {
   $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
   $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
