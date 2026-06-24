@@ -532,6 +532,46 @@ Invoke-Step "Trim roadmap Priority header value" {
     [System.IO.File]::WriteAllBytes($trimPriorityRoadmapPath, $originalTrimPriorityRoadmapBytes)
   }
 }
+
+Invoke-Step "Trim roadmap Owner header value" {
+  $tempTrimOwnerPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_90_TEMP_TRIMMED_OWNER_HEADER.md"
+  $trimOwnerRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $trimOwnerUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
+  $originalTrimOwnerRoadmapBytes = [System.IO.File]::ReadAllBytes($trimOwnerRoadmapPath)
+
+  try {
+    @(
+      "# PHASE 99.90 TEMP TRIMMED Owner HEADER"
+      ""
+      "Owner:   Operations / Governance   "
+      "Priority: High"
+      "Documentation Only: Yes"
+      ""
+      "## Summary"
+      "Temporary regression fixture for trimmed Owner header normalization."
+    ) | Set-Content -Path $tempTrimOwnerPhasePath -Encoding utf8
+
+    & $trimOwnerUpdatePath | Out-Null
+
+    $roadmap = Get-Content -Raw -Path $trimOwnerRoadmapPath | ConvertFrom-Json
+    $phase = $roadmap.phases | Where-Object { $_.file -eq "PHASE_99_90_TEMP_TRIMMED_OWNER_HEADER.md" }
+
+    if (-not $phase) {
+      throw "Temporary trimmed Owner phase was not generated into ROADMAP_CURRENT.json."
+    }
+
+    if ($phase.Owner -ne "Operations / Governance") {
+      throw "Trimmed Owner header produced unexpected Owner. Expected: Operations / Governance. Actual: $($phase.Owner)"
+    }
+  }
+  finally {
+    if (Test-Path $tempTrimOwnerPhasePath) {
+      Remove-Item $tempTrimOwnerPhasePath -Force
+    }
+
+    [System.IO.File]::WriteAllBytes($trimOwnerRoadmapPath, $originalTrimOwnerRoadmapBytes)
+  }
+}
 Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase status" -MutateRoadmap {
     param($Roadmap)
 
