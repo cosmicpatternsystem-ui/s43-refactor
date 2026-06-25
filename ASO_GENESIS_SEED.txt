@@ -1,0 +1,1 @@
+{'version': 'X-1', 'dna': 'Integrity-First', 'governance_rules': 'Always-Verify-Never-Trust', 'emergency_protocol': 'Self-Terminate-on-Tamper'}

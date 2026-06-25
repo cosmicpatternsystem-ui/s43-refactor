@@ -1,0 +1,9 @@
+{
+  "project": "ASO",
+  "supervisor": "active",
+  "status": "engine_finished",
+  "detail": {
+    "exit_code": 0
+  },
+  "updated_at": "2026-06-25T08:05:09.133582+00:00"
+}

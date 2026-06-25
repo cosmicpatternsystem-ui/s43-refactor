@@ -1,7 +1,9 @@
-﻿*.ps1 text eol=crlf
+# Handle line endings automatically for files detected as text
+# and leave binary files untouched.
+* text=auto
+
+# Force LF for shell scripts and python files to ensure cross-platform compatibility
+*.sh text eol=lf
 *.py text eol=lf
-*.md text eol=lf
-*.txt text eol=lf
 *.json text eol=lf
-*.yml text eol=lf
-*.yaml text eol=lf
+*.md text eol=lf
