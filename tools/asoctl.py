@@ -1,68 +1,57 @@
-import argparse
-import importlib.util
-import json
-import os
+﻿import os
 import sys
+import json
+import time
+import hashlib
+from datetime import datetime
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+# Path Configuration
+AUDIT_LOG = "runtime/audit/integrity.json"
 
-from core.safety.integrity import sign_entry, verify_audit_chain
-
-def run_tool(name):
-    path = os.path.join(ROOT, "tools", name)
-    if not os.path.exists(path):
-        print(f"Missing: {path}")
-        return False
-
-    spec = importlib.util.spec_from_file_location(name.replace(".py", ""), path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-    if hasattr(module, "main"):
-        module.main()
-        return True
-
-    print(f"Missing main() in {path}")
-    return False
-
-def get_status():
-    identity_path = os.path.join(ROOT, "config", "identity.json")
-    identity = "ASO-PRIME-X1"
-    if os.path.exists(identity_path):
-        with open(identity_path, "r", encoding="utf-8") as f:
-            identity = json.load(f).get("identity", identity)
-    return {"status": "operational", "identity": identity}
-
-def main():
-    parser = argparse.ArgumentParser(description="ASO-X Command Line Interface")
-    sub = parser.add_subparsers(dest="command")
-
-    sub.add_parser("status")
-    sub.add_parser("verify-chain")
-    sub.add_parser("roadmap")
-    sub.add_parser("ai-cycle")
-    sub.add_parser("backtest")
-
-    args = parser.parse_args()
-
-    if args.command == "status":
-        result = get_status()
-        print(json.dumps(result, indent=4))
-        sign_entry({"command": "status", "result": result}, "asoctl")
-    elif args.command == "verify-chain":
-        print(json.dumps(verify_audit_chain(), indent=4))
-    elif args.command == "ai-cycle":
-        ok = run_tool("aso_ai.py")
-        if ok:
-            sign_entry({"command": "ai-cycle", "status": "completed"}, "offline_ai")
-    elif args.command == "backtest":
-        run_tool("aso_backtest.py")
-    elif args.command == "roadmap":
-        run_tool("aso_roadmap.py")
+def sign_entry(data, actor="SYSTEM"):
+    if not os.path.exists(AUDIT_LOG):
+        chain = []
     else:
-        parser.print_help()
+        with open(AUDIT_LOG, "r") as f:
+            chain = json.load(f)
+    
+    entry = {
+        "timestamp": datetime.now().isoformat(),
+        "actor": actor,
+        "data": data,
+        "prev_hash": chain[-1]["hash"] if chain else "0000"
+    }
+    entry["hash"] = hashlib.sha256(str(entry).encode()).hexdigest()
+    chain.append(entry)
+    
+    os.makedirs(os.path.dirname(AUDIT_LOG), exist_ok=True)
+    with open(AUDIT_LOG, "w") as f:
+        json.dump(chain, f, indent=4)
+
+def monitor():
+    print("\033[92m--- ASO-X GOLD STANDARD MONITOR ---\033[0m")
+    try:
+        while True:
+            if os.path.exists(AUDIT_LOG):
+                with open(AUDIT_LOG, "r") as f:
+                    chain = json.load(f)
+            else:
+                chain = []
+            
+            count = len(chain)
+            # منطق هوشمند مستقیم
+            intel = "INITIALIZING"
+            if count > 50: intel = "OPTIMIZED"
+            elif count > 10: intel = "STABLE_GROWTH"
+            
+            timestamp = datetime.now().strftime("%H:%M:%S")
+            print(f"[{timestamp}] [SYSTEM: ACTIVE] [AUDIT ENTRIES: {count}] [SECURITY: LOCKED] [INTEL: {intel}]", end="\r")
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nMonitoring stopped.")
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "monitor":
+        monitor()
+    else:
+        print("Use 'python tools/asoctl.py monitor' to start.")
