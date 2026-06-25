@@ -6726,5 +6726,1055 @@
         "timestamp": "2026-06-25 17:05:53",
         "event": "GOLD_HEARTBEAT_PULSE",
         "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:36",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:51",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:21:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:06",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:11",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:21",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:26",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:36",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:51",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:22:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:06",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:11",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:21",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:26",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:36",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:51",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:23:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:06",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:11",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:21",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:26",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:36",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:51",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:24:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:22",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:25:57",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:22",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:26:57",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:22",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:27:57",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:22",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:28:57",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:22",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:37",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:52",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:29:57",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:07",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:12",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:27",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:42",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:30:58",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:13",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:28",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:43",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:31:58",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:13",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:25",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:28",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:40",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:43",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:55",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:32:58",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:08",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:10",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:13",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:23",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:25",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:38",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:40",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:44",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:53",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:55",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:33:59",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:10",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:14",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:25",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:40",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:44",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:55",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:34:59",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:10",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:14",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:25",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:40",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:44",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:55",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:35:59",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:10",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:14",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:25",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:44",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:36:59",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:11",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:14",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:26",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:44",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:54",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:37:59",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:09",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:11",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:14",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:24",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:26",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:29",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:39",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:41",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:45",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:55",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:38:56",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
+    },
+    {
+        "timestamp": "2026-06-25 17:39:00",
+        "event": "GOLD_HEARTBEAT_PULSE",
+        "status": "OPTIMIZED"
     }
 ]
