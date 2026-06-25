@@ -1,0 +1,12 @@
+{
+  "project": "ASO",
+  "component": "safety_gate",
+  "status": "allowed",
+  "detail": {
+    "policy_version": "0.1.0",
+    "mode": "safe_autonomy",
+    "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+    "phases": 21
+  },
+  "updated_at": "2026-06-25T08:06:54.419846+00:00"
+}

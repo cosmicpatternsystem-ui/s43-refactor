@@ -1,0 +1,30 @@
+[
+    {
+        "timestamp": 1782378627.2728167,
+        "event": "Backtest completed",
+        "actor": "backtest_engine",
+        "_prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "_hash": "54ead27599a2f154a6f943686d88309cfe0d3e4e3195ba4c98abc45f703ccf06"
+    },
+    {
+        "timestamp": 1782378760.7508428,
+        "event": {
+            "command": "backtest",
+            "report": "runtime/intelligence/backtest_report.json",
+            "average_win_rate": 0.5623
+        },
+        "actor": "backtest_engine",
+        "_prev_hash": "54ead27599a2f154a6f943686d88309cfe0d3e4e3195ba4c98abc45f703ccf06",
+        "_hash": "04767b9abdea6db4cabeeb54f68fab9136a817ba9cf615f7d265dc778f43a596"
+    },
+    {
+        "timestamp": 1782378761.3738694,
+        "event": {
+            "command": "ai-cycle",
+            "status": "completed"
+        },
+        "actor": "offline_ai",
+        "_prev_hash": "04767b9abdea6db4cabeeb54f68fab9136a817ba9cf615f7d265dc778f43a596",
+        "_hash": "391fecbe98d388964374d642308505e1f9759eb41f546f89eb80b7bf481ff154"
+    }
+]

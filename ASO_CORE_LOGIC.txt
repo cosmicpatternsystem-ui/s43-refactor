@@ -1,0 +1,6 @@
+[ASO-X UNIVERSAL PROTOCOL]
+1. IDENTITY: Every node must have a unique cryptographic seed.
+2. CHAIN: Every action must hash the previous action's state.
+3. VERIFICATION: If Hash(n) != Sign(Hash(n-1) + Data), Halt System.
+4. DEFENSE: Any unauthorized write access triggers immediate state-freeze.
+5. EVOLUTION: Logic is valid as long as 1+1=2.
