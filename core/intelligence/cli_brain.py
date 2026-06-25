@@ -1,13 +1,16 @@
 ﻿import sys
 import os
 
-# افزودن مسیر فعلی به پایتون برای شناسایی ماولهای همردیف
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# پیدا کردن مسیر ریشه پروه (دو مرحله بالاتر از فایل فعلی)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, "../../"))
+sys.path.append(project_root)
+sys.path.append(current_dir) # برای اطمینان از شناسایی فایلهای کنار هم
 
 try:
     from anomaly_detector import IntelligenceCore
-except ImportError:
-    print("[!] Error: IntelligenceCore not found. Check directory structure.")
+except ImportError as e:
+    print(f"[!] Error: {e}")
     sys.exit(1)
 
 def main():
