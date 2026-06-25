@@ -1,0 +1,10 @@
+﻿version: '3.8'
+services:
+  aso-x-api:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./runtime/audit:/app/runtime/audit
+    environment:
+      - ENV=PRODUCTION
