@@ -1,0 +1,50 @@
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:44:29.769346+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:30.593390+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:30.811286+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:44:33.628373+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:36.086922+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:36.550016+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:44:40.230048+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:41.009097+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:41.206980+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:44:44.593892+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:45.116223+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:44:45.277536+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:45:26.259615+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "blocked", "detail": {"exit_code": 2}, "timestamp": "2026-06-25T07:45:26.854138+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "error", "detail": {"error": "RuntimeError('safety gate blocked execution exit_code=2')"}, "timestamp": "2026-06-25T07:45:26.855137+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:45:27.826597+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:45:28.250934+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:45:28.376333+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:47:19.529155+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "blocked", "detail": {"exit_code": 2}, "timestamp": "2026-06-25T07:47:21.955760+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "error", "detail": {"error": "RuntimeError('safety gate blocked execution exit_code=2')"}, "timestamp": "2026-06-25T07:47:21.986114+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:47:24.559230+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:47:27.020339+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:47:27.253375+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_status", "status": "ok", "detail": {"project": "ASO", "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json", "valid": true, "phases": 20, "updated_at": "2026-06-25T07:33:34.679471+00:00"}, "timestamp": "2026-06-25T07:50:14.680198+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_list", "status": "ok", "detail": {"phase_count": 20}, "timestamp": "2026-06-25T07:50:16.407123+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T07:51:12.931957+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:51:14.081750+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:51:14.223235+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_status", "status": "ok", "detail": {"project": "ASO", "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json", "valid": true, "phases": 20, "updated_at": "2026-06-25T07:33:34.679471+00:00"}, "timestamp": "2026-06-25T07:57:05.531980+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_list", "status": "ok", "detail": {"phase_count": 20}, "timestamp": "2026-06-25T07:57:06.121974+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:57:28.496990+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_add_phase", "status": "written", "detail": {"roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json", "backup": {"latest": "G:\\s43_work\\s43_g11_work\\runtime\\backups\\master_plan.roadmap.latest.json", "stamped": "G:\\s43_work\\s43_g11_work\\runtime\\backups\\master_plan.roadmap.20260625T075728Z.json"}, "phase": {"id": "phase-21", "title": "Roadmap Manager Stabilization", "status": "planned", "created_at": "2026-06-25T07:57:28.498985+00:00", "updated_at": "2026-06-25T07:57:28.498985+00:00", "tasks": []}}, "timestamp": "2026-06-25T07:57:28.538085+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_list", "status": "ok", "detail": {"phase_count": 21}, "timestamp": "2026-06-25T07:57:29.825734+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T07:57:30.553651+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_set_phase_status", "status": "written", "detail": {"roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json", "backup": {"latest": "G:\\s43_work\\s43_g11_work\\runtime\\backups\\master_plan.roadmap.latest.json", "stamped": "G:\\s43_work\\s43_g11_work\\runtime\\backups\\master_plan.roadmap.20260625T075730Z.json"}, "phase_index": 21, "phase": "phase-21", "previous_status": "planned", "new_status": "in_progress"}, "timestamp": "2026-06-25T07:57:30.563444+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_list", "status": "ok", "detail": {"phase_count": 21}, "timestamp": "2026-06-25T07:57:31.182548+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "safety_gate", "status": "blocked", "detail": {"exit_code": 2}, "timestamp": "2026-06-25T07:57:47.409558+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_manager_error", "status": "error", "detail": {"error": "RuntimeError('safety gate blocked roadmap mutation exit_code=2')"}, "timestamp": "2026-06-25T07:57:47.411202+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_list", "status": "ok", "detail": {"phase_count": 21}, "timestamp": "2026-06-25T07:57:48.852238+00:00"}
+{"_hash": "f58191a1f45dcbe8a03e9fc368e338a132bb0b6b4f0289495006c4a24a336f9b", "_prev_hash": "corrupted_or_missing", "component": "integrity_test", "detail": {"source": "manual_test"}, "event": "hash_chain_test", "status": "ok", "timestamp": "2026-06-25T08:03:13.615514+00:00"}
+{"project": "ASO", "event": "supervisor", "status": "started", "detail": {}, "timestamp": "2026-06-25T08:05:07.327515+00:00"}
+{"project": "ASO", "event": "safety_gate", "status": "allowed", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T08:05:08.902483+00:00"}
+{"project": "ASO", "event": "engine", "status": "finished", "detail": {"exit_code": 0}, "timestamp": "2026-06-25T08:05:09.133582+00:00"}
+{"project": "ASO", "component": "roadmap_manager", "event": "roadmap_status", "status": "ok", "detail": {"project": "ASO", "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json", "valid": true, "phases": 21, "updated_at": "2026-06-25T07:57:30.554646+00:00"}, "timestamp": "2026-06-25T08:05:10.046778+00:00"}
+{"_hash": "836e3ed685f7b756b8df412864db7cf2caf7dac938c18f83b760e9e9ee134f0f", "_prev_hash": "corrupted_or_missing", "component": "supervisor", "detail": {}, "event": "supervisor", "project": "ASO", "status": "started", "timestamp": "2026-06-25T08:06:51.329656+00:00"}
+{"_hash": "4bba0a1c85c08bfdbd11e05c4c0a097b9b1361329c3b51c4db4a608e4782a747", "_prev_hash": "corrupted_or_missing", "component": "supervisor", "detail": {}, "event": "safety_gate", "project": "ASO", "status": "allowed", "timestamp": "2026-06-25T08:06:54.480724+00:00"}
+{"_hash": "915028c88c27d5192bd7ad56c4899bd3147b614ccd1bb5f5cef1deab53827bce", "_prev_hash": "corrupted_or_missing", "component": "supervisor", "detail": {"exit_code": 0}, "event": "engine", "project": "ASO", "status": "finished", "timestamp": "2026-06-25T08:06:55.348790+00:00"}
+{"_hash": "8f385ebea1c2252be23f71c3e70ccfbdaf343dd61e51810b585756c3fb6b4c00", "_prev_hash": "corrupted_or_missing", "component": "watchdog", "detail": {}, "event": "watchdog_cycle", "project": "ASO", "status": "started", "timestamp": "2026-06-25T08:08:31.178708+00:00"}
+{"_hash": "bd0e3db0930871ecf7756710fbbfa9e594cd92aeb851949cb82e2dceb71c1239", "_prev_hash": "corrupted_or_missing", "component": "watchdog", "detail": {"cycles": 1}, "event": "watchdog_cycle", "project": "ASO", "status": "finished", "timestamp": "2026-06-25T08:08:31.935921+00:00"}

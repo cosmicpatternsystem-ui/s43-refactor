@@ -1,0 +1,9 @@
+{
+    "report_id": "ASO-GOV-20260625-082732",
+    "timestamp": "2026-06-25T08:27:32.768270",
+    "system_identity": "ASO-PRIME-X1",
+    "integrity_status": "verified",
+    "verified_decisions": 3,
+    "safety_mode": "Active-Enforcement",
+    "compliance_score": "98%"
+}

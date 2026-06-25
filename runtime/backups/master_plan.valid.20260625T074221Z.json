@@ -1,0 +1,171 @@
+{
+  "project": "Autonomous Safe Operator",
+  "short_name": "ASO",
+  "version": "0.1.0",
+  "horizon_years": 50,
+  "total_planned_phases": 200,
+  "active_phases_defined": 20,
+  "updated_at": "2026-06-25T07:33:34.679471+00:00",
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation Recovery",
+      "description": "Establish foundation recovery for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 2,
+      "name": "Safety Governor Stabilization",
+      "description": "Establish safety governor stabilization for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 3,
+      "name": "Core Autonomy Engine Stabilization",
+      "description": "Establish core autonomy engine stabilization for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 4,
+      "name": "Resilience Layer Baseline",
+      "description": "Establish resilience layer baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 5,
+      "name": "Roadmap Integrity Validation",
+      "description": "Establish roadmap integrity validation for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 6,
+      "name": "CLI Monitoring Baseline",
+      "description": "Establish cli monitoring baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 7,
+      "name": "Self-Healing Baseline",
+      "description": "Establish self-healing baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 8,
+      "name": "Offline Mode Validation",
+      "description": "Establish offline mode validation for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 9,
+      "name": "Connected Mode Validation",
+      "description": "Establish connected mode validation for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 10,
+      "name": "Audit Logging Baseline",
+      "description": "Establish audit logging baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 11,
+      "name": "Hardware Abstraction Baseline",
+      "description": "Establish hardware abstraction baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 12,
+      "name": "Chaos Simulation Baseline",
+      "description": "Establish chaos simulation baseline for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 13,
+      "name": "Configuration Management",
+      "description": "Establish configuration management for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 14,
+      "name": "State Persistence",
+      "description": "Establish state persistence for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 15,
+      "name": "Dependency Isolation",
+      "description": "Establish dependency isolation for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 16,
+      "name": "Security Boundary Review",
+      "description": "Establish security boundary review for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 17,
+      "name": "Operational Health Checks",
+      "description": "Establish operational health checks for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 18,
+      "name": "Autonomous Loop Guardrails",
+      "description": "Establish autonomous loop guardrails for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 19,
+      "name": "Long Horizon Expansion",
+      "description": "Establish long horizon expansion for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    },
+    {
+      "phase": 20,
+      "name": "Phase 1 Closure",
+      "description": "Establish phase 1 closure for Autonomous Safe Operator.",
+      "status": "pending",
+      "offline_capable": true,
+      "safety_level": "high"
+    }
+  ]
+}
