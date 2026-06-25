@@ -1,5 +1,14 @@
 ﻿import sys
-from anomaly_detector import IntelligenceCore
+import os
+
+# افزودن مسیر فعلی به پایتون برای شناسایی ماولهای همردیف
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+try:
+    from anomaly_detector import IntelligenceCore
+except ImportError:
+    print("[!] Error: IntelligenceCore not found. Check directory structure.")
+    sys.exit(1)
 
 def main():
     print("========================================")
