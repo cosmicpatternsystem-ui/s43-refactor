@@ -58,3 +58,5 @@ dashboard/node_modules/
 # ASO-X local durable runtime state
 project_memory.sqlite
 runtime/state/backups/
+dashboard/_diag_aso_x/
+dashboard/dashboard_bridge.py.bak_20260626_145456
