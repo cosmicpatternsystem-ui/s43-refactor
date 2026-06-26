@@ -125,3 +125,25 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    control = ASOControl()
+
+    if args.command == "init":
+        return control.init()
+    if args.command == "check":
+        return control.check()
+    if args.command == "backup":
+        return control.backup()
+    if args.command == "status":
+        return control.status()
+
+    parser.error(f"unknown command: {args.command}")
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
