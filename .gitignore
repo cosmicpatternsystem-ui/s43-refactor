@@ -52,3 +52,5 @@ AUDIT/phase17_patch_v2_backups_*/
 # Local transfer/archive artifacts
 S43_LAPTOP_USB_TRANSFER_20260607_071516/
 *.tar.gz
+dashboard/.next/
+dashboard/node_modules/
