@@ -1,20 +1,25 @@
 {
-  "schema_version": "1.0",
-  "project": "s43-refactor",
+  "schema_version": "2.1.0",
+  "project": "ASO-X",
   "default_branch": "main",
   "current_phase": "22.13",
-  "current_branch": "phase22-13-post-merge-roadmap-sync",
-  "phase_title": "Post-Merge Roadmap Gate Hardening and Canonical Sync",
+  "current_branch": "main",
+  "phase_title": "Post-22.12 Roadmap Governance Stabilization",
   "previous_phase": "22.12",
-  "previous_pr": 65,
-  "previous_merge_commit": "50aad558ce801dbdae684f170e65297478284d99",
-  "previous_phase_status": "merged",
-  "roadmap_sync_status": "in_progress",
-  "next_action": "Harden Operational Roadmap Gate and enforce post-merge roadmap sync on main",
-  "required_gates": [
-    "Operational Roadmap Gate",
-    "PR Hygiene Gate",
-    "Release Readiness Gate"
-  ],
-  "updated_at": "2026-06-21"
+  "roadmap_sync_status": "synced",
+  "next_action": "Continue Phase 22.13 roadmap governance validation",
+  "updated_at": "2026-06-26T13:35:24Z",
+  "validation_status": "valid",
+  "authority": "repository_files_only",
+  "state_type": "repository_roadmap_state",
+  "roadmap_version": "2026.06.26-ALPHA",
+  "system_health": "HEALTHY",
+  "source_of_truth": "runtime/state/project_memory.sqlite",
+  "runtime_snapshot": {
+    "runtime_available": true,
+    "audit_events": 277,
+    "change_ledger": 4,
+    "roadmap_state": 3
+  },
+  "trigger": "manual"
 }
