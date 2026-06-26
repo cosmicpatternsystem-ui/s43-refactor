@@ -1,46 +1,42 @@
-﻿import time
-import json
-import os
+﻿from __future__ import annotations
 
-# تغییر به فایل اصلی که مانیتور می‌بیند
-AUDIT_FILE = "runtime/audit/audit_log.json"
+import sys
+from pathlib import Path
 
-def trigger_heartbeat():
-    os.makedirs(os.path.dirname(AUDIT_FILE), exist_ok=True)
+# اضافه کردن مسیر ریشه به sys.path برای اطمینان از یافتن durable_state
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(REPO_ROOT / "tools"))
 
-    data = [] # مانیتور انتظار لیست یا دیکشنری دارد
-    if os.path.exists(AUDIT_FILE):
-        try:
-            with open(AUDIT_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except:
-            data = []
+try:
+    from durable_state import append_audit_event, initialize_schema, integrity_check, utc_now_iso
+except ImportError:
+    # تلاش مجدد برای وارد کردن مستقیم اگر در پوشه tools هستیم
+    from durable_state import append_audit_event, initialize_schema, integrity_check, utc_now_iso
 
-    new_entry = {
-        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "event": "GOLD_HEARTBEAT_PULSE",
-        "status": "OPTIMIZED"
-    }
+def main() -> None:
+    # ۱. اطمینان از آماده بودن اسکیما
+    initialize_schema()
 
-    # مدیریت هر دو حالت لیست یا دیکشنری برای سازگاری کامل
-    if isinstance(data, list):
-        data.append(new_entry)
-        count = len(data)
-    elif isinstance(data, dict):
-        if "entries" not in data: data["entries"] = []
-        data["entries"].append(new_entry)
-        count = len(data["entries"])
-    else:
-        data = [new_entry]
-        count = 1
+    # ۲. چک سلامت فیزیکی دیتابیس قبل از نوشتن
+    check = integrity_check()
+    if check != "ok":
+        print(f"CRITICAL ERROR: SQLite integrity check failed: {check}")
+        sys.exit(1)
 
-    with open(AUDIT_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+    # ۳. ثبت پالس در Durable State (بدون لمس کردن JSON)
+    event_id = append_audit_event(
+        event="GOLD_HEARTBEAT_PULSE",
+        status="SUCCESS_DURABLE",
+        source="tools/heartbeat.py",
+        payload={
+            "timestamp": utc_now_iso(),
+            "engine": "ASO-X Durable Core v1.1.0",
+            "storage_mode": "SQLite/WAL",
+            "integrity_verified": True
+        },
+    )
 
-    print(f"ASO-X Audit Updated: {count} entries.")
+    print(f"Heartbeat pulse successful. Event ID: {event_id} (Stored in project_memory.sqlite)")
 
 if __name__ == "__main__":
-    print("--- ASO-X GOLD SYNC ACTIVE ---")
-    while True:
-        trigger_heartbeat()
-        time.sleep(15)
+    main()
