@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import hashlib
 import json
@@ -72,7 +72,7 @@ def render_status(snapshot: dict[str, Any], generated_at: str) -> str:
     return (
         "# AUTO ROADMAP STATUS\n\n"
         f"- Generated at: {generated_at}\n"
-        f"- Source of truth: runtime/state/project_memory.sqlite\n"
+        f"- Source of truth: repository_files_only\n"
         f"- Storage mode: SQLite/WAL\n"
         f"- Integrity check: ok\n"
         f"- Health: {health}\n"
@@ -108,7 +108,7 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
         "authority": "repository_files_only",
         "state_type": "repository_roadmap_state","roadmap_version": current_roadmap_version,
         "system_health": health,
-        "source_of_truth": "runtime/state/project_memory.sqlite",
+        "source_of_truth": "repository_files_only",
         "runtime_snapshot": snapshot,
         "trigger": trigger,
     }
@@ -118,7 +118,7 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
         "generated_at": generated_at,
         "trigger": trigger,
         "status_path": str(STATUS_PATH),
-        "source_of_truth": "runtime/state/project_memory.sqlite",
+        "source_of_truth": "repository_files_only",
         "storage_mode": "SQLite/WAL",
         "integrity_check": "ok",
         "durable_foundation_status": health,
