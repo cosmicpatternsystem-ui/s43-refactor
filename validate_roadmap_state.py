@@ -1,10 +1,22 @@
+from __future__ import annotations
+
 import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+
 STATE_PATH = Path("ROADMAP/ROADMAP_STATE.json")
+
+
+@dataclass(frozen=True)
+class RoadmapStateContract:
+    project: str = "ASO-X"
+    schema_version: str = "2.1.0"
+    default_branch: str = "main"
+    stale_next_action_marker: str = "Phase 22.12 PR preparation"
+
 
 required_fields = [
     "schema_version",
@@ -17,63 +29,78 @@ required_fields = [
     "roadmap_sync_status",
     "next_action",
     "updated_at",
+    "continuity_contract",
 ]
 
 
-@dataclass(frozen=True)
-class RoadmapStateContract:
-    state_path: Path = STATE_PATH
-    required_fields: tuple[str, ...] = tuple(required_fields)
-    default_branch: str = "main"
-    current_phase: str = "22.13"
-    stale_branch_marker: str = "phase22-12-baseline-verification-execution"
-    stale_next_action_marker: str = "Prepare Phase 22.12 baseline verification PR"
+def fail(message: str) -> int:
+    print(message, file=sys.stderr)
+    return 1
 
 
-def validate_state_contract(state: dict[str, Any], contract: RoadmapStateContract) -> list[str]:
+def load_state(path: Path) -> dict[str, Any]:
+    with path.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def validate_state_contract(
+    state: dict[str, Any], contract: RoadmapStateContract
+) -> list[str]:
     errors: list[str] = []
 
-    for field in contract.required_fields:
+    for field in required_fields:
         if field not in state:
             errors.append(f"missing required field: {field}")
+
+    if state.get("project") != contract.project:
+        errors.append(f"project must be {contract.project}")
+
+    if state.get("schema_version") != contract.schema_version:
+        errors.append(f"schema_version must be {contract.schema_version}")
 
     if state.get("default_branch") != contract.default_branch:
         errors.append(f"default_branch must be {contract.default_branch}")
 
-    if str(state.get("current_phase")) != contract.current_phase:
-        errors.append(f"current_phase must be {contract.current_phase}")
-
-    if contract.stale_branch_marker in str(state.get("current_branch", "")):
-        errors.append("current_branch still references stale Phase 22.12 branch")
-
     if contract.stale_next_action_marker in str(state.get("next_action", "")):
         errors.append("next_action still references stale Phase 22.12 PR preparation")
+
+    continuity = state.get("continuity_contract")
+    if not isinstance(continuity, dict):
+        errors.append("continuity_contract must be an object")
+        return errors
+
+    expected_flags = {
+        "baseline_commit": "0ad415a",
+        "resume_source": "latest_clean_git_head",
+        "repository_is_authoritative": True,
+        "checkpoint_required": True,
+        "preflight_required": True,
+        "post_validation_required": True,
+        "local_commit_required": True,
+        "push_when_remote_available": True,
+        "dirty_tree_blocks_automation": True,
+        "restart_recovery_source": "repository_validation_only",
+    }
+
+    for key, expected in expected_flags.items():
+        if continuity.get(key) != expected:
+            errors.append(f"continuity_contract.{key} must be {expected!r}")
 
     return errors
 
 
-def load_state(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
 def main() -> int:
-    contract = RoadmapStateContract()
-
-    if not contract.state_path.exists():
-        print(f"ROADMAP_STATE_INVALID: missing {contract.state_path}", file=sys.stderr)
-        return 1
-
     try:
-        state = load_state(contract.state_path)
-    except Exception as exc:
-        print(f"ROADMAP_STATE_INVALID: invalid JSON: {exc}", file=sys.stderr)
-        return 1
+        state = load_state(STATE_PATH)
+    except FileNotFoundError:
+        return fail(f"ROADMAP_STATE_MISSING: {STATE_PATH}")
+    except json.JSONDecodeError as exc:
+        return fail(f"ROADMAP_STATE_INVALID_JSON: {exc}")
 
-    errors = validate_state_contract(state, contract)
+    errors = validate_state_contract(state, RoadmapStateContract())
     if errors:
-        print("ROADMAP_STATE_INVALID:", file=sys.stderr)
         for error in errors:
-            print(f"- {error}", file=sys.stderr)
+            print(f"ROADMAP_STATE_ERROR: {error}", file=sys.stderr)
         return 1
 
     print("ROADMAP_STATE_VALID")
