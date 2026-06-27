@@ -7,7 +7,7 @@
     "phase_title":  "Post-22.12 Roadmap Governance Stabilization",
     "previous_phase":  "22.12",
     "roadmap_sync_status":  "synced",
-    "next_action":  "Continue Phase 22.13 roadmap governance validation",
+    "next_action":  "Implement durable automation governance fields and guard validation in canonical roadmap files",
     "updated_at":  "2026-06-26T13:35:24Z",
     "validation_status":  "valid",
     "authority":  "repository_files_only",

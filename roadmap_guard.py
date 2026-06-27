@@ -18,6 +18,8 @@ REQUIRED_TOP = [
     "operational_metadata",
     "governance",
     "initiatives",
+    "source_of_truth",
+    "durable_automation_goals",
 ]
 
 REQUIRED_LIFECYCLE = [
@@ -117,6 +119,50 @@ def main() -> int:
     initiatives = data.get("initiatives")
     if not isinstance(initiatives, list) or len(initiatives) == 0:
         return fail("initiatives must be a non-empty list")
+
+    if data.get("source_of_truth") != "repository_files_only":
+        return fail("source_of_truth must be 'repository_files_only'")
+
+    goals = data.get("durable_automation_goals")
+    if not isinstance(goals, dict):
+        return fail("durable_automation_goals must be an object")
+
+    required_goal_fields = [
+        "commercial_grade_governance",
+        "real_money_safe_governance",
+        "fifty_year_durability_target",
+        "chat_memory_independent_operation",
+        "fully_automated_roadmap_control",
+        "requirements",
+        "status",
+    ]
+    for key in required_goal_fields:
+        if key not in goals:
+            return fail(f"missing durable_automation_goals field: {key}")
+
+    for key in [
+        "commercial_grade_governance",
+        "real_money_safe_governance",
+        "fifty_year_durability_target",
+        "chat_memory_independent_operation",
+        "fully_automated_roadmap_control",
+    ]:
+        if not isinstance(goals.get(key), bool):
+            return fail(f"durable_automation_goals.{key} must be boolean")
+
+    if not isinstance(goals.get("requirements"), list) or len(goals.get("requirements")) == 0:
+        return fail("durable_automation_goals.requirements must be a non-empty list")
+
+    for item in goals.get("requirements", []):
+        if not isinstance(item, str) or not item.strip():
+            return fail("durable_automation_goals.requirements entries must be non-empty strings")
+
+    if goals.get("status") not in {
+        "declared_not_yet_fully_satisfied",
+        "in_progress",
+        "validated",
+    }:
+        return fail("durable_automation_goals.status invalid")
 
     ok(f"validated roadmap file: {path}")
     ok(f"roadmap_version={data.get('roadmap_version')}")

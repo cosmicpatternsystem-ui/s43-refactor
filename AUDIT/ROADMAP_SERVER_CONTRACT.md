@@ -66,8 +66,24 @@ A future server integration should detect and report:
 - invalid lifecycle status
 - missing verification timestamp
 
-## Security And Safety
 
+## Durable Automation And Continuity Controls
+
+The roadmap governance system must expose machine-readable durable automation goals in the canonical roadmap JSON.
+
+Minimum required controls:
+
+- repository-only source of truth declaration
+- crash-safe persistence and recovery semantics
+- automated validation on pull request and push to main
+- concurrent edit protection
+- immutable auditability
+- verified backup and restore procedures
+- chat-memory-independent operation
+
+A roadmap phase cannot claim real-money-safe or commercial-grade readiness unless these controls are declared, validated, and continuously enforced.
+
+## Security And Safety
 The roadmap server contract must not expose secrets, credentials, wallet material, private keys, tokens, or production-only operational data.
 
 ## Compatibility Statement
