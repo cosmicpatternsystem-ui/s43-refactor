@@ -1,7 +1,7 @@
 # AUTO ROADMAP STATUS
 
-- Generated at: 2026-06-26T13:35:24Z
-- Source of truth: runtime/state/project_memory.sqlite
+- Generated at: 2026-06-27T11:01:42Z
+- Source of truth: repository_files_only
 - Storage mode: SQLite/WAL
 - Integrity check: ok
 - Health: HEALTHY
