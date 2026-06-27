@@ -334,8 +334,10 @@ $phases = foreach ($phaseFile in $phaseFiles) {
 }
 
 $roadmap = [ordered]@{
-    schema_version = 2
-    source_of_truth = "repository phase documents"
+    project = "ASO-X"
+    roadmap_version = 1
+    schema_version = "2.0"
+    source_of_truth = "repository_files_only"
     generated_by = "scripts/update-roadmap.ps1"
     enforcement_model = "generated-and-diff-enforced-in-pr"
     operational_metadata_schema = [ordered]@{
