@@ -42,5 +42,6 @@
     "durability_proof":  {
                              "checksum_sha256":  "",
                              "signature_type":  "UNSPECIFIED"
-                         }
+                         },
+    "current_phase":  "22.13"
 }
