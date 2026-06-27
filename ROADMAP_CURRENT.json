@@ -1,5 +1,10 @@
-﻿{
+{
     "project":  "ASO-X",
+    "default_branch":  "main",
+    "current_phase":  "22.13",
+    "current_branch":  "main",
+    "phase_title":  "Phase 22.13",
+    "previous_phase":  "22.12",
     "roadmap_version":  "2026.06.26-ALPHA",
     "schema_version":  "2.1.0",
     "authority":  "ASO-X GLOBAL GOVERNANCE",
@@ -8,6 +13,8 @@
                       "horizon_date":  "2076-01-01T00:00:00Z",
                       "last_updated":  "2026-06-26T12:14:54Z",
                       "roadmap_sync_status":  "synced",
+                      "next_action":  "Continue Phase 22.13 roadmap execution",
+                      "updated_at":  "2026-06-27T00:00:00Z",
                       "validation_status":  "pending"
                   },
     "operational_metadata":  {
@@ -42,5 +49,6 @@
     "durability_proof":  {
                              "checksum_sha256":  "",
                              "signature_type":  "UNSPECIFIED"
-                         }
+                         },
+    "source_of_truth":  "repository_files_only"
 }
