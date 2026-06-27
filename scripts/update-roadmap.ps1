@@ -337,6 +337,43 @@ $roadmap = [ordered]@{
     project = "ASO-X"
     roadmap_version = 1
     schema_version = "2.0"
+    authority = [ordered]@{
+        source = "repository_files_only"
+        generated_by = "scripts/update-roadmap.ps1"
+    }
+    lifecycle = [ordered]@{
+        inception_date = "2026-06-27T17:01:21Z"
+        horizon_date = "2076-01-01T00:00:00Z"
+        last_updated = "2026-06-27T17:01:21Z"
+        roadmap_sync_status = "synchronized"
+        validation_status = "valid"
+    }
+    operational_metadata = [ordered]@{
+        system_health = "HEALTHY"
+    }
+    governance = [ordered]@{
+        immutable_storage = $true
+    }
+    initiatives = @(
+        [ordered]@{
+            id = "roadmap-generated-phases"
+            title = "Generated roadmap phase registry"
+            status = "in_progress"
+        }
+    )
+    durable_automation_goals = [ordered]@{
+        commercial_grade_governance = $true
+        real_money_safe_governance = $true
+        fifty_year_durability_target = $true
+        chat_memory_independent_operation = $true
+        fully_automated_roadmap_control = $true
+        requirements = @(
+            "Repository files are the only roadmap source of truth."
+            "ROADMAP_CURRENT.json is generated deterministically from committed phase files."
+            "Roadmap validation is independent of chat memory or local-only state."
+        )
+        status = "in_progress"
+    }
     source_of_truth = "repository_files_only"
     generated_by = "scripts/update-roadmap.ps1"
     enforcement_model = "generated-and-diff-enforced-in-pr"
