@@ -1,4 +1,4 @@
-﻿name: Operational Roadmap Enforcement
+name: Operational Roadmap Enforcement
 
 on:
   pull_request:
@@ -31,3 +31,12 @@ jobs:
             echo "::error::ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
             exit 1
           fi
+
+      - name: Debug roadmap state before regenerate
+        shell: pwsh
+        run: |
+          git rev-parse HEAD
+          git status --short
+          git diff -- ROADMAP_CURRENT.json scripts/validate-roadmap.ps1 scripts/test-roadmap.ps1 scripts/update-roadmap.ps1
+          Get-Content ROADMAP_CURRENT.json -TotalCount 60
+

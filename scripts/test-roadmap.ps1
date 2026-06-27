@@ -1,3 +1,14 @@
+
+Write-Host "ASO-X ROADMAP DEBUG START"
+Write-Host "DEBUG HEAD:"
+git rev-parse HEAD
+Write-Host "DEBUG STATUS:"
+git status --short
+Write-Host "DEBUG DIFF:"
+git diff -- ROADMAP_CURRENT.json scripts/validate-roadmap.ps1 scripts/test-roadmap.ps1 scripts/update-roadmap.ps1
+Write-Host "DEBUG ROADMAP_CURRENT.json HEAD:"
+Get-Content ROADMAP_CURRENT.json -TotalCount 60
+Write-Host "ASO-X ROADMAP DEBUG END"
 param(
   [switch]$SkipUpdate
 )
@@ -723,4 +734,5 @@ Invoke-Step "Treat Documentation Only No as false" {
 }
 
 Write-Host "Operational roadmap smoke test passed."
+
 

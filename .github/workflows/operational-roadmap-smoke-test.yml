@@ -1,4 +1,4 @@
-﻿name: Operational Roadmap Smoke Test
+name: Operational Roadmap Smoke Test
 
 on:
   pull_request:
@@ -21,3 +21,4 @@ jobs:
       - name: Run operational roadmap smoke test
         shell: pwsh
         run: ./scripts/test-roadmap.ps1
+
