@@ -3,22 +3,28 @@ name: Operational Roadmap Enforcement
 on:
   pull_request:
   push:
-    branches: [main]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
-  roadmap:
-    name: Assert operational roadmap contract
+  enforce-roadmap:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        shell: bash
+        run: pwsh -v
 
       - name: Validate committed roadmap schema
         shell: pwsh
         run: ./scripts/validate-roadmap.ps1
+
+      - name: Validate roadmap governance contract
+        shell: bash
+        run: python roadmap_guard.py ROADMAP_CURRENT.json
 
       - name: Regenerate roadmap deterministically
         shell: pwsh
@@ -27,16 +33,16 @@ jobs:
       - name: Assert roadmap is current
         shell: bash
         run: |
-          if ! git diff --exit-code -- ROADMAP_CURRENT.json; then
+          git diff --exit-code -- ROADMAP_CURRENT.json || {
             echo "::error::ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
             exit 1
-          fi
+          }
 
-      - name: Debug roadmap state before regenerate
-        shell: pwsh
+      - name: Debug roadmap drift
+        if: failure()
+        shell: bash
         run: |
           git rev-parse HEAD
           git status --short
-          git diff -- ROADMAP_CURRENT.json scripts/validate-roadmap.ps1 scripts/test-roadmap.ps1 scripts/update-roadmap.ps1
-          Get-Content ROADMAP_CURRENT.json -TotalCount 60
-
+          git diff -- ROADMAP_CURRENT.json || true
+          sed -n '1,60p' ROADMAP_CURRENT.json || true

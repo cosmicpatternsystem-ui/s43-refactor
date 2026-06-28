@@ -6,19 +6,31 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
-  roadmap-smoke-test:
+  roadmap-smoke:
     name: Roadmap generator and validator smoke test
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run operational roadmap smoke test
-        shell: pwsh
-        run: ./scripts/test-roadmap.ps1
+      - name: Setup PowerShell
+        shell: bash
+        run: pwsh -v
 
+      - name: Run roadmap validator
+        shell: pwsh
+        run: ./scripts/validate-roadmap.ps1
+
+      - name: Run roadmap generator
+        shell: pwsh
+        run: ./scripts/update-roadmap.ps1
+
+      - name: Re-validate generated roadmap
+        shell: pwsh
+        run: ./scripts/validate-roadmap.ps1
+
+      - name: Validate roadmap governance contract
+        shell: bash
+        run: python roadmap_guard.py ROADMAP_CURRENT.json
