@@ -1,0 +1,54 @@
+{
+  "project": "ASO-X",
+  "roadmap_version": 1,
+  "schema_version": "2.0",
+  "authority": {
+    "source": "repository_files_only",
+    "generated_by": "scripts/update-roadmap.ps1"
+  },
+  "lifecycle": {
+    "inception_date": "2026-06-27T17:01:21Z",
+    "horizon_date": "2076-01-01T00:00:00Z",
+    "last_updated": "2026-06-28T21:26:51.065042+00:00",
+    "roadmap_sync_status": "synchronized",
+    "validation_status": "valid"
+  },
+  "operational_metadata": {
+    "system_health": "HEALTHY"
+  },
+  "governance": {
+    "immutable_storage": true
+  },
+  "initiatives": [
+    {
+      "id": "roadmap-generated-phases",
+      "durable_automation_goals": {
+        "commercial_grade_governance": true,
+        "real_money_safe_governance": true,
+        "fifty_year_durability_target": true,
+        "chat_memory_independent_operation": true,
+        "fully_automated_roadmap_control": true
+      },
+      "requirements": [
+        "Repository files are the only roadmap source of truth.",
+        "ROADMAP_CURRENT.json is generated deterministically from committed phase files."
+      ],
+      "status": "in_progress",
+      "source_of_truth": "repository_files_only",
+      "generated_by": "scripts/update-roadmap.ps1",
+      "enforcement_model": "generated-and-diff-enforced-in-pr",
+      "operational_metadata_schema": {
+        "owner": "string",
+        "priority": "string",
+        "depends_on": "array",
+        "acceptance_criteria": "array",
+        "evidence": "array",
+        "last_verified_at": "ISO8601 or null"
+      },
+      "updated_at_utc": "2026-06-27T17:01:21Z",
+      "phase_count": 80,
+      "phases": []
+    }
+  ],
+  "updated_at_utc": "2026-06-28T21:26:51.065042+00:00"
+}
