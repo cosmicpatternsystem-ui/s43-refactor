@@ -13,7 +13,7 @@ This is a forward-compatible documentation contract. It does not activate a serv
 The source of truth remains:
 
 - PHASE_*.md files for phase-level source metadata.
-- ROADMAP_CURRENT.json for generated roadmap state.
+- ROADMAP_CURRENT.json for the canonical generated roadmap state (schema v2.0).
 - scripts/update-roadmap.ps1 for roadmap generation.
 - scripts/validate-roadmap.ps1 for schema validation.
 
