@@ -64,4 +64,5 @@ dashboard/dashboard_bridge.py.bak_20260626_145456
 # Roadmap runtime backups
 .roadmap_backups/
 
+# governance backup artifacts
 *.governance-backup.json
