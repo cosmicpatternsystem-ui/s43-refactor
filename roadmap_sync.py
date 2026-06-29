@@ -19,7 +19,7 @@ STATUS_PATH = DOCS_DIR / "AUTO_ROADMAP_STATUS.md"
 ROADMAP_STATE_PATH = REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json"
 STATE_PATH = ROADMAP_DIR / "ROADMAP_STATE.json"
 CHECKSUM_PATH = AUDIT_DIR / "roadmap_checksum_sha256.txt"
-ROADMAP_CURRENT_PATH = REPO_ROOT / "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT_PATH = REPO_ROOT / "docs" / "governance" / "ROADMAP_CURRENT.json"
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -104,6 +104,18 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
         "roadmap_sync_status": sync_status,
         "next_action": "Continue Phase 22.13 roadmap governance validation",
         "updated_at": generated_at,
+        "continuity_contract": {
+            "baseline_commit": "0ad415a",
+            "resume_source": "latest_clean_git_head",
+            "repository_is_authoritative": True,
+            "checkpoint_required": True,
+            "preflight_required": True,
+            "post_validation_required": True,
+            "local_commit_required": True,
+            "push_when_remote_available": True,
+            "dirty_tree_blocks_automation": True,
+            "restart_recovery_source": "repository_validation_only",
+        },
         "validation_status": "valid",
         "authority": "repository_files_only",
         "state_type": "repository_roadmap_state","roadmap_version": current_roadmap_version,
@@ -152,7 +164,7 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
     CHECKSUM_PATH.parent.mkdir(parents=True, exist_ok=True)
     CHECKSUM_PATH.write_text("\n".join(checksum_lines), encoding="utf-8")
 
-    v1 = subprocess.run([sys.executable, "roadmap_guard.py"], capture_output=True, text=True)
+    v1 = subprocess.run([sys.executable, "scripts/roadmap_guard.py"], capture_output=True, text=True)
     v2 = subprocess.run([sys.executable, "validate_roadmap_state.py"], capture_output=True, text=True)
 
     result = dict(payload)
