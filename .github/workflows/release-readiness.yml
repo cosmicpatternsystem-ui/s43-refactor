@@ -16,3 +16,4 @@ jobs:
 
       - name: Assert release readiness contract
         run: bash run_safe.sh release
+

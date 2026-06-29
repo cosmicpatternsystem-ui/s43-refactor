@@ -1,7 +1,7 @@
 # ROADMAP_CANONICAL.md (REALITY-BASED)
 
 ## 1. Project Context & Evidence
-- **Current Root:** E:\اخباری\ssl\s43_refactor
+- **Current Root:** G:\s43_work\s43_g11_work
 - **Primary Runtime:** s43.py (Detected as current active entry point)
 - **Safety Authority:** SAFETY_PROTOCOL.md
 - **Evidence of Lineage:** Artifacts in __pycache__ and logs confirm 's43_instrumented_LATEST.py' was the predecessor.
@@ -131,3 +131,48 @@ Phase 17 development governance is hardened with the following rules:
 8. Release/stable promotion requires separate human review, test execution, and explicit release commit or tag.
 9. Runtime-only historical commits are documented but history is not rewritten on the shared branch.
 10. This roadmap is the canonical governance record for Phase 17 hardening.
+
+## Operational Continuity Contract
+
+This repository is the only operational source of truth for roadmap execution continuity.
+Chat history, operator memory, and transient tool context are not authoritative.
+
+### Mandatory Continuity Rules
+- Baseline commit for continuity bootstrap: ^@ad415a
+- Resume source must be the latest clean Git HEAD
+- No important work is valid without a Git checkpoint
+- Preflight is mandatory before every automated change
+- Post-change validation is mandatory before every checkpoint commit
+- Local Git commit is mandatory after every successful unit of work
+- GitHub push is mandatory whenever remote, credentials, and network are available
+- Dirty working tree blocks autonomous execution until resolved
+- Recovery after restart must begin from repository validation, not chat memory
+
+### Mandatory Preflight
+```powershell
+git status --short
+git rev-parse --short HEAD
+python roadmap_guard.py
+python validate_roadmap_state.py
+git diff --check
+
+### Mandatory Recovery After Restart
+powershell
+git status --short
+git log -1 --oneline
+python roadmap_guard.py
+python validate_roadmap_state.py
+git diff --check
+
+## Durable Automation Governance Requirements
+
+The canonical roadmap governance model must support the following long-term guarantees:
+
+1. Repository files are the only accepted roadmap source of truth.
+2. Roadmap control must remain independent from chat/session memory.
+3. Roadmap persistence must be crash-safe through atomic write and recovery procedures.
+4. Automated validation must run on pull_request and push to main.
+5. Durable automation requirements must be machine-readable in the canonical roadmap JSON.
+6. Concurrent edits must be guarded by lock and integrity checks.
+7. Local, remote, and hardware backup verification must be part of operational readiness.
+8. Real-money operational use is not considered satisfied until these controls are validated.
