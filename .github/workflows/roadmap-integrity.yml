@@ -1,38 +1,40 @@
-﻿name: Roadmap Integrity Check
+name: Roadmap Integrity Check
 
 on:
   pull_request:
     paths:
-      - 'docs/governance/ROADMAP_CURRENT.json'
-      - 'ROADMAP/phases/**'
+      - "docs/governance/ROADMAP_CURRENT.json"
+      - "ROADMAP/phases/**"
+      - "scripts/roadmap_guard.py"
+      - ".github/workflows/roadmap-integrity.yml"
   push:
     branches: [main, master]
     paths:
-      - 'docs/governance/ROADMAP_CURRENT.json'
+      - "docs/governance/ROADMAP_CURRENT.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: roadmap-integrity-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      
-      - name: Run Roadmap Guard (fail-closed)
+          python-version: "3.11"
+
+      - name: Roadmap guard (fail-closed)
+        run: python scripts/roadmap_guard.py
+
+      - name: Assert canonical source_of_truth
         run: |
-          python scripts/roadmap_guard.py
-          echo "✓ Roadmap integrity verified"
-      
-      - name: Verify source_of_truth canonical value
-        run: |
-          python -c "
-          import json
-          with open('docs/governance/ROADMAP_CURRENT.json') as f:
-              data = json.load(f)
-          sot = data.get('source_of_truth')
-          assert sot == 'repository_files_only', f'BLOCKED: source_of_truth={sot!r}'
-          print('✓ source_of_truth is canonical')
-          "
+          python -c "import json,sys; d=json.load(open('docs/governance/ROADMAP_CURRENT.json',encoding='utf-8')); v=d.get('authority',{}).get('source') or d.get('source_of_truth'); print('source_of_truth =', v); sys.exit(0 if v=='repository_files_only' else 1)"
