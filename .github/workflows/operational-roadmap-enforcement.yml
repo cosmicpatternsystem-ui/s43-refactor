@@ -24,7 +24,7 @@ jobs:
 
       - name: Validate roadmap governance contract
         shell: bash
-        run: python roadmap_guard.py ROADMAP_CURRENT.json
+        run: python scripts/roadmap_guard.py ROADMAP_CURRENT.json
 
       - name: Regenerate roadmap deterministically
         shell: pwsh
