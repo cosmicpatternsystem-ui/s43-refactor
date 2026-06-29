@@ -66,3 +66,9 @@ dashboard/dashboard_bridge.py.bak_20260626_145456
 
 # governance backup artifacts
 *.governance-backup.json
+
+# Roadmap archive and retired files
+.roadmap_archive/
+*.RETIRED.txt
+archive_legacy.ps1
+roadmap_canonicalize.ps1
