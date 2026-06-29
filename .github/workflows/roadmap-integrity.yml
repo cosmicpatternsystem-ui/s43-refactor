@@ -1,0 +1,38 @@
+﻿name: Roadmap Integrity Check
+
+on:
+  pull_request:
+    paths:
+      - 'docs/governance/ROADMAP_CURRENT.json'
+      - 'ROADMAP/phases/**'
+  push:
+    branches: [main, master]
+    paths:
+      - 'docs/governance/ROADMAP_CURRENT.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run Roadmap Guard (fail-closed)
+        run: |
+          python scripts/roadmap_guard.py
+          echo "✓ Roadmap integrity verified"
+      
+      - name: Verify source_of_truth canonical value
+        run: |
+          python -c "
+          import json
+          with open('docs/governance/ROADMAP_CURRENT.json') as f:
+              data = json.load(f)
+          sot = data.get('source_of_truth')
+          assert sot == 'repository_files_only', f'BLOCKED: source_of_truth={sot!r}'
+          print('✓ source_of_truth is canonical')
+          "
