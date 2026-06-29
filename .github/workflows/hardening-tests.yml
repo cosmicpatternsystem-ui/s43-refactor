@@ -21,3 +21,4 @@ jobs:
 
       - name: Run hardening tests
         run: bash run_safe.sh hardening
+

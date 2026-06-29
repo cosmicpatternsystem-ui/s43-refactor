@@ -16,3 +16,4 @@ jobs:
 
       - name: Run policy smoke checks
         run: bash run_safe.sh policy
+

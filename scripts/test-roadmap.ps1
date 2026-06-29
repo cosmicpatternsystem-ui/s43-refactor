@@ -1,4 +1,4 @@
-param(
+param (
   [switch]$SkipUpdate
 )
 
@@ -64,8 +64,8 @@ Invoke-Step "Assert generated roadmap is committed" {
 }
 
 Invoke-Step "Ignore empty Depends On header value" {
-  $tempEmptyDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md"
-  $emptyDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+        $tempEmptyDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md"
+        $emptyDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $emptyDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalEmptyDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($emptyDependsRoadmapPath)
 
@@ -106,8 +106,8 @@ Invoke-Step "Ignore empty Depends On header value" {
 }
 
 Invoke-Step "Resolve human-readable Depends On header label" {
-  $tempLabelDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_97_TEMP_LABEL_DEPENDS_ON_HEADER.md"
-  $labelDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+        $tempLabelDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_97_TEMP_LABEL_DEPENDS_ON_HEADER.md"
+        $labelDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $labelDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
   $originalLabelDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($labelDependsRoadmapPath)
@@ -151,8 +151,8 @@ Invoke-Step "Resolve human-readable Depends On header label" {
 }
 
 Invoke-Step "Resolve canonical filename Depends On header target" {
-  $tempFilenameDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_96_TEMP_FILENAME_DEPENDS_ON_HEADER.md"
-  $filenameDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+        $tempEmptyDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md"
+        $emptyDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $filenameDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
   $originalFilenameDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($filenameDependsRoadmapPath)
@@ -193,11 +193,9 @@ Invoke-Step "Resolve canonical filename Depends On header target" {
 
     [System.IO.File]::WriteAllBytes($filenameDependsRoadmapPath, $originalFilenameDependsRoadmapBytes)
   }
-}
-
 Invoke-Step "Trim canonical filename Depends On header target" {
-  $tempTrimmedFilenameDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_95_TEMP_TRIMMED_FILENAME_DEPENDS_ON_HEADER.md"
-  $trimmedFilenameDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempTrimmedFilenameDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_95_TEMP_TRIMMED_FILENAME_DEPENDS_ON_HEADER.md"
+  $trimmedFilenameDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $trimmedFilenameDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
   $originalTrimmedFilenameDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($trimmedFilenameDependsRoadmapPath)
@@ -238,11 +236,9 @@ Invoke-Step "Trim canonical filename Depends On header target" {
 
     [System.IO.File]::WriteAllBytes($trimmedFilenameDependsRoadmapPath, $originalTrimmedFilenameDependsRoadmapBytes)
   }
-}
-
 Invoke-Step "Resolve mixed Depends On header targets" {
-  $tempMixedDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_94_TEMP_MIXED_DEPENDS_ON_HEADER.md"
-  $mixedDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempMixedDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_94_TEMP_MIXED_DEPENDS_ON_HEADER.md"
+  $mixedDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $mixedDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = @(
     "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
@@ -294,8 +290,8 @@ Invoke-Step "Resolve mixed Depends On header targets" {
   }
 }
 Invoke-Step "Resolve semicolon Depends On header targets" {
-  $tempSemicolonDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_93_TEMP_SEMICOLON_DEPENDS_ON_HEADER.md"
-  $semicolonDependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempSemicolonDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_93_TEMP_SEMICOLON_DEPENDS_ON_HEADER.md"
+  $semicolonDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $semicolonDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = @(
     "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
@@ -347,8 +343,8 @@ Invoke-Step "Resolve semicolon Depends On header targets" {
   }
 }
 Invoke-Step "Reject missing Depends On header target" {
-  $tempDependsPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
-  $dependsRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_99_TEMP_MISSING_DEPENDS_ON_HEADER_TARGET.md"
+  $dependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $dependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $dependsValidatorPath = Join-Path $PSScriptRoot "validate-roadmap.ps1"
   $originalDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($dependsRoadmapPath)
@@ -390,7 +386,7 @@ Temporary negative test fixture. This file must be removed by the test.
 }
 
 Write-Host "==> Reject missing roadmap dependency"
-$roadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+$roadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
 $validatorPath = Join-Path $PSScriptRoot "validate-roadmap.ps1"
 $originalRoadmapBytes = [System.IO.File]::ReadAllBytes($roadmapPath)
 
@@ -406,7 +402,7 @@ try {
     $mutatedRoadmapJson = ($roadmap | ConvertTo-Json -Depth 20) + "`n"
     [System.IO.File]::WriteAllText($roadmapPath, $mutatedRoadmapJson, [System.Text.UTF8Encoding]::new($false))
 
-    & pwsh -NoProfile -File $validatorPath *> $null
+    & $validatorPath *> $null
 
     if ($LASTEXITCODE -eq 0) {
         throw "Expected roadmap validator to reject a missing dependency reference."
@@ -453,8 +449,8 @@ function Invoke-ExpectedRoadmapValidationFailure {
 }
 
 Invoke-Step "Trim roadmap Status header value" {
-  $tempTrimStatusPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_92_TEMP_TRIMMED_STATUS_HEADER.md"
-  $trimStatusRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempTrimStatusPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_92_TEMP_TRIMMED_STATUS_HEADER.md"
+  $trimStatusRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $trimStatusUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalTrimStatusRoadmapBytes = [System.IO.File]::ReadAllBytes($trimStatusRoadmapPath)
 
@@ -494,8 +490,8 @@ Invoke-Step "Trim roadmap Status header value" {
 }
 
 Invoke-Step "Trim roadmap Priority header value" {
-  $tempTrimPriorityPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_91_TEMP_TRIMMED_PRIORITY_HEADER.md"
-  $trimPriorityRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempTrimPriorityPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_91_TEMP_TRIMMED_PRIORITY_HEADER.md"
+  $trimPriorityRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $trimPriorityUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalTrimPriorityRoadmapBytes = [System.IO.File]::ReadAllBytes($trimPriorityRoadmapPath)
 
@@ -534,8 +530,8 @@ Invoke-Step "Trim roadmap Priority header value" {
 }
 
 Invoke-Step "Trim roadmap Owner header value" {
-  $tempTrimOwnerPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_90_TEMP_TRIMMED_OWNER_HEADER.md"
-  $trimOwnerRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempTrimOwnerPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_90_TEMP_TRIMMED_OWNER_HEADER.md"
+  $trimOwnerRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $trimOwnerUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalTrimOwnerRoadmapBytes = [System.IO.File]::ReadAllBytes($trimOwnerRoadmapPath)
 
@@ -574,8 +570,8 @@ Invoke-Step "Trim roadmap Owner header value" {
 }
 
 Invoke-Step "Trim roadmap Documentation Only header value" {
-  $tempTrimDocumentationOnlyPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_89_TEMP_TRIMMED_DOCUMENTATION_ONLY_HEADER.md"
-  $trimDocumentationOnlyRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempTrimDocumentationOnlyPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_89_TEMP_TRIMMED_DOCUMENTATION_ONLY_HEADER.md"
+  $trimDocumentationOnlyRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $trimDocumentationOnlyUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalTrimDocumentationOnlyRoadmapBytes = [System.IO.File]::ReadAllBytes($trimDocumentationOnlyRoadmapPath)
 
@@ -620,8 +616,8 @@ Invoke-Step "Trim roadmap Documentation Only header value" {
 }
 
 Invoke-Step "Treat Documentation Only Yes as true" {
-  $tempDocumentationOnlyYesPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_88_TEMP_DOCUMENTATION_ONLY_YES.md"
-  $documentationOnlyYesRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempDocumentationOnlyYesPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_88_TEMP_DOCUMENTATION_ONLY_YES.md"
+  $documentationOnlyYesRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $documentationOnlyYesUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalDocumentationOnlyYesRoadmapBytes = [System.IO.File]::ReadAllBytes($documentationOnlyYesRoadmapPath)
 
@@ -677,8 +673,8 @@ Invoke-ExpectedRoadmapValidationFailure -StepName "Reject invalid roadmap phase 
 }
 
 Invoke-Step "Treat Documentation Only No as false" {
-  $tempDocumentationOnlyNoPhasePath = Join-Path $PSScriptRoot ".." "PHASE_99_87_TEMP_DOCUMENTATION_ONLY_NO.md"
-  $documentationOnlyNoRoadmapPath = Join-Path $PSScriptRoot ".." "ROADMAP_CURRENT.json"
+  $tempDocumentationOnlyNoPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_87_TEMP_DOCUMENTATION_ONLY_NO.md"
+  $documentationOnlyNoRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $documentationOnlyNoUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $originalDocumentationOnlyNoRoadmapBytes = [System.IO.File]::ReadAllBytes($documentationOnlyNoRoadmapPath)
 
@@ -723,4 +719,6 @@ Invoke-Step "Treat Documentation Only No as false" {
 }
 
 Write-Host "Operational roadmap smoke test passed."
+
+
 

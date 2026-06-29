@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Assert roadmap files exist
+      - name: Assert legacy roadmap state files exist (Compatibility)
         shell: bash
         run: |
           test -f ROADMAP/ROADMAP_STATE.json
@@ -35,10 +35,11 @@ jobs:
           test -f AUDIT/ROADMAP_CURRENT.json
           test -f AUDIT/ROADMAP_CURRENT.md
 
-      - name: Validate roadmap state JSON
+      - name: Validate legacy roadmap state JSON (Compatibility)
         shell: bash
         run: python tools/validate_roadmap_state.py
 
-      - name: Assert no stale roadmap state remains
+      - name: Assert no stale legacy roadmap state remains (Compatibility)
         shell: bash
         run: python tools/assert_no_stale_roadmap.py
+

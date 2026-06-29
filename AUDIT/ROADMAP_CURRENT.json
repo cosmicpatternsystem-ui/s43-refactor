@@ -1,15 +1,72 @@
 {
-  "schema_version": "1.0",
-  "project": "s43-refactor",
-  "default_branch": "main",
-  "current_phase": "22.13",
-  "current_branch": "phase22-13-post-merge-roadmap-sync",
-  "phase_title": "Post-Merge Roadmap Gate Hardening and Canonical Sync",
-  "previous_phase": "22.12",
-  "previous_pr": 65,
-  "previous_merge_commit": "50aad558ce801dbdae684f170e65297478284d99",
-  "previous_phase_status": "merged",
-  "roadmap_sync_status": "in_progress",
-  "next_action": "Harden Operational Roadmap Gate and enforce post-merge roadmap sync on main",
-  "updated_at": "2026-06-21"
+    "project":  "ASO-X",
+    "default_branch":  "main",
+    "current_phase":  "22.13",
+    "current_branch":  "main",
+    "phase_title":  "Phase 22.13",
+    "previous_phase":  "22.12",
+    "roadmap_version":  "2026.06.26-ALPHA",
+    "schema_version":  "2.1.0",
+    "authority":  "ASO-X GLOBAL GOVERNANCE",
+    "lifecycle":  {
+                      "inception_date":  "2024-01-01T00:00:00Z",
+                      "horizon_date":  "2076-01-01T00:00:00Z",
+                      "last_updated":  "2026-06-26T12:14:54Z",
+                      "roadmap_sync_status":  "synced",
+                      "next_action":  "Continue Phase 22.13 roadmap execution",
+                      "updated_at":  "2026-06-27T00:00:00Z",
+                      "validation_status":  "pending"
+                  },
+    "operational_metadata":  {
+                                 "system_health":  "HEALTHY",
+                                 "health_reason":  "Normalized under 50-year roadmap policy",
+                                 "active_cache_policy":  "STANDARD",
+                                 "data_durability_tier":  "P50_GLOBAL_ENTERPRISE"
+                             },
+    "governance":  {
+                       "immutable_storage":  "Git/GitHub",
+                       "audit_reference":  "local-worktree",
+                       "enforcement_level":  "STRICT_LOCK"
+                   },
+    "initiatives":  [
+                        {
+                            "id":  "INIT-2026-001",
+                            "title":  "Global Financial Intelligence Platform with Dashboard",
+                            "status":  "in_progress",
+                            "priority":  "CRITICAL",
+                            "owner":  "ASO-X CORE",
+                            "evidence":  "Baseline normalized roadmap state",
+                            "milestones":  [
+                                               {
+                                                   "id":  "M1",
+                                                   "label":  "Roadmap governance normalization",
+                                                   "status":  "completed",
+                                                   "evidence":  "50-year schema applied"
+                                               }
+                                           ]
+                        }
+                    ],
+    "durability_proof":  {
+                             "checksum_sha256":  "",
+                             "signature_type":  "UNSPECIFIED"
+                         },
+    "source_of_truth":  "repository_files_only",
+    "durable_automation_goals":  {
+                                     "commercial_grade_governance":  true,
+                                     "real_money_safe_governance":  true,
+                                     "fifty_year_durability_target":  true,
+                                     "chat_memory_independent_operation":  true,
+                                     "fully_automated_roadmap_control":  true,
+                                     "requirements":  [
+                                                          "canonical_repository_only_source_of_truth",
+                                                          "atomic_write_and_recovery_journal",
+                                                          "crash_safe_resume",
+                                                          "autosave_autocommit_autopush_with_retry",
+                                                          "verified_local_remote_hardware_backup",
+                                                          "concurrent_edit_lock_and_hash_checks",
+                                                          "immutable_audit_history",
+                                                          "ci_validation_on_pull_request_and_push_main"
+                                                      ],
+                                     "status":  "declared_not_yet_fully_satisfied"
+                                 }
 }
