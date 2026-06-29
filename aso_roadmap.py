@@ -8,7 +8,7 @@ def main():
     if cmd == "sync":
         print(json.dumps(sync_roadmap(trigger="cli"), indent=2))
     elif cmd == "validate":
-        r1 = subprocess.run([sys.executable, "roadmap_guard.py"])
+        r1 = subprocess.run([sys.executable, "scripts/roadmap_guard.py"])
         r2 = subprocess.run([sys.executable, "validate_roadmap_state.py"])
         sys.exit(0 if r1.returncode == 0 and r2.returncode == 0 else 1)
     else:
