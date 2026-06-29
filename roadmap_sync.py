@@ -152,7 +152,7 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
     CHECKSUM_PATH.parent.mkdir(parents=True, exist_ok=True)
     CHECKSUM_PATH.write_text("\n".join(checksum_lines), encoding="utf-8")
 
-    v1 = subprocess.run([sys.executable, "roadmap_guard.py"], capture_output=True, text=True)
+    v1 = subprocess.run([sys.executable, "scripts/roadmap_guard.py"], capture_output=True, text=True)
     v2 = subprocess.run([sys.executable, "validate_roadmap_state.py"], capture_output=True, text=True)
 
     result = dict(payload)
