@@ -25,15 +25,32 @@ function ConvertTo-JsonStringLiteral {
 
 function Format-CanonicalJson {
     param($Value, [int]$Depth = 0)
+
+    if ($Depth -gt 64) {
+        throw "Format-CanonicalJson: max nesting depth (64) exceeded at depth $Depth (cyclic or self-referential value)."
+    }
+
     $pad  = '  ' * $Depth
     $padN = '  ' * ($Depth + 1)
+
     if ($null -eq $Value)   { return 'null' }
     if ($Value -is [bool])  { if ($Value) { return 'true' } else { return 'false' } }
     if ($Value -is [string]){ return (ConvertTo-JsonStringLiteral $Value) }
+
+    if ($Value -is [datetime]) {
+        $iso = $Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
+        return (ConvertTo-JsonStringLiteral $iso)
+    }
+    if ($Value -is [System.DateTimeOffset]) {
+        $iso = $Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
+        return (ConvertTo-JsonStringLiteral $iso)
+    }
+
     if ($Value -is [int] -or $Value -is [long] -or $Value -is [double] -or
         $Value -is [decimal] -or $Value -is [single] -or $Value -is [byte] -or $Value -is [int16]) {
         return ([System.Convert]::ToString($Value, [System.Globalization.CultureInfo]::InvariantCulture))
     }
+
     if ($Value -is [System.Collections.IDictionary]) {
         $keys = @($Value.Keys)
         if ($keys.Count -eq 0) { return '{}' }
@@ -42,6 +59,7 @@ function Format-CanonicalJson {
         }
         return "{`n" + ($parts -join ",`n") + "`n$pad}"
     }
+
     if ($Value -isnot [string] -and $Value -is [System.Collections.IEnumerable]) {
         $arr = @($Value)
         if ($arr.Count -eq 0) { return '[]' }
@@ -50,6 +68,11 @@ function Format-CanonicalJson {
         }
         return "[`n" + ($parts -join ",`n") + "`n$pad]"
     }
+
+    if ($Value -is [System.ValueType]) {
+        return (ConvertTo-JsonStringLiteral ([string]$Value))
+    }
+
     $props = @($Value.PSObject.Properties | Where-Object { $_.MemberType -in 'NoteProperty','Property' })
     if ($props.Count -eq 0) { return '{}' }
     $parts = foreach ($p in $props) {
