@@ -25,7 +25,7 @@ function Get-RoadmapMetadata {
         return $defaults
     }
 
-    $metadata = $match.Groups[1].Value | ConvertFrom-Json -DateKind String
+    $metadata = $match.Groups[1].Value | ConvertFrom-Json
 
     foreach ($key in @("owner", "priority", "depends_on", "acceptance_criteria", "evidence", "last_verified_at")) {
         if ($metadata.PSObject.Properties.Name -contains $key) {
@@ -331,7 +331,7 @@ $phases = foreach ($phaseFile in $phaseFiles) {
 
 $roadmap = [ordered]@{
     schema_version = 2
-    source_of_truth = "repository phase documents"
+    source_of_truth = "repository_files_only"
     generated_by = "scripts/update-roadmap.ps1"
     enforcement_model = "generated-and-diff-enforced-in-pr"
     operational_metadata_schema = [ordered]@{
@@ -357,6 +357,7 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 )
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+
 
 
 
