@@ -1,72 +1,104 @@
 {
+    "schema_version":  "2.13.0",
+    "roadmap_version":  "1.0.0",
+    "generated_by":  "ASO-X Phase B.2 Migration",
+    "generated_at":  "2026-07-01T15:35:00Z",
     "project":  "ASO-X",
-    "default_branch":  "main",
-    "current_phase":  "22.13",
-    "current_branch":  "main",
-    "phase_title":  "Phase 22.13",
-    "previous_phase":  "22.12",
-    "roadmap_version":  "2026.06.26-ALPHA",
-    "schema_version":  "2.1.0",
-    "authority":  "ASO-X GLOBAL GOVERNANCE",
-    "lifecycle":  {
-                      "inception_date":  "2024-01-01T00:00:00Z",
-                      "horizon_date":  "2076-01-01T00:00:00Z",
-                      "last_updated":  "2026-06-26T12:14:54Z",
-                      "roadmap_sync_status":  "synced",
-                      "next_action":  "Continue Phase 22.13 roadmap execution",
-                      "updated_at":  "2026-06-27T00:00:00Z",
-                      "validation_status":  "pending"
-                  },
-    "operational_metadata":  {
-                                 "system_health":  "HEALTHY",
-                                 "health_reason":  "Normalized under 50-year roadmap policy",
-                                 "active_cache_policy":  "STANDARD",
-                                 "data_durability_tier":  "P50_GLOBAL_ENTERPRISE"
-                             },
-    "governance":  {
-                       "immutable_storage":  "Git/GitHub",
-                       "audit_reference":  "local-worktree",
-                       "enforcement_level":  "STRICT_LOCK"
-                   },
-    "initiatives":  [
-                        {
-                            "id":  "INIT-2026-001",
-                            "title":  "Global Financial Intelligence Platform with Dashboard",
-                            "status":  "in_progress",
-                            "priority":  "CRITICAL",
-                            "owner":  "ASO-X CORE",
-                            "evidence":  "Baseline normalized roadmap state",
-                            "milestones":  [
-                                               {
-                                                   "id":  "M1",
-                                                   "label":  "Roadmap governance normalization",
-                                                   "status":  "completed",
-                                                   "evidence":  "50-year schema applied"
-                                               }
-                                           ]
-                        }
-                    ],
-    "durability_proof":  {
-                             "checksum_sha256":  "",
-                             "signature_type":  "UNSPECIFIED"
-                         },
+    "description":  "Global Financial Intelligence - Enterprise-Grade Roadmap",
+    "authority":  "ROADMAP_CANONICAL.md",
     "source_of_truth":  "repository_files_only",
+    "lifecycle":  {
+                      "inception_date":  "2026-06-24T00:00:00Z",
+                      "horizon_date":  "2076-06-24T00:00:00Z",
+                      "created":  "2026-07-01T15:35:00Z",
+                      "last_modified":  "2026-07-01T15:35:00Z",
+                      "last_updated":  "2026-07-01T15:35:00Z",
+                      "roadmap_sync_status":  "synchronized",
+                      "validation_status":  "valid",
+                      "durability_target_years":  50,
+                      "maintainer":  "ASO-X Core Team"
+                  },
+    "governance":  {
+                       "change_control":  "ROADMAP_CANONICAL.md",
+                       "approval_required":  true,
+                       "immutable_git":  true,
+                       "immutable_storage":  true
+                   },
+    "operational_metadata":  {
+                                 "last_validated":  "2026-07-01T15:35:00Z",
+                                 "validation_tool":  "roadmap_guard.py",
+                                 "validation_mode":  "strict",
+                                 "deployment_environment":  "production",
+                                 "concurrent_edit_safe":  true,
+                                 "system_health":  "HEALTHY"
+                             },
     "durable_automation_goals":  {
-                                     "commercial_grade_governance":  true,
-                                     "real_money_safe_governance":  true,
+                                     "target_durability_years":  50,
                                      "fifty_year_durability_target":  true,
                                      "chat_memory_independent_operation":  true,
                                      "fully_automated_roadmap_control":  true,
+                                     "validation_enforcement":  "strict",
+                                     "immutable_git_required":  true,
+                                     "concurrent_edit_safety":  true,
+                                     "encoding_standard":  "UTF-8_BOM_free_LF",
+                                     "source_of_truth":  "repository_files_only",
+                                     "deployment_resilience":  "real_money_grade",
+                                     "commercial_grade_governance":  true,
+                                     "real_money_safe_governance":  true,
                                      "requirements":  [
-                                                          "canonical_repository_only_source_of_truth",
-                                                          "atomic_write_and_recovery_journal",
-                                                          "crash_safe_resume",
-                                                          "autosave_autocommit_autopush_with_retry",
-                                                          "verified_local_remote_hardware_backup",
-                                                          "concurrent_edit_lock_and_hash_checks",
-                                                          "immutable_audit_history",
-                                                          "ci_validation_on_pull_request_and_push_main"
+                                                          "immutable_git_enforcement",
+                                                          "concurrent_edit_safety",
+                                                          "fifty_year_durability",
+                                                          "chat_memory_independence",
+                                                          "real_money_safe_operations",
+                                                          "commercial_grade_governance"
                                                       ],
-                                     "status":  "declared_not_yet_fully_satisfied"
-                                 }
+                                     "status":  "in_progress"
+                                 },
+    "initiatives":  [
+                        {
+                            "id":  "INIT-001",
+                            "name":  "Roadmap SSoT Unification",
+                            "phase":  "B.2",
+                            "status":  "CLOSED",
+                            "owner":  "ASO-X Core Team",
+                            "closed_at":  "2026-07-01T15:35:00Z"
+                        }
+                    ],
+    "phases":  {
+                   "A":  {
+                             "name":  "Foundation Architecture",
+                             "status":  "CLOSED",
+                             "milestones":  [
+
+                                            ]
+                         },
+                   "B":  {
+                             "name":  "Core Infrastructure",
+                             "status":  "ACTIVE",
+                             "phases":  {
+                                            "B.1":  {
+                                                        "name":  "Phase Tracking",
+                                                        "status":  "CLOSED"
+                                                    },
+                                            "B.2":  {
+                                                        "name":  "Roadmap Journaling",
+                                                        "status":  "CLOSED",
+                                                        "closed_at":  "2026-07-01T15:35:00Z"
+                                                    },
+                                            "B.3":  {
+                                                        "name":  "Automation Deployment",
+                                                        "status":  "PLANNED"
+                                                    }
+                                        }
+                         }
+               },
+    "metadata":  {
+                     "encoding":  "UTF-8",
+                     "line_endings":  "LF",
+                     "bom":  false,
+                     "validation_tool":  "roadmap_guard.py",
+                     "repository":  "ASO-X",
+                     "immutable_git":  true
+                 }
 }
