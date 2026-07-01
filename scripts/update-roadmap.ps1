@@ -432,7 +432,7 @@ $roadmap = [ordered]@{
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
 
-& (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Data $json
+& (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Content $json
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
 
