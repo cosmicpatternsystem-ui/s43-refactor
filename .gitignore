@@ -72,3 +72,8 @@ dashboard/dashboard_bridge.py.bak_20260626_145456
 *.RETIRED.txt
 archive_legacy.ps1
 roadmap_canonicalize.ps1
+
+# Runtime data and journals (Phase B.3+)
+data/
+data/journal/
+AUDIT/ARCHIVE/
