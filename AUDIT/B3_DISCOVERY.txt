@@ -1,0 +1,378 @@
+
+==================== ENV ====================
+Repo      : G:\s43_work\s43_g11_work
+PSVersion : 5.1.19041.6456
+Python    : Python 3.10.11
+Git       : git version 2.54.0.windows.1
+HEAD      : c6b6860
+Branch    : main
+
+==================== ASOCTL.PY SURFACE ====================
+Path exists: G:\s43_work\s43_g11_work\asoctl.py
+--- lines matching def/add_parser/add_subparsers/command/subprocess/roadmap_guard ---
+25: def utc_timestamp() -> str:
+30: def __init__(self, state_dir: Path = STATE_DIR) -> None:
+35: def ensure_directories(self) -> None:
+39: def init(self) -> int:
+46: def check(self) -> int:
+83: def backup(self) -> int:
+101: def status(self) -> int:
+115: def build_parser() -> argparse.ArgumentParser:
+120: subcommands = parser.add_subparsers(dest="command", required=True)
+121: subcommands.add_parser("init", help="Create required local state directories")
+122: subcommands.add_parser("check", help="Run durable SQLite health checks")
+123: subcommands.add_parser("backup", help="Create a timestamped local SQLite backup")
+124: subcommands.add_parser("status", help="Show local durable-state status")
+129: def main(argv: list[str] | None = None) -> int:
+--- total line count ---
+149
+
+==================== ROADMAP_GUARD.PY CONTRACT ====================
+Path: G:\s43_work\s43_g11_work\roadmap_guard.py
+--- argparse / --strict / exit codes / enum ---
+29: "roadmap_sync_status",
+30: "validation_status",
+45: return 1
+51: return json.loads(path.read_text(encoding="utf-8-sig"))
+56: return p, load_json_file(p)
+62: return False
+65: return True
+66: return False
+68: return False
+74: return fail(str(e))
+78: return fail(f"missing top-level field: {key}")
+81: return fail(f"project must be 'ASO-X', got: {data.get('project')}")
+85: return fail(f"schema_version must start with '2.', got: {schema_version}")
+89: return fail("lifecycle must be an object")
+93: return fail(f"missing lifecycle field: {key}")
+97: return fail(f"lifecycle.{key} must be ISO-8601 UTC like 2026-06-26T12:50:00Z")
+101: return fail("operational_metadata must be an object")
+104: return fail(f"missing operational_metadata field: {key}")
+107: return fail(
+114: return fail("governance must be an object")
+117: return fail(f"missing governance field: {key}")
+121: return fail("initiatives must be a non-empty list")
+124: return fail("source_of_truth must be 'repository_files_only'")
+128: return fail("durable_automation_goals must be an object")
+137: "status",
+141: return fail(f"missing durable_automation_goals field: {key}")
+151: return fail(f"durable_automation_goals.{key} must be boolean")
+154: return fail("durable_automation_goals.requirements must be a non-empty list")
+158: return fail("durable_automation_goals.requirements entries must be non-empty strings")
+160: if goals.get("status") not in {
+161: "declared_not_yet_fully_satisfied",
+162: "in_progress",
+163: "validated",
+165: return fail("durable_automation_goals.status invalid")
+167: ok(f"validated roadmap file: {path}")
+171: return 0
+174: sys.exit(main())
+
+==================== GIT HOOKS ====================
+No .pre-commit-config.yaml
+
+==================== GITHUB ACTIONS WORKFLOWS ====================
+
+### FILE: deferred-ai-artifacts-guard.yml
+--- name / on / jobs / steps run ---
+1: name: Deferred AI Artifacts Guard
+3: on:
+4:   pull_request:
+5:   push:
+6:     branches:
+9: jobs:
+12:     steps:
+13:       - name: Checkout repository
+14:         uses: actions/checkout@v4
+15:       - name: Verify deferred AI artifacts are not tracked
+16:         run: python tools/ai/check_no_deferred_ai_artifacts.py
+
+### FILE: hardening-tests.yml
+--- name / on / jobs / steps run ---
+1: name: Hardening Tests
+3: on:
+4:   pull_request:
+5:     branches: [main]
+6:   workflow_dispatch:
+8: jobs:
+10:     name: hardening-tests
+13:     steps:
+14:       - name: Checkout
+15:         uses: actions/checkout@v4
+17:       - name: Set up Python
+18:         uses: actions/setup-python@v5
+19:         with:
+22:       - name: Run hardening tests
+23:         run: bash run_safe.sh hardening
+
+### FILE: operational-roadmap-enforcement.yml
+--- name / on / jobs / steps run ---
+1: name: Operational Roadmap Enforcement
+3: on:
+4:   pull_request:
+5:   push:
+6:     branches:
+9: jobs:
+13:     steps:
+14:       - name: Checkout
+15:         uses: actions/checkout@v4
+17:       - name: Setup PowerShell
+18:         shell: bash
+19:         run: pwsh -v
+21:       - name: Validate committed roadmap schema
+22:         shell: pwsh
+23:         run: ./scripts/validate-roadmap.ps1
+25:       - name: Validate roadmap governance contract
+26:         shell: bash
+27:         run: python scripts/roadmap_guard.py ROADMAP_CURRENT.json
+29:       - name: Regenerate roadmap deterministically
+30:         shell: pwsh
+31:         run: ./scripts/update-roadmap.ps1
+33:       - name: Assert roadmap is current
+34:         shell: bash
+35:         run: |
+41:       - name: Debug roadmap drift
+42:         if: failure()
+43:         shell: bash
+44:         run: |
+
+### FILE: operational-roadmap-smoke-test.yml
+--- name / on / jobs / steps run ---
+1: name: Operational Roadmap Smoke Test
+3: on:
+4:   pull_request:
+5:     branches:
+7:   workflow_dispatch:
+9: jobs:
+11:     name: Roadmap generator and validator smoke test
+14:     steps:
+15:       - name: Checkout
+16:         uses: actions/checkout@v4
+18:       - name: Setup PowerShell
+19:         shell: bash
+20:         run: pwsh -v
+22:       - name: Run roadmap validator
+23:         shell: pwsh
+24:         run: ./scripts/validate-roadmap.ps1
+26:       - name: Run roadmap generator
+27:         shell: pwsh
+28:         run: ./scripts/update-roadmap.ps1
+30:       - name: Re-validate generated roadmap
+31:         shell: pwsh
+32:         run: ./scripts/validate-roadmap.ps1
+34:       - name: Validate roadmap governance contract
+35:         shell: bash
+36:         run: python scripts/roadmap_guard.py ROADMAP_CURRENT.json
+
+### FILE: operational-roadmap.yml
+--- name / on / jobs / steps run ---
+1: name: Operational Roadmap Gate
+3: on:
+4:   pull_request:
+5:     branches:
+7:   push:
+8:     branches:
+10:   workflow_dispatch:
+13:   contents: read
+16: jobs:
+18:     name: Assert operational roadmap contract
+21:     steps:
+22:       - name: Checkout repository
+23:         uses: actions/checkout@v4
+25:       - name: Set up Python
+26:         uses: actions/setup-python@v5
+27:         with:
+30:       - name: Assert legacy roadmap state files exist (Compatibility)
+31:         shell: bash
+32:         run: |
+38:       - name: Validate legacy roadmap state JSON (Compatibility)
+39:         shell: bash
+40:         run: python tools/validate_roadmap_state.py
+42:       - name: Assert no stale legacy roadmap state remains (Compatibility)
+43:         shell: bash
+44:         run: python tools/assert_no_stale_roadmap.py
+
+### FILE: policy-smokes.yml
+--- name / on / jobs / steps run ---
+1: name: Policy Smoke Tests
+3: on:
+4:   pull_request:
+5:     branches: [main]
+6:   workflow_dispatch:
+8: jobs:
+10:     name: policy-smokes
+13:     steps:
+14:       - name: Checkout
+15:         uses: actions/checkout@v4
+17:       - name: Run policy smoke checks
+18:         run: bash run_safe.sh policy
+
+### FILE: pr-hygiene.yml
+--- name / on / jobs / steps run ---
+1: name: PR Hygiene Gate
+3: on:
+4:   workflow_dispatch:
+5:   push:
+6:     branches:
+9:   pull_request:
+10:     branches:
+13: jobs:
+15:     name: Assert PR hygiene contract
+18:     steps:
+19:       - name: Checkout repository
+20:         uses: actions/checkout@v4
+22:       - name: Assert PR hygiene files and required phrases
+23:         shell: pwsh
+24:         run: ./tools/assert_pr_hygiene.ps1
+
+### FILE: release-readiness.yml
+--- name / on / jobs / steps run ---
+1: name: Release Readiness Gate
+3: on:
+4:   pull_request:
+5:     branches: [main]
+6:   workflow_dispatch:
+8: jobs:
+10:     name: Assert release readiness contract
+13:     steps:
+14:       - name: Checkout
+15:         uses: actions/checkout@v4
+17:       - name: Assert release readiness contract
+18:         run: bash run_safe.sh release
+
+### FILE: roadmap-integrity.yml
+--- name / on / jobs / steps run ---
+1: name: Roadmap Integrity Check
+3: on:
+4:   pull_request:
+5:     paths:
+10:   push:
+11:     branches: [main, master]
+12:     paths:
+16:   contents: read
+19:   group: roadmap-integrity-${{ github.ref }}
+22: jobs:
+23:   validate:
+26:     steps:
+27:       - name: Checkout
+28:         uses: actions/checkout@v4
+30:       - name: Setup Python
+31:         uses: actions/setup-python@v5
+32:         with:
+35:       - name: Roadmap guard (fail-closed)
+36:         run: python scripts/roadmap_guard.py
+38:       - name: Assert canonical source_of_truth
+39:         run: |
+
+==================== REQUIRED CHECKS (gh) ====================
+gh present: gh version 2.94.0 (2026-06-10)
+--- checks on latest PR/commit (may be empty) ---
+
+==================== REPO LAYOUT (depth 2) ====================
+.\.backup_roadmap_patch_20260626_140725
+.\.backup_workflows_20260628_083246
+.\.claude
+.\.git
+.\.githooks
+.\.github
+.\.pytest_cache
+.\.roadmap-debug-backup-20260627_225734
+.\.roadmap_archive
+.\.roadmap_backups
+.\.roadmap_journal
+.\.tmp
+.\analytics
+.\ARCHIVE
+.\AUDIT
+.\backups
+.\BASELINE_PROTECTION_SNAPSHOT_20260614_004542
+.\checksums
+.\config
+.\core
+.\dashboard
+.\data
+.\deploy
+.\docs
+.\doc_backup_PATCH_DOC_003_ROADMAP_LOCK_V1_20260613_215856
+.\governance
+.\intelligence
+.\legacy_reference
+.\logs
+.\MANIFESTS
+.\ops
+.\policies
+.\READ_ONLY_FEATURE_AUDIT_20260614_004819
+.\repair_backup_PATCH_003_DISCOVERY_REPORT_REPAIR_V1_20260613_222331
+.\reports
+.\RESTORE_TESTS
+.\ROADMAP
+.\roadmap_governance_evidence
+.\runtime
+.\scripts
+.\simulation
+.\snapshots
+.\tests
+.\tools
+.\TRACEABILITY_FINALIZER_20260614_003255
+.\TRACEABILITY_GAP_PHASE8_20260614_003753
+.\_LOCAL_DEFERRED_AI_ARTIFACTS
+.\__pycache__
+.\.github\ISSUE_TEMPLATE
+.\.github\workflows
+.\.pytest_cache\v
+.\.roadmap_archive\20260629_230523
+.\.roadmap_archive\20260629_231425
+.\AUDIT\ARCHIVE
+.\AUDIT\PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_085317
+.\AUDIT\PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_085527
+.\AUDIT\PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_090728
+.\AUDIT\PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_091840
+.\AUDIT\PHASE18_AUTONOMOUS_COMMERCIAL_OPS_20260615_092335
+.\AUDIT\PHASE18_FINAL_RC_GATE_REVIEW_20260615_083740
+.\AUDIT\PHASE18_RELEASE_READINESS_EVIDENCE_20260615_083340
+.\backups\20260527_093330
+.\core\autonomy
+.\core\communication
+.\core\hardware
+.\core\intelligence
+.\core\safety
+.\core\__pycache__
+.\dashboard\.next
+.\dashboard\node_modules
+.\dashboard\public
+.\dashboard\src
+.\dashboard\_diag_aso_x
+.\data\journal
+.\deploy\api
+.\deploy\docker
+.\deploy\production
+.\docs\audit
+.\docs\commercial
+.\docs\governance
+.\docs\handoff
+.\docs\intelligence_upgrade
+.\docs\ops
+.\docs\roadmap
+.\docs\runtime
+.\docs\verification
+.\governance\__pycache__
+.\intelligence\core
+.\intelligence\data_pipeline
+.\intelligence\models
+.\intelligence\strategies
+.\intelligence\__pycache__
+.\ops\policy
+.\ops\tests
+.\runtime\audit
+.\runtime\backups
+.\runtime\intelligence
+.\runtime\state
+.\scripts\__pycache__
+.\tests\__pycache__
+.\tools\ai
+.\tools\__pycache__
+.\_LOCAL_DEFERRED_AI_ARTIFACTS\AI_AUDIT
+.\_LOCAL_DEFERRED_AI_ARTIFACTS\full-files
+.\_LOCAL_DEFERRED_AI_ARTIFACTS\patches
+.\_LOCAL_DEFERRED_AI_ARTIFACTS\phase22_7_backup
+.\_LOCAL_DEFERRED_AI_ARTIFACTS\tools
