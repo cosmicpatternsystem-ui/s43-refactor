@@ -151,8 +151,8 @@ Invoke-Step "Resolve human-readable Depends On header label" {
 }
 
 Invoke-Step "Resolve canonical filename Depends On header target" {
-        $tempEmptyDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_98_TEMP_EMPTY_DEPENDS_ON_HEADER.md"
-        $emptyDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
+        $tempFilenameDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_96_TEMP_FILENAME_DEPENDS_ON_HEADER.md"
+        $filenameDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
   $filenameDependsUpdatePath = Join-Path $PSScriptRoot "update-roadmap.ps1"
   $expectedDependsOn = "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
   $originalFilenameDependsRoadmapBytes = [System.IO.File]::ReadAllBytes($filenameDependsRoadmapPath)
@@ -193,6 +193,7 @@ Invoke-Step "Resolve canonical filename Depends On header target" {
 
     [System.IO.File]::WriteAllBytes($filenameDependsRoadmapPath, $originalFilenameDependsRoadmapBytes)
   }
+}
 Invoke-Step "Trim canonical filename Depends On header target" {
   $tempTrimmedFilenameDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_95_TEMP_TRIMMED_FILENAME_DEPENDS_ON_HEADER.md"
   $trimmedFilenameDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
@@ -236,6 +237,7 @@ Invoke-Step "Trim canonical filename Depends On header target" {
 
     [System.IO.File]::WriteAllBytes($trimmedFilenameDependsRoadmapPath, $originalTrimmedFilenameDependsRoadmapBytes)
   }
+}
 Invoke-Step "Resolve mixed Depends On header targets" {
   $tempMixedDependsPhasePath = Join-Path (Join-Path $PSScriptRoot "..") "PHASE_99_94_TEMP_MIXED_DEPENDS_ON_HEADER.md"
   $mixedDependsRoadmapPath = Join-Path (Join-Path $PSScriptRoot "..") "ROADMAP_CURRENT.json"
