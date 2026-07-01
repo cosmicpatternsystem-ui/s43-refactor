@@ -1,54 +1,199 @@
 {
-  "project": "ASO-X",
-  "roadmap_version": 1,
-  "schema_version": "2.0",
-  "authority": {
-    "source": "repository_files_only",
-    "generated_by": "scripts/update-roadmap.ps1"
-  },
-  "lifecycle": {
-    "inception_date": "2026-06-27T17:01:21Z",
-    "horizon_date": "2076-01-01T00:00:00Z",
-    "last_updated": "2026-06-28T21:26:51.065042+00:00",
-    "roadmap_sync_status": "synchronized",
-    "validation_status": "valid"
-  },
-  "operational_metadata": {
-    "system_health": "HEALTHY"
-  },
-  "governance": {
-    "immutable_storage": true
-  },
-  "initiatives": [
+  "schema_version": 2.0,
+  "generated_at": "2026-07-01T17:43:42.298505+00:00",
+  "generated_by": "asoctl.py roadmap",
+  "phases": [
     {
-      "id": "roadmap-generated-phases",
-      "durable_automation_goals": {
-        "commercial_grade_governance": true,
-        "real_money_safe_governance": true,
-        "fifty_year_durability_target": true,
-        "chat_memory_independent_operation": true,
-        "fully_automated_roadmap_control": true
-      },
-      "requirements": [
-        "Repository files are the only roadmap source of truth.",
-        "ROADMAP_CURRENT.json is generated deterministically from committed phase files."
-      ],
-      "status": "in_progress",
-      "source_of_truth": "repository_files_only",
-      "generated_by": "scripts/update-roadmap.ps1",
-      "enforcement_model": "generated-and-diff-enforced-in-pr",
-      "operational_metadata_schema": {
-        "owner": "string",
-        "priority": "string",
-        "depends_on": "array",
-        "acceptance_criteria": "array",
-        "evidence": "array",
-        "last_verified_at": "ISO8601 or null"
-      },
-      "updated_at_utc": "2026-06-27T17:01:21Z",
-      "phase_count": 80,
-      "phases": []
+      "id": "26.1",
+      "title": "Phase 26: Release Candidate Packaging & Deployment Dry Run"
+    },
+    {
+      "id": "29.2",
+      "title": "Phase 29.02 - Post-Phase-28 Mainline Verification Evidence"
+    },
+    {
+      "id": "30.4",
+      "title": "Phase 30.04 Audit Correction"
+    },
+    {
+      "id": "31.1",
+      "title": "Phase 31.01 \u2014 Enterprise Roadmap Governance Hardening"
+    },
+    {
+      "id": "32.2",
+      "title": "Phase 32.02 \u2014 Operational Intelligence Runtime Contract"
+    },
+    {
+      "id": "32.3",
+      "title": "Phase 32.03 \u2014 Operational Intelligence Evidence and Escalation Flow"
+    },
+    {
+      "id": "32.4",
+      "title": "Phase 32.04 \u2014 Operational Intelligence Verification and Replay Contract"
+    },
+    {
+      "id": "33.1",
+      "title": "Phase 33.01: AI Decision Engine - Architecture and Inference Logic"
+    },
+    {
+      "id": "33.2",
+      "title": "Phase 33.02: AI Decision Engine - Inference-to-Action Mapping"
+    },
+    {
+      "id": "33.3",
+      "title": "Phase 33.03: AI Decision Engine - Decision Confidence, Risk Scoring, and Approval Thresholds"
+    },
+    {
+      "id": "33.4",
+      "title": "Phase 33.04: AI Decision Engine - Self-Correction and Decision Feedback Loop"
+    },
+    {
+      "id": "34.1",
+      "title": "Phase 34.01: Execution & Real-time Enforcement - Execution Controller Architecture"
+    },
+    {
+      "id": "34.2",
+      "title": "Phase 34.02: Execution & Real-time Enforcement - Pre-Execution Safety Checks"
+    },
+    {
+      "id": "34.3",
+      "title": "Phase 34.03: Execution & Real-time Enforcement - Execution Evidence, ACK/NACK, and Runtime Result Contract"
+    },
+    {
+      "id": "34.4",
+      "title": "Phase 34.04: Execution & Real-time Enforcement - Real-time Enforcement Telemetry and Intervention Contract"
+    },
+    {
+      "id": "35.1",
+      "title": "Phase 35.01: Autonomous Recovery & Failure Containment - Architecture"
+    },
+    {
+      "id": "35.2",
+      "title": "Phase 35.02: Autonomous Recovery & Failure Containment - Recovery Policy, Strategy Selection, and Blast-Radius Control"
+    },
+    {
+      "id": "35.3",
+      "title": "Phase 35.03: Autonomous Recovery & Failure Containment - Recovery Orchestration, Evidence Continuity, and Verification Contract"
+    },
+    {
+      "id": "35.4",
+      "title": "Phase 35.04: Autonomous Recovery & Failure Containment - Degradation Modes, Graceful Failure, and Escalation Flow"
+    },
+    {
+      "id": "36.1",
+      "title": "Phase 36.01: Adaptive Learning & Continuous Improvement - Learning Loop Architecture and Governance Boundary"
+    },
+    {
+      "id": "36.2",
+      "title": "Phase 36.02: Adaptive Learning & Continuous Improvement - Learning Signal Normalization and Quality Scoring"
+    },
+    {
+      "id": "36.3",
+      "title": "Phase 36.03: Model and Strategy Update Governance"
+    },
+    {
+      "id": "36.4",
+      "title": "Phase 36.04: Learning Deployment Safeguards and Continuous Improvement Auditability"
+    },
+    {
+      "id": "37.1",
+      "title": "Phase 37.01: Simulation and Pre-Production Validation Architecture"
+    },
+    {
+      "id": "37.2",
+      "title": "Phase 37.02: Scenario Library, Replay Dataset Contract, and Coverage Criteria"
+    },
+    {
+      "id": "37.3",
+      "title": "Phase 37.03: Simulation Evaluation Metrics, Pass/Fail Policy, and Promotion Recommendation Contract"
+    },
+    {
+      "id": "37.4",
+      "title": "Phase 37.04: Simulation Governance, Exception Handling, and Pre-Production Approval Handoff"
+    },
+    {
+      "id": "38.1",
+      "title": "Phase 38.01: Release Governance and Production Activation Architecture"
+    },
+    {
+      "id": "38.2",
+      "title": "Phase 38.02: Activation Readiness Gates and Release Criteria"
+    },
+    {
+      "id": "38.3",
+      "title": "Phase 38.03: Progressive Rollout Checkpoints and Intervention Rules"
+    },
+    {
+      "id": "38.4",
+      "title": "Phase 38.04: Release Oversight, Escalation, and Production Handoff"
+    },
+    {
+      "id": "39.1",
+      "title": "Phase 39.01: Post-Release Observability and Stabilization Architecture"
+    },
+    {
+      "id": "39.2",
+      "title": "Phase 39.02: Stabilization Signal Evaluation and Alert Triage"
+    },
+    {
+      "id": "39.3",
+      "title": "Phase 39.03: Stabilization Review Thresholds and Recovery Decision Policy"
+    },
+    {
+      "id": "39.4",
+      "title": "Phase 39.04: Stabilization Exit Criteria and Steady-State Handoff"
+    },
+    {
+      "id": "40.1",
+      "title": "Phase 40.01: Continuous Improvement and Operational Learning Architecture"
+    },
+    {
+      "id": "40.2",
+      "title": "Phase 40.02: Operational Learning Intake, Classification, and Evidence Contract"
+    },
+    {
+      "id": "40.3",
+      "title": "Phase 40.03: Recommendation Evaluation, Prioritization, and Governance Routing"
+    },
+    {
+      "id": "40.4",
+      "title": "Phase 40.04: Improvement Decision Closure and Feedback Loop Handoff"
+    },
+    {
+      "id": "41.1",
+      "title": "Phase 41.01: Operational Governance Maturity and Lifecycle Control Architecture"
+    },
+    {
+      "id": "41.2",
+      "title": "Phase 41.02: Governance Review Cadence, Triggering Conditions, and Compliance Checkpoints"
+    },
+    {
+      "id": "41.3",
+      "title": "Phase 41.03: Governance Exception Handling, Waiver Control, and Expiry Enforcement"
+    },
+    {
+      "id": "41.4",
+      "title": "Phase 41.04: Governance State Reporting, Attestation, and Audit Traceability"
+    },
+    {
+      "id": "42.1",
+      "title": "Phase 42.01: Governance Metrics Baseline, Trend Analysis, and Operational Signal Quality"
+    },
+    {
+      "id": "42.2",
+      "title": "Phase 42.02: Governance Metrics Collection, Normalization, and Reporting Pipeline Contract"
+    },
+    {
+      "id": "42.3",
+      "title": "Phase 42.03 - Roadmap Metadata Completeness and Enterprise Readiness Hardening"
+    },
+    {
+      "id": "42.4",
+      "title": "PHASE 42.04 \u2014 Roadmap Metadata Regression Guard"
+    },
+    {
+      "id": "42.5",
+      "title": "Phase 42.05: Depends On Header Parsing Hardening"
     }
-  ],
-  "updated_at_utc": "2026-06-28T21:26:51.065042+00:00"
+  ]
 }
