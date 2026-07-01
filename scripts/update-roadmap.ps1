@@ -1,4 +1,4 @@
-function ConvertTo-JsonStringLiteral {
+﻿function ConvertTo-JsonStringLiteral {
     param([AllowNull()][string]$Text)
     if ($null -eq $Text) { return '""' }
     $sb = New-Object System.Text.StringBuilder
@@ -432,11 +432,7 @@ $roadmap = [ordered]@{
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
 
-[System.IO.File]::WriteAllText(
-    (Join-Path (Get-Location) "ROADMAP_CURRENT.json"),
-    $json,
-    [System.Text.UTF8Encoding]::new($false)
-)
+& (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Data $json
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
 
