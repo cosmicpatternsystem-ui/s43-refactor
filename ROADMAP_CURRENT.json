@@ -1,38 +1,33 @@
 {
-  "schema_version": "2.0",
-  "roadmap_version": "22.13",
+  "schema_version": 2,
   "source_of_truth": "repository_files_only",
-  "current_phase": "22.13",
-  "authority": {
-    "source": "repository_files_only",
-    "enforcement": "strict"
+  "generated_by": "scripts/update-roadmap.ps1",
+  "enforcement_model": "generated-and-diff-enforced-in-pr",
+  "updated_at_utc": "2026-07-02T07:30:51.666119+00:00",
+  "phase_count": 1,
+  "operational_metadata_schema": {
+    "owner": "string",
+    "priority": "string",
+    "depends_on": "array",
+    "acceptance_criteria": "array",
+    "evidence": "array",
+    "last_verified_at": "string"
   },
-  "lifecycle": "closed",
-  "enforcement_model": "fail_closed",
-  "generated_by": "scripts/roadmap_generator.py",
-  "generated_at": "2026-07-02T07:17:09.654172+00:00",
-  "phases": {
-    "22.13": {
-      "name": "Global Financial Intelligence - Phase 22.13",
-      "status": "closed",
-      "lifecycle": "closed",
-      "start_date": "2024-01-01",
-      "end_date": "2026-07-02",
-      "deliverables": [
-        "Core financial intelligence infrastructure",
-        "Real-money resilient architecture",
-        "Enterprise-grade validation pipeline"
+  "phases": [
+    {
+      "file": "phases/22.13_phase_closure.md",
+      "status": "complete",
+      "documentation_only": true,
+      "owner": "system",
+      "priority": "critical",
+      "depends_on": [],
+      "acceptance_criteria": [
+        "Phase 22.13 formally closed"
       ],
-      "governance": {
-        "source_of_truth": "repository_files_only",
-        "immutable": true
-      }
+      "evidence": [
+        "ROADMAP_CURRENT.json"
+      ],
+      "last_verified_at": "2026-07-02T07:30:51.666119+00:00"
     }
-  },
-  "metadata": {
-    "project": "ASO-X",
-    "durability_target": "50y",
-    "encoding": "UTF-8 (BOM-free)",
-    "line_endings": "LF"
-  }
+  ]
 }
