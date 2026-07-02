@@ -1,4 +1,4 @@
-{
+﻿{
   "schema_version": 2,
   "source_of_truth": "repository_files_only",
   "generated_by": "scripts/update-roadmap.ps1",

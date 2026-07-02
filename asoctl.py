@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """ASO-X project control utility.
 
 Provides durable-state checks, local backups, and basic environment bootstrap
@@ -144,6 +144,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.error(f"unknown command: {args.command}")
     return 2
 
+
+
+def cmd_roadmap(args):
+    import subprocess
+    return subprocess.run([sys.executable, 'scripts/roadmap_generator.py']).returncode
 
 if __name__ == "__main__":
     raise SystemExit(main())
