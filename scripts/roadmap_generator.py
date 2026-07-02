@@ -1,28 +1,144 @@
-﻿import json, re, sys
+﻿#!/usr/bin/env python3
+"""
+ASO-X Roadmap Generator
+Generates ROADMAP_CURRENT.json with Phase A-F definitions and durable automation goals.
+"""
+
+import json
+import os
+from datetime import datetime
 from pathlib import Path
-from datetime import datetime, timezone
 
-def parse_phase(p):
-    t = p.read_text(encoding="utf-8").strip().split("\n")
-    m = re.search(r"^#\s+(.+)$", t[0])
-    if not m: return None
-    n = re.match(r"PHASE_(\d+)_(\d+)", p.name)
-    if not n: return None
-    return {"id": f"{int(n[1])}.{int(n[2])}", "title": m[1].strip()}
+def generate_roadmap():
+    repo_root = Path(__file__).parent.parent
+    output_path = repo_root / "ROADMAP_CURRENT.json"
+    
+    roadmap = {
+        "schema_version": "1.0.0",
+        "roadmap_version": "22.13",
+        "source_of_truth": "repository_files_only",
+        "generated_by": "scripts/roadmap_generator.py",
+        "generated_at": datetime.utcnow().isoformat() + "Z",
+        
+        "durable_automation_goals": {
+            "commercial_grade_governance": True,
+            "real_money_safe_governance": True,
+            "fifty_year_durability_target": True,
+            "chat_memory_independent_operation": True,
+            "fully_automated_roadmap_control": True,
+            "requirements": [
+                "Single canonical roadmap path (ROADMAP_CURRENT.json)",
+                "Atomic writes with journaling and recovery",
+                "Auto-sync scheduler with retry queue",
+                "Local + remote + hardware backup verification",
+                "Safe concurrent edit protocol with lock files",
+                "Immutable audit logs for all roadmap changes"
+            ],
+            "status": "in_progress"
+        },
+        
+        "phases": [
+            {
+                "id": "A",
+                "name": "Canonical Governance",
+                "status": "active",
+                "priority": "high",
+                "description": "Establish the canonical path for ROADMAP_CURRENT.json, resolve ambiguity, and enforce source_of_truth = repository_files_only.",
+                "dependencies": [],
+                "deliverables": [
+                    "ROADMAP_CURRENT.json as single source of truth",
+                    "Atomic write operations with journaling",
+                    "Validation pipeline (validate-roadmap.ps1)",
+                    "Repository-only source enforcement"
+                ]
+            },
+            {
+                "id": "B",
+                "name": "Durability",
+                "status": "planned",
+                "priority": "high",
+                "description": "Focus on atomic writes, journaling, recovery, checkpointing, and testing resilience against power loss and network disconnection.",
+                "dependencies": ["A"],
+                "deliverables": [
+                    "Transaction log for all writes",
+                    "Automated recovery on startup",
+                    "Power-loss resilience testing",
+                    "Network-disconnect handling"
+                ]
+            },
+            {
+                "id": "C",
+                "name": "Automation",
+                "status": "planned",
+                "priority": "high",
+                "description": "Includes auto-sync scheduler, auto-commit/push, retry queues, and startup resume/reconciliation.",
+                "dependencies": ["A", "B"],
+                "deliverables": [
+                    "Scheduled auto-sync service",
+                    "Auto-commit and push to GitHub",
+                    "Retry queue with exponential backoff",
+                    "Startup reconciliation protocol"
+                ]
+            },
+            {
+                "id": "D",
+                "name": "Backups",
+                "status": "planned",
+                "priority": "high",
+                "description": "Covers local, remote, and hardware backups, emphasizing verification and restore evidence.",
+                "dependencies": ["A", "B", "C"],
+                "deliverables": [
+                    "Local backup rotation (7 days)",
+                    "Remote backup to cloud storage",
+                    "Hardware backup to external drive",
+                    "Backup verification and restore tests"
+                ]
+            },
+            {
+                "id": "E",
+                "name": "Concurrency",
+                "status": "planned",
+                "priority": "high",
+                "description": "Addresses single-writer protocols, lock files with TTL, pre/post hash validation, and merge/conflict policies for safe concurrent editing.",
+                "dependencies": ["A", "B", "C", "D"],
+                "deliverables": [
+                    "File-level locking with TTL",
+                    "Pre-write hash validation",
+                    "Post-write verification",
+                    "Conflict detection and resolution policy"
+                ]
+            },
+            {
+                "id": "F",
+                "name": "Real-Money Readiness",
+                "status": "planned",
+                "priority": "high",
+                "description": "Requires immutable audit logs, signed releases, and operational runbooks for production/commercial readiness.",
+                "dependencies": ["A", "B", "C", "D", "E"],
+                "deliverables": [
+                    "Immutable append-only audit log",
+                    "Cryptographically signed releases",
+                    "Operational runbooks",
+                    "Production deployment checklist"
+                ]
+            }
+        ],
+        
+        "current_phase": "A",
+        "current_focus": "Establishing canonical governance and atomic write operations"
+    }
+    
+    # Atomic write with temp file
+    temp_path = output_path.with_suffix('.json.tmp')
+    with open(temp_path, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(roadmap, f, indent=2, ensure_ascii=False)
+        f.write('\n')
+    
+    # Atomic rename
+    temp_path.replace(output_path)
+    
+    print(f"[OK] Generated: {output_path}")
+    return output_path
 
-phases = [parse_phase(p) for p in sorted(Path(".").glob("PHASE_*.md"))]
-phases = [p for p in phases if p]
-
-roadmap = {
-    "schema_version": 2.0,
-    "generated_at": datetime.now(timezone.utc).isoformat(),
-    "generated_by": "asoctl.py roadmap",
-    "phases": sorted(phases, key=lambda x: x["id"])
-}
-
-for t in ["ROADMAP_CURRENT.json", "docs/governance/ROADMAP_CURRENT.json", "AUDIT/ROADMAP_CURRENT.json"]:
-    p = Path(t)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(roadmap, indent=2) + "\n", encoding="utf-8")
-
-print(f"Generated {len(phases)} phases")
+if __name__ == "__main__":
+    generate_roadmap()
