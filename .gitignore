@@ -77,3 +77,9 @@ roadmap_canonicalize.ps1
 data/
 data/journal/
 AUDIT/ARCHIVE/
+
+# Temp / backup artifacts
+*.bak_*
+*.backup_*
+patch_log_*.txt
+patch-yaml-fix*.ps1
