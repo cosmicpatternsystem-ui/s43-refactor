@@ -338,7 +338,7 @@ function Resolve-RoadmapDependsOn {
 
     return @($resolved)
 }
-$phaseFiles = Get-ChildItem -Path . -Filter "PHASE_*.md" -File | Sort-Object Name
+$phaseFiles = Get-ChildItem -Path . -Recurse -Filter "PHASE_*.md" -File | Sort-Object Name
 $phaseReferenceMap = Get-PhaseReferenceMap -PhaseFiles $phaseFiles
 
 $phases = foreach ($phaseFile in $phaseFiles) {
