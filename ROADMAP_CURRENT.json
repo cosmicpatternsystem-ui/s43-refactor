@@ -11,7 +11,7 @@
     "evidence": "string[]",
     "last_verified_at": "ISO-8601 UTC string|null"
   },
-  "updated_at_utc": "2026-07-03T05:54:58Z",
+  "updated_at_utc": "2026-07-03T08:41:54Z",
   "phase_count": 81,
   "phases": [
     {
@@ -1283,6 +1283,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_STATUS",
+      "title": null,
       "file": "PHASE_STATUS.md",
       "status": "recorded",
       "documentation_only": false,
