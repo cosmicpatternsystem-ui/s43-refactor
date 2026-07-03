@@ -689,9 +689,7 @@
       "documentation_only": false,
       "owner": "governance",
       "priority": "High",
-      "depends_on": [
-        "[]"
-      ],
+      "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": "2026-06-23T00:00:00Z"

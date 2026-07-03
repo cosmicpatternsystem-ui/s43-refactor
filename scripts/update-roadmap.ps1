@@ -1,4 +1,4 @@
-﻿function ConvertTo-JsonStringLiteral {
+function ConvertTo-JsonStringLiteral {
     param([AllowNull()][string]$Text)
     if ($null -eq $Text) { return '""' }
     $sb = New-Object System.Text.StringBuilder
@@ -131,6 +131,16 @@ function Get-RoadmapMetadata {
                     $arrayBuffer = @()
                 }
                 $defaults[$Matches[1]] = $Matches[2]
+                $currentKey = $null
+                $isArray = $false
+            }
+            elseif ($line -match '^(\w+):\s*\[\s*\]\s*$') {
+                # inline empty array: depends_on: []
+                if ($currentKey -and $isArray) {
+                    $defaults[$currentKey] = $arrayBuffer
+                    $arrayBuffer = @()
+                }
+                $defaults[$Matches[1]] = @()
                 $currentKey = $null
                 $isArray = $false
             }
