@@ -439,9 +439,45 @@ $roadmap = [ordered]@{
     phase_count = @($phases).Count
     phases = @($phases)
 }
+# === Stable Timestamp Logic ===
+$outputPath = Join-Path (Get-Location) "ROADMAP_CURRENT.json"
+$existingTimestamp = $null; $existingJsonContent = $null
+if (Test-Path $outputPath) {
+    try {
+        $existingJsonContent = Get-Content -Raw -Path $outputPath -ErrorAction Stop
+        if ($existingJsonContent) {
+            $existingData = $existingJsonContent | ConvertFrom-Json
+            $existingTimestamp = $existingData.updated_at_utc
+        }
+    } catch { Write-Verbose "Cannot parse existing roadmap: $_" }
+}
+function Get-StringHash { param([string]$Text)
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Text)
+    $stream = [System.IO.MemoryStream]::new($bytes)
+    try { (Get-FileHash -Algorithm SHA256 -InputStream $stream).Hash }
+    finally { $stream.Dispose() } }
+$roadmapForHash = [ordered]@{}
+foreach ($k in $roadmap.Keys) { if ($k -ne "updated_at_utc") { $roadmapForHash[$k] = $roadmap[$k] } }
+$jsonForHash = (Format-CanonicalJson -Value $roadmapForHash).Replace("`r`n", "`n")
+$newHash = Get-StringHash $jsonForHash
+$oldHash = $null
+if ($existingJsonContent) {
+    try {
+        $ed = $existingJsonContent | ConvertFrom-Json
+        $eo = [ordered]@{}
+        foreach ($p in $ed.PSObject.Properties) {
+            if ($p.Name -ne "updated_at_utc") { $eo[$p.Name] = $p.Value }
+        }
+        $oldHash = Get-StringHash (Format-CanonicalJson -Value $eo).Replace("`r`n", "`n")
+    } catch { Write-Verbose "Hash existing failed: $_" }
+}
+if ($newHash -eq $oldHash -and $existingTimestamp) {
+    $roadmap["updated_at_utc"] = $existingTimestamp
+} else {
+    $roadmap["updated_at_utc"] = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.ffffffK", [System.Globalization.CultureInfo]::InvariantCulture)
+}
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
-
 & (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Content $json
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
