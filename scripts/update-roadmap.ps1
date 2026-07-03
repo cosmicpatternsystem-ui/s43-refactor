@@ -1,4 +1,4 @@
-﻿function ConvertTo-JsonStringLiteral {
+function ConvertTo-JsonStringLiteral {
     param([AllowNull()][string]$Text)
     if ($null -eq $Text) { return '""' }
     $sb = New-Object System.Text.StringBuilder
@@ -113,6 +113,16 @@ function Get-RoadmapMetadata {
     foreach ($key in @("owner", "priority", "depends_on", "acceptance_criteria", "evidence", "last_verified_at")) {
         if ($metadata.PSObject.Properties.Name -contains $key) {
             $defaults[$key] = $metadata.$key
+        }
+    }
+
+    # Convert string literals like '[]' to empty arrays
+    foreach ($k in @("depends_on", "acceptance_criteria", "evidence")) {
+        if ($metadata.PSObject.Properties.Name -contains $k) {
+            $v = $metadata.$k
+            if ($v -is [string] -and $v.Trim() -eq '[]') {
+                $metadata.$k = @()
+            }
         }
     }
 
