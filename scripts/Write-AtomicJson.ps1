@@ -27,8 +27,9 @@ if (Test-Path $Path) {
 $tempFile = "$Path.tmp"
 try {
     # Write to temp
-    $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+        $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
     [System.IO.File]::WriteAllText($tempFile, $Content, $utf8NoBom)
+    
     # Validate JSON
     $null = Get-Content -Path $tempFile -Raw -Encoding UTF8 | ConvertFrom-Json
     
