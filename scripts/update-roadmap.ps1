@@ -1,4 +1,4 @@
-﻿function ConvertTo-JsonStringLiteral {
+function ConvertTo-JsonStringLiteral {
     param([AllowNull()][string]$Text)
     if ($null -eq $Text) { return '""' }
     $sb = New-Object System.Text.StringBuilder
@@ -104,17 +104,80 @@ function Get-RoadmapMetadata {
         "(?s)<!--\s*roadmap-metadata\s*(\{.*?\})\s*-->"
     )
 
-    if (-not $match.Success) {
-        return $defaults
-    }
+    if ($match.Success) {
+        $metadata = $match.Groups[1].Value | ConvertFrom-Json
 
-    $metadata = $match.Groups[1].Value | ConvertFrom-Json
-
-    foreach ($key in @("owner", "priority", "depends_on", "acceptance_criteria", "evidence", "last_verified_at")) {
-        if ($metadata.PSObject.Properties.Name -contains $key) {
-            $defaults[$key] = $metadata.$key
+        foreach ($key in @("owner", "priority", "depends_on", "acceptance_criteria", "evidence", "last_verified_at")) {
+            if ($metadata.PSObject.Properties.Name -contains $key) {
+                $defaults[$key] = $metadata.$key
+            }
         }
     }
+    # ── Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) ──
+    if ($content -match '(?ms)^---\s*\r?\n(.*?)\r?\n---') {
+        $yamlText = $Matches[1]
+        $yamlLines = $yamlText -split '\r?\n'
+        $currentKey = $null
+        $isArray = $false
+        $arrayBuffer = @()
+
+        foreach ($line in $yamlLines) {
+            if ($line -match '^\s*$') { continue }
+
+            if ($line -match '^(\w+):\s*"(.+)"$') {
+                # scalar string: owner: "value"
+                if ($currentKey -and $isArray) {
+                    $defaults[$currentKey] = $arrayBuffer
+                    $arrayBuffer = @()
+                }
+                $defaults[$Matches[1]] = $Matches[2]
+                $currentKey = $null
+                $isArray = $false
+            }
+            elseif ($line -match '^(\w+):\s*\[\s*\]\s*$') {
+                # inline empty array: depends_on: []
+                if ($currentKey -and $isArray) {
+                    $defaults[$currentKey] = $arrayBuffer
+                    $arrayBuffer = @()
+                }
+                $defaults[$Matches[1]] = @()
+                $currentKey = $null
+                $isArray = $false
+            }
+            elseif ($line -match '^(\w+):\s*(.+)$') {
+                # scalar unquoted: priority: high, status: complete
+                if ($currentKey -and $isArray) {
+                    $defaults[$currentKey] = $arrayBuffer
+                    $arrayBuffer = @()
+                }
+                $defaults[$Matches[1]] = $Matches[2]
+                $currentKey = $null
+                $isArray = $false
+            }
+            elseif ($line -match '^(\w+):\s*$') {
+                # array start: acceptance_criteria:
+                if ($currentKey -and $isArray) {
+                    $defaults[$currentKey] = $arrayBuffer
+                }
+                $currentKey = $Matches[1]
+                $isArray = $true
+                $arrayBuffer = @()
+            }
+            elseif ($line -match '^\s+-\s+"(.+)"$') {
+                # array item quoted
+                if ($isArray) { $arrayBuffer += $Matches[1] }
+            }
+            elseif ($line -match '^\s+-\s+(.+)$') {
+                # array item unquoted
+                if ($isArray) { $arrayBuffer += $Matches[1] }
+            }
+        }
+        # flush last array
+        if ($currentKey -and $isArray) {
+            $defaults[$currentKey] = $arrayBuffer
+        }
+    }
+
 
     foreach ($arrayKey in @("depends_on", "acceptance_criteria", "evidence")) {
         if ($null -eq $defaults[$arrayKey]) {
@@ -399,7 +462,27 @@ $phases = foreach ($phaseFile in $phaseFiles) {
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
         $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $dependsOn -PhaseReferenceMap $phaseReferenceMap
 
+        # â”€â”€ Phase-42.03: extract phase_id and title from H1 header â”€â”€
+        $phaseId = $null
+        $title   = $null
+        $firstHeader = ($content -split "`n" |
+            Where-Object { $_ -match '^#\s+Phase\s' } |
+            Select-Object -First 1)
+
+        if ($firstHeader -match '^#\s+Phase\s+([\d]+)\.(\d+)\s+-\s+(.+?)\s*$') {
+            $phaseId = "PHASE_$($Matches[1])_$('{0:D2}' -f [int]$Matches[2])"
+            $title   = $Matches[3].Trim()
+        } elseif ($firstHeader -match '^#\s+Phase\s+([\d]+)\s+-\s+(.+?)\s*$') {
+            $phaseId = "PHASE_$($Matches[1])"
+            $title   = $Matches[2].Trim()
+        }
+
+        if (-not $phaseId) {
+            $phaseId = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+        }
     [ordered]@{
+        phase_id = $phaseId
+        title = $title
         file = $phaseFile.Name
         status = $status
         documentation_only = $documentationOnly
