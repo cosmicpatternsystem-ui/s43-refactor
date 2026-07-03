@@ -1,4 +1,4 @@
-﻿param(
+param(
     [Parameter(Mandatory=$true)]
     [string]$Path,
     
@@ -27,8 +27,8 @@ if (Test-Path $Path) {
 $tempFile = "$Path.tmp"
 try {
     # Write to temp
-    Set-Content -Path $tempFile -Value $Content -Encoding UTF8 -NoNewline
-    
+    $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::WriteAllText($tempFile, $Content, $utf8NoBom)
     # Validate JSON
     $null = Get-Content -Path $tempFile -Raw -Encoding UTF8 | ConvertFrom-Json
     
