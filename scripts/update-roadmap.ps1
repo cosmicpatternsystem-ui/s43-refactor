@@ -474,7 +474,7 @@ if ($existingJsonContent) {
 if ($newHash -eq $oldHash -and $existingTimestamp) {
     $roadmap["updated_at_utc"] = $existingTimestamp
 } else {
-    $roadmap["updated_at_utc"] = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.ffffffK", [System.Globalization.CultureInfo]::InvariantCulture)
+    $roadmap["updated_at_utc"] = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
 }
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
