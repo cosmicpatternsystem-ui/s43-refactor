@@ -1,0 +1,21 @@
+# Refactoring Todo List
+
+- [ ] Analyze requirements for `guardian.py`, `policy_engine.py`, and `session_journal.py`
+- [ ] Refactor `tools/guardian.py` to:
+  - [ ] Implement UTF-8 without BOM check using raw bytes/stdlib
+  - [ ] Implement LF line ending check
+  - [ ] Implement Python syntax validation for .py files
+  - [ ] Implement basic secret-pattern scan with regex
+  - [ ] Ensure cp1252-safe stdout
+  - [ ] Remove all third-party imports
+- [ ] Refactor `tools/policy_engine.py` to be clean, minimal, and syntactically valid
+- [ ] Refactor `tools/session_journal.py` to be clean, minimal, and syntactically valid
+- [ ] Ensure all files use LF line endings
+- [ ] Run the following commands:
+  - [ ] `python -m py_compile tools/guardian.py tools/policy_engine.py tools/session_journal.py`
+  - [ ] `python tools/guardian.py --check`
+- [ ] Report:
+  - [ ] Files changed
+  - [ ] Commands run
+  - [ ] Verification result
+  - [ ] Remaining risks
