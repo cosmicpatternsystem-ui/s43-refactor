@@ -1,4 +1,4 @@
-﻿{
+{
   "schema_version": 2,
   "source_of_truth": "repository_files_only",
   "generated_by": "scripts/update-roadmap.ps1",
@@ -15,6 +15,8 @@
   "phase_count": 80,
   "phases": [
     {
+      "phase_id": "PHASE_25_RC_READINESS_VERDICT",
+      "title": null,
       "file": "PHASE_25_RC_READINESS_VERDICT.md",
       "status": "complete",
       "documentation_only": false,
@@ -34,6 +36,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE",
+      "title": null,
       "file": "PHASE_26_01_RC_PACKAGING_DRY_RUN_EVIDENCE.md",
       "status": "complete",
       "documentation_only": false,
@@ -54,6 +58,8 @@
       "last_verified_at": "2026-06-22T11:57:42Z"
     },
     {
+      "phase_id": "PHASE_26_02_PACKAGING_COMMAND_DISCOVERY",
+      "title": null,
       "file": "PHASE_26_02_PACKAGING_COMMAND_DISCOVERY.md",
       "status": "complete",
       "documentation_only": false,
@@ -65,6 +71,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_26_03_PACKAGING_DRY_RUN_PROTOCOL",
+      "title": null,
       "file": "PHASE_26_03_PACKAGING_DRY_RUN_PROTOCOL.md",
       "status": "complete",
       "documentation_only": true,
@@ -76,6 +84,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_26_04",
+      "title": "Packaging No-Op Dry-Run Execution",
       "file": "PHASE_26_04_PACKAGING_NOOP_DRY_RUN.md",
       "status": "complete",
       "documentation_only": true,
@@ -87,6 +97,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_26_05",
+      "title": "Packaging and Deployment Dry-Run Closure Verdict",
       "file": "PHASE_26_05_PACKAGING_DEPLOYMENT_DRY_RUN_CLOSURE.md",
       "status": "complete",
       "documentation_only": true,
@@ -98,6 +110,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_26_RC_PACKAGING_DRY_RUN",
+      "title": null,
       "file": "PHASE_26_RC_PACKAGING_DRY_RUN.md",
       "status": "complete",
       "documentation_only": true,
@@ -121,6 +135,8 @@
       "last_verified_at": "2026-06-22T09:32:51Z"
     },
     {
+      "phase_id": "PHASE_27_02",
+      "title": "Post-Phase-26 Integrity Evidence Record",
       "file": "PHASE_27_02_POST_PHASE_26_INTEGRITY_EVIDENCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -132,6 +148,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_27_03",
+      "title": "Post-Phase-26 Integrity Closure",
       "file": "PHASE_27_03_POST_PHASE_26_INTEGRITY_CLOSURE.md",
       "status": "complete",
       "documentation_only": true,
@@ -143,6 +161,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_28_02_POST_CLOSURE_RELEASE_READINESS_EVIDENCE",
+      "title": null,
       "file": "PHASE_28_02_POST_CLOSURE_RELEASE_READINESS_EVIDENCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -154,6 +174,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_28_03",
+      "title": "Post-Closure Release Readiness Closure",
       "file": "PHASE_28_03_POST_CLOSURE_RELEASE_READINESS_CLOSURE.md",
       "status": "complete",
       "documentation_only": true,
@@ -165,6 +187,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_29_02",
+      "title": "Post-Phase-28 Mainline Verification Evidence",
       "file": "PHASE_29_02_POST_PHASE_28_MAINLINE_VERIFICATION_EVIDENCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -187,6 +211,8 @@
       "last_verified_at": "2026-06-22T09:48:50Z"
     },
     {
+      "phase_id": "PHASE_29_03",
+      "title": "Post-Phase-28 Mainline Verification Closure",
       "file": "PHASE_29_03_POST_PHASE_28_MAINLINE_VERIFICATION_CLOSURE.md",
       "status": "complete",
       "documentation_only": true,
@@ -200,6 +226,8 @@
       "last_verified_at": "2026-06-22T09:59:37Z"
     },
     {
+      "phase_id": "PHASE_30_02",
+      "title": "Post-Phase-29 Integrity Evidence Record",
       "file": "PHASE_30_02_POST_PHASE_29_INTEGRITY_EVIDENCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -211,6 +239,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_30_03",
+      "title": "Post-Phase-29 Integrity Closure",
       "file": "PHASE_30_03_POST_PHASE_29_INTEGRITY_CLOSURE.md",
       "status": "complete",
       "documentation_only": true,
@@ -222,6 +252,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_30_04_AUDIT_CORRECTION",
+      "title": null,
       "file": "PHASE_30_04_AUDIT_CORRECTION.md",
       "status": "complete",
       "documentation_only": true,
@@ -243,6 +275,8 @@
       "last_verified_at": "2026-06-22T09:11:06Z"
     },
     {
+      "phase_id": "PHASE_31_01_ENTERPRISE_ROADMAP_GOVERNANCE_HARDENING",
+      "title": null,
       "file": "PHASE_31_01_ENTERPRISE_ROADMAP_GOVERNANCE_HARDENING.md",
       "status": "complete",
       "documentation_only": true,
@@ -264,6 +298,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_02",
+      "title": "Commercial Intelligence Governance",
       "file": "PHASE_31_02_COMMERCIAL_INTELLIGENCE_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -287,6 +323,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_03",
+      "title": "AI Decision Traceability Governance",
       "file": "PHASE_31_03_AI_DECISION_TRACEABILITY_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -310,6 +348,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_04",
+      "title": "AI Decision Enforcement Readiness Governance",
       "file": "PHASE_31_04_AI_DECISION_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -333,6 +373,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_05",
+      "title": "AI Decision Enforcement Audit Evidence Governance",
       "file": "PHASE_31_05_AI_DECISION_ENFORCEMENT_AUDIT_EVIDENCE_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -356,6 +398,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_06",
+      "title": "AI Decision Lifecycle Governance",
       "file": "PHASE_31_06_AI_DECISION_LIFECYCLE_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -379,6 +423,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_07",
+      "title": "AI Decision Lifecycle Audit Enforcement Readiness Governance",
       "file": "PHASE_31_07_AI_DECISION_LIFECYCLE_AUDIT_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -402,6 +448,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_08",
+      "title": "AI Decision Lifecycle Enforcement Evidence Governance",
       "file": "PHASE_31_08_AI_DECISION_LIFECYCLE_ENFORCEMENT_EVIDENCE_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -425,6 +473,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_09",
+      "title": "AI Decision Lifecycle Enforcement Gate Mapping Governance",
       "file": "PHASE_31_09_AI_DECISION_LIFECYCLE_ENFORCEMENT_GATE_MAPPING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -448,6 +498,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_10",
+      "title": "AI Decision Lifecycle Gate Audit Reporting Governance",
       "file": "PHASE_31_10_AI_DECISION_LIFECYCLE_GATE_AUDIT_REPORTING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -471,6 +523,8 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_11",
+      "title": "AI Decision Lifecycle Gate Audit Retention Governance",
       "file": "PHASE_31_11_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -494,72 +548,107 @@
       "last_verified_at": "2026-06-22T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_12_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_12_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "last_verified_at": null
+      "depends_on": [
+        "PHASE_31_11_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_GOVERNANCE.md"
+      ],
+      "acceptance_criteria": [
+        "Define governance expectations for retention enforcement readiness of AI decision lifecycle gate audit records.",
+        "Document exception handling expectations when retention, immutability, or review-window requirements are not enforcement-ready.",
+        "Establish evidence readiness expectations for future policy and audit gate enforcement without introducing runtime enforcement."
+      ],
+      "evidence": [
+        "PHASE_31_12_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_GOVERNANCE.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_STANDARD.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_EXCEPTION_HANDLING_CONTRACT.md",
+        "AUDIT/AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_EVIDENCE_READINESS_CONTRACT.md"
+      ],
+      "last_verified_at": "2026-06-23T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_13_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_MAPPING_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_13_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_MAPPING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_31_12_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_READINESS_GOVERNANCE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_31_14_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_14_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_31_13_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_ENFORCEMENT_MAPPING_GOVERNANCE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_31_15_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_READINESS_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_15_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_31_14_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_GOVERNANCE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_31_16_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_MAPPING_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_16_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_MAPPING_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_31_15_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_READINESS_GOVERNANCE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_31_17_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_17_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
       "owner": "enterprise-governance",
       "priority": "High",
-      "depends_on": [],
+      "depends_on": [
+        "PHASE_31_16_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_MAPPING_GOVERNANCE.md"
+      ],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_31_18_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_READINESS_GOVERNANCE",
+      "title": null,
       "file": "PHASE_31_18_AI_DECISION_LIFECYCLE_GATE_AUDIT_RETENTION_INTEGRITY_VERIFICATION_ENFORCEMENT_VERIFICATION_READINESS_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": true,
@@ -580,6 +669,8 @@
       "last_verified_at": "2026-06-23T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_31_CLOSURE_REVIEW",
+      "title": null,
       "file": "PHASE_31_CLOSURE_REVIEW.md",
       "status": "complete",
       "documentation_only": false,
@@ -591,6 +682,8 @@
       "last_verified_at": "2026-06-23T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT",
+      "title": null,
       "file": "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT.md",
       "status": "recorded",
       "documentation_only": false,
@@ -599,9 +692,11 @@
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
-      "last_verified_at": null
+      "last_verified_at": "2026-06-23T00:00:00Z"
     },
     {
+      "phase_id": "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT",
+      "title": null,
       "file": "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT.md",
       "status": "recorded",
       "documentation_only": false,
@@ -613,6 +708,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_32_03_OPERATIONAL_INTELLIGENCE_EVIDENCE_AND_ESCALATION_FLOW",
+      "title": null,
       "file": "PHASE_32_03_OPERATIONAL_INTELLIGENCE_EVIDENCE_AND_ESCALATION_FLOW.md",
       "status": "complete",
       "documentation_only": false,
@@ -624,6 +721,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_32_04_OPERATIONAL_INTELLIGENCE_VERIFICATION_AND_REPLAY_CONTRACT",
+      "title": null,
       "file": "PHASE_32_04_OPERATIONAL_INTELLIGENCE_VERIFICATION_AND_REPLAY_CONTRACT.md",
       "status": "complete",
       "documentation_only": false,
@@ -635,6 +734,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_33_01_AI_DECISION_ENGINE_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_33_01_AI_DECISION_ENGINE_ARCHITECTURE.md",
       "status": "recorded",
       "documentation_only": false,
@@ -646,6 +747,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_33_02_INFERENCE_TO_ACTION_MAPPING",
+      "title": null,
       "file": "PHASE_33_02_INFERENCE_TO_ACTION_MAPPING.md",
       "status": "recorded",
       "documentation_only": false,
@@ -657,6 +760,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS",
+      "title": null,
       "file": "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS.md",
       "status": "recorded",
       "documentation_only": false,
@@ -668,6 +773,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP",
+      "title": null,
       "file": "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP.md",
       "status": "recorded",
       "documentation_only": false,
@@ -679,6 +786,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_34_01_EXECUTION_CONTROLLER_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_34_01_EXECUTION_CONTROLLER_ARCHITECTURE.md",
       "status": "recorded",
       "documentation_only": false,
@@ -690,6 +799,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_34_02_PRE_EXECUTION_SAFETY_CHECKS",
+      "title": null,
       "file": "PHASE_34_02_PRE_EXECUTION_SAFETY_CHECKS.md",
       "status": "recorded",
       "documentation_only": false,
@@ -701,6 +812,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_34_03_EXECUTION_EVIDENCE_ACK_NACK_RUNTIME_RESULT_CONTRACT",
+      "title": null,
       "file": "PHASE_34_03_EXECUTION_EVIDENCE_ACK_NACK_RUNTIME_RESULT_CONTRACT.md",
       "status": "complete",
       "documentation_only": false,
@@ -712,6 +825,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_34_04_REALTIME_ENFORCEMENT_TELEMETRY_AND_INTERVENTION_CONTRACT",
+      "title": null,
       "file": "PHASE_34_04_REALTIME_ENFORCEMENT_TELEMETRY_AND_INTERVENTION_CONTRACT.md",
       "status": "recorded",
       "documentation_only": false,
@@ -723,6 +838,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_35_01_AUTONOMOUS_RECOVERY_FAILURE_CONTAINMENT_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_35_01_AUTONOMOUS_RECOVERY_FAILURE_CONTAINMENT_ARCHITECTURE.md",
       "status": "recorded",
       "documentation_only": false,
@@ -734,6 +851,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_35_02_RECOVERY_POLICY_STRATEGY_BLAST_RADIUS_CONTROL",
+      "title": null,
       "file": "PHASE_35_02_RECOVERY_POLICY_STRATEGY_BLAST_RADIUS_CONTROL.md",
       "status": "recorded",
       "documentation_only": false,
@@ -745,6 +864,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT",
+      "title": null,
       "file": "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT.md",
       "status": "recorded",
       "documentation_only": false,
@@ -756,6 +877,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW",
+      "title": null,
       "file": "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW.md",
       "status": "recorded",
       "documentation_only": false,
@@ -767,6 +890,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_36_01_ADAPTIVE_LEARNING_LOOP_ARCHITECTURE_GOVERNANCE_BOUNDARY",
+      "title": null,
       "file": "PHASE_36_01_ADAPTIVE_LEARNING_LOOP_ARCHITECTURE_GOVERNANCE_BOUNDARY.md",
       "status": "recorded",
       "documentation_only": false,
@@ -778,6 +903,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING",
+      "title": null,
       "file": "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING.md",
       "status": "recorded",
       "documentation_only": false,
@@ -789,6 +916,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_36_03_MODEL_AND_STRATEGY_UPDATE_GOVERNANCE",
+      "title": null,
       "file": "PHASE_36_03_MODEL_AND_STRATEGY_UPDATE_GOVERNANCE.md",
       "status": "complete",
       "documentation_only": false,
@@ -800,6 +929,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_36_04_LEARNING_DEPLOYMENT_SAFEGUARDS_AND_CONTINUOUS_IMPROVEMENT_AUDITABILITY",
+      "title": null,
       "file": "PHASE_36_04_LEARNING_DEPLOYMENT_SAFEGUARDS_AND_CONTINUOUS_IMPROVEMENT_AUDITABILITY.md",
       "status": "complete",
       "documentation_only": false,
@@ -811,6 +942,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_37_01_SIMULATION_AND_PREPRODUCTION_VALIDATION_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_37_01_SIMULATION_AND_PREPRODUCTION_VALIDATION_ARCHITECTURE.md",
       "status": "complete",
       "documentation_only": false,
@@ -822,6 +955,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_37_02_SCENARIO_LIBRARY_REPLAY_DATASET_CONTRACT_COVERAGE_CRITERIA",
+      "title": null,
       "file": "PHASE_37_02_SCENARIO_LIBRARY_REPLAY_DATASET_CONTRACT_COVERAGE_CRITERIA.md",
       "status": "complete",
       "documentation_only": false,
@@ -833,6 +968,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_37_03_SIMULATION_EVALUATION_METRICS_PASS_FAIL_PROMOTION_RECOMMENDATION_CONTRACT",
+      "title": null,
       "file": "PHASE_37_03_SIMULATION_EVALUATION_METRICS_PASS_FAIL_PROMOTION_RECOMMENDATION_CONTRACT.md",
       "status": "complete",
       "documentation_only": false,
@@ -844,6 +981,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_37_04_SIMULATION_GOVERNANCE_EXCEPTION_HANDLING_PREPRODUCTION_APPROVAL_HANDOFF",
+      "title": null,
       "file": "PHASE_37_04_SIMULATION_GOVERNANCE_EXCEPTION_HANDLING_PREPRODUCTION_APPROVAL_HANDOFF.md",
       "status": "complete",
       "documentation_only": false,
@@ -855,6 +994,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_38_01_RELEASE_GOVERNANCE_AND_PRODUCTION_ACTIVATION_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_38_01_RELEASE_GOVERNANCE_AND_PRODUCTION_ACTIVATION_ARCHITECTURE.md",
       "status": "complete",
       "documentation_only": false,
@@ -866,6 +1007,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_38_02_ACTIVATION_READINESS_GATES_AND_RELEASE_CRITERIA",
+      "title": null,
       "file": "PHASE_38_02_ACTIVATION_READINESS_GATES_AND_RELEASE_CRITERIA.md",
       "status": "complete",
       "documentation_only": false,
@@ -877,6 +1020,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_38_03_PROGRESSIVE_ROLLOUT_CHECKPOINTS_AND_INTERVENTION_RULES",
+      "title": null,
       "file": "PHASE_38_03_PROGRESSIVE_ROLLOUT_CHECKPOINTS_AND_INTERVENTION_RULES.md",
       "status": "complete",
       "documentation_only": false,
@@ -888,6 +1033,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_38_04_RELEASE_OVERSIGHT_ESCALATION_AND_PRODUCTION_HANDOFF",
+      "title": null,
       "file": "PHASE_38_04_RELEASE_OVERSIGHT_ESCALATION_AND_PRODUCTION_HANDOFF.md",
       "status": "complete",
       "documentation_only": false,
@@ -899,6 +1046,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_39_01_POST_RELEASE_OBSERVABILITY_AND_STABILIZATION_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_39_01_POST_RELEASE_OBSERVABILITY_AND_STABILIZATION_ARCHITECTURE.md",
       "status": "complete",
       "documentation_only": false,
@@ -910,6 +1059,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_39_02_STABILIZATION_SIGNAL_EVALUATION_AND_ALERT_TRIAGE",
+      "title": null,
       "file": "PHASE_39_02_STABILIZATION_SIGNAL_EVALUATION_AND_ALERT_TRIAGE.md",
       "status": "complete",
       "documentation_only": false,
@@ -921,6 +1072,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_39_03_STABILIZATION_REVIEW_THRESHOLDS_AND_RECOVERY_DECISION_POLICY",
+      "title": null,
       "file": "PHASE_39_03_STABILIZATION_REVIEW_THRESHOLDS_AND_RECOVERY_DECISION_POLICY.md",
       "status": "complete",
       "documentation_only": false,
@@ -932,6 +1085,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_39_04_STABILIZATION_EXIT_CRITERIA_AND_STEADY_STATE_HANDOFF",
+      "title": null,
       "file": "PHASE_39_04_STABILIZATION_EXIT_CRITERIA_AND_STEADY_STATE_HANDOFF.md",
       "status": "complete",
       "documentation_only": false,
@@ -943,6 +1098,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_40_01_CONTINUOUS_IMPROVEMENT_AND_OPERATIONAL_LEARNING_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_40_01_CONTINUOUS_IMPROVEMENT_AND_OPERATIONAL_LEARNING_ARCHITECTURE.md",
       "status": "complete",
       "documentation_only": false,
@@ -954,6 +1111,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_40_02_OPERATIONAL_LEARNING_INTAKE_CLASSIFICATION_AND_EVIDENCE_CONTRACT",
+      "title": null,
       "file": "PHASE_40_02_OPERATIONAL_LEARNING_INTAKE_CLASSIFICATION_AND_EVIDENCE_CONTRACT.md",
       "status": "complete",
       "documentation_only": false,
@@ -965,6 +1124,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_40_03_RECOMMENDATION_EVALUATION_PRIORITIZATION_AND_GOVERNANCE_ROUTING",
+      "title": null,
       "file": "PHASE_40_03_RECOMMENDATION_EVALUATION_PRIORITIZATION_AND_GOVERNANCE_ROUTING.md",
       "status": "complete",
       "documentation_only": false,
@@ -976,6 +1137,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_40_04_IMPROVEMENT_DECISION_CLOSURE_AND_FEEDBACK_LOOP_HANDOFF",
+      "title": null,
       "file": "PHASE_40_04_IMPROVEMENT_DECISION_CLOSURE_AND_FEEDBACK_LOOP_HANDOFF.md",
       "status": "complete",
       "documentation_only": false,
@@ -987,6 +1150,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE",
+      "title": null,
       "file": "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1000,6 +1165,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS",
+      "title": null,
       "file": "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1013,6 +1180,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT",
+      "title": null,
       "file": "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1026,6 +1195,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY",
+      "title": null,
       "file": "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1039,6 +1210,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY",
+      "title": null,
       "file": "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1052,6 +1225,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT",
+      "title": null,
       "file": "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT.md",
       "status": "recorded",
       "documentation_only": true,
@@ -1065,6 +1240,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_42_03",
+      "title": "Roadmap Metadata Completeness and Enterprise Readiness Hardening",
       "file": "PHASE_42_03_ROADMAP_METADATA_COMPLETENESS_AND_ENTERPRISE_READINESS_HARDENING.md",
       "status": "recorded",
       "documentation_only": false,
@@ -1076,6 +1253,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD",
+      "title": null,
       "file": "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md",
       "status": "recorded",
       "documentation_only": false,
@@ -1089,6 +1268,8 @@
       "last_verified_at": null
     },
     {
+      "phase_id": "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING",
+      "title": null,
       "file": "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md",
       "status": "recorded",
       "documentation_only": true,
