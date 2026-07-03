@@ -1,11 +1,20 @@
-﻿<#
+<#
 .SYNOPSIS
     Write atomic journal entry for roadmap operations
 .DESCRIPTION
-    Creates immutable journal entries in data/journal/ with timestamp, operation, hashes
+    Appends BOM-free UTF-8 JSONL entries to daily log files in data/journal/.
     Part of Phase B.2 Durability - 50-year audit trail
+
+    Fix list vs original:
+      1. BOM-free  : [System.Text.UTF8Encoding]::new($false)
+      2. UTC time  : (Get-Date).ToUniversalTime() + InvariantCulture
+      3. JSONL     : daily append-mode file (YYYYMMDD.jsonl) instead of per-event files
+      4. Path fix  : $PSScriptRoot-based resolution (no hardcoded paths)
+      5. Append    : FileStream append with FileShare.Read
+      6. Flush     : Flush($true) for stronger durability
+      7. Retry     : bounded retry with exponential backoff
 .PARAMETER Operation
-    Operation type: update, restore, checkpoint
+    Operation type: update, restore, checkpoint, init
 .PARAMETER Phase
     Phase ID being modified (e.g., "22.13")
 .PARAMETER OldStateHash
@@ -21,20 +30,20 @@ param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('update','restore','checkpoint','init')]
     [string]$Operation,
-    
+
     [Parameter(Mandatory=$false)]
     [string]$Phase = '',
-    
+
     [Parameter(Mandatory=$true)]
     [string]$OldStateHash,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$NewStateHash,
-    
+
     [Parameter(Mandatory=$true)]
     [ValidateSet('success','failed','rollback')]
     [string]$Status,
-    
+
     [Parameter(Mandatory=$true)]
     [int]$DurationMs
 )
@@ -42,41 +51,74 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-# Ensure journal directory exists
-$journalDir = 'data/journal'
-$archiveDir = 'data/journal/archive'
-if (-not (Test-Path $journalDir)) {
-    New-Item -ItemType Directory -Path $journalDir -Force | Out-Null
-}
-if (-not (Test-Path $archiveDir)) {
-    New-Item -ItemType Directory -Path $archiveDir -Force | Out-Null
+# Resolve paths from repo root
+$repoRoot   = Split-Path $PSScriptRoot -Parent
+$journalDir = Join-Path $repoRoot 'data\journal'
+$archiveDir = Join-Path $journalDir 'archive'
+
+foreach ($d in @($journalDir, $archiveDir)) {
+    if (-not (Test-Path $d)) {
+        New-Item -ItemType Directory -Path $d -Force | Out-Null
+    }
 }
 
-# Generate timestamp in ISO 8601 format (cp1252-safe)
-$timestamp = Get-Date -Format 'yyyy-MM-ddTHH:mm:ss.fffZ'
+# UTC timestamp with InvariantCulture
+$now       = (Get-Date).ToUniversalTime()
+$timestamp = $now.ToString('yyyy-MM-ddTHH:mm:ss.fffZ', [System.Globalization.CultureInfo]::InvariantCulture)
+$dayStamp  = $now.ToString('yyyyMMdd', [System.Globalization.CultureInfo]::InvariantCulture)
 
-# Create journal entry
+# Build compact JSON line
 $entry = [ordered]@{
-    timestamp = $timestamp
-    operation = $Operation
-    phase = $Phase
+    timestamp      = $timestamp
+    operation      = $Operation
+    phase          = $Phase
     old_state_hash = $OldStateHash
     new_state_hash = $NewStateHash
-    status = $Status
-    duration_ms = $DurationMs
+    status         = $Status
+    duration_ms    = $DurationMs
+}
+$jsonLine = $entry | ConvertTo-Json -Depth 10 -Compress
+
+# Daily JSONL file (append)
+$journalFile = Join-Path $journalDir "${dayStamp}.jsonl"
+
+# BOM-free UTF-8 with explicit append lock and durable flush
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+$bytes = $utf8NoBom.GetBytes($jsonLine + "`n")
+
+$maxAttempts = 10
+$delayMs = 50
+$lastError = $null
+
+for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+    $stream = $null
+    try {
+        $stream = [System.IO.FileStream]::new(
+            $journalFile,
+            [System.IO.FileMode]::Append,
+            [System.IO.FileAccess]::Write,
+            [System.IO.FileShare]::Read
+        )
+
+        $stream.Write($bytes, 0, $bytes.Length)
+        $stream.Flush($true)
+
+        Write-Output "[OK] Journal entry appended: $journalFile"
+        return
+    } catch {
+        $lastError = $_
+
+        if ($attempt -ge $maxAttempts) {
+            break
+        }
+
+        Start-Sleep -Milliseconds $delayMs
+        $delayMs = [Math]::Min($delayMs * 2, 1000)
+    } finally {
+        if ($null -ne $stream) {
+            $stream.Dispose()
+        }
+    }
 }
 
-# Generate journal filename: YYYYMMDD_HHMMSSfff_operation.json
-$fileTimestamp = Get-Date -Format 'yyyyMMdd_HHmmssffff'
-$journalFile = Join-Path $journalDir "${fileTimestamp}_${Operation}.jsonl"
-
-# Write atomically
-$tempFile = "$journalFile.tmp"
-try {
-    $entry | ConvertTo-Json -Depth 10 -Compress | Set-Content -Path $tempFile -Encoding UTF8 -NoNewline
-    Move-Item -Path $tempFile -Destination $journalFile -Force
-    Write-Output "[OK] Journal entry written: $journalFile"
-} catch {
-    if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
-    throw "Failed to write journal entry: $_"
-}
+throw "Failed to write journal entry after $maxAttempts attempts: $lastError"
