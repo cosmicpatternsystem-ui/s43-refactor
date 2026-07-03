@@ -11,8 +11,8 @@
     "evidence": "string[]",
     "last_verified_at": "ISO-8601 UTC string|null"
   },
-  "updated_at_utc": "2026-07-03T08:41:54Z",
-  "phase_count": 81,
+  "updated_at_utc": "2026-07-03T12:09:22Z",
+  "phase_count": 82,
   "phases": [
     {
       "phase_id": "PHASE_25_RC_READINESS_VERDICT",
@@ -1278,6 +1278,19 @@
       "depends_on": [
         "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md"
       ],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "last_verified_at": null
+    },
+    {
+      "phase_id": "PHASE_B1_CHECKLIST",
+      "title": null,
+      "file": "PHASE_B1_CHECKLIST.md",
+      "status": "recorded",
+      "documentation_only": false,
+      "owner": null,
+      "priority": null,
+      "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
       "last_verified_at": null
