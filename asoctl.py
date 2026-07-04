@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import os
 import shutil
 import sqlite3
@@ -98,6 +99,13 @@ class ASOControl:
         print(f"[OK] backup created: {backup_path}")
         return 0
 
+    def autopilot_status(self) -> int:
+        from tools.autopilot_status import collect_autopilot_status
+
+        payload = collect_autopilot_status(Path.cwd())
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0
+
     def status(self) -> int:
         self.ensure_directories()
         print(f"{PROJECT_NAME} local state")
@@ -122,6 +130,10 @@ def build_parser() -> argparse.ArgumentParser:
     subcommands.add_parser("check", help="Run durable SQLite health checks")
     subcommands.add_parser("backup", help="Create a timestamped local SQLite backup")
     subcommands.add_parser("status", help="Show local durable-state status")
+    subcommands.add_parser(
+        "autopilot-status",
+        help="Show autopilot readiness status as JSON",
+    )
     return parser
 
 
@@ -140,6 +152,9 @@ def main(argv: list[str] | None = None) -> int:
         return control.backup()
     if args.command == "status":
         return control.status()
+
+    if args.command == "autopilot-status":
+        return control.autopilot_status()
 
     parser.error(f"unknown command: {args.command}")
     return 2
