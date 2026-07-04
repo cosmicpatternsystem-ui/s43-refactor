@@ -1,7 +1,7 @@
 # ASO-X 50-Year Roadmap Foundation
 
-Status: active  
-Scope: durable operating model, automation governance, and long-horizon project continuity  
+Status: active
+Scope: durable operating model, automation governance, and long-horizon project continuity
 Source of truth: repository only
 
 ## 1. Purpose
@@ -16,8 +16,8 @@ The following principles are mandatory for durable project operation:
 
 1. Repository is the single source of truth.
 2. All durable changes enter through pull requests.
-3. `main` is protected by policy.
-4. Direct pushes to `main` are prohibited by operating policy.
+3. Main is protected by policy.
+4. Direct pushes to main are prohibited by operating policy.
 5. Manual unaudited merge is prohibited by operating policy.
 6. CI/checks must pass before merge.
 7. Policy validation must pass before merge.
@@ -29,8 +29,7 @@ The following principles are mandatory for durable project operation:
 
 The standard project path is:
 
-text
-branch -> PR -> checks -> policy gate -> audit artifact -> safe merge
+    branch -> PR -> checks -> policy gate -> audit artifact -> safe merge
 
 No business-critical, financial, operational, infrastructure, security, dependency, release, or governance change should bypass this path.
 
@@ -50,15 +49,14 @@ The Safe Merge automation was validated end-to-end through a real smoke-test PR.
 
 Evidence:
 
-text
-PR: #204
-Workflow: Autopilot Safe Merge
-Run ID: 28721789327
-Result: success
-Merged At: 2026-07-04T22:33:27Z
-Merge Commit: 646f12daa76f90110c91efc9b1093aabaabaefcc
-Final autopilot-status: ready
-Final worktree state: clean
+    PR: #204
+    Workflow: Autopilot Safe Merge
+    Run ID: 28721789327
+    Result: success
+    Merged At: 2026-07-04T22:33:27Z
+    Merge Commit: 646f12daa76f90110c91efc9b1093aabaabaefcc
+    Final autopilot-status: ready
+    Final worktree state: clean
 
 ## 5. Long-Horizon Design Commitments
 
@@ -106,7 +104,7 @@ Objectives:
 
 Planned objectives:
 
-1. Add or improve `autopilot-doctor`.
+1. Add or improve autopilot-doctor.
 2. Strengthen workflow concurrency protection.
 3. Strengthen workflow timeout controls.
 4. Strengthen label gates and blocking labels.

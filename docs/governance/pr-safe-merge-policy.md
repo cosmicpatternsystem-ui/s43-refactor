@@ -1,6 +1,6 @@
 # ASO-X PR and Safe Merge Policy
 
-Status: active  
+Status: active
 Applies to: durable repository changes
 
 ## 1. Policy Statement
@@ -9,22 +9,21 @@ All durable changes to ASO-X must enter through a pull request and be merged thr
 
 ## 2. Required Flow
 
-text
-feature branch
-  -> pull request
-  -> required checks
-  -> policy validation
-  -> audit artifact
-  -> safe merge
-  -> post-merge readiness check
+    feature branch
+      -> pull request
+      -> required checks
+      -> policy validation
+      -> audit artifact
+      -> safe merge
+      -> post-merge readiness check
 
 ## 3. Main Branch Rule
 
-`main` is treated as immutable by operating policy. Changes to `main` must happen only through approved merge automation.
+Main is treated as immutable by operating policy. Changes to main must happen only through approved merge automation.
 
 ## 4. Direct Push Rule
 
-Direct push to `main` is prohibited.
+Direct push to main is prohibited.
 
 ## 5. Manual Merge Rule
 
@@ -44,10 +43,9 @@ Important automation milestones must record evidence, including PR number, workf
 
 ## 9. Current Baseline Evidence
 
-text
-P1.7 Safe Merge Automation: completed
-P1.8 Safe Merge Smoke Test: passed
-PR #204: merged
-Safe Merge Run ID: 28721789327
-Merge Commit: 646f12daa76f90110c91efc9b1093aabaabaefcc
-Final autopilot-status: ready
+    P1.7 Safe Merge Automation: completed
+    P1.8 Safe Merge Smoke Test: passed
+    PR #204: merged
+    Safe Merge Run ID: 28721789327
+    Merge Commit: 646f12daa76f90110c91efc9b1093aabaabaefcc
+    Final autopilot-status: ready
