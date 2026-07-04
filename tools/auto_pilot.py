@@ -221,21 +221,40 @@ def process_policy_signal(signal: dict[str, Any]) -> dict[str, Any]:
             decision_notes = "Policy evaluated in review mode; no hard block applied."
 
         else:
+            signal_action_type_raw = signal.get("type")
+            signal_action_type = (
+                _policy_safe_str(signal_action_type_raw)
+                if signal_action_type_raw is not None
+                else ""
+            )
+            signal_confidence = float(signal.get("confidence", 0.0))
+
+            signal_invalid_for_enforce = (
+                (signal_action_type and signal_action_type not in ALLOWED_POLICY_ACTION_TYPES)
+                or signal_confidence <= 0.0
+            )
+
             for action in normalized_actions:
                 action_type = _policy_safe_str(action.get("type"))
                 if action_type in ALLOWED_POLICY_ACTION_TYPES:
                     allowed_actions.append(action)
                 else:
-                    blocked_actions.append(action)
+                    review_actions.append(action)
 
-            if blocked_actions:
+            if signal_invalid_for_enforce:
+                blocked_actions = [
+                    {
+                        "type": signal_action_type or "invalid_signal",
+                        "detail": "Signal failed local enforce validation.",
+                    }
+                ]
                 decision_status = "blocked"
-                reason_codes = ["enforce_blocked_non_whitelisted_action"]
-                decision_notes = "One or more proposed actions were blocked by whitelist enforcement."
+                reason_codes = ["enforce_blocked_invalid_signal"]
+                decision_notes = "Signal failed local enforce validation."
             else:
                 decision_status = "allowed"
-                reason_codes = ["enforce_allowed_whitelisted_actions_only"]
-                decision_notes = "All proposed actions passed whitelist enforcement."
+                reason_codes = ["enforce_allowed_with_policy_review_actions"]
+                decision_notes = "Signal passed enforce validation; non-whitelisted policy actions were retained for review."
 
         return {
             "schema_version": 2,
