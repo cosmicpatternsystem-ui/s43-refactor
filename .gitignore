@@ -83,3 +83,5 @@ AUDIT/ARCHIVE/
 *.backup_*
 patch_log_*.txt
 patch-yaml-fix*.ps1
+
+_recovery_autopilot_*/
