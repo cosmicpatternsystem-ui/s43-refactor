@@ -14,6 +14,11 @@ Production posture:
 """
 
 from __future__ import annotations
+try:
+    from tools.policy_matrix import PolicyInput, evaluate_policy_input
+except ModuleNotFoundError:
+    # Direct script execution: python tools/auto_pilot.py
+    from policy_matrix import PolicyInput, evaluate_policy_input
 
 import argparse
 import json
@@ -234,7 +239,302 @@ def resolve_max_cycles(args: argparse.Namespace) -> int:
     return 10
 
 
+
+POLICY_DECISION_LOG = ".runtime/autopilot_policy_decisions.jsonl"
+
+
+def _policy_append_jsonl_record(path: str, record: dict) -> None:
+    import json
+    from pathlib import Path
+
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("a", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(record, ensure_ascii=True, sort_keys=True) + "\n")
+
+
+def _policy_safe_str(value) -> str:
+    if value is None:
+        return ""
+    return str(value)
+
+
+def _policy_safe_float(value, default: float = 0.0) -> float:
+    try:
+        result = float(value)
+    except Exception:
+        return float(default)
+
+    if result < 0.0:
+        return 0.0
+    if result > 1.0:
+        return 1.0
+    return result
+
+
+def _policy_normalize_severity(value) -> str:
+    raw = _policy_safe_str(value).strip().lower()
+
+    if raw in {"critical", "crit", "sev0", "p0"}:
+        return "critical"
+    if raw in {"high", "sev1", "p1"}:
+        return "high"
+    if raw in {"medium", "med", "sev2", "p2"}:
+        return "medium"
+    if raw in {"low", "sev3", "p3"}:
+        return "low"
+
+    return "low"
+
+
+def _policy_normalize_tags(value):
+    if value is None:
+        return []
+
+    if isinstance(value, (list, tuple, set)):
+        items = value
+    else:
+        items = str(value).split(",")
+
+    out = []
+    seen = set()
+
+    for item in items:
+        tag = str(item).strip().lower()
+        if not tag:
+            continue
+        if tag in seen:
+            continue
+        seen.add(tag)
+        out.append(tag)
+
+    return out
+
+
+def _policy_input_kwargs_from_signal(signal) -> dict:
+    if isinstance(signal, dict):
+        data = signal
+    else:
+        data = {}
+
+    severity = _policy_normalize_severity(
+        data.get("severity")
+        or data.get("level")
+        or data.get("priority")
+        or "low"
+    )
+
+    confidence = _policy_safe_float(data.get("confidence", 0.0), default=0.0)
+    tags = _policy_normalize_tags(data.get("tags"))
+
+    subject = _policy_safe_str(
+        data.get("subject")
+        or data.get("service")
+        or data.get("target")
+        or data.get("component")
+        or "autopilot"
+    )
+
+    source = _policy_safe_str(data.get("source") or "auto_pilot")
+    signal_type = _policy_safe_str(data.get("signal_type") or data.get("type") or data.get("kind") or "runtime_signal")
+    summary = _policy_safe_str(data.get("summary") or data.get("message") or data.get("reason") or "")
+
+    return {
+        "severity": severity,
+        "confidence": confidence,
+        "tags": tags,
+        "subject": subject,
+        "source": source,
+        "signal_type": signal_type,
+        "summary": summary,
+        "message": summary,
+        "reason": summary,
+        "kind": signal_type,
+        "type": signal_type,
+        "component": subject,
+    }
+
+
+def _build_policy_input_from_signal(signal):
+    import inspect
+
+    source_kwargs = _policy_input_kwargs_from_signal(signal)
+
+    try:
+        sig = inspect.signature(PolicyInput)
+    except Exception:
+        return PolicyInput(**source_kwargs)
+
+    kwargs = {}
+
+    for name, param in sig.parameters.items():
+        if name == "self":
+            continue
+
+        if param.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
+            continue
+
+        if name in source_kwargs:
+            kwargs[name] = source_kwargs[name]
+            continue
+
+        if param.default is not inspect._empty:
+            continue
+
+        annotation_text = str(param.annotation).lower()
+
+        if "float" in annotation_text:
+            kwargs[name] = 0.0
+        elif "int" in annotation_text:
+            kwargs[name] = 0
+        elif "bool" in annotation_text:
+            kwargs[name] = False
+        elif "list" in annotation_text or "set" in annotation_text or "tuple" in annotation_text:
+            kwargs[name] = []
+        elif name.endswith("s"):
+            kwargs[name] = []
+        else:
+            kwargs[name] = ""
+
+    return PolicyInput(**kwargs)
+
+
+def _policy_action_value(action, *names, default=None):
+    for name in names:
+        if hasattr(action, name):
+            return getattr(action, name)
+        if isinstance(action, dict) and name in action:
+            return action.get(name)
+
+    return default
+
+
+def _proposed_action_to_record(action) -> dict:
+    payload = _policy_action_value(action, "payload", "metadata", "details", default={})
+
+    if payload is None:
+        payload = {}
+    if not isinstance(payload, dict):
+        payload = {"value": _policy_safe_str(payload)}
+
+    return {
+        "action_type": _policy_safe_str(
+            _policy_action_value(action, "action_type", "type", "name", default="")
+        ),
+        "approval_required": bool(
+            _policy_action_value(action, "approval_required", "requires_approval", default=False)
+        ),
+        "reason": _policy_safe_str(
+            _policy_action_value(action, "reason", "summary", "message", default="")
+        ),
+        "payload": payload,
+    }
+
+
+def _decision_actions(decision):
+    for name in ("proposed_actions", "actions", "recommended_actions"):
+        value = getattr(decision, name, None)
+        if value is not None:
+            return list(value)
+
+    if isinstance(decision, dict):
+        for name in ("proposed_actions", "actions", "recommended_actions"):
+            value = decision.get(name)
+            if value is not None:
+                return list(value)
+
+    return []
+
+
+def _policy_decision_to_record(signal, policy_input, decision) -> dict:
+    proposed = _decision_actions(decision)
+    input_kwargs = _policy_input_kwargs_from_signal(signal)
+
+    return {
+        "schema_version": 1,
+        "component": "auto_pilot",
+        "decision_engine": "tools.policy_matrix",
+        "execution_mode": "review_only",
+        "signal": signal if isinstance(signal, dict) else {"value": _policy_safe_str(signal)},
+        "policy_input": {
+            "severity": _policy_safe_str(getattr(policy_input, "severity", input_kwargs.get("severity", ""))),
+            "confidence": float(getattr(policy_input, "confidence", input_kwargs.get("confidence", 0.0))),
+            "tags": list(getattr(policy_input, "tags", input_kwargs.get("tags", [])) or []),
+            "subject": _policy_safe_str(getattr(policy_input, "subject", input_kwargs.get("subject", ""))),
+            "source": _policy_safe_str(getattr(policy_input, "source", input_kwargs.get("source", ""))),
+            "signal_type": _policy_safe_str(getattr(policy_input, "signal_type", input_kwargs.get("signal_type", ""))),
+            "summary": _policy_safe_str(getattr(policy_input, "summary", input_kwargs.get("summary", ""))),
+        },
+        "proposed_actions": [_proposed_action_to_record(a) for a in proposed],
+        "approval_required": any(
+            bool(_policy_action_value(a, "approval_required", "requires_approval", default=False))
+            for a in proposed
+        ),
+    }
+
+
+def evaluate_policy_for_signal(signal) -> dict:
+    policy_input = _build_policy_input_from_signal(signal)
+    decision = evaluate_policy_input(policy_input)
+    record = _policy_decision_to_record(signal, policy_input, decision)
+    _policy_append_jsonl_record(POLICY_DECISION_LOG, record)
+    return record
+
+
+def process_policy_signal(signal) -> dict:
+    record = evaluate_policy_for_signal(signal)
+
+    blocked = []
+    review = []
+    allowed = []
+
+    for action in record.get("proposed_actions", []):
+        if bool(action.get("approval_required", False)):
+            review.append(action)
+            continue
+
+        action_type = str(action.get("action_type", "")).strip().lower()
+
+        if action_type in {"create_alert", "emit_event", "log_only", "queue_operator_review"}:
+            allowed.append(action)
+            continue
+
+        blocked.append(action)
+
+    return {
+        "execution_mode": "review_only",
+        "review_actions": review,
+        "allowed_actions": allowed,
+        "blocked_actions": blocked,
+        "decision_record": record,
+    }
+
+
+def _run_policy_matrix_smoke_from_env() -> int:
+    import json
+    import os
+
+    sample_signal = {
+        "severity": os.environ.get("AP_POLICY_SEVERITY", "high"),
+        "confidence": os.environ.get("AP_POLICY_CONFIDENCE", "0.95"),
+        "tags": os.environ.get("AP_POLICY_TAGS", "autopilot,review"),
+        "subject": os.environ.get("AP_POLICY_SUBJECT", "autopilot"),
+        "source": "auto_pilot",
+        "signal_type": os.environ.get("AP_POLICY_SIGNAL_TYPE", "runtime_signal"),
+        "summary": os.environ.get("AP_POLICY_SUMMARY", "manual policy integration smoke"),
+    }
+
+    result = process_policy_signal(sample_signal)
+    print(json.dumps(result, ensure_ascii=True, sort_keys=True))
+    return 0
+
 def main(argv: list[str] | None = None) -> int:
+
+    import os
+
+    if os.environ.get("AP_ENABLE_POLICY_MATRIX", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return _run_policy_matrix_smoke_from_env()
+
     args = parse_args(sys.argv[1:] if argv is None else argv)
     max_cycles = resolve_max_cycles(args)
 
