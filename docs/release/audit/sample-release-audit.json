@@ -1,0 +1,22 @@
+{
+  "schema_version": "aso-x.release_audit_trail.v1",
+  "release_id": "sample-2026-07-05.1",
+  "generated_at_utc": "2026-07-05T05:15:00Z",
+  "branch": "main",
+  "commit": "1d8e347000000000000000000000000000000000",
+  "policy_audit_passed": true,
+  "checks": [
+    {
+      "name": "Release Governance Gate",
+      "status": "passed"
+    },
+    {
+      "name": "Hardening Tests",
+      "status": "passed"
+    }
+  ],
+  "approvers": [
+    "release-manager",
+    "compliance-reviewer"
+  ]
+}
