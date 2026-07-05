@@ -1,57 +1,56 @@
-# Project State
+# PROJECT_STATE
 
-Last updated: 2026-07-05
+## Project
 
-## Repository
+- Name: ASO-X
+- Baseline branch: `main`
+- Operating model: enterprise-grade, long-horizon, governance-enforced, audit-friendly
 
-- Repository: cosmicpatternsystem-ui/s43-refactor
-- URL: https://github.com/cosmicpatternsystem-ui/s43-refactor
+## Current Contract
 
-## Current Stable Branch
+This repository must be self-discoverable by a new assistant or operator without external explanation.
 
-- main
+## Required Self-Discovery Outcome
 
-## Current Local Main HEAD
+A new session must be able to determine from repo artifacts:
 
-- Short: b02643d Record project state after artifact retention audit merge (#223)
-- Full SHA: b02643d8736cfc223c63efc5a235bcc94edb32d1
+- what the project is
+- what baseline is accepted
+- what controls are enforced
+- what roadmap exists
+- what next actions are recommended
+- what artifacts are machine-validated
+- what CI gates protect the system
 
-## Recently Completed / Confirmed
+## Repository Bootstrap Artifacts
 
-- PR #223: Record project state after artifact retention audit merge
-  - GitHub state: MERGED
-  - Merged at: 2026-07-05T11:09:40Z
-  - Merge commit reported by GitHub: b02643d8736cfc223c63efc5a235bcc94edb32d1
-  - URL: https://github.com/cosmicpatternsystem-ui/s43-refactor/pull/223
-- PR #222: Fix evidence record schema test indentation and remove schema BOM
-- PR #218: Add P2.11 artifact retention scheduled audit
-  - GitHub state: MERGED
-  - Merged at: 2026-07-05T09:26:29Z
-  - Merge commit reported by GitHub: 27f6a366e7688abb3c945ea702fdbd889ae3fc5a
-  - URL: https://github.com/cosmicpatternsystem-ui/s43-refactor/pull/218
+- `AGENTS.md`
+- `docs/ROADMAP.md`
+- `docs/NEXT_ACTIONS.md`
+- `docs/governance/GOVERNANCE_BASELINE.md`
+- `docs/governance/LOCK_REGISTRY.json`
+- `docs/governance/LOCK_SCHEMA.json`
+- `.github/workflows/governance-enforcement.yml`
+- `tools/project_status.py`
+- `tests/test_governance_bootstrap.py`
 
-## Current Operating Rules
+## Operating Guarantees
 
-- Source of truth is the repository.
-- GitHub PR state and repository docs override chat memory.
-- Decisions must follow docs/ROADMAP.md and docs/PROJECT_STATE.md when those files exist.
-- CI checks must pass before merge.
-- Work should proceed by pull request unless explicitly documented otherwise.
-- Files should be UTF-8 without BOM and use LF line endings where practical.
-- Workflows that invoke pytest must install pytest or use a dependency setup that provides it.
-- Local validation is useful, but GitHub Actions is authoritative for merge readiness.
+- human-readable baseline
+- machine-readable governance registry
+- schema validation
+- CI gate
+- bootstrap status command
+- anti-removal tests for critical bootstrap artifacts
 
-## Validation Baseline
+## Persistence Intent
 
-- GitHub Actions checks must pass.
-- Relevant focused pytest targets must pass locally or in CI.
-- Artifact retention evidence files must be generated and retained when expected.
-- Schema files must remain parseable and BOM-free where required.
-- Main branch must remain fast-forward syncable from origin/main.
+The system is designed for long-horizon continuity, safe handoff, and durable operational interpretation.
 
-## Current Known Follow-ups
+## Prohibited Regressions
 
-1. Verify artifact retention scheduled audit behavior on main after PR #218.
-2. Ensure every workflow that invokes pytest has dependency setup coverage.
-3. Review docs/ROADMAP.md for the next prioritized P item.
-4. Keep this file updated after every merged PR.
+- removing bootstrap artifacts
+- removing machine-readable governance artifacts
+- weakening CI validation
+- reducing self-discovery quality
+- replacing explicit repo evidence with implicit memory
