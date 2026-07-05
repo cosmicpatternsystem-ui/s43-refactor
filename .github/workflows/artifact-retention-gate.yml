@@ -39,15 +39,19 @@ jobs:
           python -m py_compile \
             tools/artifact_retention_check.py \
             tests/test_artifact_retention.py \
-            tests/test_artifact_retention_negative.py
+            tests/test_artifact_retention_negative.py \n            tests/test_artifact_evidence_ledger.py \n              tests/test_artifact_evidence_ledger.py
 
       - name: Run artifact retention tests
         run: |
           python -m pytest \
             tests/test_artifact_retention.py \
-            tests/test_artifact_retention_negative.py \
+            tests/test_artifact_retention_negative.py \n            tests/test_artifact_evidence_ledger.py \n              tests/test_artifact_evidence_ledger.py \
             -q
 
       - name: Validate artifact retention audit evidence
         run: |
           python tools/artifact_retention_check.py
+
+      - name: Validate artifact evidence ledger
+        run: |
+          python tools/artifact_evidence_ledger_check.py
