@@ -1,0 +1,18 @@
+{
+  "schema_version": "aso-x.release_evidence_bundle.v1",
+  "bundle_id": "bundle-2026-07-05.1",
+  "release_id": "sample-2026-07-05.1",
+  "branch": "main",
+  "commit": "d8f545fffe0d128357b3f138a0b1709d8732ddf2",
+  "generated_at_utc": "2026-07-05T05:30:00Z",
+  "policy_document_path": "docs/release/release-evidence-bundle-policy.md",
+  "attestation_path": "docs/release/audit/sample-release-attestation.json",
+  "audit_artifact_path": "docs/release/audit/sample-release-audit.json",
+  "test_evidence": {
+    "validator_command": "python tools/release_evidence_bundle_check.py",
+    "test_command": "python -m pytest tests/test_release_evidence_bundle.py tests/test_release_evidence_bundle_negative.py -q",
+    "validator_exit_code": 0,
+    "test_exit_code": 0
+  },
+  "policy_audit_passed": true
+}
