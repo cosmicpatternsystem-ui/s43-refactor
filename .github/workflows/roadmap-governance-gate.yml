@@ -1,0 +1,26 @@
+name: Roadmap Governance Gate
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "docs/ROADMAP.md"
+      - "docs/roadmap/**"
+      - "docs/governance/**"
+      - "docs/value/**"
+      - "tests/test_roadmap_governance.py"
+      - ".github/workflows/roadmap-governance-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  roadmap-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: python -m pytest tests/test_roadmap_governance.py
