@@ -1,0 +1,64 @@
+{
+    "schema_version":  "aso-x.sbom.v1",
+    "sbom_id":  "sbom-2026-07-05.1",
+    "generated_at_utc":  "2026-07-05T06:05:00Z",
+    "source_repository":  "cosmicpatternsystem-ui/s43-refactor",
+    "branch":  "main",
+    "commit":  "66fcdbb620d3adb50bdf9895a4bae1376254a820",
+    "format":  "aso-x-minimal",
+    "components":  [
+                       {
+                           "name":  "aso-x-governance-repository",
+                           "type":  "application",
+                           "version_status":  "repository-baseline",
+                           "path":  "."
+                       },
+                       {
+                           "name":  "python-dev-requirements",
+                           "type":  "manifest",
+                           "version_status":  "tracked",
+                           "path":  "requirements-dev.txt"
+                       },
+                       {
+                           "name":  "python-runtime-requirements",
+                           "type":  "manifest",
+                           "version_status":  "tracked",
+                           "path":  "requirements.txt"
+                       },
+                       {
+                           "name":  "dashboard-package-manifest",
+                           "type":  "manifest",
+                           "version_status":  "tracked",
+                           "path":  "dashboard/package.json"
+                       },
+                       {
+                           "name":  "dashboard-package-lock",
+                           "type":  "lockfile",
+                           "version_status":  "tracked",
+                           "path":  "dashboard/package-lock.json"
+                       },
+                       {
+                           "name":  "release-evidence-bundle-baseline",
+                           "type":  "policy",
+                           "version_status":  "p2.5",
+                           "path":  "docs/release/audit/sample-release-evidence-bundle.json"
+                       },
+                       {
+                           "name":  "supply-chain-integrity-baseline",
+                           "type":  "policy",
+                           "version_status":  "p2.6",
+                           "path":  "docs/security/audit/sample-supply-chain-integrity.json"
+                       }
+                   ],
+    "supply_chain_integrity_path":  "docs/security/audit/sample-supply-chain-integrity.json",
+    "release_evidence_bundle_path":  "docs/release/audit/sample-release-evidence-bundle.json",
+    "network_free_validation":  true,
+    "mutable_external_sources_allowed":  false,
+    "policy_audit_passed":  true,
+    "validation_evidence":  {
+                                "validator_command":  "python tools/sbom_check.py",
+                                "test_command":  "python -m pytest tests/test_sbom.py tests/test_sbom_negative.py -q",
+                                "validator_exit_code":  0,
+                                "test_exit_code":  0
+                            }
+}
