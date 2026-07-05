@@ -40,3 +40,4 @@ jobs:
           PYTHONUTF8: "1"
           PYTHONIOENCODING: "utf-8"
         run: |
+          cat autopilot-status.json
