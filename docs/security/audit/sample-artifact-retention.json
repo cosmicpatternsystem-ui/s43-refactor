@@ -1,0 +1,86 @@
+{
+  "schema_version": "aso-x.artifact_retention.v1",
+  "retention_policy_id": "retention-2026-07-05.1",
+  "generated_at_utc": "2026-07-05T06:35:00Z",
+  "source_repository": "cosmicpatternsystem-ui/s43-refactor",
+  "branch": "main",
+  "commit": "70162d5283cf306686c0d4dbf5ca0207f4f15a6d",
+  "retention_class": "durability",
+  "default_retention": {
+    "mode": "retain",
+    "minimum_years": 50,
+    "immutable": true,
+    "review_cycle": "annual"
+  },
+  "artifacts": [
+    {
+      "name": "release-evidence-bundle-baseline",
+      "path": "docs/release/audit/sample-release-evidence-bundle.json",
+      "category": "release-evidence",
+      "retention_years": 50,
+      "immutable": true,
+      "required_for_audit": true,
+      "required_for_release": true,
+      "notes": "Baseline release evidence for audit and release traceability."
+    },
+    {
+      "name": "supply-chain-integrity-baseline",
+      "path": "docs/security/audit/sample-supply-chain-integrity.json",
+      "category": "supply-chain",
+      "retention_years": 50,
+      "immutable": true,
+      "required_for_audit": true,
+      "required_for_release": true,
+      "notes": "Supply chain evidence retained for integrity and dependency review."
+    },
+    {
+      "name": "sbom-baseline",
+      "path": "docs/security/audit/sample-sbom.json",
+      "category": "sbom",
+      "retention_years": 50,
+      "immutable": true,
+      "required_for_audit": true,
+      "required_for_release": true,
+      "notes": "Software bill of materials retained for dependency and compliance evidence."
+    },
+    {
+      "name": "provenance-attestation-baseline",
+      "path": "docs/security/audit/sample-provenance-attestation.json",
+      "category": "provenance",
+      "retention_years": 50,
+      "immutable": true,
+      "required_for_audit": true,
+      "required_for_release": true,
+      "notes": "Provenance attestation retained for deterministic build lineage review."
+    },
+    {
+      "name": "artifact-retention-policy",
+      "path": "docs/security/artifact-retention-policy.md",
+      "category": "policy",
+      "retention_years": 50,
+      "immutable": true,
+      "required_for_audit": true,
+      "required_for_release": false,
+      "notes": "Policy definition retained as normative retention baseline."
+    }
+  ],
+  "review": {
+    "owner": "aso-x-governance",
+    "last_reviewed_at_utc": "2026-07-05T06:35:00Z",
+    "next_review_due_utc": "2027-07-05T06:35:00Z",
+    "review_status": "current"
+  },
+  "release_evidence_bundle_path": "docs/release/audit/sample-release-evidence-bundle.json",
+  "supply_chain_integrity_path": "docs/security/audit/sample-supply-chain-integrity.json",
+  "sbom_path": "docs/security/audit/sample-sbom.json",
+  "provenance_attestation_path": "docs/security/audit/sample-provenance-attestation.json",
+  "network_free_validation": true,
+  "mutable_external_sources_allowed": false,
+  "policy_audit_passed": true,
+  "validation_evidence": {
+    "validator_command": "python tools/artifact_retention_check.py",
+    "test_command": "python -m pytest tests/test_artifact_retention.py tests/test_artifact_retention_negative.py -q",
+    "validator_exit_code": 0,
+    "test_exit_code": 0
+  }
+}

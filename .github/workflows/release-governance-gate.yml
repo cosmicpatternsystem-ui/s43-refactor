@@ -1,0 +1,37 @@
+name: Release Governance Gate
+
+on:
+  pull_request:
+    paths:
+      - "docs/release/**"
+      - "tools/release_governance_check.py"
+      - "tests/test_release_governance_enforcement.py"
+      - ".github/workflows/release-governance-gate.yml"
+  workflow_dispatch:
+
+jobs:
+  release-governance-gate:
+    name: release-governance-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+      - name: Run release governance validator
+        run: |
+          python tools/release_governance_check.py
+
+      - name: Run release governance enforcement tests
+        run: |
+          python -m pytest tests/test_release_governance_enforcement.py -q
