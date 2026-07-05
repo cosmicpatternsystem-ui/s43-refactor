@@ -30,3 +30,8 @@ A release candidate is blocked if:
 - rollback target is unknown
 - dependency state is uncontrolled
 - artifact integrity is unknown
+
+## Go/No-Go Verification
+
+A formal go/no-go decision is required before production release execution.
+Verification must confirm release scope, readiness evidence, rollback readiness, and accountable approval.
