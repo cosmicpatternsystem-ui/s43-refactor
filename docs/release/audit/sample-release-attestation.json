@@ -1,0 +1,14 @@
+{
+  "schema_version": "aso-x.release_attestation.v1",
+  "release_id": "sample-2026-07-05.1",
+  "attested_at_utc": "2026-07-05T05:30:00Z",
+  "branch": "main",
+  "commit": "5382ed1000000000000000000000000000000000",
+  "artifact_path": "docs/release/audit/sample-release-audit.json",
+  "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "policy_audit_passed": true,
+  "attestors": [
+"release-manager",
+"compliance-reviewer"
+  ]
+}
