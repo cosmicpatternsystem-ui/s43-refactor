@@ -33,3 +33,8 @@ Artifacts must not be accepted when:
 ## Audit Requirement
 
 Artifact integrity must be reviewable after release and after rollback.
+
+## Signature and Provenance Requirements
+
+Release artifacts must provide integrity evidence through checksum and, where applicable, signature validation.
+Artifact provenance must identify the source commit, build context, and generation path used for release creation.

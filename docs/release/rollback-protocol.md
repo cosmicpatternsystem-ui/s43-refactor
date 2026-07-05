@@ -38,3 +38,8 @@ Rollback is complete only when:
 - incident notes are recorded
 - audit evidence is preserved
 - follow-up remediation is tracked
+
+## Rollback Authority
+
+Rollback authority is assigned to the designated release owner or incident authority.
+No rollback may be executed without explicit authority, recorded rationale, and verification evidence.
