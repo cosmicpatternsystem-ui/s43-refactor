@@ -1,0 +1,34 @@
+{
+  "baseline": "P2.10",
+  "name": "Artifact Retention CI Gate",
+  "status": "implemented",
+  "source_baseline": "P2.9",
+  "controls": [
+    {
+      "id": "P2.10-CI-001",
+      "name": "Artifact retention validation is enforced in CI",
+      "evidence": ".github/workflows/artifact-retention-gate.yml",
+      "validator": "tools/artifact_retention_check.py",
+      "test_suites": [
+        "tests/test_artifact_retention.py",
+        "tests/test_artifact_retention_negative.py",
+        "tests/test_artifact_retention_ci_gate.py"
+      ]
+    },
+    {
+      "id": "P2.10-CI-002",
+      "name": "Artifact retention validator and tests are compile-checked before execution",
+      "evidence": ".github/workflows/artifact-retention-gate.yml"
+    },
+    {
+      "id": "P2.10-CI-003",
+      "name": "Artifact retention gate runs on pull requests targeting main",
+      "evidence": ".github/workflows/artifact-retention-gate.yml"
+    },
+    {
+      "id": "P2.10-CI-004",
+      "name": "Artifact retention gate runs after changes land on main",
+      "evidence": ".github/workflows/artifact-retention-gate.yml"
+    }
+  ]
+}
