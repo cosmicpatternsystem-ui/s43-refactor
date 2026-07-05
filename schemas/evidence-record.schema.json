@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.aso-x.local/evidence-record.schema.json",
   "title": "ASO-X Evidence Record",
