@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASO-X Governance Lock Registry",
+  "type": "object",
+  "required": ["schema_version", "project", "generated_policy", "locks"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "project": { "type": "string", "minLength": 1 },
+    "generated_policy": {
+      "type": "object",
+      "required": ["continuity_mode", "source_of_truth", "default_priority"],
+      "properties": {
+        "continuity_mode": { "type": "string" },
+        "source_of_truth": { "type": "string" },
+        "default_priority": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "locks": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category", "enforced_by", "severity", "reversible", "status", "evidence_paths"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^LOCK-[0-9]{3}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "minLength": 1 },
+          "enforced_by": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "reversible": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["active", "planned", "deprecated"] },
+          "evidence_paths": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "owner": { "type": "string" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
