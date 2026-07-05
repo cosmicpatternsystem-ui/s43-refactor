@@ -1,69 +1,46 @@
-﻿# Project Roadmap
+# ROADMAP
 
-This file records durable project direction and phase status for future work.
+## Strategic Objective
 
-## Current Durable Milestone
+Create a durable, self-discoverable, machine-verifiable project operating model that can be continued by new sessions and operators with minimal ambiguity.
 
-### Phase 12: Governance Risk Guard Input Validation
+## Phase 1: Baseline Continuity
 
-Status: completed and pushed.
+- establish bootstrap files
+- establish machine-readable governance registry
+- establish schema validation
+- establish CI enforcement
+- establish status command
+- establish anti-removal tests
 
-Branch:
-- phase12-governance-design
+## Phase 2: Hardening
 
-Code milestone tag:
-- phase12-risk-guard-input-validation
+- add ownership fields
+- add severity and reversibility metadata
+- add explicit change-control metadata
+- add required review pathways
+- add drift detection
 
-Latest confirmed commits:
-- 1881a81 fix(governance): align invalid context severity with decision contract
-- 183c929 test(governance): harden invalid context handling
+## Phase 3: Operationalization
 
-Validation:
-- python -m pytest tests/test_risk_guard_input_validation.py
-- python -m pytest
+- expose project status CLI
+- expose governance verify CLI
+- expose roadmap next CLI
+- document remediation paths
+- add tamper-evident reporting
 
-Last confirmed result:
-- 53 passed
-- 2 skipped
+## Phase 4: Durability
 
-## Professional Decision
+- retention and artifact strategy
+- migration compatibility notes
+- future-proof schema versioning
+- long-horizon audit conventions
 
-Phase 12 governance input-validation hardening is considered implementation-complete.
-The branch is ready for PR review and squash merge when appropriate.
+## Always-Follow Priority
 
-Do not rewrite the pushed commits unless there is a specific release-management reason.
-Use PR review as the final merge gate.
-
-## Next Recommended Phases
-
-### Phase 12 Follow-up: Governance Observability
-
-Goal:
-- Add durable reporting around governance decisions without changing decision semantics.
-
-Possible work:
-- summarize blocked/allowed decisions
-- expose risk guard decision metadata in status/reporting paths
-- add tests for governance reporting consistency
-
-### Phase 13: Guard v2 Planning
-
-Goal:
-- design the next governance guard layer without disrupting the stable Phase 12 contract.
-
-Principles:
-- keep GovernanceDecision contract stable
-- add new rules incrementally
-- prefer explicit rule IDs
-- maintain dry-run compatibility
-- preserve auditability through tests and docs
-
-## Merge Guidance
-
-Preferred strategy:
-- Open PR from phase12-governance-design
-- Review the two implementation commits
-- Use squash merge into the target branch if a clean main history is desired
-
-Suggested squash title:
-- feat(governance): finalize phase12 risk guard input validation hardening
+1. repository evidence
+2. governance integrity
+3. CI enforceability
+4. auditability
+5. automation
+6. operator clarity

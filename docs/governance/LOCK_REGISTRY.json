@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "project": "ASO-X",
+  "generated_policy": {
+    "continuity_mode": "repo-self-discovery",
+    "source_of_truth": "repository-only",
+    "default_priority": [
+      "repository evidence",
+      "governance integrity",
+      "ci enforceability",
+      "auditability",
+      "automation",
+      "operator clarity"
+    ]
+  },
+  "locks": [
+    { "id": "LOCK-001", "name": "Repository Is Source Of Truth", "category": "continuity", "enforced_by": ["AGENTS.md", "docs/PROJECT_STATE.md", "tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["AGENTS.md", "docs/PROJECT_STATE.md"] },
+    { "id": "LOCK-002", "name": "Mandatory Bootstrap Read Order", "category": "continuity", "enforced_by": ["AGENTS.md", "tools/project_status.py"], "severity": "high", "reversible": true, "status": "active", "evidence_paths": ["AGENTS.md", "tools/project_status.py"] },
+    { "id": "LOCK-003", "name": "Project State Artifact Required", "category": "bootstrap", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/PROJECT_STATE.md", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-004", "name": "Roadmap Artifact Required", "category": "bootstrap", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/ROADMAP.md", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-005", "name": "Next Actions Artifact Required", "category": "bootstrap", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/NEXT_ACTIONS.md", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-006", "name": "Governance Baseline Artifact Required", "category": "governance", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/governance/GOVERNANCE_BASELINE.md", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-007", "name": "Machine Readable Lock Registry Required", "category": "governance", "enforced_by": ["tests/test_governance_bootstrap.py", "tools/project_status.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/governance/LOCK_REGISTRY.json", "tools/project_status.py"] },
+    { "id": "LOCK-008", "name": "Lock Schema Required", "category": "governance", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["docs/governance/LOCK_SCHEMA.json", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-009", "name": "Bootstrap Status Command Required", "category": "automation", "enforced_by": ["tools/project_status.py", "tests/test_governance_bootstrap.py"], "severity": "high", "reversible": true, "status": "active", "evidence_paths": ["tools/project_status.py", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-010", "name": "CI Governance Workflow Required", "category": "ci", "enforced_by": [".github/workflows/governance-enforcement.yml", "tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": [".github/workflows/governance-enforcement.yml", "tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-011", "name": "Critical Artifact Anti-Removal Test", "category": "ci", "enforced_by": ["tests/test_governance_bootstrap.py"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["tests/test_governance_bootstrap.py"] },
+    { "id": "LOCK-012", "name": "Self Discovery Without External Context", "category": "continuity", "enforced_by": ["AGENTS.md", "docs/PROJECT_STATE.md", "docs/NEXT_ACTIONS.md"], "severity": "critical", "reversible": false, "status": "active", "evidence_paths": ["AGENTS.md", "docs/PROJECT_STATE.md", "docs/NEXT_ACTIONS.md"] }
+  ]
+}
