@@ -39,3 +39,9 @@ For release-impacting incidents:
 - assign owner
 - decide rollback or forward fix
 - record final resolution
+
+## Incident Command Structure
+
+An incident commander must be assigned for every production incident.
+A timeline of material events, decisions, and mitigations must be recorded during the incident.
+A post-incident review must be completed after service stabilization and attached to the audit trail.

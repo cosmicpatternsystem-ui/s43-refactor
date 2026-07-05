@@ -35,3 +35,8 @@ The following are not allowed:
 - lockfile drift without explanation
 - dependency change without rollback consideration
 - production release with unknown dependency state
+
+## Freeze Window and Exception Handling
+
+A dependency freeze window must be declared before production release.
+Any exception to the freeze requires documented justification, approval, and audit evidence.

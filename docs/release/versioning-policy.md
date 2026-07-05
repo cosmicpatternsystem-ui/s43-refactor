@@ -42,3 +42,9 @@ The following are not allowed:
 - untracked binary or artifact version
 - release from a non-main branch
 - release without audit evidence
+
+## Semantic Versioning and Tag Policy
+
+All release identifiers must follow semantic versioning principles.
+Each approved release must be published with a corresponding Git tag.
+The release tag must map unambiguously to the audited release commit.
