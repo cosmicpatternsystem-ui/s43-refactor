@@ -1,0 +1,48 @@
+{
+  "schema_version": "aso-x.audit_artifact_retention_scheduled_audit.v1",
+  "baseline": "P2.11",
+  "name": "Artifact Retention Scheduled Audit",
+  "status": "implemented",
+  "source_baseline": "P2.10",
+  "source_pr": 217,
+  "source_merge_commit": "6f03a96b0b607c165f44d907becafaa9911e2fdc",
+  "purpose": "Define a scheduled and manually dispatchable audit gate for artifact retention evidence.",
+  "workflow": ".github/workflows/artifact-retention-scheduled-audit.yml",
+  "validator": "tools/artifact_retention_check.py",
+  "sample_artifact": "docs/security/audit/sample-artifact-retention.json",
+  "controls": [
+    {
+      "id": "P2.11-SCHED-001",
+      "name": "Scheduled execution",
+      "description": "Artifact retention evidence validation runs on an independent GitHub Actions schedule.",
+      "status": "implemented"
+    },
+    {
+      "id": "P2.11-SCHED-002",
+      "name": "Manual audit dispatch",
+      "description": "Artifact retention scheduled audit can be manually invoked through workflow_dispatch.",
+      "status": "implemented"
+    },
+    {
+      "id": "P2.11-SCHED-003",
+      "name": "Read-only workflow permissions",
+      "description": "Scheduled audit workflow uses contents read-only permissions.",
+      "status": "implemented"
+    },
+    {
+      "id": "P2.11-SCHED-004",
+      "name": "Validator-backed scheduled evidence",
+      "description": "Scheduled audit executes the repository artifact retention validator and smoke test coverage.",
+      "status": "implemented"
+    }
+  ],
+  "verification": {
+    "commands": [
+      "git diff --check",
+      "python -m py_compile tools/artifact_retention_check.py tests/test_artifact_retention.py tests/test_artifact_retention_negative.py tests/test_artifact_retention_ci_gate.py tests/test_artifact_retention_scheduled_audit.py",
+      "python -m pytest tests/test_artifact_retention.py tests/test_artifact_retention_negative.py tests/test_artifact_retention_ci_gate.py tests/test_artifact_retention_scheduled_audit.py -q",
+      "python tools/artifact_retention_check.py",
+      "python asoctl.py autopilot-status"
+    ]
+  }
+}
