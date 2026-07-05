@@ -1,0 +1,360 @@
+{
+  "canonical_lock_count": 32,
+  "generated_at": "2026-07-05T19:13:14Z",
+  "locks": [
+    {
+      "description": "All operational truth must live in the repository.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-001",
+      "name": "repo_only_source_of_truth",
+      "status": "canonical"
+    },
+    {
+      "description": "Durable project memory must be retained through Git commits and PRs.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-002",
+      "name": "immutable_git_history",
+      "status": "canonical"
+    },
+    {
+      "description": "Protected branches require PR-based changes.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-003",
+      "name": "pull_request_only_main",
+      "status": "canonical"
+    },
+    {
+      "description": "Text artifacts must use UTF-8 without BOM and LF line endings.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-004",
+      "name": "bom_free_utf8_lf",
+      "status": "canonical"
+    },
+    {
+      "description": "Generated artifacts must be written atomically or deterministically.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-005",
+      "name": "atomic_writes",
+      "status": "canonical"
+    },
+    {
+      "description": "CLI output must avoid fragile terminal-only Unicode assumptions.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-006",
+      "name": "cp1252_safe_stdout",
+      "status": "canonical"
+    },
+    {
+      "description": "Automation must avoid overwriting human work without checks.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-007",
+      "name": "safe_concurrent_edits",
+      "status": "canonical"
+    },
+    {
+      "description": "Governance rules must be testable in CI.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-008",
+      "name": "governance_enforced_by_ci",
+      "status": "canonical"
+    },
+    {
+      "description": "Decision, status, roadmap, and evidence artifacts must be retained.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-009",
+      "name": "artifact_retention",
+      "status": "canonical"
+    },
+    {
+      "description": "High-risk or real-money actions require explicit human approval.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-010",
+      "name": "manual_gate_for_high_risk_actions",
+      "status": "canonical"
+    },
+    {
+      "description": "Roadmap and operating model must preserve revenue orientation.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-011",
+      "name": "revenue_directionality",
+      "status": "canonical"
+    },
+    {
+      "description": "Systems touching money must prefer safety, auditability, and rollback.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-012",
+      "name": "real_money_resilience",
+      "status": "canonical"
+    },
+    {
+      "description": "Autopilot behavior must be governed by an explicit policy matrix.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-013",
+      "name": "policy_matrix_required",
+      "status": "canonical"
+    },
+    {
+      "description": "Every continuity checkpoint must expose executable next actions.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-014",
+      "name": "next_actions_required",
+      "status": "canonical"
+    },
+    {
+      "description": "Current repo state must be restorable from committed project-state files.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-015",
+      "name": "project_state_required",
+      "status": "canonical"
+    },
+    {
+      "description": "Material decisions must be captured in a durable decision log.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-016",
+      "name": "decision_log_required",
+      "status": "canonical"
+    },
+    {
+      "description": "Long-horizon direction must be captured in a durable roadmap.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-017",
+      "name": "roadmap_required",
+      "status": "canonical"
+    },
+    {
+      "description": "The repo must define how humans and automation cooperate.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-018",
+      "name": "operating_model_required",
+      "status": "canonical"
+    },
+    {
+      "description": "The repo must define revenue hypotheses and readiness checks.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-019",
+      "name": "revenue_model_required",
+      "status": "canonical"
+    },
+    {
+      "description": "A single repo-native control entrypoint must exist.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-020",
+      "name": "asoctl_required",
+      "status": "canonical"
+    },
+    {
+      "description": "Generated governance changes must be locally validated before commit.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-021",
+      "name": "validation_before_commit",
+      "status": "canonical"
+    },
+    {
+      "description": "Canonical governance invariants must have tests.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-022",
+      "name": "tests_for_governance",
+      "status": "canonical"
+    },
+    {
+      "description": "The lock registry must have a machine-readable schema.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-023",
+      "name": "schema_for_locks",
+      "status": "canonical"
+    },
+    {
+      "description": "Canonical lock IDs must be stable and non-reused.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-024",
+      "name": "stable_lock_ids",
+      "status": "canonical"
+    },
+    {
+      "description": "Governance must have a human-readable baseline document.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-025",
+      "name": "human_readable_baseline",
+      "status": "canonical"
+    },
+    {
+      "description": "Governance must have machine-readable registry artifacts.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-026",
+      "name": "machine_readable_baseline",
+      "status": "canonical"
+    },
+    {
+      "description": "Merge automation must respect branch protections and checks.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-027",
+      "name": "safe_merge_automation",
+      "status": "canonical"
+    },
+    {
+      "description": "GitHub contribution flow must use PRs for protected changes.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-028",
+      "name": "github_pr_workflow",
+      "status": "canonical"
+    },
+    {
+      "description": "Generated governance files must not require secrets.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-029",
+      "name": "no_secret_material_in_repo",
+      "status": "canonical"
+    },
+    {
+      "description": "Architecture choices must prefer long-term maintainability.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-030",
+      "name": "durability_50y_orientation",
+      "status": "canonical"
+    },
+    {
+      "description": "A new assistant session must be able to resume from repo artifacts.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-031",
+      "name": "continuity_across_chats",
+      "status": "canonical"
+    },
+    {
+      "description": "The strategic focus remains global financial intelligence.",
+      "enforcement": [
+        "documentation",
+        "local_validation",
+        "ci"
+      ],
+      "id": "LOCK-032",
+      "name": "global_financial_intelligence_focus",
+      "status": "canonical"
+    }
+  ],
+  "project": "ASO-X",
+  "schema_version": 1
+}
