@@ -41,7 +41,7 @@ text
 ## Lock Matrix
 
 | ID | Name | Risk | Scope | Retention | Failure Mode |
-|---|---|---:|---|---:|---|
+|---|---|---|---|---|---|
 | GOV-LOCK-001 | Immutable Roadmap ID Registry | critical | repository-wide | 50y | block merge |
 | GOV-LOCK-002 | Immutable Requirement ID Registry | critical | repository-wide | 50y | block merge |
 | GOV-LOCK-003 | Immutable Governance Lock ID Registry | critical | repository-wide | 50y | block merge |

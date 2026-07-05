@@ -29,11 +29,14 @@ uses: actions/setup-python@v5
 with:
 python-version: "3.x"
 
+- name: Install pytest
+run: python -m pip install pytest
+
 - name: Run global governance lock tests
-run: |
-python -m pytest tests/test_global_governance_locks.py
+run: python -m pytest tests/test_global_governance_locks.py
 
 - name: Run roadmap governance tests when present
+shell: bash
 run: |
 if [ -f tests/test_roadmap_governance.py ]; then
 python -m pytest tests/test_roadmap_governance.py
