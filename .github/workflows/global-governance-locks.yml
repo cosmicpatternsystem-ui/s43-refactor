@@ -1,20 +1,13 @@
-name: Roadmap Governance Gate
+name: Global Governance Locks
 
 on:
   pull_request:
+  push:
     branches:
       - main
-    paths:
-      - "docs/ROADMAP.md"
-      - "docs/roadmap/**"
-      - "docs/governance/**"
-      - "docs/value/**"
-      - "tests/test_roadmap_governance.py"
-      - ".github/workflows/roadmap-governance-gate.yml"
-  workflow_dispatch:
 
 jobs:
-  roadmap-governance:
+  global-governance-locks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,7 +26,7 @@ jobs:
           if [ -f requirements-dev.txt ]; then python -m pip install -r requirements-dev.txt; fi
           python -m pip install pytest jsonschema
 
-      - name: Run roadmap governance tests
+      - name: Validate global governance locks
         shell: bash
         run: |
-          python -m pytest tests/test_roadmap_governance.py -q
+          python -m pytest tests/test_global_governance_locks.py -q

@@ -1,0 +1,583 @@
+{
+    "schema_version":  "1.0.0",
+    "system":  "ASO-X Global Governance Lock System",
+    "lock_count":  32,
+    "locks":  [
+                  {
+                      "id":  "GOV-LOCK-001",
+                      "title":  "Immutable Governance Source",
+                      "status":  "locked",
+                      "category":  "source-control",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-002",
+                      "title":  "BOM-Free UTF-8 LF Encoding",
+                      "status":  "locked",
+                      "category":  "encoding",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-003",
+                      "title":  "Atomic Artifact Writes",
+                      "status":  "locked",
+                      "category":  "artifact-retention",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-004",
+                      "title":  "Schema-First Governance Registry",
+                      "status":  "locked",
+                      "category":  "schema",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-005",
+                      "title":  "Roadmap Governance Compatibility",
+                      "status":  "locked",
+                      "category":  "roadmap",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-006",
+                      "title":  "Safe Concurrent Edit Protection",
+                      "status":  "locked",
+                      "category":  "concurrency",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-007",
+                      "title":  "Pull Request Enforcement",
+                      "status":  "locked",
+                      "category":  "github",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-008",
+                      "title":  "No Direct Main Mutation",
+                      "status":  "locked",
+                      "category":  "github",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-009",
+                      "title":  "Artifact Retention Minimums",
+                      "status":  "locked",
+                      "category":  "artifact-retention",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-010",
+                      "title":  "Real Money Resilience Guard",
+                      "status":  "locked",
+                      "category":  "financial-resilience",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-011",
+                      "title":  "Deterministic CI Governance Gate",
+                      "status":  "locked",
+                      "category":  "ci",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-012",
+                      "title":  "Autopilot Policy Matrix Binding",
+                      "status":  "locked",
+                      "category":  "autopilot",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-013",
+                      "title":  "Safe Merge Automation",
+                      "status":  "locked",
+                      "category":  "merge",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-014",
+                      "title":  "Enterprise Audit Trail",
+                      "status":  "locked",
+                      "category":  "audit",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-015",
+                      "title":  "Fifty Year Durability Standard",
+                      "status":  "locked",
+                      "category":  "durability",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-016",
+                      "title":  "Repository-Only Source Authority",
+                      "status":  "locked",
+                      "category":  "source-control",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-017",
+                      "title":  "Governance Documentation Index",
+                      "status":  "locked",
+                      "category":  "documentation",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-018",
+                      "title":  "Machine-Readable Lock Registry",
+                      "status":  "locked",
+                      "category":  "registry",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-019",
+                      "title":  "Human-Readable Lock Index",
+                      "status":  "locked",
+                      "category":  "documentation",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-020",
+                      "title":  "JSON Syntax Validity",
+                      "status":  "locked",
+                      "category":  "validation",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-021",
+                      "title":  "YAML Workflow Validity",
+                      "status":  "locked",
+                      "category":  "validation",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-022",
+                      "title":  "Python Test Syntax Validity",
+                      "status":  "locked",
+                      "category":  "validation",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-023",
+                      "title":  "Complete Governance Lock Coverage",
+                      "status":  "locked",
+                      "category":  "coverage",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-024",
+                      "title":  "Stable Governance Lock Identifiers",
+                      "status":  "locked",
+                      "category":  "compatibility",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-025",
+                      "title":  "cp1252 Safe Console Output",
+                      "status":  "locked",
+                      "category":  "runtime",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-026",
+                      "title":  "asoctl Governance Compatibility",
+                      "status":  "locked",
+                      "category":  "tooling",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-027",
+                      "title":  "No Generated Drift Without Tests",
+                      "status":  "locked",
+                      "category":  "testing",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-028",
+                      "title":  "CI Artifact Evidence Retention",
+                      "status":  "locked",
+                      "category":  "artifact-retention",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-029",
+                      "title":  "Governance Failure Is Blocking",
+                      "status":  "locked",
+                      "category":  "ci",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-030",
+                      "title":  "Minimal Dependency Governance Checks",
+                      "status":  "locked",
+                      "category":  "ci",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-031",
+                      "title":  "Forward Compatible Registry Versioning",
+                      "status":  "locked",
+                      "category":  "compatibility",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  },
+                  {
+                      "id":  "GOV-LOCK-032",
+                      "title":  "Global Financial Intelligence Guardrail",
+                      "status":  "locked",
+                      "category":  "financial-intelligence",
+                      "severity":  "blocking",
+                      "owner":  "global-governance",
+                      "rationale":  "Required for enterprise-grade global governance, durable artifact retention, and safe automated delivery.",
+                      "enforcement":  [
+                                          "tests/test_global_governance_locks.py",
+                                          ".github/workflows/global-governance-locks.yml"
+                                      ],
+                      "artifacts":  [
+                                        "governance/global-locks/registry.json",
+                                        "governance/global-locks/registry.schema.json",
+                                        "docs/governance/global-governance-locks.md"
+                                    ]
+                  }
+              ]
+}
