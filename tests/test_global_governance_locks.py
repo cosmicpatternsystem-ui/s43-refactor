@@ -1,136 +1,71 @@
-from __future__ import annotations
-
 import json
+import pathlib
 import re
-from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
-REGISTRY_PATH = ROOT / "docs" / "governance" / "global-governance-locks.json"
-SCHEMA_PATH = ROOT / "docs" / "governance" / "global-governance-locks.schema.json"
-INDEX_PATH = ROOT / "docs" / "governance" / "GLOBAL_GOVERNANCE_LOCKS.md"
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+REGISTRY_PATH = ROOT / "governance" / "global-locks" / "registry.json"
+SCHEMA_PATH = ROOT / "governance" / "global-locks" / "registry.schema.json"
+DOC_PATH = ROOT / "docs" / "governance" / "global-governance-locks.md"
+WORKFLOW_PATH = ROOT / ".github" / "workflows" / "global-governance-locks.yml"
+
+EXPECTED_IDS = [f"GOV-LOCK-{number:03d}" for number in range(1, 33)]
 
 
-def load_json(path: Path) -> dict:
-return json.loads(path.read_text(encoding="utf-8"))
+def read_text(path: pathlib.Path) -> str:
+    data = path.read_bytes()
+    assert not data.startswith(b"\xef\xbb\xbf"), f"{path} must be UTF-8 without BOM"
+    text = data.decode("utf-8")
+    assert "\r" not in text, f"{path} must use LF line endings"
+    assert text.endswith("\n"), f"{path} must end with newline"
+    return text
 
 
-def test_global_governance_files_exist() -> None:
-assert REGISTRY_PATH.exists()
-assert SCHEMA_PATH.exists()
-assert INDEX_PATH.exists()
+def test_registry_json_is_valid_and_complete() -> None:
+    registry = json.loads(read_text(REGISTRY_PATH))
+    assert registry["schema_version"] == "1.0.0"
+    assert registry["system"] == "ASO-X Global Governance Lock System"
+    assert registry["lock_count"] == 32
+    locks = registry["locks"]
+    assert len(locks) == 32
+    ids = [lock["id"] for lock in locks]
+    assert ids == EXPECTED_IDS
+    assert len(set(ids)) == 32
+    for lock in locks:
+        assert re.fullmatch(r"GOV-LOCK-\d{3}", lock["id"])
+        assert lock["title"]
+        assert lock["status"] == "locked"
+        assert lock["category"]
+        assert lock["severity"] == "blocking"
+        assert lock["owner"] == "global-governance"
+        assert lock["rationale"]
+        assert "tests/test_global_governance_locks.py" in lock["enforcement"]
+        assert "governance/global-locks/registry.json" in lock["artifacts"]
 
 
-def test_registry_shape_and_minimum_lock_count() -> None:
-registry = load_json(REGISTRY_PATH)
-assert registry["system"] == "global-governance-lock-system"
-assert registry["status"] == "active"
-assert registry["target_durability"] == "50y"
-assert registry["source_of_truth"] == "repository"
-assert registry["minimum_lock_count"] >= 32
-assert registry["failure_mode"] == "block merge"
-assert len(registry["locks"]) >= registry["minimum_lock_count"]
-
-
-def test_lock_ids_are_unique_and_canonical() -> None:
-registry = load_json(REGISTRY_PATH)
-ids = [lock["id"] for lock in registry["locks"]]
-assert len(ids) == len(set(ids))
-for lock_id in ids:
-assert re.fullmatch(r"GOV-LOCK-[0-9]{3}", lock_id), lock_id
-
-
-def test_active_locks_have_required_governance_fields() -> None:
-registry = load_json(REGISTRY_PATH)
-required = {
-"id",
-"name",
-"status",
-"scope",
-"owner",
-"risk_class",
-"retention",
-"enforcement",
-"change_control",
-"failure_mode",
-"evidence_required",
-"supersession_allowed",
-"deletion_allowed",
-"immutable",
-"source_of_truth",
-}
-
-for lock in registry["locks"]:
-assert required.issubset(lock), lock.get("id")
-assert lock["status"] in {"active", "superseded", "retired"}
-assert lock["risk_class"] in {"critical", "high", "medium", "low"}
-assert lock["retention"] == "50y"
-assert lock["failure_mode"] == "block merge"
-assert lock["source_of_truth"] == "repo"
-assert lock["deletion_allowed"] is False
-assert lock["owner"]
-assert lock["scope"]
-assert lock["change_control"]
-
-
-def test_enforcement_is_not_documentation_only() -> None:
-registry = load_json(REGISTRY_PATH)
-required = {
-"documentation",
-"json-registry",
-"schema-validation",
-"pytest",
-"github-actions",
-}
-
-for lock in registry["locks"]:
-assert required.issubset(set(lock["enforcement"])), lock["id"]
-
-
-def test_critical_and_high_locks_require_evidence() -> None:
-registry = load_json(REGISTRY_PATH)
-for lock in registry["locks"]:
-if lock["risk_class"] in {"critical", "high"}:
-assert lock["evidence_required"] is True, lock["id"]
-
-
-def test_immutable_locks_are_not_deletable() -> None:
-registry = load_json(REGISTRY_PATH)
-immutable = [lock for lock in registry["locks"] if lock["immutable"]]
-assert immutable
-
-for lock in immutable:
-assert lock["deletion_allowed"] is False
-assert lock["supersession_allowed"] is True
+def test_schema_json_is_valid_and_requires_full_registry() -> None:
+    schema = json.loads(read_text(SCHEMA_PATH))
+    assert schema["title"] == "ASO-X Global Governance Lock Registry"
+    assert schema["type"] == "object"
+    assert schema["properties"]["lock_count"]["const"] == 32
+    assert schema["properties"]["locks"]["minItems"] == 32
+    assert schema["properties"]["locks"]["maxItems"] == 32
 
 
 def test_markdown_index_mentions_every_lock() -> None:
-registry = load_json(REGISTRY_PATH)
-index = INDEX_PATH.read_text(encoding="utf-8")
-for lock in registry["locks"]:
-assert lock["id"] in index
-assert lock["name"] in index
+    text = read_text(DOC_PATH)
+    assert "# Global Governance Lock System" in text
+    for lock_id in EXPECTED_IDS:
+        assert lock_id in text
 
 
-def test_schema_contains_required_global_constraints() -> None:
-schema = load_json(SCHEMA_PATH)
-assert schema["properties"]["system"]["const"] == "global-governance-lock-system"
-assert schema["properties"]["target_durability"]["const"] == "50y"
-assert schema["properties"]["failure_mode"]["const"] == "block merge"
-assert schema["properties"]["locks"]["minItems"] >= 32
+def test_workflow_yaml_is_present_and_targets_this_gate() -> None:
+    text = read_text(WORKFLOW_PATH)
+    assert "name: Global Governance Locks" in text
+    assert "python -m pytest tests/test_global_governance_locks.py" in text
+    assert "pull_request:" in text
 
 
-def test_governance_files_are_utf8_lf_and_bom_free() -> None:
-paths = [
-REGISTRY_PATH,
-SCHEMA_PATH,
-INDEX_PATH,
-ROOT / "docs" / "governance" / "GOVERNANCE_CHANGE_CONTROL.md",
-ROOT / "docs" / "governance" / "EVIDENCE_LEDGER_POLICY.md",
-ROOT / "docs" / "governance" / "ARTIFACT_RETENTION_POLICY.md",
-]
-
-for path in paths:
-data = path.read_bytes()
-assert not data.startswith(b"\xef\xbb\xbf"), str(path)
-assert b"\r\n" not in data, str(path)
+def test_no_legacy_broken_builder_is_tracked() -> None:
+    broken_builder = ROOT / "build_global_governance_lock_system.py"
+    assert not broken_builder.exists(), "Remove broken temporary builder script"
