@@ -12,9 +12,9 @@
 - **Offline Intelligence Core:** A zero-dependency engine for air-gapped high-stakes environments.
 
 ## Operational Status: GOLD STANDARD
-- ✅ **LOCKED & VERIFIED:** Audit chain intact.
-- ✅ **COMPETITION-READY:** Optimized for high-frequency economic simulation.
-- ✅ **AIR-GAPPED:** No external dependencies required.
+- âœ… **LOCKED & VERIFIED:** Audit chain intact.
+- âœ… **COMPETITION-READY:** Optimized for high-frequency economic simulation.
+- âœ… **AIR-GAPPED:** No external dependencies required.
 
 ## Governance
 ## Autonomous Governance Operations
@@ -24,3 +24,6 @@ This project follows a rigorous, multi-phase roadmap recorded within the `roadma
 
 ## License & Integrity
 Proprietary autonomous intelligence project. Unauthorized modification of the `ASO_CORE_LOGIC` is flagged by the integrity audit system.
+## Strategic Control Plane
+
+- `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
