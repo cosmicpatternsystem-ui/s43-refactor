@@ -62,3 +62,18 @@ ASO-X is not only a codebase. It is a long-term operating system for durable fin
 ## Continuity Rule
 
 Every future session, contributor, or automation agent must begin from repository state, not conversation memory.
+## Autonomous Agent Entrypoint
+
+AGENT_ENTRYPOINT.md is the required continuation entrypoint for autonomous agents and safe repository handoff.
+
+## Governance References
+
+- docs/governance/GOAL_CONSTITUTION.md
+- docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md
+- docs/governance/WORK_PROTOCOL.md
+- docs/governance/AUTONOMY_MODEL.md
+- docs/governance/DURABILITY_STANDARD.md
+- repo/contracts/PROJECT_CONSTITUTION.yaml
+- repo/contracts/CANONICAL_SOURCES.yaml
+- repo/roadmap/roadmap.yaml
+- docs/ROADMAP.md
