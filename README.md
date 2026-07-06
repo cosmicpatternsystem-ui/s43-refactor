@@ -27,3 +27,10 @@ Proprietary autonomous intelligence project. Unauthorized modification of the `A
 ## Strategic Control Plane
 
 - `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
+## Top-Level Commercial Doctrine
+
+The commercial operating model for ASO-X is defined in:
+
+- `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md`
+
+This doctrine establishes the non-negotiable commercial framework for revenue quality, market positioning, customer selection, pricing discipline, roadmap governance, and institution-grade trust.

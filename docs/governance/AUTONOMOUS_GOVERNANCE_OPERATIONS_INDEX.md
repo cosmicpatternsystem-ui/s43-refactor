@@ -156,3 +156,4 @@ Do not duplicate full runbook content in this index. Keep detailed procedures in
 ## Strategic Control Plane
 
 - `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
+- `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md` - canonical commercial doctrine for revenue quality, pricing discipline, market positioning, customer-fit control, and durable institutional trust
