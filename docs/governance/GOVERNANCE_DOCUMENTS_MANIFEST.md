@@ -5,7 +5,9 @@ This manifest is the canonical inventory for high-signal governance artifacts th
 ## Canonical Entrypoints
 
 - `README.md`
-- `docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md`
+- `docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md
+`
+- `docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.md`
 
 ## Critical Governance Artifacts
 
