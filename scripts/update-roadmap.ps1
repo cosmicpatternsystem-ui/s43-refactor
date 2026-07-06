@@ -519,6 +519,7 @@ $roadmap = [ordered]@{
         last_verified_at = "ISO-8601 UTC string|null"
     }
     updated_at_utc = "GENERATED"
+    canonical_roadmap = "ROADMAP_CANONICAL.md"
     phase_count = @($phases).Count
     phases = @($phases)
 }
@@ -564,21 +565,3 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 & (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Content $json
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
-# ASO-X-CANONICAL-ROADMAP-INJECTION
-$roadmapCurrentPath = Join-Path (Get-Location) "ROADMAP_CURRENT.json"
-if (Test-Path $roadmapCurrentPath) {
-    $roadmapJsonRaw = Get-Content -Raw -Path $roadmapCurrentPath
-    $roadmapObj = $roadmapJsonRaw | ConvertFrom-Json
-
-    if ($roadmapObj.PSObject.Properties.Name -contains "canonical_roadmap") {
-        $roadmapObj.canonical_roadmap = "ROADMAP_CANONICAL.md"
-    } else {
-        $roadmapObj | Add-Member -NotePropertyName "canonical_roadmap" -NotePropertyValue "ROADMAP_CANONICAL.md"
-    }
-
-    $roadmapJsonOut = $roadmapObj | ConvertTo-Json -Depth 100
-    $roadmapJsonOut = $roadmapJsonOut -replace "`r`n", "`n"
-    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-    [System.IO.File]::WriteAllText((Resolve-Path $roadmapCurrentPath), $roadmapJsonOut + "`n", $utf8NoBom)
-}
-# ASO-X-CANONICAL-ROADMAP-INJECTION-END
