@@ -2,8 +2,8 @@ name: Repo Governance Hardening Gate
 
 on:
   pull_request:
-branches:
-- main
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,20 +11,20 @@ permissions:
 
 jobs:
   repo-governance-hardening:
-name: Repo governance hardening validation
-runs-on: ubuntu-latest
+    name: Repo governance hardening validation
+    runs-on: ubuntu-latest
 
-steps:
-- name: Checkout repository
-uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-- name: Set up Python
-uses: actions/setup-python@v5
-with:
-python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-- name: Run governance hardening check
-run: python tools/governance_hardening_check.py
+      - name: Run governance hardening check
+        run: python tools/governance_hardening_check.py
 
-- name: Run governance hardening tests
-run: python -m pytest tests/test_governance_hardening_pack.py -q
+      - name: Run governance hardening tests
+        run: python -m pytest tests/test_governance_hardening_pack.py -q
