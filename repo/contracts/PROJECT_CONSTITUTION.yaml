@@ -1,0 +1,101 @@
+schema_version: 1
+constitution_id: project-constitution-v1
+authority: docs/governance/GOAL_CONSTITUTION.md
+repository_is_source_of_truth: true
+chat_memory_is_source_of_truth: false
+
+mission:
+  summary: Build a globally credible, commercially serious, durable, extensible financial intelligence and governance platform.
+  horizon_years: 50
+  commercial_intent: private_and_enterprise
+  reference_intent: global_reference_grade
+
+non_negotiables:
+  - repository_driven
+  - source_of_truth_governed
+  - automation_first
+  - ci_enforced
+  - roadmap_canonical
+  - drift_detected
+  - compatibility_aware
+  - commercially_serious
+  - privacy_capable
+  - enterprise_capable
+  - agent_onboardable
+  - anti_obsolescence_oriented
+
+canonical_files:
+  agent_entrypoint: AGENT_ENTRYPOINT.md
+  goal_constitution: docs/governance/GOAL_CONSTITUTION.md
+  source_of_truth_hierarchy: docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md
+  work_protocol: docs/governance/WORK_PROTOCOL.md
+  autonomy_model: docs/governance/AUTONOMY_MODEL.md
+  durability_standard: docs/governance/DURABILITY_STANDARD.md
+  project_charter: PROJECT_CHARTER.md
+  canonical_sources: repo/contracts/CANONICAL_SOURCES.yaml
+  roadmap_source: repo/roadmap/roadmap.yaml
+  roadmap_view: docs/ROADMAP.md
+  policy_matrix: docs/governance/POLICY_MATRIX.md
+  compatibility_contract: docs/governance/COMPATIBILITY_CONTRACT.md
+  operations_runbook: docs/OPERATIONS_RUNBOOK.md
+  commercial_model: docs/COMMERCIAL_MODEL.md
+  decision_log: docs/governance/DECISION_LOG.md
+
+roadmap:
+  canonical_source: repo/roadmap/roadmap.yaml
+  human_view: docs/ROADMAP.md
+  sync_required: true
+  stale_allowed: false
+
+validation:
+  required_tools:
+    - tools/governance_hardening_check.py
+    - tools/project_constitution_check.py
+  required_tests:
+    - tests/test_governance_hardening_pack.py
+    - tests/test_project_constitution_pack.py
+  required_workflows:
+    - .github/workflows/repo-governance-hardening-gate.yml
+    - .github/workflows/project-constitution-gate.yml
+
+autonomy:
+  current_target_level: 3
+  next_target_level: 4
+  required_capabilities:
+    - source_of_truth_validation
+    - roadmap_sync_validation
+    - drift_detection
+    - agent_onboarding
+    - governance_health_scoring
+
+commercial:
+  posture: serious_private_and_enterprise
+  required_properties:
+    - trust
+    - reliability
+    - auditability
+    - privacy
+    - extensibility
+    - operational_clarity
+    - premium_positioning
+
+extension_model:
+  immutable_layer:
+    - mission
+    - non_negotiables
+    - source_of_truth_hierarchy
+    - durability_principles
+  configurable_layer:
+    - policies
+    - roadmap_priorities
+    - deployment_profiles
+    - commercial_packaging
+  extension_layer:
+    - domain_adapters
+    - customer_specific_workflows
+    - integration_modules
+
+## Project Constitution Compliance Terms
+
+- Required governance phrase: commercial_posture:
+- Required governance phrase: autonomy_targets:
