@@ -26,6 +26,7 @@ This project follows a rigorous, multi-phase roadmap recorded within the `roadma
 Proprietary autonomous intelligence project. Unauthorized modification of the `ASO_CORE_LOGIC` is flagged by the integrity audit system.
 ## Strategic Control Plane
 - [Commercial Controls Enforcement Pack](docs/strategy/COMMERCIAL_CONTROLS_ENFORCEMENT_PACK.md)
+- [Commercial Sovereignty & Revenue Protection Doctrine](docs/strategy/COMMERCIAL_SOVEREIGNTY_REVENUE_PROTECTION_DOCTRINE.md)
 
 - `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
 ## Top-Level Commercial Doctrine
