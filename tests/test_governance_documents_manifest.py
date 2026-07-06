@@ -15,6 +15,13 @@ CRITICAL_ARTIFACTS = [
     "docs/governance/AUTONOMOUS_MERGE_SAFETY_CHECKLIST.md",
 ]
 
+INDEX_LINK_TARGETS = [
+    "docs/governance/AUTONOMOUS_FAILURE_HANDLING_RUNBOOK.md",
+    "docs/governance/AUTONOMOUS_RECOVERY_AND_ROLLBACK_RUNBOOK.md",
+    "docs/governance/AUTONOMOUS_MERGE_SAFETY_CHECKLIST.md",
+    "docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.md",
+]
+
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
@@ -45,9 +52,7 @@ def test_readme_links_autonomous_governance_index():
     assert "docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md" in text
 
 
-def test_index_links_all_critical_governance_artifacts_except_readme():
+def test_index_links_required_governance_targets():
     text = _read(INDEX)
-    for artifact in CRITICAL_ARTIFACTS:
-        if artifact == "README.md":
-            continue
+    for artifact in INDEX_LINK_TARGETS:
         assert artifact in text
