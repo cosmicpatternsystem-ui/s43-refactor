@@ -1,0 +1,11 @@
+{
+    "status":  "AUTHORITY_LAYER_PATCH_APPLIED",
+    "matrix":  "repo/contracts/AUTHORITY_CLASSIFICATION_MATRIX.yaml",
+    "checker":  "tools/authority_matrix_check.ps1",
+    "audit_dir":  "G:\\s43_work\\s43_g11_work\\artifacts\\audits\\20260706_212516",
+    "git_status":  [
+                       "?? artifacts/",
+                       "?? repo/contracts/AUTHORITY_CLASSIFICATION_MATRIX.yaml",
+                       "?? tools/authority_matrix_check.ps1"
+                   ]
+}

@@ -1,0 +1,14 @@
+{
+    "status":  "AUTHORITY_CHECKER_RECOVERED_AND_APPLIED",
+    "checker":  "tools/authority_matrix_check.ps1",
+    "matrix":  "repo/contracts/AUTHORITY_CLASSIFICATION_MATRIX.yaml",
+    "queue":  "repo/contracts/AUTHORITY_REVIEW_QUEUE.json",
+    "audit_dir":  "G:\\s43_work\\s43_g11_work\\artifacts\\audits\\20260706_213037",
+    "git_status":  [
+                       "?? artifacts/",
+                       "?? repo/contracts/AUTHORITY_CLASSIFICATION_MATRIX.yaml",
+                       "?? repo/contracts/AUTHORITY_REVIEW_QUEUE.json",
+                       "?? tools/authority_matrix_check.ps1"
+                   ],
+    "completed_at_utc":  "2026-07-06T18:00:45.9672159Z"
+}
