@@ -3,31 +3,31 @@ name: Artifact Retention Gate
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: "0 3 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - 'docs/security/audit/sample-artifact-retention.json'
-      - 'docs/security/audit/artifact-retention-evidence-ledger.json'
-      - 'tools/artifact_retention_check.py'
-      - 'tools/artifact_evidence_ledger_check.py'
-      - 'tests/test_artifact_retention.py'
-      - 'tests/test_artifact_retention_negative.py'
-      - 'tests/test_artifact_evidence_ledger.py'
-      - '.github/workflows/artifact-retention-gate.yml'
+      - "docs/security/audit/sample-artifact-retention.json"
+      - "docs/security/audit/artifact-retention-evidence-ledger.json"
+      - "tools/artifact_retention_check.py"
+      - "tools/artifact_evidence_ledger_check.py"
+      - "tests/test_artifact_retention.py"
+      - "tests/test_artifact_retention_negative.py"
+      - "tests/test_artifact_evidence_ledger.py"
+      - ".github/workflows/artifact-retention-gate.yml"
   push:
     branches:
       - main
     paths:
-      - 'docs/security/audit/sample-artifact-retention.json'
-      - 'docs/security/audit/artifact-retention-evidence-ledger.json'
-      - 'tools/artifact_retention_check.py'
-      - 'tools/artifact_evidence_ledger_check.py'
-      - 'tests/test_artifact_retention.py'
-      - 'tests/test_artifact_retention_negative.py'
-      - 'tests/test_artifact_evidence_ledger.py'
-      - '.github/workflows/artifact-retention-gate.yml'
+      - "docs/security/audit/sample-artifact-retention.json"
+      - "docs/security/audit/artifact-retention-evidence-ledger.json"
+      - "tools/artifact_retention_check.py"
+      - "tools/artifact_evidence_ledger_check.py"
+      - "tests/test_artifact_retention.py"
+      - "tests/test_artifact_retention_negative.py"
+      - "tests/test_artifact_evidence_ledger.py"
+      - ".github/workflows/artifact-retention-gate.yml"
 
 permissions:
   contents: read
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"`r`npython-version: '3.11'
+          python-version: "3.11"
 
       - name: Install test dependencies
         run: |
@@ -53,6 +53,7 @@ jobs:
           python -m pip install pytest
 
       - name: Verify artifact retention evidence exists
+        shell: bash
         run: |
           test -f docs/security/audit/sample-artifact-retention.json
           test -f docs/security/audit/artifact-retention-evidence-ledger.json
