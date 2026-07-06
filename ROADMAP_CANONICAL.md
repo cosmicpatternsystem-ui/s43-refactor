@@ -176,3 +176,5 @@ The canonical roadmap governance model must support the following long-term guar
 6. Concurrent edits must be guarded by lock and integrity checks.
 7. Local, remote, and hardware backup verification must be part of operational readiness.
 8. Real-money operational use is not considered satisfied until these controls are validated.
+## Canonical Identity
+This document is the human-readable canonical roadmap aligned to ROADMAP_CURRENT.json.

@@ -27,3 +27,5 @@ Build durable global financial intelligence infrastructure with strong governanc
 - Prefer simple, documented, portable systems.
 - Preserve artifact history.
 - Avoid hidden operational state outside the repo.
+## Authority Notice
+This document is derivative and non-prevailing when conflicting with higher-authority artifacts.

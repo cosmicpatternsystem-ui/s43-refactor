@@ -11,3 +11,7 @@
 | Production money movement | Blocked by default | Yes |
 | Credential or secret change | Blocked by default | Yes |
 | Destructive git history change | Blocked by default | Yes |
+| repository_truth_enforced | required |
+| ai_handoff_enforced | required |
+| roadmap_truth_consistency | required |
+| backup_non_authoritative | required |
