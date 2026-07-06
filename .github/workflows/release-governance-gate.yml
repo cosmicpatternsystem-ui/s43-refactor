@@ -1,6 +1,7 @@
-name: Roadmap Governance Gate
+name: Release Governance Gate
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -26,7 +27,13 @@ jobs:
           if [ -f requirements-dev.txt ]; then python -m pip install -r requirements-dev.txt; fi
           python -m pip install pytest jsonschema
 
-      - name: Run roadmap governance tests
+      - name: Run release governance enforcement
+        shell: bash
+        run: |
+          python tools/release_governance_check.py
+          python -m pytest tests/test_release_governance_enforcement.py -q
+
+- name: Run roadmap governance tests
         shell: bash
         run: |
           python -m pytest tests/test_roadmap_governance.py -q
