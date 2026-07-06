@@ -40,3 +40,4 @@ Every artifact listed in Critical Governance Artifacts must satisfy all of these
 ### Strategy
 
 - `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md` - top-level commercial operating doctrine defining revenue quality, trust-based positioning, pricing discipline, customer selection, and commercial governance
+- `docs/strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md` - Global commercial hardening addendum.

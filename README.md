@@ -34,3 +34,5 @@ The commercial operating model for ASO-X is defined in:
 - `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md`
 
 This doctrine establishes the non-negotiable commercial framework for revenue quality, market positioning, customer selection, pricing discipline, roadmap governance, and institution-grade trust.
+
+- [Global Commercial Hardening Addendum](docs/strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md)
