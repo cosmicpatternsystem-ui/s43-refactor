@@ -37,3 +37,6 @@ Every artifact listed in Critical Governance Artifacts must satisfy all of these
 - docs/strategy/ANTI_OBSOLESCENCE_POLICY.md
 - docs/strategy/PORTABILITY_AND_PLATFORM_INDEPENDENCE.md
 - docs/strategy/PRODUCT_IDENTITY_AND_DIFFERENTIATION.md
+### Strategy
+
+- `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md` - top-level commercial operating doctrine defining revenue quality, trust-based positioning, pricing discipline, customer selection, and commercial governance
