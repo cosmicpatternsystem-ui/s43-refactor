@@ -10,6 +10,7 @@ This manifest is the canonical inventory for high-signal governance artifacts th
 - `docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.md`
 
 ## Critical Governance Artifacts
+- Commercial Controls Enforcement Pack - `docs/strategy/COMMERCIAL_CONTROLS_ENFORCEMENT_PACK.md`
 
 | Artifact | Role | Enforcement |
 | --- | --- | --- |
