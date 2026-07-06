@@ -1,0 +1,33 @@
+name: Repo Governance Hardening Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-governance-hardening:
+    name: Repo governance hardening validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run governance hardening check
+        run: python tools/governance_hardening_check.py
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip pytest
+
+      - name: Run governance hardening tests
+        run: python -m pytest tests/test_governance_hardening_pack.py -q
