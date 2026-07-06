@@ -12,9 +12,9 @@
 - **Offline Intelligence Core:** A zero-dependency engine for air-gapped high-stakes environments.
 
 ## Operational Status: GOLD STANDARD
-- âœ… **LOCKED & VERIFIED:** Audit chain intact.
-- âœ… **COMPETITION-READY:** Optimized for high-frequency economic simulation.
-- âœ… **AIR-GAPPED:** No external dependencies required.
+- Ã¢Å“â€¦ **LOCKED & VERIFIED:** Audit chain intact.
+- Ã¢Å“â€¦ **COMPETITION-READY:** Optimized for high-frequency economic simulation.
+- Ã¢Å“â€¦ **AIR-GAPPED:** No external dependencies required.
 
 ## Governance
 ## Autonomous Governance Operations
@@ -37,3 +37,4 @@ This doctrine establishes the non-negotiable commercial framework for revenue qu
 
 - [Global Commercial Hardening Addendum](docs/strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md)
 - [Commercial Authority Matrix](docs/strategy/COMMERCIAL_AUTHORITY_MATRIX.md) - Repo-governed authority model for discounts, concessions, margin floors, escalation, and NO-GO commercial decisions.
+- docs/strategy/GLOBAL_COMMERCIAL_RESILIENCE_FRAMEWORK.md - global commercial resilience framework for pricing, cash, commitment, and counterparty discipline.
