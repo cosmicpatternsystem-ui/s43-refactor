@@ -113,7 +113,7 @@ function Get-RoadmapMetadata {
             }
         }
     }
-    # ── Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) ──
+    # Ã¢â€â‚¬Ã¢â€â‚¬ Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) Ã¢â€â‚¬Ã¢â€â‚¬
     if ($content -match '(?ms)^---\s*\r?\n(.*?)\r?\n---') {
         $yamlText = $Matches[1]
         $yamlLines = $yamlText -split '\r?\n'
@@ -472,7 +472,7 @@ $phases = foreach ($phaseFile in $phaseFiles) {
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
         $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $dependsOn -PhaseReferenceMap $phaseReferenceMap
 
-        # â”€â”€ Phase-42.03: extract phase_id and title from H1 header â”€â”€
+        # ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Phase-42.03: extract phase_id and title from H1 header ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
         $phaseId = $null
         $title   = $null
         $firstHeader = ($content -split "`n" |
@@ -564,13 +564,21 @@ $json = $json.Replace("`r`n", "`n") + "`n"
 & (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Content $json
 
 Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+# ASO-X-CANONICAL-ROADMAP-INJECTION
+$roadmapCurrentPath = Join-Path (Get-Location) "ROADMAP_CURRENT.json"
+if (Test-Path $roadmapCurrentPath) {
+    $roadmapJsonRaw = Get-Content -Raw -Path $roadmapCurrentPath
+    $roadmapObj = $roadmapJsonRaw | ConvertFrom-Json
 
+    if ($roadmapObj.PSObject.Properties.Name -contains "canonical_roadmap") {
+        $roadmapObj.canonical_roadmap = "ROADMAP_CANONICAL.md"
+    } else {
+        $roadmapObj | Add-Member -NotePropertyName "canonical_roadmap" -NotePropertyValue "ROADMAP_CANONICAL.md"
+    }
 
-
-
-
-
-
-
-
-
+    $roadmapJsonOut = $roadmapObj | ConvertTo-Json -Depth 100
+    $roadmapJsonOut = $roadmapJsonOut -replace "`r`n", "`n"
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText((Resolve-Path $roadmapCurrentPath), $roadmapJsonOut + "`n", $utf8NoBom)
+}
+# ASO-X-CANONICAL-ROADMAP-INJECTION-END
