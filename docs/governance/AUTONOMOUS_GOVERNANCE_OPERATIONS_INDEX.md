@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This index defines the operating route for autonomous governance activity in this repository.
+This index defines the canonical operating route for autonomous governance activity in this repository.
 
 It connects the autonomous governance documents into a single decision path so an operator, automation agent, or reviewer can determine which control document applies before taking action.
 
