@@ -159,3 +159,5 @@ Do not duplicate full runbook content in this index. Keep detailed procedures in
 - `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md` - canonical commercial doctrine for revenue quality, pricing discipline, market positioning, customer-fit control, and durable institutional trust
 - [Global Commercial Hardening Addendum](../strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md)
 - [Commercial Authority Matrix](../strategy/COMMERCIAL_AUTHORITY_MATRIX.md) - Defines repository-governed commercial decision authority, discount boundaries, margin controls, escalation triggers, and NO-GO conditions.
+- docs/strategy/GLOBAL_COMMERCIAL_RESILIENCE_FRAMEWORK.md: global commercial resilience framework covering pricing, cash realization, commitments, counterparties, and exception discipline.
+- docs/strategy/COMMERCIAL_AUTHORITY_MATRIX.md: Commercial Authority Matrix governing commercial decision rights for pricing, discounts, margin floors, concessions, payment terms, delivery promises, escalation, and NO-GO conditions.
