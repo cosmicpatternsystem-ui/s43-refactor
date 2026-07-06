@@ -28,3 +28,12 @@ Every artifact listed in Critical Governance Artifacts must satisfy all of these
 - critical autonomous governance artifacts must be linked from `docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md`
 - the autonomous governance operations index must be linked from `README.md`
 - enforcement tests must fail when canonical routing drifts
+- docs/strategy/STRATEGIC_CONTROL_PLANE.md
+- docs/strategy/PROJECT_OBJECTIVES.md
+- docs/strategy/CANONICAL_ROADMAP.md
+- docs/strategy/FIFTY_YEAR_DURABILITY_DOCTRINE.md
+- docs/strategy/MONETIZATION_AND_MARKET_DOCTRINE.md
+- docs/strategy/AUTONOMOUS_CONTINUITY_GUIDE.md
+- docs/strategy/ANTI_OBSOLESCENCE_POLICY.md
+- docs/strategy/PORTABILITY_AND_PLATFORM_INDEPENDENCE.md
+- docs/strategy/PRODUCT_IDENTITY_AND_DIFFERENTIATION.md

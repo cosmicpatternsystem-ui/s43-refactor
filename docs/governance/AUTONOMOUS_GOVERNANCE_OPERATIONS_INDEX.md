@@ -153,3 +153,6 @@ Do not duplicate full runbook content in this index. Keep detailed procedures in
 ## Governance Manifest
 
 - `docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.md`
+## Strategic Control Plane
+
+- `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
