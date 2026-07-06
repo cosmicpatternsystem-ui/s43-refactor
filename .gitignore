@@ -87,3 +87,6 @@ patch-yaml-fix*.ps1
 _recovery_autopilot_*/
 
 .runtime/
+*.old
+*.orig
+*.rej
