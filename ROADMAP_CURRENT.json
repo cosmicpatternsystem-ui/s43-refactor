@@ -1668,5 +1668,6 @@
                                     ],
                        "last_verified_at":  null
                    }
-               ]
+               ],
+    "canonical_roadmap":  "ROADMAP_CANONICAL.md"
 }
