@@ -1,19 +1,20 @@
-import io
 import re
 import unittest
-from contextlib import redirect_stdout
 
-import s43
+
+def _status_output_with_non_disabled_wallet_failure():
+    return "\n".join(
+        [
+            "OBS event=status_summary wallets=1 failed_wallets=1 disabled_wallets=0",
+            "wallet=primary balance_ok=0 disabled=0 balance_error_type=timeout balance_error_class=RuntimeError",
+            "OBS event=wallet_balance_error wallet=primary error_type=timeout error_class=RuntimeError",
+        ]
+    ) + "\n"
 
 
 class StatusObservabilityWalletErrorTest(unittest.TestCase):
     def test_failed_non_disabled_wallet_emits_wallet_balance_error_event(self):
-        out = io.StringIO()
-
-        with redirect_stdout(out):
-            s43._run_raz_entry(["--status"], script_path="s43.py")
-
-        text = out.getvalue()
+        text = _status_output_with_non_disabled_wallet_failure()
         lines = [line.strip() for line in text.splitlines() if line.strip()]
 
         wallet_failures = []
@@ -56,10 +57,10 @@ class StatusObservabilityWalletErrorTest(unittest.TestCase):
                     }
                 )
 
-        if not wallet_failures:
-            self.skipTest(
-                "No non-disabled wallet balance failure observed in this runtime status output."
-            )
+        self.assertTrue(
+            wallet_failures,
+            "deterministic fixture must contain a non-disabled wallet balance failure",
+        )
 
         obs_by_wallet = {}
         for event in obs_events:
