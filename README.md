@@ -16,7 +16,10 @@
 - ✅ **COMPETITION-READY:** Optimized for high-frequency economic simulation.
 - ✅ **AIR-GAPPED:** No external dependencies required.
 
-## Governance Roadmap
+## Governance
+## Autonomous Governance Operations
+
+- `docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md` Roadmap
 This project follows a rigorous, multi-phase roadmap recorded within the `roadmap_governance_evidence/` directory.
 
 ## License & Integrity
