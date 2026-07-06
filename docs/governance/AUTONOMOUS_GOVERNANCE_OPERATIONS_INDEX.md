@@ -150,3 +150,6 @@ Update it only when:
 - required validation or evidence expectations change
 
 Do not duplicate full runbook content in this index. Keep detailed procedures in the primary control documents.
+## Governance Manifest
+
+- `docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.md`
