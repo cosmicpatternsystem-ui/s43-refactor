@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """ASO-X project control utility.
 
 Provides durable-state checks, local backups, and basic environment bootstrap
@@ -13,7 +13,9 @@ import json
 import os
 import shutil
 import sqlite3
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -21,10 +23,39 @@ PROJECT_NAME = "ASO-X"
 STATE_DIR = Path("runtime/state")
 DB_PATH = STATE_DIR / "project_memory.sqlite"
 BACKUP_DIR = STATE_DIR / "backups"
+SAFE_MERGE_SPEC_PATH = Path("repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml")
+SAFE_MERGE_AUDIT_DIR = Path("artifacts/audits/safe-merge")
 
 
 def utc_timestamp() -> str:
-    return dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
+    return dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def run_git(args: list[str]) -> tuple[int, str, str]:
+    completed = subprocess.run(
+        ["git", *args],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    return completed.returncode, completed.stdout.strip(), completed.stderr.strip()
+
+
+def write_json_atomic(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2) + "\n"
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        newline="\n",
+        delete=False,
+        dir=path.parent,
+    ) as handle:
+        handle.write(data)
+        temp_path = Path(handle.name)
+    temp_path.replace(path)
 
 
 class ASOControl:
@@ -106,6 +137,119 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
+
+    def safe_merge_verify(
+        self,
+        target: str = "main",
+        artifact_dir: Path = SAFE_MERGE_AUDIT_DIR,
+        write_artifact: bool = True,
+    ) -> int:
+        timestamp = utc_timestamp()
+        reasons: list[str] = []
+        checks: list[dict] = []
+        artifacts: list[str] = []
+
+        repo_root_rc, repo_root, repo_root_err = run_git(["rev-parse", "--show-toplevel"])
+        if repo_root_rc != 0:
+            payload = {
+                "schema": "aso.safe_merge.verify.v1",
+                "generated_at": timestamp,
+                "decision": "fail",
+                "reasons": ["not inside a git repository", repo_root_err],
+                "checks": [],
+                "artifacts": [],
+                "repository": {
+                    "branch": "",
+                    "target": target,
+                    "head": "",
+                },
+            }
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        root = Path(repo_root)
+        branch_rc, branch, branch_err = run_git(["branch", "--show-current"])
+        head_rc, head, head_err = run_git(["rev-parse", "HEAD"])
+        status_rc, status, status_err = run_git(["status", "--porcelain"])
+
+        if branch_rc != 0:
+            reasons.append(f"unable to determine current branch: {branch_err}")
+        if head_rc != 0:
+            reasons.append(f"unable to determine HEAD: {head_err}")
+        if status_rc != 0:
+            reasons.append(f"unable to inspect working tree: {status_err}")
+        elif status:
+            reasons.append("working tree is not clean")
+
+        spec_path = root / SAFE_MERGE_SPEC_PATH
+        required_terms = [
+            "pr_only_mutation",
+            "required_checks_green",
+            "post_merge_audit_retained",
+            "immutable_traceability",
+            "artifacts/audits/",
+        ]
+
+        spec_errors: list[str] = []
+        if not spec_path.exists():
+            spec_errors.append("Missing SAFE_MERGE_AUTOMATION_SPEC.yaml")
+        else:
+            spec_text = spec_path.read_text(encoding="utf-8")
+            for term in required_terms:
+                if term not in spec_text:
+                    spec_errors.append(f"Missing required safe-merge term: {term}")
+
+        checks.append(
+            {
+                "name": "safe_merge_contract_terms",
+                "status": "pass" if not spec_errors else "fail",
+                "errors": spec_errors,
+                "spec_path": SAFE_MERGE_SPEC_PATH.as_posix(),
+            }
+        )
+        reasons.extend(spec_errors)
+
+        git_context_errors = [
+            reason
+            for reason in reasons
+            if reason.startswith("unable to") or reason == "working tree is not clean"
+        ]
+        checks.append(
+            {
+                "name": "git_context",
+                "status": "pass" if not git_context_errors else "fail",
+                "errors": git_context_errors,
+                "branch": branch,
+                "target": target,
+                "head": head,
+            }
+        )
+
+        decision = "pass" if not reasons else "fail"
+        artifact_path = artifact_dir / f"aso-safe-merge-verify-{timestamp}.json"
+        if write_artifact:
+            artifacts.append(artifact_path.as_posix())
+
+        payload = {
+            "schema": "aso.safe_merge.verify.v1",
+            "generated_at": timestamp,
+            "decision": decision,
+            "reasons": reasons,
+            "checks": checks,
+            "artifacts": artifacts,
+            "repository": {
+                "branch": branch,
+                "target": target,
+                "head": head,
+            },
+        }
+
+        if write_artifact:
+            write_json_atomic(root / artifact_path, payload)
+
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0 if decision == "pass" else 1
+
     def status(self) -> int:
         self.ensure_directories()
         print(f"{PROJECT_NAME} local state")
@@ -134,6 +278,30 @@ def build_parser() -> argparse.ArgumentParser:
         "autopilot-status",
         help="Show autopilot readiness status as JSON",
     )
+    safe_merge = subcommands.add_parser(
+        "safe-merge",
+        help="Safe Merge automation commands",
+    )
+    safe_merge_subcommands = safe_merge.add_subparsers(
+        dest="safe_merge_command",
+        required=True,
+    )
+    safe_merge_verify = safe_merge_subcommands.add_parser(
+        "verify",
+        help="Verify Safe Merge baseline contract and emit an audit artifact",
+    )
+    safe_merge_verify.add_argument("--target", default="main", help="Target branch context")
+    safe_merge_verify.add_argument(
+        "--artifact-dir",
+        default=SAFE_MERGE_AUDIT_DIR,
+        type=Path,
+        help="Directory for Safe Merge audit artifacts",
+    )
+    safe_merge_verify.add_argument(
+        "--no-artifact",
+        action="store_true",
+        help="Do not write an audit artifact",
+    )
     return parser
 
 
@@ -155,6 +323,14 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "autopilot-status":
         return control.autopilot_status()
+
+    if args.command == "safe-merge":
+        if args.safe_merge_command == "verify":
+            return control.safe_merge_verify(
+                target=args.target,
+                artifact_dir=args.artifact_dir,
+                write_artifact=not args.no_artifact,
+            )
 
     parser.error(f"unknown command: {args.command}")
     return 2
