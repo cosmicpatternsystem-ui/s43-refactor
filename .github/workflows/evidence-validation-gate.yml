@@ -1,0 +1,83 @@
+name: Evidence Validation Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "asoctl.py"
+      - "artifacts/examples/evidence_record.example.json"
+      - "repo/schemas/evidence_record.schema.json"
+      - "repo/tools/validate_evidence_record.py"
+      - "schemas/evidence-record.schema.json"
+      - "docs/security/evidence/**"
+      - "tests/test_evidence_record_schema.py"
+      - "tests/test_asoctl_evidence_validate.py"
+      - ".github/workflows/evidence-validation-gate.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "asoctl.py"
+      - "artifacts/examples/evidence_record.example.json"
+      - "repo/schemas/evidence_record.schema.json"
+      - "repo/tools/validate_evidence_record.py"
+      - "schemas/evidence-record.schema.json"
+      - "docs/security/evidence/**"
+      - "tests/test_evidence_record_schema.py"
+      - "tests/test_asoctl_evidence_validate.py"
+      - ".github/workflows/evidence-validation-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-validation:
+    name: Assert evidence record validity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest jsonschema
+
+      - name: Verify evidence validation files exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f asoctl.py
+          test -f artifacts/examples/evidence_record.example.json
+          test -f repo/schemas/evidence_record.schema.json
+          test -f repo/tools/validate_evidence_record.py
+          test -f tests/test_evidence_record_schema.py
+          test -f tests/test_asoctl_evidence_validate.py
+
+      - name: Compile evidence validation tooling and tests
+        run: |
+          python -m py_compile \
+            asoctl.py \
+            repo/tools/validate_evidence_record.py \
+            tests/test_evidence_record_schema.py \
+            tests/test_asoctl_evidence_validate.py
+
+      - name: Run evidence validation tests
+        run: |
+          python -m pytest \
+            tests/test_evidence_record_schema.py \
+            tests/test_asoctl_evidence_validate.py \
+            -q
+
+      - name: Validate evidence records
+        run: |
+          python asoctl.py evidence validate
