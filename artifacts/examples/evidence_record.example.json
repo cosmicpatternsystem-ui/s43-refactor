@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "evidence-p3.2-schema-baseline-example",
+  "decision_id": "decision-p3.2-evidence-record-schema-baseline",
+  "decision_category": "governance",
+  "source_input_reference": "AUDIT/AI_DECISION_EVIDENCE_CONTRACT.md",
+  "ai_output_reference": "repo/schemas/evidence_record.schema.json",
+  "governing_policy_refs": [
+    "AUDIT/AI_DECISION_EVIDENCE_CONTRACT.md",
+    "AUDIT/AI_DECISION_EVIDENCE_REVIEW_CONTRACT.md",
+    "AUDIT/AI_DECISION_EVIDENCE_RETENTION_CONTRACT.md",
+    "repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml"
+  ],
+  "operator_disposition": "accepted",
+  "supporting_context": "Baseline example record for P3.2 canonical evidence record schema validation. This artifact demonstrates durable references, explicit governance linkage, operator disposition, final review status, and secret-free evidence handling.",
+  "limitations_or_uncertainty": "This example is a non-runtime governance artifact and does not authorize operational execution, trading execution, wallet activity, authentication behavior, or release approval.",
+  "final_status": "accepted-for-review",
+  "owner_role": "governance-maintainer",
+  "evidence_refs": [
+    {
+      "label": "Evidence contract",
+      "path_or_uri": "AUDIT/AI_DECISION_EVIDENCE_CONTRACT.md",
+      "kind": "contract"
+    },
+    {
+      "label": "Evidence review contract",
+      "path_or_uri": "AUDIT/AI_DECISION_EVIDENCE_REVIEW_CONTRACT.md",
+      "kind": "contract"
+    },
+    {
+      "label": "Safe merge automation specification",
+      "path_or_uri": "repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml",
+      "kind": "contract"
+    },
+    {
+      "label": "Canonical evidence record schema",
+      "path_or_uri": "repo/schemas/evidence_record.schema.json",
+      "kind": "artifact"
+    }
+  ],
+  "created_at_utc": "2026-07-07T00:00:00Z",
+  "secret_handling": {
+    "contains_secrets": false,
+    "redaction_status": "not-required",
+    "notes": "No secrets, credentials, tokens, cookies, wallet seeds, private keys, or private operational credentials are included."
+  }
+}
