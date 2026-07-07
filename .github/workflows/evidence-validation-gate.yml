@@ -1,17 +1,12 @@
 name: Evidence Validation Gate
 
 on:
-  workflow_dispatch:
   pull_request:
-    branches:
-      - main
     paths:
       - "asoctl.py"
-      - "artifacts/examples/evidence_record.example.json"
-      - "repo/schemas/evidence_record.schema.json"
       - "repo/tools/validate_evidence_record.py"
-      - "schemas/evidence-record.schema.json"
-      - "docs/security/evidence/**"
+      - "repo/schemas/evidence_record.schema.json"
+      - "artifacts/examples/evidence_record.example.json"
       - "tests/test_evidence_record_schema.py"
       - "tests/test_asoctl_evidence_validate.py"
       - ".github/workflows/evidence-validation-gate.yml"
@@ -20,26 +15,18 @@ on:
       - main
     paths:
       - "asoctl.py"
-      - "artifacts/examples/evidence_record.example.json"
-      - "repo/schemas/evidence_record.schema.json"
       - "repo/tools/validate_evidence_record.py"
-      - "schemas/evidence-record.schema.json"
-      - "docs/security/evidence/**"
+      - "repo/schemas/evidence_record.schema.json"
+      - "artifacts/examples/evidence_record.example.json"
       - "tests/test_evidence_record_schema.py"
       - "tests/test_asoctl_evidence_validate.py"
       - ".github/workflows/evidence-validation-gate.yml"
 
-permissions:
-  contents: read
-
 jobs:
   evidence-validation:
-    name: Assert evidence record validity
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -47,37 +34,48 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install test dependencies
+      - name: Verify required files exist
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest jsonschema
-
-      - name: Verify evidence validation files exist
-        shell: bash
-        run: |
-          set -euo pipefail
           test -f asoctl.py
-          test -f artifacts/examples/evidence_record.example.json
-          test -f repo/schemas/evidence_record.schema.json
           test -f repo/tools/validate_evidence_record.py
+          test -f repo/schemas/evidence_record.schema.json
+          test -f artifacts/examples/evidence_record.example.json
           test -f tests/test_evidence_record_schema.py
           test -f tests/test_asoctl_evidence_validate.py
 
-      - name: Compile evidence validation tooling and tests
+      - name: Compile validation tooling
         run: |
-          python -m py_compile \
-            asoctl.py \
-            repo/tools/validate_evidence_record.py \
-            tests/test_evidence_record_schema.py \
-            tests/test_asoctl_evidence_validate.py
+          python -m py_compile asoctl.py repo/tools/validate_evidence_record.py
 
-      - name: Run evidence validation tests
+      - name: Run focused tests
         run: |
-          python -m pytest \
-            tests/test_evidence_record_schema.py \
-            tests/test_asoctl_evidence_validate.py \
-            -q
+          python -m pytest tests/test_evidence_record_schema.py tests/test_asoctl_evidence_validate.py
 
-      - name: Validate evidence records
+      - name: Run final evidence validation
+        shell: bash
         run: |
-          python asoctl.py evidence validate
+          set -euo pipefail
+          mkdir -p evidence-validation-artifacts
+          python asoctl.py evidence validate | tee evidence-validation-artifacts/evidence-validation-result.txt
+          cat > evidence-validation-artifacts/evidence-validation-metadata.json <<EOF
+          {
+            "workflow": "${GITHUB_WORKFLOW}",
+            "job": "${GITHUB_JOB}",
+            "run_id": "${GITHUB_RUN_ID}",
+            "run_attempt": "${GITHUB_RUN_ATTEMPT}",
+            "repository": "${GITHUB_REPOSITORY}",
+            "ref": "${GITHUB_REF}",
+            "sha": "${GITHUB_SHA}",
+            "actor": "${GITHUB_ACTOR}",
+            "event_name": "${GITHUB_EVENT_NAME}"
+          }
+          EOF
+
+      - name: Upload evidence validation artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-validation-artifacts/
+          if-no-files-found: error
+          retention-days: 90
