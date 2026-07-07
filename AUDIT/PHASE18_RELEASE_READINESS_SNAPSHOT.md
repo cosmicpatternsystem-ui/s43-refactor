@@ -1,4 +1,4 @@
-﻿# Phase18 Release Readiness Snapshot
+# Phase18 Release Readiness Snapshot
 
 Generated: 2026-06-15 16:21:49 +03:30
 
@@ -21,4 +21,4 @@ acd73f8 audit: add phase18 release readiness snapshot
 
 ``
 
-Canonical source of truth: AUDIT/RELEASE_READINESS_MASTER.md
+Reference document: AUDIT/RELEASE_READINESS_MASTER.md

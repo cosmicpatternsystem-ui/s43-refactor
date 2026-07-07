@@ -1,4 +1,4 @@
-﻿# Phase18 Release Readiness Decision
+# Phase18 Release Readiness Decision
 
 Generated: 2026-06-15 16:21:49 +03:30
 
@@ -15,4 +15,4 @@ Refactor is frozen. The project is now in stabilization mode.
 - Audit Readiness: ACTIVE
 - Next Gate: GO / NO-GO RELEASE DECISION
 
-Canonical source of truth: AUDIT/RELEASE_READINESS_MASTER.md
+Reference document: AUDIT/RELEASE_READINESS_MASTER.md
