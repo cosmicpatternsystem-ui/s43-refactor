@@ -1,0 +1,30 @@
+{
+  "artifacts": [
+    "artifacts/audits/safe-merge/aso-safe-merge-verify-20260707T055506Z.json"
+  ],
+  "checks": [
+    {
+      "errors": [],
+      "name": "safe_merge_contract_terms",
+      "spec_path": "repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml",
+      "status": "pass"
+    },
+    {
+      "branch": "automation/asoctl-safe-merge-verify",
+      "errors": [],
+      "head": "891c884d1a7ae18fdb6858807db947c0c1bc492b",
+      "name": "git_context",
+      "status": "pass",
+      "target": "main"
+    }
+  ],
+  "decision": "pass",
+  "generated_at": "20260707T055506Z",
+  "reasons": [],
+  "repository": {
+    "branch": "automation/asoctl-safe-merge-verify",
+    "head": "891c884d1a7ae18fdb6858807db947c0c1bc492b",
+    "target": "main"
+  },
+  "schema": "aso.safe_merge.verify.v1"
+}
