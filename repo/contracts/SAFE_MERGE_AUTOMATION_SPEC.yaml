@@ -1,0 +1,64 @@
+version: 1
+status: baseline
+authority: repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml
+
+purpose:
+  - Enforce PR-only mutation path for protected branches.
+  - Verify required checks before merge.
+  - Preserve post-merge audit evidence.
+  - Keep merge automation deterministic and reviewable.
+
+protected_branches:
+  - main
+
+required_invariants:
+  pr_only_mutation:
+    status: required
+    description: Protected branches must not accept direct pushes.
+
+  required_checks_green:
+    status: required
+    description: Pull requests must not merge unless required checks pass.
+
+  post_merge_audit_retained:
+    status: required
+    description: A post-merge audit artifact must be generated and retained under artifacts/audits/.
+
+  immutable_traceability:
+    status: required
+    description: Merge decisions must be traceable to commit SHA, PR number, branch, and check state.
+
+safe_merge_inputs:
+  required:
+    - base_branch
+    - head_branch
+    - pull_request_number
+    - head_sha
+    - required_check_state
+
+safe_merge_outputs:
+  required:
+    - merge_decision
+    - audit_artifact_path
+    - verification_timestamp_utc
+    - base_branch
+    - merged_sha
+
+merge_decisions:
+  allowed:
+    - allow
+    - block
+
+block_reasons:
+  - direct_main_mutation_attempt
+  - missing_pull_request
+  - required_checks_not_green
+  - missing_audit_artifact
+  - branch_out_of_date
+  - unknown_repository_state
+
+artifact_policy:
+  path_prefix: artifacts/audits/
+  encoding: utf-8
+  line_endings: lf
+  mutation: append_only_by_new_artifact
