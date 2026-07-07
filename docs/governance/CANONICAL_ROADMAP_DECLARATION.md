@@ -1,27 +1,32 @@
-# Canonical Roadmap Declaration
+# CANONICAL ROADMAP DECLARATION
 
 Status: Active
 Scope: ASO-X / s43-refactor
-Canonical source: `docs/ROADMAP.md`
+Canonical machine-readable roadmap state: `ROADMAP_CURRENT.json`
+Canonical human-readable roadmap: `ROADMAP_CANONICAL.md`
+Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+Traceability index: `docs/roadmap/roadmap.index.json`
 Governance class: 50-year durable roadmap governance
 Baseline date: 2026-07-05
 Baseline state: CLOSED / MERGED / VERIFIED / BASELINE-RECORDED / CLEAN
 
-## Purpose
-
-This document declares the official roadmap governance model for the repository.
-
 ## Canonical Sources
 
-- Human-readable canonical roadmap source: `docs/ROADMAP.md`
-- Machine-readable canonical roadmap index: `docs/roadmap/roadmap.index.json`
+- Machine-readable active roadmap state: `ROADMAP_CURRENT.json`
+- Human-readable canonical roadmap: `ROADMAP_CANONICAL.md`
+- Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+- Non-prevailing traceability index: `docs/roadmap/roadmap.index.json`
 
 ## Governance Rules
 
-1. `docs/ROADMAP.md` is the canonical human-readable roadmap.
-2. `docs/roadmap/roadmap.index.json` is the canonical machine-readable roadmap index.
-3. Durable roadmap requirements must have stable IDs.
-4. Requirement IDs must never be reused after retirement.
-5. Active governance requirements must be CI-validatable where applicable.
-6. Governance artifacts must remain portable and long-lived.
-7. Repository state is authoritative over prior conversation state.
+1. `ROADMAP_CURRENT.json` is the active machine-readable roadmap state.
+2. `ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.
+3. `ROADMAP.md` and `docs/ROADMAP.md` are derivative views and must never override canonical roadmap truth.
+4. `docs/roadmap/roadmap.index.json` is a traceability index and must not declare independent roadmap authority.
+5. Durable roadmap requirements must have stable IDs.
+6. Requirement IDs must never be reused after retirement.
+7. Active governance requirements must be CI-validatable where applicable.
+8. Governance artifacts must remain portable and long-lived.
+9. Repository state is authoritative over prior conversation state.
+10. Any future promotion of a new roadmap source requires an explicit governance PR updating `REPOSITORY_TRUTH.md`, `SOURCE_OF_TRUTH_HIERARCHY.md`, validators, and CI gates in the same change set.
+
