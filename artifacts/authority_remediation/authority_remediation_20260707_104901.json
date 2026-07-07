@@ -1,0 +1,52 @@
+{
+    "schema":  "aso.authority_remediation.v1",
+    "generated_at":  "20260707T071903Z",
+    "branch":  "governance/authority-hierarchy-hardening",
+    "changed_files":  [
+                          {
+                              "file":  "ROADMAP/ROADMAP_STATE.json",
+                              "edits":  [
+                                            "authority_to_authority_scope"
+                                        ]
+                          },
+                          {
+                              "file":  "AUDIT/PHASE18_RELEASE_READINESS_DECISION.md",
+                              "edits":  [
+                                            "regex:(?im)^(\\s*)Canonical source of truth:\\s*(.+)$"
+                                        ]
+                          },
+                          {
+                              "file":  "AUDIT/PHASE18_RELEASE_READINESS_SNAPSHOT.md",
+                              "edits":  [
+                                            "regex:(?im)^(\\s*)Canonical source of truth:\\s*(.+)$"
+                                        ]
+                          },
+                          {
+                              "file":  "AUDIT/PHASE22_7_RELEASE_READINESS_ROADMAP_SYNC.md",
+                              "edits":  [
+                                            "regex:(?im)^(\\s*)Source Of Truth:\\s*(.+)$"
+                                        ]
+                          },
+                          {
+                              "file":  "AUDIT/PHASE22_8_RELEASE_READINESS_DOC_HYGIENE.md",
+                              "edits":  [
+                                            "regex:(?im)^(\\s*)Source Of Truth:\\s*(.+)$"
+                                        ]
+                          },
+                          {
+                              "file":  "AUDIT/PHASE23_CICD_ENFORCEMENT_AND_PROTECTED_RELEASE_FLOW_20260616_025714.md",
+                              "edits":  [
+                                            "regex:(?im)\\bfinal authority\\b"
+                                        ]
+                          }
+                      ],
+    "git_status":  [
+                       " M AUDIT/PHASE18_RELEASE_READINESS_DECISION.md",
+                       " M AUDIT/PHASE18_RELEASE_READINESS_SNAPSHOT.md",
+                       " M AUDIT/PHASE22_7_RELEASE_READINESS_ROADMAP_SYNC.md",
+                       " M AUDIT/PHASE22_8_RELEASE_READINESS_DOC_HYGIENE.md",
+                       " M AUDIT/PHASE23_CICD_ENFORCEMENT_AND_PROTECTED_RELEASE_FLOW_20260616_025714.md",
+                       " M ROADMAP/ROADMAP_STATE.json",
+                       "?? artifacts/authority_audit/"
+                   ]
+}
