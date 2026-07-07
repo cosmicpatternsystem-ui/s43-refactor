@@ -22,7 +22,7 @@
     "restart_recovery_source": "repository_validation_only"
   },
   "validation_status": "valid",
-  "authority": "repository_files_only",
+  "authority_scope": "repository_files_only",
   "state_type": "repository_roadmap_state",
   "roadmap_version": 1,
   "system_health": "HEALTHY",

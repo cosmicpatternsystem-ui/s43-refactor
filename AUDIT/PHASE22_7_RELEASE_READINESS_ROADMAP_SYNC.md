@@ -3,7 +3,7 @@
 Status: DRAFT FOR AUDIT REVIEW
 Phase: 22.7
 Scope: release readiness evidence and roadmap synchronization after Phase 22.6 merge
-Source Of Truth: Repository files only
+Evidence basis: Repository files only
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS

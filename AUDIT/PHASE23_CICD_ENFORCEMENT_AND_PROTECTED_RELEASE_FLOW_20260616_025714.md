@@ -173,7 +173,7 @@ Phase 23 is a design and dry-run enforcement phase only.
 
 It does not claim full GitHub branch protection enforcement unless separately verified with platform evidence.
 
-## Final Authority
+## final governance reference
 
 If this document conflicts with a manual shortcut, this document wins.
 If this document conflicts with temporary assistant memory, this document wins.

@@ -3,7 +3,7 @@
 Status: DRAFT FOR AUDIT REVIEW
 Phase: 22.8
 Scope: Documentation hygiene and roadmap synchronization only
-Source Of Truth: Repository files only
+Evidence basis: Repository files only
 Production Release: BLOCKED WITHOUT APPROVAL
 Destructive Automation: BLOCKED
 Secrets Handling: DO NOT STORE OR PRINT SECRETS
