@@ -25,6 +25,8 @@ DB_PATH = STATE_DIR / "project_memory.sqlite"
 BACKUP_DIR = STATE_DIR / "backups"
 SAFE_MERGE_SPEC_PATH = Path("repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml")
 SAFE_MERGE_AUDIT_DIR = Path("artifacts/audits/safe-merge")
+EVIDENCE_RECORD_SCHEMA_PATH = Path("repo/schemas/evidence_record.schema.json")
+EVIDENCE_RECORD_DEFAULT_PATH = Path("artifacts/examples/evidence_record.example.json")
 
 
 def utc_timestamp() -> str:
@@ -137,7 +139,53 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
+    def evidence_validate(
+        self,
+        evidence_path: Path = EVIDENCE_RECORD_DEFAULT_PATH,
+        schema_path: Path = EVIDENCE_RECORD_SCHEMA_PATH,
+    ) -> int:
+        from repo.tools.validate_evidence_record import validate_record
 
+        payload = {
+            "schema": "aso.evidence.validate.v1",
+            "evidence_path": evidence_path.as_posix(),
+            "schema_path": schema_path.as_posix(),
+            "errors": [],
+        }
+
+        if not schema_path.exists():
+            payload["decision"] = "error"
+            payload["reason"] = f"schema not found: {schema_path.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        if not evidence_path.exists():
+            payload["decision"] = "error"
+            payload["reason"] = f"evidence record not found: {evidence_path.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        try:
+            validate_record(evidence_path)
+        except ValueError as exc:
+            payload["decision"] = "fail"
+            payload["errors"] = [str(exc)]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+        except json.JSONDecodeError as exc:
+            payload["decision"] = "fail"
+            payload["errors"] = [str(exc)]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+        except OSError as exc:
+            payload["decision"] = "error"
+            payload["reason"] = str(exc)
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        payload["decision"] = "pass"
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0
     def safe_merge_verify(
         self,
         target: str = "main",
@@ -278,6 +326,30 @@ def build_parser() -> argparse.ArgumentParser:
         "autopilot-status",
         help="Show autopilot readiness status as JSON",
     )
+    evidence = subcommands.add_parser(
+        "evidence",
+        help="Evidence record commands",
+    )
+    evidence_subcommands = evidence.add_subparsers(
+        dest="evidence_command",
+        required=True,
+    )
+    evidence_validate = evidence_subcommands.add_parser(
+        "validate",
+        help="Validate an evidence record against the canonical schema",
+    )
+    evidence_validate.add_argument(
+        "--path",
+        default=EVIDENCE_RECORD_DEFAULT_PATH,
+        type=Path,
+        help="Evidence record path",
+    )
+    evidence_validate.add_argument(
+        "--schema",
+        default=EVIDENCE_RECORD_SCHEMA_PATH,
+        type=Path,
+        help="Evidence schema path",
+    )
     safe_merge = subcommands.add_parser(
         "safe-merge",
         help="Safe Merge automation commands",
@@ -323,6 +395,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "autopilot-status":
         return control.autopilot_status()
+
+    if args.command == "evidence":
+        if args.evidence_command == "validate":
+            return control.evidence_validate(
+                evidence_path=args.path,
+                schema_path=args.schema,
+            )
 
     if args.command == "safe-merge":
         if args.safe_merge_command == "verify":
