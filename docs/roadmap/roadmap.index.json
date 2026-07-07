@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "repository": "s43-refactor",
   "project": "ASO-X",
-  "canonical_source": "docs/ROADMAP.md",
+  "canonical_source": "ROADMAP_CANONICAL.md",
   "horizon_years": 50,
   "status": "active",
   "baseline_date": "2026-07-05",
@@ -41,5 +41,8 @@
       "evidence_required": true,
       "ci_enforced": true
     }
-  ]
+  ],
+  "machine_readable_state": "ROADMAP_CURRENT.json",
+  "role": "traceability_index",
+  "authority": "non-prevailing"
 }

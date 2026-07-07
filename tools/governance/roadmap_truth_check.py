@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 REQUIRED_FILES = [
     ROOT / "docs/governance/REPOSITORY_TRUTH.md",
+    ROOT / "docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md",
+    ROOT / "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
     ROOT / "docs/ai/AI_HANDOFF.md",
     ROOT / "docs/governance/GOAL_CONSTITUTION.md",
     ROOT / "docs/governance/ROADMAP_CONSTITUTION.md",
@@ -18,6 +20,7 @@ REQUIRED_FILES = [
     ROOT / "PROJECT_STATE.md",
     ROOT / "POLICY_MATRIX.md",
     ROOT / "ROADMAP.md",
+    ROOT / "docs/roadmap/roadmap.index.json",
 ]
 
 NON_AUTHORITATIVE_PATTERNS = [
@@ -86,17 +89,44 @@ def main() -> int:
         ok("ROADMAP_CURRENT.json canonical_roadmap aligned")
 
     repo_truth = read_text(ROOT / "docs/governance/REPOSITORY_TRUTH.md")
-    if "ROADMAP_CURRENT.json is the machine-readable active roadmap state." not in repo_truth:
-        fail("repository truth missing machine-readable roadmap declaration")
-        rc = 1
-    else:
-        ok("repository truth declares machine-readable roadmap state")
+    for phrase, label in [
+        ("`ROADMAP_CURRENT.json` is the machine-readable active roadmap state.", "repository truth declares machine-readable roadmap state"),
+        ("`ROADMAP_CANONICAL.md` is the human-readable canonical roadmap.", "repository truth declares canonical roadmap"),
+        ("`ROADMAP.md` and `docs/ROADMAP.md` are derivative roadmap views and must never override canonical truth.", "repository truth declares derivative roadmap views"),
+        ("`docs/roadmap/roadmap.index.json` is a non-prevailing traceability index.", "repository truth declares traceability index"),
+    ]:
+        if phrase not in repo_truth:
+            fail(f"repository truth missing declaration: {phrase}")
+            rc = 1
+        else:
+            ok(label)
 
-    if "ROADMAP_CANONICAL.md is the human-readable canonical roadmap." not in repo_truth:
-        fail("repository truth missing canonical roadmap declaration")
-        rc = 1
-    else:
-        ok("repository truth declares canonical roadmap")
+    source_hierarchy = read_text(ROOT / "docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md")
+    for phrase, label in [
+        ("`ROADMAP_CURRENT.json` is the active machine-readable roadmap state.", "source hierarchy declares active machine-readable state"),
+        ("`ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.", "source hierarchy declares canonical human-readable roadmap"),
+        ("`ROADMAP.md`, `docs/ROADMAP.md`, and `docs/roadmap/roadmap.index.json` are derivative, index, or public-facing views.", "source hierarchy declares derivative roadmap artifacts"),
+        ("`repo/roadmap/roadmap.yaml` and `ROADMAP/ROADMAP_STATE.json` are non-authoritative unless explicitly promoted by a future governance PR and reflected in this hierarchy.", "source hierarchy declares legacy roadmap artifacts non-authoritative"),
+    ]:
+        if phrase not in source_hierarchy:
+            fail(f"source hierarchy missing declaration: {phrase}")
+            rc = 1
+        else:
+            ok(label)
+
+    canonical_declaration = read_text(ROOT / "docs/governance/CANONICAL_ROADMAP_DECLARATION.md")
+    for phrase, label in [
+        ("Canonical machine-readable roadmap state: `ROADMAP_CURRENT.json`", "canonical declaration identifies machine-readable state"),
+        ("Canonical human-readable roadmap: `ROADMAP_CANONICAL.md`", "canonical declaration identifies human-readable roadmap"),
+        ("Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`", "canonical declaration identifies derivative views"),
+        ("Traceability index: `docs/roadmap/roadmap.index.json`", "canonical declaration identifies traceability index"),
+        ("`docs/roadmap/roadmap.index.json` is a traceability index and must not declare independent roadmap authority.", "canonical declaration forbids independent index authority"),
+    ]:
+        if phrase not in canonical_declaration:
+            fail(f"canonical declaration missing declaration: {phrase}")
+            rc = 1
+        else:
+            ok(label)
 
     roadmap_constitution = read_text(ROOT / "docs/governance/ROADMAP_CONSTITUTION.md")
     if "ROADMAP_CURRENT.json is the active machine-readable roadmap state" not in roadmap_constitution:
@@ -141,6 +171,36 @@ def main() -> int:
         rc = 1
     else:
         ok("ROADMAP.md derivative declaration present")
+
+    try:
+        roadmap_index = json.loads(read_text(ROOT / "docs/roadmap/roadmap.index.json"))
+    except Exception as e:
+        fail(f"invalid docs/roadmap/roadmap.index.json: {e}")
+        return 1
+
+    if roadmap_index.get("canonical_source") != "ROADMAP_CANONICAL.md":
+        fail("roadmap.index.json canonical_source must equal ROADMAP_CANONICAL.md")
+        rc = 1
+    else:
+        ok("roadmap.index.json canonical_source aligned")
+
+    if roadmap_index.get("machine_readable_state") != "ROADMAP_CURRENT.json":
+        fail("roadmap.index.json machine_readable_state must equal ROADMAP_CURRENT.json")
+        rc = 1
+    else:
+        ok("roadmap.index.json machine_readable_state aligned")
+
+    if roadmap_index.get("role") != "traceability_index":
+        fail("roadmap.index.json role must equal traceability_index")
+        rc = 1
+    else:
+        ok("roadmap.index.json role aligned")
+
+    if roadmap_index.get("authority") != "non-prevailing":
+        fail("roadmap.index.json authority must equal non-prevailing")
+        rc = 1
+    else:
+        ok("roadmap.index.json authority aligned")
 
     bad_files = []
     for path in ROOT.rglob("*"):

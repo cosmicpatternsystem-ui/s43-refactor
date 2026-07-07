@@ -34,9 +34,16 @@ Lower-authority artifacts must be updated in the same change set.
 Unresolved authority conflicts are release-blocking.
 
 ## Roadmap Rules
-ROADMAP_CURRENT.json is the machine-readable active roadmap state.
-ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
-ROADMAP.md is derivative and must never override canonical truth.
+
+`ROADMAP_CURRENT.json` is the machine-readable active roadmap state.
+
+`ROADMAP_CANONICAL.md` is the human-readable canonical roadmap.
+
+`ROADMAP.md` and `docs/ROADMAP.md` are derivative roadmap views and must never override canonical truth.
+
+`docs/roadmap/roadmap.index.json` is a non-prevailing traceability index.
+
+`ROADMAP/ROADMAP_STATE.json` and `repo/roadmap/roadmap.yaml` are non-authoritative unless explicitly promoted through a future governance PR that updates all authority documents, validators, and CI gates in the same change set.
 
 ## Artifact Retention Rules
 Historical artifacts may exist only as retention artifacts and are never active inputs.
