@@ -1,0 +1,15 @@
+{
+  "schema": "aso.commercial.positioning.v1",
+  "status": "active",
+  "evidence_type": "commercial_positioning_decision",
+  "decision": "commercial_ready",
+  "artifacts": [
+    "docs/ASO-X_COMMERCIAL_POSITIONING.md",
+    "policies/commercial_positioning.policy.json"
+  ],
+  "timestamp": "2026-07-08T00:00:00Z",
+  "controls": {
+    "repository_first_authority": true,
+    "machine_verifiable_governance": true
+  }
+}
