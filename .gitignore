@@ -90,3 +90,6 @@ _recovery_autopilot_*/
 *.old
 *.orig
 *.rej
+
+# Temporary AI ingestion folder
+_AI_INTAKE/
