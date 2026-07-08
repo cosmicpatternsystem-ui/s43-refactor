@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASO-X Evidence Record Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "evidence_type",
+    "created_at",
+    "producer",
+    "subject",
+    "summary",
+    "integrity",
+    "retention"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "evidence_id": { "type": "string" },
+    "evidence_type": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "producer": { "type": "string" },
+    "subject": { "type": "string" },
+    "summary": { "type": "string" },
+    "integrity": { 
+      "type": "object",
+      "properties": {
+        "hash": { "type": "string" },
+        "algorithm": { "type": "string" }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "properties": {
+        "policy_id": { "type": "string" },
+        "expiry": { "type": "string" }
+      }
+    }
+  }
+}
