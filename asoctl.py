@@ -144,45 +144,83 @@ class ASOControl:
         evidence_path: Path = EVIDENCE_RECORD_DEFAULT_PATH,
         schema_path: Path = EVIDENCE_RECORD_SCHEMA_PATH,
     ) -> int:
-        """Strict P3.3 Evidence Validator - Schema Driven."""
-        import json
-        
+        """Strict P3.3 Evidence Validator - schema-driven, dependency-free."""
+        evidence_path = Path(evidence_path)
+        schema_path = Path(schema_path)
+
         payload = {
             "schema": "aso.evidence.validate.v1",
-            "evidence_path": str(evidence_path),
-            "status": "initializing"
+            "evidence_path": evidence_path.as_posix(),
+            "schema_path": schema_path.as_posix(),
+            "errors": [],
         }
 
         if not evidence_path.exists():
-            payload.update({"status": "error", "reason": "evidence file missing"})
-            print(json.dumps(payload, indent=2)); return 2
+            payload["decision"] = "error"
+            payload["status"] = "error"
+            payload["reason"] = f"evidence record not found: {evidence_path.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
 
         try:
-            with open(evidence_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            # P3.3 Strict Field Requirements
-            required = ["schema_version", "evidence_id", "evidence_type", "created_at", 
-                        "producer", "subject", "summary", "integrity", "retention"]
-            
-            missing = [f for f in required if f not in data]
-            if missing:
-                payload.update({"status": "fail", "decision": "reject", "missing_fields": missing})
-                print(json.dumps(payload, indent=2)); return 1
+            data = json.loads(evidence_path.read_text(encoding="utf-8-sig"))
+        except json.JSONDecodeError as exc:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = [str(exc)]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+        except OSError as exc:
+            payload["decision"] = "error"
+            payload["status"] = "error"
+            payload["reason"] = str(exc)
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
 
-            # Integrity check (placeholder for P3.4 Ledger integration)
-            if not data["integrity"].startswith("sha256:"):
-                payload.update({"status": "fail", "reason": "invalid integrity format"})
-                print(json.dumps(payload, indent=2)); return 1
+        if not isinstance(data, dict):
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = ["evidence record must be a JSON object"]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
 
-            payload.update({"status": "pass", "decision": "validate", "evidence_id": data["evidence_id"]})
-            print(json.dumps(payload, indent=2))
-            return 0
+        required_fields = [
+            "schema_version",
+            "evidence_id",
+            "evidence_type",
+            "created_at",
+            "producer",
+            "subject",
+            "summary",
+            "integrity",
+            "retention",
+        ]
 
-        except Exception as e:
-            payload.update({"status": "error", "reason": str(e)})
-            print(json.dumps(payload, indent=2)); return 2
-        def safe_merge_verify(
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["missing_fields"] = missing_fields
+            payload["errors"] = [f"missing required field: {field}" for field in missing_fields]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        integrity = data.get("integrity")
+        if not isinstance(integrity, str) or not integrity.startswith("sha256:"):
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = ["integrity must be a string starting with sha256:"]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        payload["decision"] = "pass"
+        payload["status"] = "pass"
+        payload["evidence_id"] = data.get("evidence_id")
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0
+
+    def safe_merge_verify(
         self,
         target: str = "main",
         artifact_dir: Path = SAFE_MERGE_AUDIT_DIR,
