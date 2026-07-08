@@ -1,4 +1,4 @@
-# Governance Documents Manifest
+﻿# Governance Documents Manifest
 
 This manifest is the canonical inventory for high-signal governance artifacts that must remain discoverable from the autonomous governance operations index and the repository entrypoint.
 
@@ -45,3 +45,8 @@ Every artifact listed in Critical Governance Artifacts must satisfy all of these
 - `docs/strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md` - Global commercial hardening addendum.
 | docs/strategy/GLOBAL_COMMERCIAL_RESILIENCE_FRAMEWORK.md | Global commercial resilience framework governing pricing discipline, cash protection, commitment integrity, counterparty fitness, and exception control. |
 | docs/strategy/COMMERCIAL_AUTHORITY_MATRIX.md | Commercial Authority Matrix governing commercial decision rights for discounts, margin floors, concessions, payment terms, delivery promises, escalation, and NO-GO conditions. |
+
+## Critical Roadmap Artifacts
+| Artifact | Role | Enforcement |
+| --- | --- | --- |
+| docs/governance/ROADMAP_CURRENT.json | Canonical Roadmap | 	ests/test_roadmap_integrity.py |
