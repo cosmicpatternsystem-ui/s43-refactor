@@ -1,0 +1,49 @@
+=== NSLOOKUP DEFAULT ===
+Server:  UnKnown
+Address:  192.168.43.1
+
+
+
+=== NSLOOKUP 1.1.1.1 ===
+Server:  one.one.one.one
+Address:  1.1.1.1
+
+
+
+=== NSLOOKUP 8.8.8.8 ===
+Server:  dns.google
+Address:  8.8.8.8
+
+
+
+=== TEST-NETCONNECTION 443 ===
+
+
+ComputerName             : api.alternate.me
+RemoteAddress            : 
+ResolvedAddresses        : 
+PingSucceeded            : False
+PingReplyDetails         : 
+TcpClientSocket          : 
+TcpTestSucceeded         : False
+RemotePort               : 0
+TraceRoute               : 
+Detailed                 : False
+InterfaceAlias           : 
+InterfaceIndex           : 0
+InterfaceDescription     : 
+NetAdapter               : 
+NetRoute                 : 
+SourceAddress            : 
+NameResolutionSucceeded  : False
+BasicNameResolution      : 
+LLMNRNetbiosRecords      : 
+DNSOnlyRecords           : 
+AllNameResolutionResults : 
+IsAdmin                  : False
+NetworkIsolationContext  : 
+MatchingIPsecRules       : 
+
+
+
+

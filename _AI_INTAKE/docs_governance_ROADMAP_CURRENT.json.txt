@@ -1,0 +1,39 @@
+﻿{
+  "schema_version": "2.0",
+  "roadmap_version": "22.13",
+  "source_of_truth": "repository_files_only",
+  "current_phase": "22.13",
+  "authority": {
+    "source": "repository_files_only",
+    "enforcement": "strict"
+  },
+  "lifecycle": "closed",
+  "enforcement_model": "fail_closed",
+  "generated_by": "scripts/roadmap_generator.py",
+  "generated_at": "2026-07-02T07:17:09.654172+00:00",
+  "phases": {
+    "22.13": {
+      "name": "Global Financial Intelligence - Phase 22.13",
+      "status": "closed",
+      "lifecycle": "closed",
+      "start_date": "2024-01-01",
+      "end_date": "2026-07-02",
+      "deliverables": [
+        "Core financial intelligence infrastructure",
+        "Real-money resilient architecture",
+        "Enterprise-grade validation pipeline"
+      ],
+      "governance": {
+        "source_of_truth": "repository_files_only",
+        "immutable": true
+      }
+    }
+  },
+  "metadata": {
+    "project": "ASO-X",
+    "durability_target": "50y",
+    "encoding": "UTF-8 (BOM-free)",
+    "line_endings": "LF"
+  }
+}
+

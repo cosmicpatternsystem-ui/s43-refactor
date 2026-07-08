@@ -1,0 +1,74 @@
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "ts": "2026-07-04T04:30:22Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:30:22Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:30:22Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:30:22Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:30:22Z"}
+{"continuous": true, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 3, "ts": "2026-07-04T04:30:50Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:30:50Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:30:50Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:30:50Z"}
+{"cycle": 2, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:30:51Z"}
+{"action": "dry_run_noop", "cycle": 2, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:30:51Z"}
+{"cycle": 2, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:30:51Z"}
+{"cycle": 3, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:30:52Z"}
+{"action": "dry_run_noop", "cycle": 3, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:30:52Z"}
+{"cycle": 3, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:30:52Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:30:52Z"}
+{"continuous": true, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 5, "ts": "2026-07-04T04:32:00Z"}
+{"cycle": 1, "event": "kill_switch_detected", "path": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "status": "stopped", "ts": "2026-07-04T04:32:00Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "ts": "2026-07-04T04:36:34Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:36:34Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:36:34Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:36:34Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:36:34Z"}
+{"continuous": true, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 2, "ts": "2026-07-04T04:36:35Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:36:35Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:36:35Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:36:35Z"}
+{"cycle": 2, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:36:35Z"}
+{"action": "dry_run_noop", "cycle": 2, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:36:35Z"}
+{"cycle": 2, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:36:35Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:36:35Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:38:32Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"continuous": true, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 2, "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:38:32Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 2, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:38:32Z"}
+{"action": "dry_run_noop", "cycle": 2, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"cycle": 2, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:38:32Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:39:27Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"continuous": true, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 2, "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:39:27Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 2, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T04:39:27Z"}
+{"action": "dry_run_noop", "cycle": 2, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"cycle": 2, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T04:39:27Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "ts": "2026-07-04T06:44:24Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "ts": "2026-07-04T06:44:24Z"}
+{"action": "dry_run_noop", "cycle": 1, "event": "action", "guardian_status": "not_integrated", "policy_allowed": true, "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T06:44:24Z"}
+{"cycle": 1, "event": "cycle_end", "status": "ok", "ts": "2026-07-04T06:44:24Z"}
+{"event": "autopilot_end", "exit_code": 0, "status": "ok", "ts": "2026-07-04T06:44:24Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "policy_mode": "enforce", "ts": "2026-07-04T07:01:39Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "status": "started", "ts": "2026-07-04T07:01:39Z"}
+{"blocked_actions": [{"detail": "AttributeError", "type": "internal_error"}], "cycle": 1, "decision_notes": "Policy processing failed closed: AttributeError: 'PolicyDecision' object has no attribute 'get'", "event": "policy_blocked", "policy_decision_status": "blocked", "policy_mode": "enforce", "reason_codes": ["policy_engine_exception_fail_safe"], "review_actions": [], "status": "blocked", "ts": "2026-07-04T07:01:39Z"}
+{"event": "autopilot_stop", "exit_code": 12, "status": "stopped", "ts": "2026-07-04T07:01:39Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "policy_mode": "enforce", "ts": "2026-07-04T07:08:19Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "status": "started", "ts": "2026-07-04T07:08:19Z"}
+{"action": "dry_run_noop", "cycle": 1, "dry_run": true, "event": "cycle_completed", "guardian_status": "not_integrated", "policy_allowed": true, "policy_decision_notes": "All proposed actions passed whitelist enforcement.", "policy_decision_status": "allowed", "policy_mode": "enforce", "policy_reason_codes": ["enforce_allowed_whitelisted_actions_only"], "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T07:08:19Z"}
+{"event": "autopilot_stop", "exit_code": 0, "status": "completed", "ts": "2026-07-04T07:08:19Z"}
+{"continuous": false, "dry_run": true, "event": "autopilot_start", "kill_switch": "G:\\s43_work\\s43_g11_work\\.runtime\\autopilot.kill", "max_cycles": 1, "policy_mode": "enforce", "ts": "2026-07-04T07:10:56Z"}
+{"cycle": 1, "dry_run": true, "event": "cycle_start", "status": "started", "ts": "2026-07-04T07:10:56Z"}
+{"action": "dry_run_noop", "cycle": 1, "dry_run": true, "event": "cycle_completed", "guardian_status": "not_integrated", "policy_allowed": true, "policy_decision_notes": "All proposed actions passed whitelist enforcement.", "policy_decision_status": "allowed", "policy_mode": "enforce", "policy_reason_codes": ["enforce_allowed_whitelisted_actions_only"], "policy_status": "not_integrated", "status": "ok", "ts": "2026-07-04T07:10:56Z"}
+{"event": "autopilot_stop", "exit_code": 0, "status": "completed", "ts": "2026-07-04T07:10:56Z"}

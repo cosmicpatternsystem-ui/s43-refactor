@@ -1,0 +1,3 @@
+RETIRED 20260629_231425
+reason : orphan B-schema, no live generator
+archive: G:\s43_work\s43_g11_work\.roadmap_archive\20260629_231425\docs\governance\ROADMAP_CURRENT.json

@@ -1,0 +1,75 @@
+diff --git a/.github/workflows/operational-roadmap.yml b/.github/workflows/operational-roadmap.yml
+index ecaa972..1f98125 100644
+--- a/.github/workflows/operational-roadmap.yml
++++ b/.github/workflows/operational-roadmap.yml
+@@ -2,44 +2,47 @@ name: Operational Roadmap Gate
+ 
+ on:
+   pull_request:
+-    branches:
+-      - main
+   push:
+     branches:
+       - main
+   workflow_dispatch:
+ 
+-permissions:
+-  contents: read
+-  pull-requests: read
+-
+ jobs:
+-  assert-operational-roadmap-contract:
+-    name: Assert operational roadmap contract
++  roadmap-gate:
+     runs-on: ubuntu-latest
+ 
+     steps:
+-      - name: Checkout repository
++      - name: Checkout
+         uses: actions/checkout@v4
+ 
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+-        with:
+-          python-version: "3.x"
++      - name: Setup PowerShell
++        shell: bash
++        run: pwsh -v
+ 
+-      - name: Assert roadmap files exist
++      - name: Assert canonical roadmap files exist
+         shell: bash
+         run: |
+-          test -f ROADMAP/ROADMAP_STATE.json
+-          test -f ROADMAP/ROADMAP_CANONICAL.md
+-          test -f AUDIT/ROADMAP_CURRENT.json
+-          test -f AUDIT/ROADMAP_CURRENT.md
++          test -f ROADMAP_CURRENT.json
++          test -f scripts/update-roadmap.ps1
++          test -f scripts/validate-roadmap.ps1
++          test -f roadmap_guard.py
+ 
+-      - name: Validate roadmap state JSON
+-        shell: bash
+-        run: python tools/validate_roadmap_state.py
++      - name: Validate committed roadmap schema
++        shell: pwsh
++        run: ./scripts/validate-roadmap.ps1
+ 
+-      - name: Assert no stale roadmap state remains
++      - name: Validate roadmap governance contract
+         shell: bash
+-        run: python tools/assert_no_stale_roadmap.py
++        run: python roadmap_guard.py ROADMAP_CURRENT.json
++
++      - name: Regenerate roadmap deterministically
++        shell: pwsh
++        run: ./scripts/update-roadmap.ps1
+ 
++      - name: Assert roadmap is current
++        shell: bash
++        run: |
++          git diff --exit-code -- ROADMAP_CURRENT.json || {
++            echo "::error::ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
++            exit 1
++          }

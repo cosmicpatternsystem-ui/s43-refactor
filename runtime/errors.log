@@ -1,0 +1,2 @@
+[2026-06-25T07:45:26.855137+00:00] RuntimeError('safety gate blocked execution exit_code=2')
+[2026-06-25T07:47:21.994180+00:00] RuntimeError('safety gate blocked execution exit_code=2')

@@ -1,0 +1,3 @@
+RETIRED 20260629_231425
+reason : duplicate guard superseded by scripts/roadmap_guard.py
+archive: G:\s43_work\s43_g11_work\.roadmap_archive\20260629_231425\tools\ai\roadmap_guard.py
