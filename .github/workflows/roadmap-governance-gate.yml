@@ -1,0 +1,39 @@
+name: Roadmap Governance Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "docs/ROADMAP.md"
+      - "docs/roadmap/**"
+      - "docs/governance/**"
+      - "docs/value/**"
+      - "tests/test_roadmap_governance.py"
+      - ".github/workflows/roadmap-governance-gate.yml"
+  workflow_dispatch:
+
+jobs:
+  roadmap-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Python test dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+          if [ -f requirements-dev.txt ]; then python -m pip install -r requirements-dev.txt; fi
+          python -m pip install pytest jsonschema
+
+      - name: Run roadmap governance tests
+        shell: bash
+        run: |
+          python -m pytest tests/test_roadmap_governance.py -q

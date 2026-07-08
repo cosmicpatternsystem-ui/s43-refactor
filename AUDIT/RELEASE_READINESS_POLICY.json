@@ -1,0 +1,20 @@
+{
+  "project_mode": "STABILIZATION_MODE",
+  "refactor_status": "FROZEN",
+  "commercial_readiness": "PARTIAL_TO_RELEASE_CANDIDATE_TARGET",
+  "automation_readiness": "STRONG",
+  "audit_readiness": "ACTIVE",
+  "next_gate": "GO_NO_GO_RELEASE_DECISION",
+  "canonical_master": "AUDIT/RELEASE_READINESS_MASTER.md",
+  "required_evidence": [
+    "AUDIT/PHASE18_RELEASE_READINESS_DECISION.md",
+    "AUDIT/PHASE18_RELEASE_READINESS_SNAPSHOT.md"
+  ],
+  "required_master_phrases": [
+    "single source of truth",
+    "STABILIZATION_MODE",
+    "Refactor Status: FROZEN",
+    "GO / NO-GO RELEASE DECISION",
+    "Commercial launch is not declared final"
+  ]
+}

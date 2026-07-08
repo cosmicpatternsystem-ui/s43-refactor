@@ -1,0 +1,26 @@
+{
+  "schema_version": "aso-x.supply_chain_integrity.v1",
+  "artifact_id": "sci-2026-07-05.1",
+  "generated_at_utc": "2026-07-05T05:45:00Z",
+  "source_repository": "cosmicpatternsystem-ui/s43-refactor",
+  "branch": "main",
+  "commit": "8305dd6fcaa7737f623c25010532d64816993df7",
+  "policy_document_path": "docs/security/supply-chain-integrity-policy.md",
+  "release_evidence_bundle_path": "docs/release/audit/sample-release-evidence-bundle.json",
+  "tracked_dependency_files": [
+    "dashboard/package-lock.json",
+    "dashboard/package.json",
+    "requirements-dev.txt",
+    "requirements.txt"
+  ],
+  "dependency_lockfiles_present": true,
+  "network_free_validation": true,
+  "mutable_external_sources_allowed": false,
+  "validation_evidence": {
+    "validator_command": "python tools/supply_chain_integrity_check.py",
+    "test_command": "python -m pytest tests/test_supply_chain_integrity.py tests/test_supply_chain_integrity_negative.py -q",
+    "validator_exit_code": 0,
+    "test_exit_code": 0
+  },
+  "policy_audit_passed": true
+}

@@ -1,0 +1,185 @@
+===== S43 PHASE2 PART6A: REFRESH HELPER EXTRACTION INVENTORY =====
+TS=20260527_102513
+
+[STEP 1] BASIC FILE STATUS
+-- pwd --
+/sdcard/notebook
+
+-- files --
+-rw-rw----. 1 root everybody 2568151 May 27 10:22 s43.py
+-rw-rw----. 1 root everybody    3299 May 27 10:20 s43_core/helpers.py
+
+[STEP 2] CURRENT HELPERS IMPORT LINE IN s43.py
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down, _orch22_fmt_fields
+
+[STEP 3] DEFINITIONS CURRENTLY IN s43_core/helpers.py
+HELPERS_FUNC_COUNT=9
+HELPERS_FUNC=_ensure_dir
+HELPERS_FUNC=_env_bool
+HELPERS_FUNC=_env_float
+HELPERS_FUNC=_env_str
+HELPERS_FUNC=_canon_symbol
+HELPERS_FUNC=_env_int
+HELPERS_FUNC=_first_num
+HELPERS_FUNC=_quantize_down
+HELPERS_FUNC=_orch22_fmt_fields
+
+[STEP 4] RUNTIME RESOLUTION CHECK FOR EXTRACTED HELPERS
+_ensure_dir: exists=1 callable=1 module=s43_core.helpers
+_env_bool: exists=1 callable=1 module=s43_core.helpers
+_env_float: exists=1 callable=1 module=s43_core.helpers
+_env_str: exists=1 callable=1 module=s43_core.helpers
+_canon_symbol: exists=1 callable=1 module=s43_core.helpers
+_env_int: exists=1 callable=1 module=s43_core.helpers
+_first_num: exists=1 callable=1 module=s43_core.helpers
+_quantize_down: exists=1 callable=1 module=s43_core.helpers
+_orch22_fmt_fields: exists=1 callable=1 module=s43_core.helpers
+
+[STEP 5] COMPILE CHECKS
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[STEP 6] HELP CHECK
+HELP_RC=0
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+  --token-bot           Run Telegram token bot (independent).
+  --wallet-concurrency WALLET_CONCURRENCY
+                        Concurrent wallet cycles in one process (async
+                        gather). 0=env/default.
+
+[STEP 7] TOP-LEVEL FUNCTION INVENTORY IN s43.py
+S43_TOP_LEVEL_FUNC_COUNT=26
+
+-- summary by class --
+dashboard_or_debug: 4
+generic_candidate: 3
+high_dependency_review: 3
+indicator_or_analytics: 1
+parser_env_candidate: 6
+runtime_async: 9
+
+-- all top-level functions --
+    32-41     len=10   uses~=3    sync  class=dashboard_or_debug       name=_parse_hard_veto_sources_env
+    55-62     len=8    uses~=2    sync  class=parser_env_candidate     name=_s43_debug_print_enabled
+    64-66     len=3    uses~=11   sync  class=high_dependency_review   name=_s43_debug_print
+  2403-2610   len=208  uses~=2    async class=runtime_async            name=_arzplus_last_trade_price
+  2611-3512   len=902  uses~=5    async class=runtime_async            name=_arzplus_market_snapshot
+  5558-5576   len=19   uses~=5    sync  class=indicator_or_analytics   name=_calc_rsi
+ 11097-11103  len=7    uses~=2    sync  class=parser_env_candidate     name=_obs_trace_deque
+ 11573-11673  len=101  uses~=6    sync  class=dashboard_or_debug       name=_record_why_no_trade
+ 11674-11752  len=79   uses~=2    sync  class=dashboard_or_debug       name=_dash_param_update
+ 13338-13355  len=18   uses~=3    sync  class=dashboard_or_debug       name=build_parser
+ 13356-13366  len=11   uses~=7    sync  class=runtime_async            name=_run_coro_sync
+ 13367-13559  len=193  uses~=2    sync  class=runtime_async            name=_run_raz_entry
+ 13823-13882  len=60   uses~=6    sync  class=parser_env_candidate     name=get_arzplus_token
+ 13885-13916  len=32   uses~=2    async class=runtime_async            name=_stress_idempotency
+ 13918-13923  len=6    uses~=1    sync  class=generic_candidate        name=_s43_autopatch_probe
+ 22668-22747  len=80   uses~=2    sync  class=parser_env_candidate     name=_recorder_child_main
+ 22749-22760  len=12   uses~=2    sync  class=generic_candidate        name=_gc_freeze_after_init
+ 22762-22877  len=116  uses~=9    sync  class=parser_env_candidate     name=run
+ 27751-27756  len=6    uses~=13   sync  class=high_dependency_review   name=_orch22_log
+ 28027-28093  len=67   uses~=2    async class=runtime_async            name=_watchdog_loop
+ 28094-28137  len=44   uses~=2    async class=runtime_async            name=_task_reset
+ 28138-28280  len=143  uses~=2    async class=runtime_async            name=_hard_reset
+ 28281-28314  len=34   uses~=2    async class=runtime_async            name=_run_orchestrator22_monitor
+ 28315-28388  len=74   uses~=3    sync  class=parser_env_candidate     name=_phoenix_selftests
+ 28389-28398  len=10   uses~=2    sync  class=generic_candidate        name=main
+ 28416-28433  len=18   uses~=92   sync  class=high_dependency_review   name=clamp
+
+-- shortlist: low-risk-ish candidates --
+SHORTLIST name=_s43_autopatch_probe line=13918 len=6 uses~=1 class=generic_candidate
+SHORTLIST name=main line=28389 len=10 uses~=2 class=generic_candidate
+SHORTLIST name=_gc_freeze_after_init line=22749 len=12 uses~=2 class=generic_candidate
+SHORTLIST name=_obs_trace_deque line=11097 len=7 uses~=2 class=parser_env_candidate
+SHORTLIST name=_s43_debug_print_enabled line=55 len=8 uses~=2 class=parser_env_candidate
+SHORTLIST name=get_arzplus_token line=13823 len=60 uses~=6 class=parser_env_candidate
+SHORTLIST name=_phoenix_selftests line=28315 len=74 uses~=3 class=parser_env_candidate
+SHORTLIST name=_recorder_child_main line=22668 len=80 uses~=2 class=parser_env_candidate
+SHORTLIST name=run line=22762 len=116 uses~=9 class=parser_env_candidate
+
+[STEP 8] ORCH22 NEIGHBORHOOD CHECK
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down, _orch22_fmt_fields
+27751:def _orch22_log(log: logging.Logger, level: int, event: str, **fields: Any) -> None:
+27753:        msg = f"event=ORCH22_{event} " + _orch22_fmt_fields(fields)
+27769:        self.refresh_sec = float(_env_float("ORCH22_MARKET_REFRESH_SEC", max(1.0, getattr(cfg, "top8_refresh_sec", 12.0))) or 8.0)
+27771:        return "orch22_market_radar"
+27874:                _orch22_log(self._log, logging.WARNING, "RADAR_FAIL", err=str(e)[:200], age=round(self.age(), 3))
+27894:        self.balance_refresh_sec = float(_env_float("ORCH22_BAL_REFRESH_SEC", getattr(cfg, "balance_refresh_sec", 8.0)) or 8.0)
+27895:        self.orders_refresh_sec = float(_env_float("ORCH22_ORD_REFRESH_SEC", getattr(cfg, "orders_refresh_sec", 3.0)) or 3.0)
+27897:        return f"orch22_wallet_{self.name}"
+27975:                _orch22_log(self._log, logging.WARNING, "WALLET_FAIL", wallet=self.name, err=str(e)[:200])
+27999:        self.stale_warn_sec = float(stale_warn_sec if stale_warn_sec is not None else _env_float("ORCH22_STALE_WARN_SEC", 120.0))
+28000:        self.stale_crit_sec = float(stale_crit_sec if stale_crit_sec is not None else _env_float("ORCH22_STALE_CRIT_SEC", 240.0))
+28001:        self.cancel_all_on_stale = bool(cancel_all_on_stale or _env_bool("ORCH22_CANCEL_ALL_ON_STALE", False))
+28002:        self.heartbeat_sec = float(heartbeat_sec if heartbeat_sec is not None else _env_float("ORCH22_HEARTBEAT_SEC", 5.0))
+28065:                _orch22_log(self._log, logging.WARNING, "WD_TASK_RESET", worst_age=worst, elapsed=elapsed)
+28076:                _orch22_log(self._log, logging.ERROR, "WD_HARD_RESET", worst_age=worst, elapsed=elapsed)
+28087:                _orch22_log(self._log, logging.CRITICAL, "WD_EXECV", worst_age=worst, elapsed=elapsed)
+28179:                _orch22_log(self._log, logging.WARNING, "CANCEL_ALL", wallet=wname, ok=ok, fail=fail, hint=str(resp)[:180])
+28181:                _orch22_log(self._log, logging.WARNING, "CANCEL_ALL_FAIL", wallet=wname, err=str(e)[:200])
+28224:                _orch22_log(
+28242:                _orch22_log(self._log, logging.WARNING, "DASH_FAIL", err=str(e)[:200])
+28251:        self._dash_task = asyncio.create_task(self._dashboard_loop(), name="orch22_dashboard")
+28252:        self._wd_task = asyncio.create_task(self._watchdog_loop(), name="orch22_watchdog")
+28259:                    _orch22_log(self._log, logging.INFO, "STATE", state=self.state.value, reason=self.reason)
+28268:                _orch22_log(self._log, logging.ERROR, "ORCH_FAIL", err=str(e)[:200])
+28310:    _orch22_log(log, logging.INFO, "BOOT", base_url=cfg.base_url, wallet_slots=(slots or cfg.wallet_slots))
+
+[STEP 9] FINAL ASSERTIONS
+s43_runtime__ensure_dir_from_helpers=1
+helpers_has_def__ensure_dir=1
+s43_no_local_def__ensure_dir=1
+s43_runtime__env_bool_from_helpers=1
+helpers_has_def__env_bool=1
+s43_no_local_def__env_bool=1
+s43_runtime__env_float_from_helpers=1
+helpers_has_def__env_float=1
+s43_no_local_def__env_float=1
+s43_runtime__env_str_from_helpers=1
+helpers_has_def__env_str=1
+s43_no_local_def__env_str=1
+s43_runtime__canon_symbol_from_helpers=1
+helpers_has_def__canon_symbol=1
+s43_no_local_def__canon_symbol=1
+s43_runtime__env_int_from_helpers=1
+helpers_has_def__env_int=1
+s43_no_local_def__env_int=1
+s43_runtime__first_num_from_helpers=1
+helpers_has_def__first_num=1
+s43_no_local_def__first_num=1
+s43_runtime__quantize_down_from_helpers=1
+helpers_has_def__quantize_down=1
+s43_no_local_def__quantize_down=1
+s43_runtime__orch22_fmt_fields_from_helpers=1
+helpers_has_def__orch22_fmt_fields=1
+s43_no_local_def__orch22_fmt_fields=1
+s43_import_line_has_orch22_fmt_fields=1

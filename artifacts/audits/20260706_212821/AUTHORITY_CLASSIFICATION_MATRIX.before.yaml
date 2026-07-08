@@ -1,0 +1,147 @@
+version: 1
+status: active
+owner: repo/contracts
+purpose: >
+  Defines the repository authority hierarchy for governance, roadmap,
+  operational, audit, archive, backup, retained, and evidence artifacts.
+decision_rule: >
+  High keyword frequency or decision density does not imply authority.
+  Authority is determined only by this matrix and by Tier 0/Tier 1 contracts.
+default_policy:
+  unknown_files:
+    classification: UNCLASSIFIED
+    may_define_policy: false
+    may_override_canonical: false
+  deletion_policy: no_delete_by_default
+  merge_policy: no_broad_merge_without_tier_0_or_tier_1_approval
+  audit_policy: hierarchy_based_after_discovery
+tiers:
+  - id: tier_0
+    name: repository_contract_authority
+    authority_rank: 0
+    classification: CANONICAL_CONTRACT
+    may_define_policy: true
+    may_override_lower_tiers: true
+    forensic_only: false
+    files:
+      - repo/contracts/CANONICAL_SOURCES.yaml
+      - repo/contracts/PROJECT_CONSTITUTION.yaml
+      - repo/contracts/AUTHORITY_CLASSIFICATION_MATRIX.yaml
+
+  - id: tier_1
+    name: governance_source_of_truth
+    authority_rank: 1
+    classification: GOVERNANCE_AUTHORITY
+    may_define_policy: true
+    may_override_lower_tiers: true
+    forensic_only: false
+    files:
+      - docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md
+      - docs/governance/SOURCE_OF_TRUTH_POLICY.md
+      - docs/governance/REPOSITORY_TRUTH.md
+      - docs/governance/GOAL_CONSTITUTION.md
+
+  - id: tier_2
+    name: roadmap_governance
+    authority_rank: 2
+    classification: ROADMAP_AUTHORITY
+    may_define_policy: true
+    may_override_lower_tiers: true
+    forensic_only: false
+    files:
+      - docs/governance/ROADMAP_CONSTITUTION.md
+      - docs/governance/CANONICAL_ROADMAP_DECLARATION.md
+
+  - id: tier_3
+    name: canonical_roadmap_body
+    authority_rank: 3
+    classification: CANONICAL_ROADMAP
+    may_define_policy: false
+    may_define_execution_plan: true
+    may_override_canonical: false
+    forensic_only: false
+    files:
+      - ROADMAP/ROADMAP_CANONICAL.md
+    aliases_pending_verification:
+      - ROADMAP_CANONICAL.md
+      - docs/strategy/CANONICAL_ROADMAP.md
+
+  - id: tier_4
+    name: machine_readable_or_derived_state
+    authority_rank: 4
+    classification: DERIVED_STATE
+    may_define_policy: false
+    may_override_canonical: false
+    forensic_only: false
+    files:
+      - ROADMAP_CURRENT.json
+      - ROADMAP/ROADMAP_STATE.json
+      - docs/governance/ROADMAP_CURRENT.json
+      - repo/roadmap/roadmap.yaml
+
+  - id: tier_5
+    name: operational_execution
+    authority_rank: 5
+    classification: OPERATIONAL
+    may_define_policy: false
+    may_override_canonical: false
+    forensic_only: false
+    patterns:
+      - docs/roadmap/**
+      - docs/strategy/**
+      - PHASE_*
+      - PHASE*
+      - tools/**
+      - scripts/**
+      - build_roadmap_governance_50y.py
+      - legacy_reference/**
+
+  - id: tier_6
+    name: evidence_audit_archive_backup
+    authority_rank: 6
+    classification: EVIDENCE_OR_ARCHIVE
+    may_define_policy: false
+    may_override_canonical: false
+    forensic_only: true
+    patterns:
+      - AUDIT/**
+      - AUDIT/ARCHIVE/**
+      - artifacts/**
+      - TRACEABILITY_*
+      - TRACEABILITY_*/**
+      - BASELINE_PROTECTION_SNAPSHOT_*
+      - BASELINE_PROTECTION_SNAPSHOT_*/**
+      - .roadmap_archive/**
+      - .roadmap_backups/**
+      - backups/**
+      - runtime/backups/**
+      - _LOCAL_DEFERRED_AI_ARTIFACTS/**
+      - "*.RETIRED.txt"
+      - patch_log_*.txt
+conflict_rules:
+  - id: no_evidence_as_policy
+    severity: error
+    rule: >
+      Tier 6 evidence, audit, archive, backup, retired, or local deferred files
+      must not be treated as policy sources.
+  - id: no_count_as_authority
+    severity: error
+    rule: >
+      Decision-making count, keyword frequency, or patch-log density must not
+      be used as authority rank.
+  - id: roadmap_single_human_canonical
+    severity: warning
+    rule: >
+      Only one human-readable roadmap body may be canonical. Other roadmap
+      candidates must be declared alias, derived, operational, strategic
+      supplement, archive, or retired.
+  - id: workflows_enforce_not_define
+    severity: warning
+    rule: >
+      GitHub workflows enforce governance but do not define policy unless
+      explicitly promoted by Tier 0 or Tier 1.
+audit_stages:
+  - discovery_scan
+  - authority_classification
+  - conflict_detection
+  - report

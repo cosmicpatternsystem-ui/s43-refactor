@@ -1,0 +1,106 @@
+===== S43 PHASE 2 CLOSEOUT REPORT =====
+TS=20260527_102754
+
+[1] FILE STATUS
+/sdcard/notebook
+-rw-rw----. 1 root everybody 2568151 May 27 10:22 s43.py
+-rw-rw----. 1 root everybody    3299 May 27 10:20 s43_core/helpers.py
+
+[2] CURRENT HELPERS IMPORT LINE IN s43.py
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down, _orch22_fmt_fields
+
+[3] TOP-LEVEL FUNCTIONS IN s43_core/helpers.py
+HELPERS_FUNC_COUNT=9
+01. _ensure_dir
+02. _env_bool
+03. _env_float
+04. _env_str
+05. _canon_symbol
+06. _env_int
+07. _first_num
+08. _quantize_down
+09. _orch22_fmt_fields
+
+[4] VERIFY MOVED HELPERS ARE NOT LOCALLY DEFINED IN s43.py
+_ensure_dir: local_def_present=0
+_env_bool: local_def_present=0
+_env_float: local_def_present=0
+_env_str: local_def_present=0
+_canon_symbol: local_def_present=0
+_env_int: local_def_present=0
+_first_num: local_def_present=0
+_quantize_down: local_def_present=0
+_orch22_fmt_fields: local_def_present=0
+
+[5] RUNTIME RESOLUTION OF MOVED HELPERS
+_ensure_dir: exists=1 callable=1 module=s43_core.helpers
+_env_bool: exists=1 callable=1 module=s43_core.helpers
+_env_float: exists=1 callable=1 module=s43_core.helpers
+_env_str: exists=1 callable=1 module=s43_core.helpers
+_canon_symbol: exists=1 callable=1 module=s43_core.helpers
+_env_int: exists=1 callable=1 module=s43_core.helpers
+_first_num: exists=1 callable=1 module=s43_core.helpers
+_quantize_down: exists=1 callable=1 module=s43_core.helpers
+_orch22_fmt_fields: exists=1 callable=1 module=s43_core.helpers
+
+[6] COMPILE CHECK
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[7] HELP CHECK
+HELP_RC=0
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+
+[8] PHASE 2 MOVED HELPER SUMMARY
+PHASE2_MOVED_COUNT=9
+PHASE2_MOVED=_ensure_dir
+PHASE2_MOVED=_env_bool
+PHASE2_MOVED=_env_float
+PHASE2_MOVED=_env_str
+PHASE2_MOVED=_canon_symbol
+PHASE2_MOVED=_env_int
+PHASE2_MOVED=_first_num
+PHASE2_MOVED=_quantize_down
+PHASE2_MOVED=_orch22_fmt_fields
+
+[9] FINAL ASSERTIONS
+_ensure_dir: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_env_bool: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_env_float: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_env_str: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_canon_symbol: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_env_int: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_first_num: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_quantize_down: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+_orch22_fmt_fields: runtime_from_helpers=1 helpers_has_def=1 s43_no_local_def=1
+helpers_import_line_complete=1
+PHASE2_CLOSEOUT_OK=1

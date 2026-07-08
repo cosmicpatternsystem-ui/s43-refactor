@@ -1,0 +1,82 @@
+version: 1
+status: active
+purpose: "Machine-readable canonical source map for ASO-X governance and continuity."
+
+canonical_sources:
+  project_charter:
+    path: PROJECT_CHARTER.md
+    class: strategic_identity
+    required: true
+
+  roadmap:
+    path: docs/ROADMAP.md
+    class: roadmap
+    required: true
+
+  governance_baseline:
+    path: docs/governance/GOVERNANCE_BASELINE.md
+    class: baseline
+    required: true
+
+  policy_matrix:
+    path: docs/governance/POLICY_MATRIX.md
+    class: governance_policy
+    required: true
+
+  decision_log:
+    path: docs/governance/DECISION_LOG.md
+    class: decision_ledger
+    required: true
+    append_only: true
+
+  compatibility_contract:
+    path: docs/governance/COMPATIBILITY_CONTRACT.md
+    class: compatibility
+    required: true
+
+  operations_runbook:
+    path: docs/OPERATIONS_RUNBOOK.md
+    class: operations
+    required: true
+
+  commercial_model:
+    path: docs/COMMERCIAL_MODEL.md
+    class: commercial_strategy
+    required: true
+
+  lock_schema:
+    path: docs/governance/LOCK_SCHEMA.json
+    class: governance_locking
+    required: true
+
+  lock_registry:
+    path: docs/governance/LOCK_REGISTRY.json
+    class: governance_locking
+    required: true
+
+  governance_enforcement_workflow:
+    path: .github/workflows/governance-enforcement.yml
+    class: ci_governance
+    required: true
+
+  release_governance_gate:
+    path: .github/workflows/release-governance-gate.yml
+    class: ci_release_governance
+    required: true
+
+  artifact_retention_gate:
+    path: .github/workflows/artifact-retention-gate.yml
+    class: ci_artifact_retention
+    required: true
+
+  governance_hardening_check:
+    path: tools/governance_hardening_check.py
+    class: tooling
+    required: true
+
+rules:
+  repository_is_source_of_truth: true
+  chat_memory_is_not_source_of_truth: true
+  canonical_paths_must_exist: true
+  governance_changes_require_evidence: true
+  major_strategy_changes_require_decision_log: true

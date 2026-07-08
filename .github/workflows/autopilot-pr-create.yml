@@ -1,0 +1,133 @@
+name: Autopilot PR Creation
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: "Existing branch to open as a pull request. Defaults to the workflow ref."
+        required: false
+        type: string
+      base_branch:
+        description: "Base branch for the pull request."
+        required: false
+        default: "main"
+        type: string
+      draft:
+        description: "Create the pull request as draft."
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: autopilot-pr-create-${{ github.event.inputs.source_branch || github.ref_name }}-${{ github.event.inputs.base_branch || 'main' }}
+  cancel-in-progress: false
+
+jobs:
+  create-pr:
+    name: Create guarded autopilot pull request
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source_branch="${{ github.event.inputs.source_branch }}"
+          base_branch="${{ github.event.inputs.base_branch }}"
+
+          if [ -z "$source_branch" ]; then
+            source_branch="${GITHUB_REF_NAME}"
+          fi
+
+          if [ -z "$base_branch" ]; then
+            base_branch="main"
+          fi
+
+          if [ "$source_branch" = "$base_branch" ]; then
+            echo "::error::source_branch must differ from base_branch"
+            exit 1
+          fi
+
+          echo "source_branch=$source_branch" >> "$GITHUB_OUTPUT"
+          echo "base_branch=$base_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "${{ steps.request.outputs.base_branch }}" "${{ steps.request.outputs.source_branch }}"
+
+      - name: Verify source differs from base
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base_ref="origin/${{ steps.request.outputs.base_branch }}"
+          source_ref="origin/${{ steps.request.outputs.source_branch }}"
+
+          git rev-parse --verify "$base_ref" >/dev/null
+          git rev-parse --verify "$source_ref" >/dev/null
+
+          if git diff --quiet "$base_ref...$source_ref"; then
+            echo "::error::No diff between source and base; refusing to create an empty PR"
+            exit 1
+          fi
+
+      - name: Check for existing open pull request
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          existing_url="$(
+            gh pr list \
+              --base "${{ steps.request.outputs.base_branch }}" \
+              --head "${{ steps.request.outputs.source_branch }}" \
+              --state open \
+              --json url \
+              --jq '.[0].url // ""'
+          )"
+
+          echo "url=$existing_url" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        if: steps.existing.outputs.url == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          args=(
+            --base "${{ steps.request.outputs.base_branch }}"
+            --head "${{ steps.request.outputs.source_branch }}"
+            --title "Autopilot: ${{ steps.request.outputs.source_branch }}"
+            --body "Automated PR creation for ASO-X autopilot workflow."
+          )
+
+          if [ "${{ github.event.inputs.draft }}" = "true" ]; then
+            args+=(--draft)
+          fi
+
+          gh pr create "${args[@]}"
+
+      - name: Report existing pull request
+        if: steps.existing.outputs.url != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Open pull request already exists: ${{ steps.existing.outputs.url }}"

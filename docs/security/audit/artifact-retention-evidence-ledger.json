@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "record_type": "artifact_retention_evidence_ledger",
+  "recorded_at_utc": "2026-07-05T00:00:00Z",
+  "system": "ASO-X",
+  "repository": "cosmicpatternsystem-ui/s43-refactor",
+  "branch": "main",
+  "commit_sha": "0ab5c5c",
+  "workflow": {
+    "name": "Artifact Retention Gate",
+    "triggers": [
+      "pull_request",
+      "workflow_dispatch",
+      "schedule"
+    ],
+    "schedule_cron": "0 3 * * *"
+  },
+  "policy": {
+    "name": "artifact-retention-policy",
+    "path": "docs/security/artifact-retention-policy.md"
+  },
+  "evidence_inputs": [
+    "docs/security/audit/artifact-retention-ci-gate.json",
+    "docs/security/audit/artifact-retention-scheduled-audit.json",
+    "docs/security/audit/sample-artifact-retention.json"
+  ],
+  "validators": [
+    "tools/artifact_retention_check.py",
+    "tools/artifact_evidence_ledger_check.py"
+  ],
+  "tests": [
+    "tests/test_artifact_retention.py",
+    "tests/test_artifact_retention_negative.py",
+    "tests/test_artifact_retention_ci_gate.py",
+    "tests/test_artifact_retention_scheduled_audit.py",
+    "tests/test_artifact_evidence_ledger.py"
+  ],
+  "result": "pass",
+  "retention_class": "enterprise-audit-evidence",
+  "durability_target": "50y",
+  "notes": [
+    "Ledger record for artifact retention audit readiness.",
+    "This record is repository-resident evidence and must remain BOM-free UTF-8 LF."
+  ]
+}

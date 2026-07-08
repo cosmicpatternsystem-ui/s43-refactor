@@ -1,0 +1,114 @@
+name: Autopilot Safe Merge
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull request number to merge"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  safe-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate GitHub CLI
+        run: gh --version
+
+      - name: Validate PR input
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR_NUMBER="${{ inputs.pr_number }}"
+          if [[ -z "${PR_NUMBER}" ]]; then
+            echo "pr_number is required" >&2
+            exit 1
+          fi
+          case "${PR_NUMBER}" in
+            ''|*[!0-9]*)
+              echo "pr_number must be numeric" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Fetch PR metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr view "${{ inputs.pr_number }}" --json number,state,isDraft,mergeable,headRefName,baseRefName > pr.json
+          cat pr.json
+
+      - name: Enforce PR state gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("pr.json").read_text(encoding="utf-8"))
+          if data["state"] != "OPEN":
+              raise SystemExit("PR is not open")
+          if data["isDraft"]:
+              raise SystemExit("PR is still draft")
+          if str(data["mergeable"]).upper() not in {"MERGEABLE", "UNKNOWN"}:
+              raise SystemExit(f'PR is not mergeable: {data["mergeable"]}')
+          if data["headRefName"] == data["baseRefName"]:
+              raise SystemExit("head and base branches must differ")
+          PY
+
+      - name: Verify PR checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr checks "${{ inputs.pr_number }}"
+
+      - name: Write audit artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/autopilot
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          pr = json.loads(Path("pr.json").read_text(encoding="utf-8"))
+          payload = {
+              "event": "autopilot_safe_merge",
+              "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+              "pr_number": pr["number"],
+              "head": pr["headRefName"],
+              "base": pr["baseRefName"],
+              "state": pr["state"],
+              "mergeable": pr["mergeable"],
+          }
+          out = Path("artifacts/autopilot/safe-merge-audit.json")
+          out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autopilot-safe-merge-audit
+          path: artifacts/autopilot/safe-merge-audit.json
+
+      - name: Merge pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr merge "${{ inputs.pr_number }}" --squash --delete-branch

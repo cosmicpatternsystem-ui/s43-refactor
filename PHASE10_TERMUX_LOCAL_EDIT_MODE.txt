@@ -1,0 +1,23 @@
+PHASE 10 TERMUX LOCAL EDIT MODE
+
+This repository branch is used for local-only Termux edits after Phase 9 was frozen.
+
+Branch:
+hardening/phase10-post-freeze-local-edits
+
+Mode:
+LOCAL TERMUX PATCHING
+
+Rules:
+- No GitHub connection is required.
+- No remote push is performed.
+- Phase 9 frozen archive/checksum/manifest/freeze-marker are not rewritten.
+- New changes belong to post-freeze local follow-up work.
+- SAFE-NO-TRADE remains active.
+- LIVE remains NOT GRANTED.
+- RECOVERY remains NOT GRANTED.
+- PRODUCTION remains NOT GRANTED.
+- RUNTIME remains BLOCKED / NOT APPROVED.
+
+Purpose:
+Prepare a safe local-only editing lane for future patches.

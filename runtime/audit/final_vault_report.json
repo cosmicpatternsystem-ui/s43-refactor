@@ -1,0 +1,9 @@
+{
+    "export_id": "VAULT-EXTRACT-2026",
+    "integrity_signature": "1132e5afded3832fad84d40dd2e89f7b0868d5825fc9c25b4e63587eec37e5a8",
+    "raw_data": [
+        "{\"project\": \"ASO\", \"timestamp\": \"2026-06-25T08:23:45.360992+00:00\", \"component\": \"roadmap_manager\", \"event\": \"roadmap_manager\", \"status\": \"status_check\", \"detail\": {\"active\": true}, \"_prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"_hash\": \"9b185457c6881dade297a4adee21269f7335e4a2861799d5a0b3dd0c974c39d8\"}",
+        "{\"event\": \"status_check\", \"timestamp\": \"2026-06-25T08:26:28.494757\", \"_prev_hash\": \"9b185457c6881dade297a4adee21269f7335e4a2861799d5a0b3dd0c974c39d8\", \"_hash\": \"ff41bf094b5f26941f556c0b09a6d527e8ff049696f80feb8fa81cec29bf3361\"}",
+        "{\"event\": \"status_check\", \"timestamp\": \"2026-06-25T08:27:31.422567\", \"_prev_hash\": \"ff41bf094b5f26941f556c0b09a6d527e8ff049696f80feb8fa81cec29bf3361\", \"_hash\": \"d1861f82684d900b62a729682c6ed8449369d02c450fd1c563c89e4a276d3f1b\"}"
+    ]
+}

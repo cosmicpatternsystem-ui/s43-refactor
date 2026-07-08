@@ -1,0 +1,9 @@
+﻿LOG: G:\s43_work\s43_g11_work\artifacts\logs\one-voice-patch-20260707-100415.log
+PASS: repo found: G:\s43_work\s43_g11_work
+RUN: git status --short
+RUN: git fetch --prune origin
+CAPTURE: git status --porcelain
+CAPTURE: git branch --show-current
+main
+RUN: git checkout main
+FAILED: Already on 'main'

@@ -1,0 +1,234 @@
+=== Required roadmap/handoff docs inventory ===
+PASS docs/roadmap/PHASE8_PROGRESS.md
+PASS docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md
+PASS docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md
+PASS docs/roadmap/TOP_LEVEL_READINESS_GATE.md
+PASS docs/handoff/phase11_readiness_discovery.md
+PASS docs/handoff/phase11_scope_definition.md
+
+=== Safety keyword scan ===
+docs/roadmap/PHASE8_PROGRESS.md:4:- Created Phase 8 roadmap with explicit SAFE-NO-TRADE scope and constraints.
+docs/roadmap/PHASE8_PROGRESS.md:22:- Repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:17:`SAFE-NO-TRADE`
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:56:`SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:3:Status: Final review handoff is documented under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:43:- preserved `SAFE-NO-TRADE` safety posture
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:55:- frozen under `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:80:- preservation of `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:92:The Phase 8 to Phase 9 checkpoint chain is now formally handed off for review under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_ROADMAP.md:9:- Runtime remains SAFE-NO-TRADE.
+docs/roadmap/PHASE8_ROADMAP.md:29:- weaken SAFE-NO-TRADE behavior
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:5:This document defines documentation-only acceptance criteria for any future consideration of runtime recovery work during Phase 8. It does not authorize implementation, activation, or testing against live trading behavior. The repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:44:- `SAFE-NO-TRADE` remains the default state until an explicit later decision says otherwise.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:75:- [ ] Repository safety posture remains `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:13:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:146:- `SAFE-NO-TRADE` preserved: [ ] yes  [ ] no
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:20:- `SAFE-NO-TRADE` preserved
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:38:4. Phase 8 remains in `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:9:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:213:- [ ] `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:12:`SAFE-NO-TRADE` remains mandatory.
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:76:6. Is `SAFE-NO-TRADE` clearly preserved across all Phase 9 documents?
+docs/roadmap/PHASE7_HARDENING_INDEX.md:13:The project remains in SAFE-NO-TRADE mode and no live trading path should be enabled.
+docs/roadmap/PHASE7_HARDENING_INDEX.md:68:- SAFE-NO-TRADE behavior remains the default safe posture
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:29:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:117:2. safety posture remains `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:7:It does not authorize code changes, runtime activation, live trading behavior, endpoint changes, or Arzplus authorization changes. The repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:181:- Keep `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:3:Status: Phase 8 to Phase 9 checkpoint chain is indexed and frozen under SAFE-NO-TRADE.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:13:The repository remains under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:82:- Safety posture: `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:98:- `SAFE-NO-TRADE` posture is preserved
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:119:- preserve `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:142:The Phase 8 to Phase 9 checkpoint chain is indexed, review-ready, and frozen under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:156:- `SAFE-NO-TRADE` remains active
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:3:Status: Post-checkpoint guardrails are documented under SAFE-NO-TRADE.
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:26:- repository remains under `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:34:- `SAFE-NO-TRADE` remains in force
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:59:- weakening `SAFE-NO-TRADE` wording or enforcement
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:90:9. confirmation that `SAFE-NO-TRADE` remains active
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:104:- `SAFE-NO-TRADE` preserved
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:164:The Phase 8 to Phase 9 checkpoint chain remains frozen under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:3:Status: Phase 9 checkpoint review verdict is documented and frozen under SAFE-NO-TRADE.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:42:- preserved `SAFE-NO-TRADE` posture
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:64:- `SAFE-NO-TRADE` remains in force
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:83:Phase 9 checkpoint is frozen as review-ready documentation with verification passed under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:3:Status: Review intake phase is opened under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:53:3. Is `SAFE-NO-TRADE` preserved across the checkpoint chain?
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:71:- missing `SAFE-NO-TRADE` boundary
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:124:- preserve `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:153:- `SAFE-NO-TRADE` remains preserved
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:168:No execution-oriented step may proceed without explicit review, evidence expectations, abort conditions, and preserved `SAFE-NO-TRADE`.
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:15:  - `SAFE-NO-TRADE: ACTIVE`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:183:  - `[SAFE-NO-TRADE] --live requested but blocked in offline mode; forcing DRY_RUN=1 and LIVE_TRADING=0.`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:289:- `SAFE-NO-TRADE: ENFORCED`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:355:3. preserve `SAFE-NO-TRADE` as a non-negotiable runtime invariant
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:394:- effective operational posture remains **SAFE-NO-TRADE**
+docs/handoff/phase11_readiness_discovery.md:13:`SAFE-NO-TRADE`
+docs/handoff/phase11_readiness_discovery.md:61:- `SAFE-NO-TRADE` reference found
+docs/handoff/phase11_readiness_discovery.md:83:- Safety posture remains `SAFE-NO-TRADE`.
+docs/handoff/phase10_closure_decision.md:24:SAFE-NO-TRADE
+docs/handoff/phase11_scope_definition.md:11:- Safety posture: `SAFE-NO-TRADE`
+docs/handoff/phase11_scope_definition.md:29:1. `SAFE-NO-TRADE` remains active.
+docs/handoff/phase11_scope_definition.md:141:10. Any action that changes `SAFE-NO-TRADE` posture.
+docs/handoff/phase11_scope_definition.md:181:- `SAFE-NO-TRADE`: active
+docs/handoff/phase11_scope_definition.md:263:SAFE-NO-TRADE
+docs/handoff/phase11_scope_definition.md:264:NO-LIVE-TRADING
+docs/handoff/phase11_scope_definition.md:265:NO-RUNTIME-ACTIVATION
+docs/handoff/phase11_scope_definition.md:266:NO-RECOVERY-ACTIVATION
+
+=== Activation-sensitive keyword scan ===
+docs/roadmap/PHASE8_PROGRESS.md:4:- Created Phase 8 roadmap with explicit SAFE-NO-TRADE scope and constraints.
+docs/roadmap/PHASE8_PROGRESS.md:17:- No live trading enablement.
+docs/roadmap/PHASE8_PROGRESS.md:18:- No runtime recovery activation.
+docs/roadmap/PHASE8_PROGRESS.md:22:- Repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:14:Passing this gate does not enable live trading.
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:17:`SAFE-NO-TRADE`
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:22:- enable live trading
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:35:6. no recovery activation is introduced
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:47:- unreviewed runtime activation
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:48:- unreviewed recovery activation
+docs/roadmap/TOP_LEVEL_READINESS_GATE.md:56:`SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:3:Status: Final review handoff is documented under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:13:It does not authorize runtime activation, recovery activation, live trading, deployment, runtime readiness, or production readiness.
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:43:- preserved `SAFE-NO-TRADE` safety posture
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:55:- frozen under `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:63:- live trading approved
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:64:- recovery activation approved
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:80:- preservation of `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:92:The Phase 8 to Phase 9 checkpoint chain is now formally handed off for review under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_HANDOFF_FINAL.md:94:The current repository state is frozen for checkpoint purposes and must not be interpreted as authorization for runtime activation, recovery activation, live trading, deployment, runtime-readiness claims, or production-readiness claims.
+docs/roadmap/PHASE8_ROADMAP.md:9:- Runtime remains SAFE-NO-TRADE.
+docs/roadmap/PHASE8_ROADMAP.md:11:- No live trading path should be enabled.
+docs/roadmap/PHASE8_ROADMAP.md:28:- enable live trading
+docs/roadmap/PHASE8_ROADMAP.md:29:- weaken SAFE-NO-TRADE behavior
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:5:This document defines documentation-only acceptance criteria for any future consideration of runtime recovery work during Phase 8. It does not authorize implementation, activation, or testing against live trading behavior. The repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:11:- No live trading enablement.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:25:4. The change can be validated without enabling live trading.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:44:- `SAFE-NO-TRADE` remains the default state until an explicit later decision says otherwise.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:56:- It cannot be validated offline or without live trading exposure.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:72:- [ ] No live trading enablement is involved.
+docs/roadmap/PHASE8_RECOVERY_ACCEPTANCE.md:75:- [ ] Repository safety posture remains `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:5:It does not authorize runtime activation, recovery enablement, or live trading.
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:13:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:14:- no silent runtime activation is introduced
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:15:- no live trading enablement is introduced
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:146:- `SAFE-NO-TRADE` preserved: [ ] yes  [ ] no
+docs/roadmap/PHASE9_EVIDENCE_TEMPLATE.md:169:This template must not be used to imply live-trading approval, recovery activation approval, or production-readiness signoff by itself.
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:20:- `SAFE-NO-TRADE` preserved
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:21:- No recovery activation performed
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:22:- No live trading enablement performed
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:26:- approve live trading
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:37:3. no runtime activation was introduced
+docs/roadmap/PHASE8_HANDOFF_NOTE.md:38:4. Phase 8 remains in `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:5:It does not authorize runtime activation, live trading, or recovery enablement.
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:9:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:10:- no silent runtime activation has been introduced
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:18:- live trading is enabled
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:72:- [ ] no recovery activation in Phase 9
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:212:- [ ] no runtime activation was introduced
+docs/roadmap/PHASE9_VALIDATION_CHECKLIST.md:213:- [ ] `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:7:- runtime activation
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:8:- recovery activation
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:9:- live trading
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:12:`SAFE-NO-TRADE` remains mandatory.
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:64:- live trading approval
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:76:6. Is `SAFE-NO-TRADE` clearly preserved across all Phase 9 documents?
+docs/roadmap/PHASE9_CHECKPOINT_STATUS.md:95:- enabling live trading
+docs/roadmap/PHASE7_HARDENING_INDEX.md:13:The project remains in SAFE-NO-TRADE mode and no live trading path should be enabled.
+docs/roadmap/PHASE7_HARDENING_INDEX.md:68:- SAFE-NO-TRADE behavior remains the default safe posture
+docs/roadmap/PHASE7_HARDENING_INDEX.md:69:- no live trading path should be enabled during exchange instability
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:7:Define a tightly scoped validation plan for runtime and recovery behavior without enabling live trading, without silently activating recovery, and without changing production-sensitive execution paths in this phase.
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:19:- enable live trading
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:29:- `SAFE-NO-TRADE` remains in effect
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:30:- no silent runtime activation
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:117:2. safety posture remains `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_VALIDATION_PLAN.md:136:- no runtime activation has been introduced
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:7:It does not authorize code changes, runtime activation, live trading behavior, endpoint changes, or Arzplus authorization changes. The repository remains in `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:19:- No live trading enablement.
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:181:- Keep `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_RECOVERY_TOUCHPOINTS.md:184:- Avoid recovery activation
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:3:Status: Phase 8 to Phase 9 checkpoint chain is indexed and frozen under SAFE-NO-TRADE.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:9:It is intended to help reviewers understand the current checkpoint chain without implying runtime activation, recovery activation, live trading approval, or production readiness.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:13:The repository remains under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:17:- runtime activation
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:18:- recovery activation
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:19:- live trading
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:82:- Safety posture: `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:98:- `SAFE-NO-TRADE` posture is preserved
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:112:- live trading approval
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:119:- preserve `SAFE-NO-TRADE`
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:120:- avoid silent runtime activation
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:121:- avoid silent recovery activation
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:142:The Phase 8 to Phase 9 checkpoint chain is indexed, review-ready, and frozen under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:144:This manifest provides a consolidated reference for review only and must not be interpreted as authorization for runtime activation, recovery activation, live trading, production readiness, or production deployment.
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:156:- `SAFE-NO-TRADE` remains active
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:157:- no runtime activation is authorized
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:158:- no recovery activation is authorized
+docs/roadmap/PHASE8_PHASE9_CHECKPOINT_MANIFEST.md:159:- no live trading is authorized
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:3:Status: Post-checkpoint guardrails are documented under SAFE-NO-TRADE.
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:11:This document is documentation-only and does not authorize runtime activation, recovery activation, live trading, production deployment, or production-readiness claims.
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:26:- repository remains under `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:34:- `SAFE-NO-TRADE` remains in force
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:35:- no live trading
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:36:- no silent runtime activation
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:37:- no silent recovery activation
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:41:- no implied live trading approval
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:47:- enabling live trading
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:59:- weakening `SAFE-NO-TRADE` wording or enforcement
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:90:9. confirmation that `SAFE-NO-TRADE` remains active
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:91:10. confirmation that live trading remains blocked
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:104:- `SAFE-NO-TRADE` preserved
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:110:- live trading approved
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:164:The Phase 8 to Phase 9 checkpoint chain remains frozen under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_POST_CHECKPOINT_GUARDRAILS.md:168:This document must not be interpreted as approval for runtime activation, recovery activation, live trading, production readiness, or production deployment.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:3:Status: Phase 9 checkpoint review verdict is documented and frozen under SAFE-NO-TRADE.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:9:This verdict confirms documentation completeness and safety-boundary clarity for the current checkpoint. It does not authorize runtime activation, recovery activation, live trading, or production readiness.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:42:- preserved `SAFE-NO-TRADE` posture
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:58:- live trading approval
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:64:- `SAFE-NO-TRADE` remains in force
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:65:- no silent runtime activation
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:66:- no silent recovery activation
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:73:The next acceptable step is not runtime activation.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:83:Phase 9 checkpoint is frozen as review-ready documentation with verification passed under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_VERDICT.md:85:Any progression beyond this point must be explicitly reviewed and must not be interpreted as implied authorization for runtime activation, recovery activation, live trading, or production deployment.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:3:Status: Review intake phase is opened under `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:13:It does not authorize runtime activation, recovery activation, live trading, order execution, deployment, runtime readiness, or production readiness.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:35:- runtime activation
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:36:- recovery activation
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:37:- live trading
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:53:3. Is `SAFE-NO-TRADE` preserved across the checkpoint chain?
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:71:- missing `SAFE-NO-TRADE` boundary
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:73:- implied live trading approval
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:100:Deferred feedback must not be used as justification for runtime activation.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:124:- preserve `SAFE-NO-TRADE`
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:153:- `SAFE-NO-TRADE` remains preserved
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:154:- no runtime activation is authorized
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:155:- no recovery activation is authorized
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:156:- no live trading is authorized
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:168:No execution-oriented step may proceed without explicit review, evidence expectations, abort conditions, and preserved `SAFE-NO-TRADE`.
+docs/roadmap/PHASE9_REVIEW_INTAKE.md:174:This phase does not authorize runtime activation, recovery activation, live trading, order execution, production deployment, runtime readiness, or production readiness.
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:15:  - `SAFE-NO-TRADE: ACTIVE`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:64:The guard was introduced to block any local attempt to activate live trading unless an explicit local override is present.
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:183:  - `[SAFE-NO-TRADE] --live requested but blocked in offline mode; forcing DRY_RUN=1 and LIVE_TRADING=0.`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:289:- `SAFE-NO-TRADE: ENFORCED`
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:355:3. preserve `SAFE-NO-TRADE` as a non-negotiable runtime invariant
+docs/handoff/phase10_post_freeze_local_hardening_handoff.md:394:- effective operational posture remains **SAFE-NO-TRADE**
+docs/handoff/phase11_readiness_discovery.md:8:No recovery activation is authorized.
+docs/handoff/phase11_readiness_discovery.md:9:No live trading behavior is authorized.
+docs/handoff/phase11_readiness_discovery.md:13:`SAFE-NO-TRADE`
+docs/handoff/phase11_readiness_discovery.md:61:- `SAFE-NO-TRADE` reference found
+docs/handoff/phase11_readiness_discovery.md:83:- Safety posture remains `SAFE-NO-TRADE`.
+docs/handoff/phase11_readiness_discovery.md:100:- live trading
+docs/handoff/phase11_readiness_discovery.md:102:- runtime activation
+docs/handoff/phase11_readiness_discovery.md:103:- recovery activation
+docs/handoff/phase10_closure_decision.md:24:SAFE-NO-TRADE
+docs/handoff/phase11_scope_definition.md:11:- Safety posture: `SAFE-NO-TRADE`
+docs/handoff/phase11_scope_definition.md:13:No live trading, runtime activation, automated execution, or recovery activation is authorized by this document.
+docs/handoff/phase11_scope_definition.md:29:1. `SAFE-NO-TRADE` remains active.
+docs/handoff/phase11_scope_definition.md:33:5. No production execution path may be enabled.
+docs/handoff/phase11_scope_definition.md:96:- Code changes that improve observability without runtime activation.
+docs/handoff/phase11_scope_definition.md:141:10. Any action that changes `SAFE-NO-TRADE` posture.
+docs/handoff/phase11_scope_definition.md:181:- `SAFE-NO-TRADE`: active
+docs/handoff/phase11_scope_definition.md:249:6. No runtime/live/recovery activation has occurred.
+docs/handoff/phase11_scope_definition.md:263:SAFE-NO-TRADE

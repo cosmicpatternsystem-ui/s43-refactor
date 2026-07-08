@@ -1,0 +1,6 @@
+﻿ABORTED: PHASES 1..14 ARE NOT FULLY TRACEABLE
+
+Missing phase evidence: 8
+
+No ROADMAP_vNEXT.md or CHANGE_CONTROL_LEDGER.jsonl finalization was performed.
+This prevents blind or guessed roadmap normalization.

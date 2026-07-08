@@ -1,0 +1,327 @@
+=== TREE (depth 2) ===
+
+FullName                                                                               Length LastWriteTime        
+--------                                                                               ------ -------------        
+G:\s43_work\s43_g11_work\dashboard\.next                                                      6/25/2026 11:00:19 PM
+G:\s43_work\s43_g11_work\dashboard\node_modules                                               6/25/2026 6:23:52 PM 
+G:\s43_work\s43_g11_work\dashboard\public                                                     6/25/2026 6:11:52 PM 
+G:\s43_work\s43_g11_work\dashboard\src                                                        6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\_diag_aso_x                                                6/26/2026 2:20:08 PM 
+G:\s43_work\s43_g11_work\dashboard\cli_monitor.py                                      1376   6/25/2026 5:21:29 PM 
+G:\s43_work\s43_g11_work\dashboard\dashboard_bridge.py                                 3140   6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\package-lock.json                                   34305  6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\package.json                                        456    6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\.next\cache                                                6/25/2026 9:46:49 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\server                                               6/25/2026 10:35:53 PM
+G:\s43_work\s43_g11_work\dashboard\.next\static                                               6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\types                                                6/25/2026 10:35:24 PM
+G:\s43_work\s43_g11_work\dashboard\.next\build-manifest.json                           714    6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\package.json                                  20     6/25/2026 10:35:23 PM
+G:\s43_work\s43_g11_work\dashboard\.next\prerender-manifest.json                       354    6/25/2026 10:35:24 PM
+G:\s43_work\s43_g11_work\dashboard\.next\react-loadable-manifest.json                  518    6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\routes-manifest.json                          272    6/25/2026 10:35:24 PM
+G:\s43_work\s43_g11_work\dashboard\.next\trace                                         113204 6/25/2026 11:00:17 PM
+G:\s43_work\s43_g11_work\dashboard\.next\cache\swc                                            6/25/2026 6:35:56 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\cache\webpack                                        6/25/2026 6:36:05 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\cache\.rscinfo                                102    6/25/2026 6:34:31 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\cache\chrome-devtools-workspace-uuid          36     6/25/2026 9:46:49 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\cache\next-devtools-config.json               2      6/25/2026 6:34:32 PM 
+G:\s43_work\s43_g11_work\dashboard\.next\server\pages                                         6/25/2026 10:35:53 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\vendor-chunks                                 6/25/2026 10:35:53 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\interception-route-rewrite-manifest.js 47     6/25/2026 10:35:26 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\middleware-build-manifest.js           839    6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\middleware-manifest.json               83     6/25/2026 10:35:26 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\middleware-react-loadable-manifest.js  548    6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\next-font-manifest.js                  113    6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\next-font-manifest.json                77     6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\pages-manifest.json                    125    6/25/2026 10:35:53 PM
+G:\s43_work\s43_g11_work\dashboard\.next\server\webpack-runtime.js                     22608  6/25/2026 10:35:53 PM
+G:\s43_work\s43_g11_work\dashboard\.next\static\chunks                                        6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\static\development                                   6/25/2026 10:35:24 PM
+G:\s43_work\s43_g11_work\dashboard\.next\static\webpack                                       6/25/2026 10:35:51 PM
+G:\s43_work\s43_g11_work\dashboard\.next\types\routes.d.ts                             1378   6/25/2026 10:35:24 PM
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin                                          6/25/2026 6:23:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@img                                          6/25/2026 6:09:29 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@next                                         6/25/2026 6:23:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@socket.io                                    6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@swc                                          6/25/2026 6:09:29 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite                                  6/25/2026 6:09:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\client-only                                   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\debug                                         6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc                                   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client                              6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-parser                              6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ms                                            6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid                                        6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next                                          6/25/2026 6:23:47 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors                                    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\postcss                                       6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react                                         6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom                                     6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler                                     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver                                        6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp                                         6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client                              6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-parser                              6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js                                 6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx                                    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib                                         6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws                                            6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\xmlhttprequest-ssl                            6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.package-lock.json                     15386  6/25/2026 6:24:11 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\nanoid                            391    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\nanoid.cmd                        326    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\nanoid.ps1                        809    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\next                              385    6/25/2026 6:23:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\next.cmd                          323    6/25/2026 6:23:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\next.ps1                          797    6/25/2026 6:23:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\semver                            389    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\semver.cmd                        325    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\.bin\semver.ps1                        805    6/25/2026 6:10:50 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@img\colour                                   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@img\sharp-win32-x64                          6/25/2026 6:09:52 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@next\env                                     6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@next\swc-win32-x64-msvc                      6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@socket.io\component-emitter                  6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\@swc\helpers                                  6/25/2026 6:09:40 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite\data                             6/25/2026 6:09:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite\dist                             6/25/2026 6:09:46 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite\LICENSE                   18651  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite\package.json              742    6/25/2026 6:09:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\caniuse-lite\README.md                 164    6/25/2026 6:09:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\client-only\error.js                   144    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\client-only\index.js                   0      6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\client-only\package.json               467    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\debug\src                                     6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\debug\LICENSE                          1139   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\debug\package.json                     1479   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\debug\README.md                        22115  6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc\lib                               6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc\index.d.ts                 436    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc\LICENSE                    11357  6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc\package.json               1278   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\detect-libc\README.md                  3215   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client\build                        6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client\dist                         6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client\LICENSE               1113   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client\package.json          3324   6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-client\README.md             13175  6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-parser\build                        6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-parser\LICENSE               1112   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-parser\package.json          1632   6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\engine.io-parser\Readme.md             4501   6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ms\index.js                            3024   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ms\license.md                          1079   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ms\package.json                        732    6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ms\readme.md                           1886   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\async                                  6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\bin                                    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\non-secure                             6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\url-alphabet                           6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.browser.cjs               1088   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.browser.js                1074   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.cjs                       1425   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.d.cts                     2252   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.d.ts                      2252   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\index.js                        1469   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\LICENSE                         1095   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\nanoid.js                       169    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\package.json                    2283   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\nanoid\README.md                       1479   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\compat                                   6/25/2026 6:23:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\dist                                     6/25/2026 6:23:46 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\experimental                             6/25/2026 6:23:09 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\font                                     6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\image-types                              6/25/2026 6:23:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\legacy                                   6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\navigation-types                         6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\types                                    6/25/2026 6:23:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\amp.d.ts                          38     6/25/2026 6:23:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\amp.js                            50     6/25/2026 6:22:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\app.d.ts                          89     6/25/2026 6:23:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\app.js                            46     6/25/2026 6:22:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\babel.d.ts                        42     6/25/2026 6:23:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\babel.js                          54     6/25/2026 6:22:46 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\cache.d.ts                        5521   6/25/2026 6:23:40 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\cache.js                          1500   6/25/2026 6:22:47 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\client.d.ts                       36     6/25/2026 6:23:40 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\client.js                         48     6/25/2026 6:22:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\config.d.ts                       149    6/25/2026 6:23:40 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\config.js                         423    6/25/2026 6:22:48 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\constants.d.ts                    44     6/25/2026 6:23:40 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\constants.js                      56     6/25/2026 6:22:49 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\document.d.ts                     109    6/25/2026 6:23:41 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\document.js                       51     6/25/2026 6:22:51 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\dynamic.d.ts                      113    6/25/2026 6:23:41 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\dynamic.js                        54     6/25/2026 6:22:51 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\error.d.ts                        97     6/25/2026 6:23:41 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\error.js                          48     6/25/2026 6:22:52 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\form.d.ts                         93     6/25/2026 6:23:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\form.js                           47     6/25/2026 6:22:53 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\head.d.ts                         101    6/25/2026 6:23:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\head.js                           51     6/25/2026 6:22:55 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\headers.d.ts                      141    6/25/2026 6:23:42 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\headers.js                        229    6/25/2026 6:22:55 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\image.d.ts                        123    6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\image.js                          61     6/25/2026 6:22:55 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\index.d.ts                        783    6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\jest.d.ts                         109    6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\jest.js                           51     6/25/2026 6:22:58 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\license.md                        1079   6/25/2026 6:23:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\link.d.ts                         93     6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\link.js                           47     6/25/2026 6:22:58 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\navigation.d.ts                   52     6/25/2026 6:23:43 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\navigation.js                     64     6/25/2026 6:22:59 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\og.d.ts                           48     6/25/2026 6:23:44 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\og.js                             60     6/25/2026 6:23:00 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\package.json                      11322  6/25/2026 6:23:13 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\README.md                         3341   6/25/2026 6:23:39 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\root-params.d.ts                  140    6/25/2026 6:23:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\root-params.js                    141    6/25/2026 6:23:08 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\router.d.ts                       101    6/25/2026 6:23:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\router.js                         49     6/25/2026 6:23:08 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\script.d.ts                       101    6/25/2026 6:23:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\script.js                         49     6/25/2026 6:23:09 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\server.d.ts                       1216   6/25/2026 6:23:45 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\server.js                         1489   6/25/2026 6:23:09 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\types.d.ts                        68     6/25/2026 6:23:46 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\types.js                          14     6/25/2026 6:23:11 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\web-vitals.d.ts                   41     6/25/2026 6:23:47 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\next\web-vitals.js                     53     6/25/2026 6:23:12 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\LICENSE                     787    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\package.json                552    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\picocolors.browser.js       598    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\picocolors.d.ts             138    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\picocolors.js               2663   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\README.md                   622    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\picocolors\types.d.ts                  1013   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\postcss\lib                                   6/25/2026 6:09:34 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\postcss\LICENSE                        1095   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\postcss\package.json                   2496   6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\postcss\README.md                      1195   6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\cjs                                     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\compiler-runtime.js              412    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\index.js                         186    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\jsx-dev-runtime.js               218    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\jsx-dev-runtime.react-server.js  244    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\jsx-runtime.js                   210    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\jsx-runtime.react-server.js      236    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\LICENSE                          1088   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\package.json                     1248   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\react.react-server.js            212    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react\README.md                        1158   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\cjs                                 6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\client.js                    1373   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\client.react-server.js       101    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\index.js                     1359   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\LICENSE                      1088   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\package.json                 3063   6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\profiling.js                 1378   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\profiling.react-server.js    104    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\react-dom.react-server.js    220    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\README.md                    1096   6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.browser.js            563    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.bun.js                559    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.edge.js               561    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.js                    58     6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.node.js               669    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\server.react-server.js       101    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\static.browser.js            319    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\static.edge.js               313    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\static.js                    58     6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\static.node.js               445    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\static.react-server.js       101    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\react-dom\test-utils.js                216    6/25/2026 6:09:36 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\cjs                                 6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\index.js                     194    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\index.native.js              208    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\LICENSE                      1088   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\package.json                 564    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\README.md                    346    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\unstable_mock.js             222    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\scheduler\unstable_post_task.js        232    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\bin                                    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\classes                                6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\functions                              6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\internal                               6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\ranges                                 6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\index.js                        2691   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\LICENSE                         765    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\package.json                    1661   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\preload.js                      83     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\range.bnf                       702    6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\semver\README.md                       25669  6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\install                                 6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\lib                                     6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\src                                     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\LICENSE                          10273  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\package.json                     7478   6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\sharp\README.md                        3160   6/25/2026 6:09:33 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client\build                        6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client\dist                         6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client\LICENSE               1116   6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client\package.json          2901   6/25/2026 6:22:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-client\README.md             1118   6/25/2026 6:22:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-parser\build                        6/25/2026 6:22:28 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-parser\LICENSE               1113   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-parser\package.json          1450   6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\socket.io-parser\Readme.md             2383   6/25/2026 6:22:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\lib                             6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\LICENSE                  1526   6/25/2026 6:09:30 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\package.json             2548   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\README.md                26040  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\source-map.d.ts          3408   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\source-map-js\source-map.js            405    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\dist                               6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\lib                                6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\babel-test.js               68     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\babel.js                    49     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\css.d.ts                    512    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\css.js                      469    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\global.d.ts                 160    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\index.d.ts                  682    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\index.js                    41     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\license.md                  1077   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\macro.d.ts                  261    6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\macro.js                    49     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\package.json                3271   6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\readme.md                   31703  6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\style.d.ts                  91     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\style.js                    47     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\styled-jsx\webpack.js                  65     6/25/2026 6:09:32 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\modules                                 6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\CopyrightNotice.txt              822    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\LICENSE.txt                      655    6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\package.json                     1219   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\README.md                        4033   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\SECURITY.md                      2757   6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.d.ts                       18317  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.es6.html                   36     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.es6.js                     19215  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.es6.mjs                    17648  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.html                       32     6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\tslib\tslib.js                         23382  6/25/2026 6:09:31 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\lib                                        6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\browser.js                          176    6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\index.js                            796    6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\LICENSE                             1183   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\package.json                        1753   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\README.md                           15306  6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\ws\wrapper.mjs                         554    6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\xmlhttprequest-ssl\lib                        6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\xmlhttprequest-ssl\LICENSE             1077   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\xmlhttprequest-ssl\package.json        1158   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\node_modules\xmlhttprequest-ssl\README.md           2713   6/25/2026 6:22:27 PM 
+G:\s43_work\s43_g11_work\dashboard\src\components                                             6/25/2026 6:11:52 PM 
+G:\s43_work\s43_g11_work\dashboard\src\pages                                                  6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\src\styles                                                 6/25/2026 6:11:52 PM 
+G:\s43_work\s43_g11_work\dashboard\src\components\charts                                      6/25/2026 6:11:52 PM 
+G:\s43_work\s43_g11_work\dashboard\src\components\intelligence                                6/25/2026 6:11:52 PM 
+G:\s43_work\s43_g11_work\dashboard\src\pages\index.js                                  4557   6/26/2026 10:04:22 AM
+G:\s43_work\s43_g11_work\dashboard\_diag_aso_x\dns_checks.txt                          1009   6/26/2026 2:20:36 PM 
+G:\s43_work\s43_g11_work\dashboard\_diag_aso_x\found_files.txt                         5      6/26/2026 2:20:36 PM 
+G:\s43_work\s43_g11_work\dashboard\_diag_aso_x\python_env.txt                          1431   6/26/2026 2:21:01 PM 
+G:\s43_work\s43_g11_work\dashboard\_diag_aso_x\system_network.txt                      11096  6/26/2026 2:20:25 PM 
+
+
+

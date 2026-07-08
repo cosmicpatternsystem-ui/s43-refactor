@@ -1,0 +1,478 @@
+===== S43 PHASE0/PHASE1 REPORT =====
+TS=20260527_093330
+
+[PWD]
+/sdcard/notebook
+
+[PYTHON]
+Python 3.12.12
+
+[ROOT FILES]
+total 346M
+drwxrwx---. 30 root everybody  20K May 27 09:33 .
+drwxrwx---. 45 root everybody 4.0K May 27 08:06 ..
+-rw-rw----.  1 root everybody 2.5K Feb 26 12:56 3.txt
+-rw-rw----.  1 root everybody 2.4M Mar 15 15:40 DE9.py
+-rw-rw----.  1 root everybody  567 May 26 19:25 PARAM_FORWARDING_FIX_DONE.txt
+drwxrwx---.  2 root everybody 4.0K May 27 09:17 __pycache__
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:39 ai_backups
+-rw-rw----.  1 root everybody 6.7K Mar 15 15:39 ai_lab_log.txt
+drwxrwx---.  3 root everybody 4.0K May 27 09:33 archive
+-rw-rw----.  1 root everybody 6.9K May 26 13:21 arz_debug_context.txt
+-rw-rw----.  1 root everybody 1.8K May 26 14:39 arzplus_probe.sh
+-rw-rw----.  1 root everybody  34K May 25 11:33 arzplus_run.log
+-rw-rw----.  1 root everybody  409 May 25 16:41 arzplus_softfail_patch_notes.txt
+-rw-rw----.  1 root everybody 3.9K May 26 17:01 auto_find_and_patch_place_order.py
+drwxrwx---.  2 root everybody 4.0K Mar 15 14:45 best_versions
+-rw-rw----.  1 root everybody  310 May 26 09:27 bot_state.json
+drwxrwx---.  2 root everybody 4.0K May 27 00:52 cache
+-rw-rw----.  1 root everybody  486 May 26 10:07 curl_bearer_balance.out
+-rw-rw----.  1 root everybody  338 May 26 10:18 curl_newtoken_balance.out
+-rw-rw----.  1 root everybody  338 May 26 10:07 curl_token_balance.out
+-rw-rw----.  1 root everybody  338 May 26 10:25 curl_token_final.out
+drwxrwx---.  2 root everybody 4.0K Jun 30  2025 db_noteBook
+drwxrwx---.  2 root everybody 4.0K May 27 08:29 debug_non_token
+-rw-rw----.  1 root everybody   79 May 27 00:54 doctor.out
+-rw-rw----.  1 root everybody 4.4K May 27 00:52 dryrun.out
+-rw-rw----.  1 root everybody 1.4K May 26 17:14 final_fix_s43.py
+-rw-rw----.  1 root everybody  933 May 26 19:18 fix_bad_debug_newline.py
+-rw-rw----.  1 root everybody  619 May 26 17:17 fix_body_s43.py
+-rw-rw----.  1 root everybody 3.3K May 26 22:34 fix_internal_nameerrors_s43.py
+-rw-rw----.  1 root everybody 2.8K May 26 23:12 fix_s43_callhandlers_guard_v1.py
+-rw-rw----.  1 root everybody 5.0K May 26 23:04 fix_s43_logger_init_v2.py
+-rw-rw----.  1 root everybody 2.8K May 26 23:10 fix_s43_root_logging_handlers_v1.py
+-rw-rw----.  1 root everybody 5.8K May 26 23:02 fix_s43_safe_logging.py
+-rw-rw----.  1 root everybody 1.2K May 26 19:11 fix_sell_tests_qty_keyword.py
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:20 genesis_backup
+-rw-rw----.  1 root everybody   79 Mar 15 15:27 genesis_memory.json
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:13 genesis_stable
+drwxrwx---.  2 root everybody 4.0K Mar 15 13:59 godmode_backups
+drwxrwx---.  2 root everybody 4.0K Mar 15 14:05 godmode_best
+-rw-rw----.  1 root everybody  337 Mar 15 14:05 godmode_log.txt
+drwxrwx---.  2 root everybody 4.0K Mar 15 13:59 godmode_modules
+-rw-rw----.  1 root everybody 2.7K Mar 15 19:15 guardian.log
+-rw-rw----.  1 root everybody 2.3K Mar 15 18:53 guardian41.py
+-rw-rw----.  1 root everybody 1.8K May 27 00:52 help.out
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:46 infinity_backup
+-rw-rw----.  1 root everybody 2.0K Mar 15 15:46 infinity_log.txt
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:37 infinity_stable
+-rw-rw----.  1 root everybody 2.0K May 26 21:23 inspect_exchangeclient_place_order_structure.py
+-rw-rw----.  1 root everybody  279 May 26 18:57 inspect_execengine_place_limit_10308.py
+-rw-rw----.  1 root everybody 1.4K May 26 20:58 inspect_s43_order_area_3030.py
+-rw-rw----.  1 root everybody 2.0K May 26 20:52 inspect_s43_place_order_local.py
+-rw-rw----.  1 root everybody  730 May 26 18:53 inspect_s43_targets.py
+-rw-rw----.  1 root everybody  179 Mar 15 17:27 launch_realshield.py
+drwxrwx---.  2 root everybody 4.0K Mar 15 18:54 logs
+drwxrwx---.  2 root everybody 4.0K Mar 15 13:45 modules
+drwxrwx---.  2 root everybody 4.0K Mar 15 13:05 my_bot_lab
+-rw-rw----.  1 root everybody 1.4K Mar 15 18:24 nanoomega_guardian_prime.py
+drwxrwx---.  4 root everybody 4.0K Mar 15 18:24 nanoomega_prime_system
+-rw-rw----.  1 root everybody 2.1K Mar 15 17:26 nanoomega_realshield_infinity_core.py
+-rw-rw----.  1 root everybody 2.8K May 27 06:53 no_token_status.out
+-rw-rw----.  1 root everybody 8.7K May 26 12:33 nohup.out
+-rw-rw----.  1 root everybody 8.7K May 26 11:26 nohup.out.bak_20260526_123316
+-rw-rw----.  1 root everybody 6.9K Mar 15 14:35 omega_autonomous_core.py
+-rw-rw----.  1 root everybody 6.0K Mar 15 15:37 omega_autorepair_infinity.py
+-rw-rw----.  1 root everybody 4.4K Mar 15 15:28 omega_autorepair_supreme.py
+drwxrwx---.  2 root everybody 4.0K Mar 15 14:17 omega_backup
+-rw-rw----.  1 root everybody 6.5K Mar 15 13:45 omega_dev_lab.py
+-rw-rw----.  1 root everybody 6.5K Mar 15 13:50 omega_dev_lab_v2.py
+-rw-rw----.  1 root everybody 5.0K Mar 15 15:05 omega_genesis_core.py
+-rw-rw----.  1 root everybody 2.5K Mar 15 15:27 omega_genesis_log.txt
+-rw-rw----.  1 root everybody  11K Mar 15 13:59 omega_godmode.py
+-rw-rw----.  1 root everybody 4.5K Mar 15 14:14 omega_godmode_ultimate.py
+-rw-rw----.  1 root everybody 2.1K Mar 15 13:57 omega_lab_log.txt
+-rw-rw----.  1 root everybody 1.7K Mar 15 14:34 omega_log.txt
+-rw-rw----.  1 root everybody   82 Mar 15 14:34 omega_memory.json
+-rw-rw----.  1 root everybody 7.6K Mar 15 16:38 omega_recursive_autonomous_trader_ultimate.py
+-rw-rw----.  1 root everybody 2.5K Mar 15 15:47 omega_s42_guardian.py
+drwxrwx---.  2 root everybody 4.0K Mar 15 14:34 omega_stable
+-rw-rw----.  1 root everybody   38 Mar 15 16:49 omega_state.json
+drwxrwx---.  2 root everybody 4.0K Mar 15 14:50 omega_ultra_backup
+-rw-rw----.  1 root everybody 6.9K Mar 15 14:37 omega_ultra_engine.py
+-rw-rw----.  1 root everybody 3.8K Mar 15 15:04 omega_ultra_log.txt
+-rw-rw----.  1 root everybody   82 Mar 15 15:04 omega_ultra_memory.json
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:04 omega_ultra_stable
+-rw-rw----.  1 root everybody 2.8K May 27 08:25 one_token_debug.out
+-rw-rw----.  1 root everybody 1.8K May 26 19:09 patch_add_sell_reduce_only_tests.py
+-rw-rw----.  1 root everybody 1.5K May 26 18:20 patch_cleanup_and_remaining_cid.py
+-rw-rw----.  1 root everybody 1.4K May 26 19:20 patch_convert_sell_override_test.py
+-rw-rw----.  1 root everybody 1.7K May 26 19:22 patch_convert_sell_override_test_v2.py
+-rw-rw----.  1 root everybody  721 May 26 19:13 patch_debug_sell_override_response.py
+-rw-rw----.  1 root everybody  758 May 26 19:16 patch_debug_sell_override_response_v2.py
+-rw-rw----.  1 root everybody 2.8K May 26 21:44 patch_faultinject_signature_indented.py
+-rw-rw----.  1 root everybody 2.0K May 26 21:41 patch_faultinject_signature_only.py
+-rw-rw----.  1 root everybody 2.1K May 26 21:47 patch_faultinject_signature_top_level.py
+-rw-rw----.  1 root everybody  545 May 26 17:28 patch_log_order_payload.py
+-rw-rw----.  1 root everybody 3.4K May 26 16:54 patch_place_order_execution_bridge.py
+-rw-rw----.  1 root everybody  924 May 26 17:24 patch_place_order_wrappers.py
+-rw-rw----.  1 root everybody  22K May 26 15:39 patch_s43_auto.sh
+-rw-rw----.  1 root everybody 1.5K May 27 00:42 patch_s43_balance_halt_messages.py
+-rw-rw----.  1 root everybody 7.1K May 26 20:44 patch_s43_exchangeclient_place_order_anchor.py
+-rw-rw----.  1 root everybody 8.4K May 26 20:51 patch_s43_exchangeclient_place_order_global.py
+-rw-rw----.  1 root everybody 8.0K May 26 20:42 patch_s43_exchangeclient_place_order_kwargs.py
+-rw-rw----.  1 root everybody 7.9K May 26 20:48 patch_s43_exchangeclient_place_order_precise.py
+-rw-rw----.  1 root everybody 4.2K May 26 19:44 patch_s43_faultinject_forward.py
+-rw-rw----.  1 root everybody 5.2K May 26 20:15 patch_s43_faultinject_forward_byline.py
+-rw-rw----.  1 root everybody 5.0K May 26 20:06 patch_s43_faultinject_forward_direct.py
+-rw-rw----.  1 root everybody 5.5K May 26 20:13 patch_s43_faultinject_forward_exact.py
+-rw-rw----.  1 root everybody 8.1K May 26 20:08 patch_s43_faultinject_forward_linebased.py
+-rw-rw----.  1 root everybody 4.8K May 26 19:46 patch_s43_faultinject_forward_v2.py
+-rw-rw----.  1 root everybody 4.8K May 26 19:58 patch_s43_faultinject_forward_v3.py
+-rw-rw----.  1 root everybody 3.8K May 26 20:01 patch_s43_faultinject_forward_v3b_fill_type.py
+-rw-rw----.  1 root everybody 7.8K May 26 20:21 patch_s43_faultinject_smart.py
+-rw-rw----.  1 root everybody 6.7K May 26 20:36 patch_s43_faultinject_upgrade.py
+-rw-rw----.  1 root everybody 3.6K May 27 00:00 patch_s43_fix_status_leftover_reason.py
+-rw-rw----.  1 root everybody 1.3K May 26 19:01 patch_s43_forward_execengine_10308.py
+-rw-rw----.  1 root everybody 2.9K May 26 23:49 patch_s43_gate_arz_auth_debug_call.py
+-rw-rw----.  1 root everybody 1.5K May 26 23:54 patch_s43_gate_arz_auth_debug_emit.py
+-rw-rw----.  1 root everybody 3.5K May 26 23:29 patch_s43_gate_debug_prints_v1.py
+-rw-rw----.  1 root everybody 3.0K May 26 23:46 patch_s43_gate_multiline_debug_prints.py
+-rw-rw----.  1 root everybody 1.9K May 26 23:44 patch_s43_gate_remaining_debug_prints.py
+-rw-rw----.  1 root everybody  924 May 27 00:22 patch_s43_http_fail_detail.py
+-rw-rw----.  1 root everybody 2.7K May 26 21:09 patch_s43_place_order_wrappers.py
+-rw-rw----.  1 root everybody 5.3K May 26 21:11 patch_s43_place_order_wrappers_v2.py
+-rw-rw----.  1 root everybody 2.9K May 26 18:50 patch_s43_real_forwarding.py
+-rw-rw----.  1 root everybody 3.9K May 27 00:03 patch_s43_replace_status_block_final.py
+-rw-rw----.  1 root everybody 3.9K May 26 23:57 patch_s43_status_balance_semantics.py
+-rw-rw----.  1 root everybody 4.1K May 27 00:09 patch_s43_status_final_safe.py
+-rw-rw----.  1 root everybody 4.1K May 27 00:13 patch_s43_status_final_with_return.py
+-rw-rw----.  1 root everybody 1.1K May 26 23:35 patch_s43_status_graceful_fail_v2.py
+-rw-rw----.  1 root everybody 3.3K May 27 00:15 patch_s43_status_marker_based.py
+-rw-rw----.  1 root everybody 6.4K May 27 00:35 patch_s43_status_only.py
+-rw-rw----.  1 root everybody 8.1K May 27 00:31 patch_s43_status_quality.py
+-rw-rw----.  1 root everybody  990 May 26 23:41 patch_s43_status_show_reason.py
+-rw-rw----.  1 root everybody 4.0K May 26 21:37 patch_s43_wrappers_place_order.py
+-rw-rw----.  1 root everybody 3.8K May 26 21:38 patch_s43_wrappers_place_order_v2.py
+-rw-rw----.  1 root everybody 1.5K May 26 19:14 patch_sell_override_unique_cid.py
+-rw-rw----.  1 root everybody  961 May 26 19:04 patch_test_final_check_expect_forwarded.py
+-rw-rw----.  1 root everybody 1.5K May 26 19:06 patch_test_final_check_expect_forwarded_v2.py
+-rw-rw----.  1 root everybody   61 May 27 00:58 phoenix_selftest.out
+-rw-rw----.  1 root everybody 3.2K Mar 15 14:47 phoenix_state.json
+-rw-rw----.  1 root everybody 4.9K Mar 15 15:23 pp200_crashlog.jsonl
+-rw-rw----.  1 root everybody  120 Mar 15 14:50 raz_price_cache.json
+-rw-rw----.  1 root everybody  252 May 25 16:10 raz_risk_journal.json
+-rw-rw----.  1 root everybody  599 May 26 09:27 raz_state.json
+-rw-rw----.  1 root everybody   51 Mar 15 14:48 raz_state.json.W1.ghost.json
+-rw-rw----.  1 root everybody   51 Mar 15 14:48 raz_state.json.W2.ghost.json
+-rw-rw----.  1 root everybody   51 Mar 15 14:48 raz_state.json.W3.ghost.json
+-rw-rw----.  1 root everybody  599 May 27 00:52 raz_state.json.bak
+-rw-rw----.  1 root everybody 5.2K May 26 22:04 rebuild_faultinject_class.py
+-rw-rw----.  1 root everybody 4.9K May 26 08:59 run_authdbg.log
+-rw-rw----.  1 root everybody  27K May 25 16:56 run_balance_auth_fail_diag.log
+-rw-rw----.  1 root everybody 3.4K May 26 09:05 run_fallback_authdbg.log
+-rw-rw----.  1 root everybody  32K May 25 16:53 run_final_arzplus_softfail_check.log
+-rw-rw----.  1 root everybody  179 Mar 15 18:24 run_nanoguardian.py
+-rw-rw----.  1 root everybody 3.0K May 26 08:47 run_probe.log
+-rw-rw----.  1 root everybody  22K May 25 15:34 run_s42_after_bearer.log
+-rw-rw----.  1 root everybody  34K May 25 15:39 run_s42_auth_hardened.log
+-rw-rw----.  1 root everybody  37K May 25 16:08 run_s42_balance_403_diag.log
+-rw-rw----.  1 root everybody  32K May 25 16:10 run_s42_balance_403_diag_2.log
+-rw-rw----.  1 root everybody  32K May 25 15:55 run_s42_diag_file.log
+-rw-rw----.  1 root everybody  29K May 25 15:52 run_s42_diag_force.log
+-rw-rw----.  1 root everybody  34K May 25 15:50 run_s42_diag_v2.log
+-rw-rw----.  1 root everybody  46K May 26 09:20 run_s42_tokenoverride.log
+-rw-rw----.  1 root everybody  39K May 26 09:24 run_s42_tokenoverride_bearer.log
+-rw-rw----.  1 root everybody  46K May 26 09:27 run_s42_tokenoverride_token.log
+-rw-rw----.  1 root everybody 4.7K May 26 11:12 run_s43_auth_test.log
+-rw-rw----.  1 root everybody 5.6K May 26 09:20 run_s43_tokenoverride.log
+-rw-rw----.  1 root everybody 3.8K May 26 09:23 run_s43_tokenoverride_bearer.log
+-rw-rw----.  1 root everybody 3.7K May 26 09:27 run_s43_tokenoverride_token.log
+-rw-rw----.  1 root everybody  22K May 25 17:04 run_softfail_check.log
+-rw-rw----.  1 root everybody  27K May 25 17:47 run_softfail_check2.log
+-rw-rw----.  1 root everybody  22K May 25 17:50 run_softfail_check3.log
+-rw-rw----.  1 root everybody  22K May 25 17:54 run_softfail_check4.log
+-rw-rw----.  1 root everybody  22K May 25 17:59 run_softfail_check5.log
+-rw-rw----.  1 root everybody  22K May 25 18:06 run_softfail_check6.log
+-rw-rw----.  1 root everybody  22K May 25 18:09 run_softfail_check7.log
+-rw-rw----.  1 root everybody  34K May 25 16:23 run_softfail_expired_wallets.log
+-rw-rw----.  1 root everybody  22K May 25 16:27 run_softfail_expired_wallets_v2.log
+-rw-rw----.  1 root everybody  22K May 25 16:30 run_softfail_long.log
+-rw-rw----.  1 root everybody 3.7K May 26 09:11 run_tokenoverride.log
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:41 s11.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:38 s12.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:40 s13.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:38 s20.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:39 s21.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:39 s30.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:40 s34.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:39 s37.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:40 s40.py
+-rw-rw----.  1 root everybody 2.7M Mar 15 19:15 s41.py
+-rw-rw----.  1 root everybody 2.7M Mar 15 19:14 s41_backup.py
+-rw-rw----.  1 root everybody 2.7M May 26 09:19 s42.py.bak
+-rw-rw----.  1 root everybody 2.7M May 24 23:21 s42.py.bak.20260524-233221
+-rw-rw----.  1 root everybody 2.7M May 24 23:36 s42.py.bak.add-import-os.20260524-234313
+-rw-rw----.  1 root everybody 2.7M May 24 23:33 s42.py.bak.after-header.20260524-233607
+-rw-rw----.  1 root everybody 2.7M May 24 23:50 s42.py.bak.force-top-imports.20260524-235751
+-rw-rw----.  1 root everybody 2.7M May 24 23:50 s42.py.bak.imports.20260524-235333
+-rw-rw----.  1 root everybody 2.7M May 26 09:19 s42.py.bak.tokenoverride.1779774589
+-rw-rw----.  1 root everybody 2.7M May 24 23:43 s42.py.bak.top-imports.20260524-235004
+-rw-rw----.  1 root everybody 2.7M May 26 09:19 s42.py.bak2
+-rw-rw----.  1 root everybody 2.7M May 25 15:47 s42.py.bak_403diag_1779711453
+-rw-rw----.  1 root everybody 2.7M May 25 16:55 s42.py.bak_add_balance_auth_fail_diag_1779715522
+-rw-rw----.  1 root everybody 2.7M May 25 16:34 s42.py.bak_add_softfail_comment_1779714264
+-rw-rw----.  1 root everybody 2.7M May 25 16:41 s42.py.bak_add_softfail_comment_1779714685
+-rw-rw----.  1 root everybody 2.7M May 25 17:46 s42.py.bak_apierr_unknownerr_20260525_174612
+-rw-rw----.  1 root everybody 2.7M May 25 15:29 s42.py.bak_auth_1779710395
+-rw-rw----.  1 root everybody 2.7M May 26 09:19 s42.py.bak_auth_20260526_110953
+-rw-rw----.  1 root everybody 2.7M May 25 15:38 s42.py.bak_auth_harden_1779710921
+-rw-rw----.  1 root everybody 2.7M May 24 23:50 s42.py.bak_auth_token_only
+-rw-rw----.  1 root everybody 2.7M May 24 23:50 s42.py.bak_authfix
+-rw-rw----.  1 root everybody 2.7M May 25 16:07 s42.py.bak_balance_403_file_diag_1779712637
+-rw-rw----.  1 root everybody 2.7M May 25 16:06 s42.py.bak_balance_403_filediag_1779712560
+-rw-rw----.  1 root everybody 2.7M May 25 16:45 s42.py.bak_before_softfail_cleanup_1779714939
+-rw-rw----.  1 root everybody 2.7M May 25 16:46 s42.py.bak_dedup_hotfix_comment_1779714981
+-rw-rw----.  1 root everybody 2.7M May 25 16:51 s42.py.bak_dedupe_hotfix_comment_1779715290
+-rw-rw----.  1 root everybody 2.7M May 25 15:54 s42.py.bak_diag_file_1779711867
+-rw-rw----.  1 root everybody 2.7M May 25 15:51 s42.py.bak_diag_force_1779711716
+-rw-rw----.  1 root everybody 2.7M May 25 17:52 s42.py.bak_direct_halt_patch_20260525_175200
+-rw-rw----.  1 root everybody 2.7M May 25 17:44 s42.py.bak_guard_balance_auth_20260525_174415
+-rw-rw----.  1 root everybody 2.7M May 25 17:49 s42.py.bak_http403_softfail_20260525_174916
+-rw-rw----.  1 root everybody 2.7M May 25 16:10 s42.py.bak_patch_st403_diag_1779712811
+-rw-rw----.  1 root everybody 2.7M May 25 17:03 s42.py.bak_softfail_20260525_170332
+-rw-rw----.  1 root everybody 2.7M May 25 16:25 s42.py.bak_softfail_condition_widen_1779713756
+-rw-rw----.  1 root everybody 2.7M May 25 16:20 s42.py.bak_softfail_expired_wallets_1779713402
+-rw-rw----.  1 root everybody 2.7M May 25 16:22 s42.py.bak_softfail_expired_wallets_anchor_1779713564
+-rw-rw----.  1 root everybody 2.7M May 25 14:36 s42.py.bak_wallet3_1779707555
+-rw-rw----.  1 root everybody 2.7M May 25 16:32 s42.py.fixed_softfail_final_1779714132
+-rw-rw----.  1 root everybody 2.7M May 25 16:33 s42.py.stable_after_arzplus_softfail_1779714220
+-rw-rw----.  1 root everybody 2.7M May 25 16:41 s42.py.stable_after_arzplus_softfail_1779714685
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:47 s42_backup
+-rw-rw----.  1 root everybody  839 Mar 15 15:53 s42_log.txt
+-rw-rw----.  1 root everybody   38 Mar 15 15:47 s42_memory.json
+-rw-rw----.  1 root everybody 9.2K May 26 13:08 s43.out
+-rw-rw----.  1 root everybody 2.5M May 27 00:42 s43.py
+-rw-rw----.  1 root everybody 2.5M May 26 15:35 s43.py.bak
+-rw-rw----.  1 root everybody 2.5M May 26 08:35 s43.py.bak.1779771914
+-rw-rw----.  1 root everybody 2.5M May 26 11:09 s43.py.bak.20260526-125511
+-rw-rw----.  1 root everybody 2.5M May 26 08:58 s43.py.bak.authdbg.1779773283
+-rw-rw----.  1 root everybody 2.5M May 26 09:05 s43.py.bak.fallbackauth.1779773723
+-rw-rw----.  1 root everybody 2.5M May 26 22:34 s43.py.bak.notrade_safe
+-rw-rw----.  1 root everybody 2.5M May 26 22:41 s43.py.bak.status_alias
+-rw-rw----.  1 root everybody 2.5M May 26 09:11 s43.py.bak.tokenoverride.1779774063
+-rw-rw----.  1 root everybody 2.5M May 26 09:19 s43.py.bak.tokenoverride.1779774589
+-rw-rw----.  1 root everybody 2.5M May 26 09:11 s43.py.bak2
+-rw-rw----.  1 root everybody 2.5M May 26 15:39 s43.py.bak_20260526_153944
+-rw-rw----.  1 root everybody 2.5M May 26 09:11 s43.py.bak_auth_20260526_110953
+-rw-rw----.  1 root everybody 2.5M May 26 22:04 s43.py.bak_autopatch_1779821006
+-rw-rw----.  1 root everybody 2.5M May 27 00:42 s43.py.bak_balance_halt_messages_1779829940.py
+-rw-rw----.  1 root everybody 2.5M May 27 00:44 s43.py.bak_balance_halt_messages_1779830068.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:12 s43.py.bak_callhandlers_guard_v1_1779824570
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_exchangeclient_place_order_anchor
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_exchangeclient_place_order_global
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_exchangeclient_place_order_kwargs
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_exchangeclient_place_order_precise
+-rw-rw----.  1 root everybody 2.5M May 26 18:20 s43.py.bak_execengine_10308
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_before_forward_fix
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_before_forward_fix_v2
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_before_forward_fix_v3
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_before_forward_fix_v3b_fill_type
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_forward_byline
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_forward_direct
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_forward_exact
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_forward_linebased
+-rw-rw----.  1 root everybody 2.5M May 26 21:38 s43.py.bak_faultinject_rebuild_1779820018
+-rw-rw----.  1 root everybody 2.5M May 26 21:38 s43.py.bak_faultinject_rebuild_1779820454
+-rw-rw----.  1 root everybody 2.5M May 26 21:38 s43.py.bak_faultinject_signature_indented_1779819274
+-rw-rw----.  1 root everybody 2.5M May 26 21:38 s43.py.bak_faultinject_signature_only_1779819071
+-rw-rw----.  1 root everybody 2.5M May 26 21:38 s43.py.bak_faultinject_signature_top_level_1779819454
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_smart
+-rw-rw----.  1 root everybody 2.5M May 26 19:01 s43.py.bak_faultinject_upgrade
+-rw-rw----.  1 root everybody 2.5M May 26 13:23 s43.py.bak_initprobe
+-rw-rw----.  1 root everybody 2.5M May 26 22:13 s43.py.bak_internal_fix_1779822266
+-rw-rw----.  1 root everybody 2.5M May 26 21:11 s43.py.bak_kwargs_any_1779817423
+-rw-rw----.  1 root everybody 2.5M May 26 23:04 s43.py.bak_logger_init_v2_1779824087
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_place_order_wrappers_1779817143
+-rw-rw----.  1 root everybody 2.5M May 26 20:36 s43.py.bak_place_order_wrappers_v2_1779817273
+-rw-rw----.  1 root everybody 2.5M May 26 23:10 s43.py.bak_root_logging_handlers_v1_1779824406
+-rw-rw----.  1 root everybody 2.5M May 26 23:02 s43.py.bak_safe_logging_1779823942
+-rw-rw----.  1 root everybody 2.5M May 27 00:35 s43.py.bak_status_only_1779829535
+-rw-rw----.  1 root everybody 2.5M May 27 00:31 s43.py.bak_status_quality_1779829270
+-rw-rw----.  1 root everybody 2.5M May 26 16:13 s43.py.bak_step4_20260526_163225
+-rw-rw----.  1 root everybody 2.5M May 26 16:32 s43.py.bak_step5_20260526_163854
+-rw-rw----.  1 root everybody 2.5M May 25 14:36 s43.py.bak_wallet3_1779707556
+-rw-rw----.  1 root everybody 2.5M May 26 21:13 s43.py.bak_wrappers_place_order_1779818852
+-rw-rw----.  1 root everybody 2.5M May 26 21:37 s43.py.bak_wrappers_place_order_v2_1779818938
+-rw-rw----.  1 root everybody 2.5M May 26 18:20 s43.py.before_cleanup_cid_patch.bak
+-rw-rw----.  1 root everybody 2.5M May 26 18:51 s43.py.before_real_forwarding_patch.bak
+-rw-rw----.  1 root everybody 2.5M May 26 19:24 s43.py.good_param_forwarding
+-rw-rw----.  1 root everybody 2.5M May 26 15:50 s43.py.v2_step1_bak_20260526_155017
+-rw-rw----.  1 root everybody 2.5M May 26 15:53 s43.py.v2_step2_signal_bak_20260526_155302
+-rw-rw----.  1 root everybody 2.5M May 26 15:55 s43.py.v2_step2b_signal_bak_20260526_155559
+-rw-rw----.  1 root everybody 2.5M May 26 15:56 s43.py.v2_step3_place_order_bak_20260526_155928
+-rw-rw----.  1 root everybody 2.5M May 26 15:56 s43.py.v2_step3b_repatch_bak_20260526_161301
+-rw-rw----.  1 root everybody 1.1K May 27 09:10 s43_api_watch.log
+-rw-rw----.  1 root everybody 2.5M May 26 07:54 s43_before_auth_token_fix_1779769497.py
+-rw-rw----.  1 root everybody 2.5M May 25 19:38 s43_before_authdbg_getbal_1779725338.py
+-rw-rw----.  1 root everybody 2.5M May 24 20:58 s43_before_final_walletruntime_fix_1779643887.py
+-rw-rw----.  1 root everybody 2.5M May 24 20:52 s43_before_fix_dataclass_obs_trace_1779643703.py
+-rw-rw----.  1 root everybody 2.5M May 27 00:00 s43_before_fix_status_leftover_reason_1779827430.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:49 s43_before_gate_arz_auth_debug_call_1779826769.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:54 s43_before_gate_arz_auth_debug_emit_1779827040.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:29 s43_before_gate_debug_prints_1779825546.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:46 s43_before_gate_multiline_debug_prints_1779826619.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:44 s43_before_gate_remaining_debug_prints_1779826455.py
+-rw-rw----.  1 root everybody 2.5M May 26 22:51 s43_before_handler_sanitize_1779823484.py
+-rw-rw----.  1 root everybody 2.5M May 27 00:22 s43_before_http_fail_detail_1779828746.py
+-rw-rw----.  1 root everybody 2.5M May 26 22:45 s43_before_logging_emit_fix_1779823138.py
+-rw-rw----.  1 root everybody 2.5M May 25 19:57 s43_before_min_refreshdbg_1779726420.py
+-rw-rw----.  1 root everybody 2.5M May 26 22:48 s43_before_minilog_fix_1779823313.py
+-rw-rw----.  1 root everybody 2.5M May 24 20:41 s43_before_obs_trace_restore_1779643369.py
+-rw-rw----.  1 root everybody 2.5M May 25 19:53 s43_before_refreshdbg_1779726192.py
+-rw-rw----.  1 root everybody 2.5M May 24 20:58 s43_before_reorder_obs_trace_1779644128.py
+-rw-rw----.  1 root everybody 2.5M May 27 00:03 s43_before_replace_status_block_final_1779827636.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:57 s43_before_status_balance_semantics_1779827251.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:35 s43_before_status_graceful_fail_1779825955.py
+-rw-rw----.  1 root everybody 2.5M May 27 00:16 s43_before_status_marker_based_1779828361.py
+-rw-rw----.  1 root everybody 2.5M May 26 23:41 s43_before_status_show_reason_1779826269.py
+drwxrwx---.  2 root everybody 4.0K May 24 20:41 s43_build_backup
+-rw-rw----.  1 root everybody 1.5K May 24 20:23 s43_build_report.txt
+drwxrwx---.  2 root everybody 4.0K May 27 09:33 s43_core
+-rw-rw----.  1 root everybody 2.5K May 25 18:50 s43_debug.log
+-rw-rw----.  1 root everybody  473 May 24 20:41 s43_enum_patch_report.txt
+-rw-rw----.  1 root everybody 2.5K May 25 18:46 s43_live.log
+-rw-rw----.  1 root everybody  170 May 25 19:53 s43_live_test.log
+drwxrwx---.  2 root everybody 4.0K May 27 08:42 s43_non_exchange_diag_20260527_084222
+-rw-rw----.  1 root everybody  461 May 24 20:38 s43_nooplock_force_patch_report.txt
+-rw-rw----.  1 root everybody  482 May 24 20:32 s43_nooplock_patch_report.txt
+-rw-rw----.  1 root everybody   47 May 24 20:44 s43_obs_trace_patch_report.txt
+-rw-rw----.  1 root everybody 1.2K May 27 08:48 s43_preflight.sh
+-rw-rw----.  1 root everybody  575 May 27 08:50 s43_preflight_20260527_085012.out
+-rw-rw----.  1 root everybody  575 May 27 08:51 s43_preflight_20260527_085102.out
+-rw-rw----.  1 root everybody  575 May 27 08:53 s43_preflight_20260527_085337.out
+-rw-rw----.  1 root everybody  575 May 27 09:03 s43_preflight_20260527_090335.out
+-rw-rw----.  1 root everybody  349 May 24 20:34 s43_rebuild_header_report.txt
+-rw-rw----.  1 root everybody  240 May 25 15:25 s43_rebuild_report.txt
+-rw-rw----.  1 root everybody 2.5K May 25 18:42 s43_run.log
+-rw-rw----.  1 root everybody 3.6K May 26 22:22 s43_safe_runner.py
+-rw-rw----.  1 root everybody 4.9K May 26 22:23 s43_safe_runner_report.json
+-rw-rw----.  1 root everybody 2.5K May 26 15:48 s43_v2_step1_check.sh
+-rw-rw----.  1 root everybody 1.2K May 26 15:50 s43_v2_step1_report_20260526_155017.txt
+-rw-rw----.  1 root everybody  174 May 26 15:53 s43_v2_step2_signal_20260526_155302.log
+-rw-rw----.  1 root everybody 2.0K May 26 15:52 s43_v2_step2_signal_patch.sh
+-rw-rw----.  1 root everybody  210 May 26 15:56 s43_v2_step2b_signal_20260526_155559.log
+-rw-rw----.  1 root everybody 3.2K May 26 15:55 s43_v2_step2b_signal_patch.sh
+-rw-rw----.  1 root everybody 7.3K May 26 15:59 s43_v2_step3_place_order_patch.sh
+-rw-rw----.  1 root everybody  442 May 26 15:59 s43_v2_step3_place_order_report_20260526_155928.txt
+-rw-rw----.  1 root everybody 9.8K May 26 16:05 s43_v2_step3b_place_order_patch.sh
+-rw-rw----.  1 root everybody 6.8K May 26 16:11 s43_v2_step3b_repatch_place_order.sh
+-rw-rw----.  1 root everybody 2.1K May 26 16:13 s43_v2_step3b_repatch_report_20260526_161301.txt
+-rw-rw----.  1 root everybody  953 May 27 08:46 s43_watch_api.sh
+-rw-rw----.  1 root everybody  366 May 27 09:10 s43_watch_nohup.out
+-rw-rw----.  1 root everybody  575 May 27 09:10 s43_watch_status.tmp
+-rw-rw----.  1 root everybody 3.6K May 26 13:18 s4_diag_tiny.txt
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:38 s6.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:41 s7.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:39 s9.py
+-rw-rw----.  1 root everybody  466 May 27 00:49 scan.out
+-rw-rw----.  1 root everybody 7.0K May 26 21:21 scan_s43_place_order_calls.py
+-rw-rw----.  1 root everybody   81 May 27 00:54 selftest.out
+-rw-rw----.  1 root everybody 6.2K May 26 21:21 smoke_s43_place_order_signatures.py
+-rw-rw----.  1 root everybody  575 May 27 00:39 status.out
+-rw-rw----.  1 root everybody  575 May 27 08:36 status_reason.out
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:29 supreme_backup
+-rw-rw----.  1 root everybody 3.0K Mar 15 15:36 supreme_log.txt
+drwxrwx---.  2 root everybody 4.0K Mar 15 15:29 supreme_stable
+-rw-rw----.  1 root everybody 4.1K May 26 22:13 termux_next_autopatch.py
+-rw-rw----.  1 root everybody 3.9K May 26 19:22 test_final_check.py
+-rw-rw----.  1 root everybody 2.9K May 26 19:06 test_final_check.py.bak_add_sell_reduce_only_tests
+-rw-rw----.  1 root everybody 4.2K May 26 19:18 test_final_check.py.bak_convert_sell_override_test
+-rw-rw----.  1 root everybody 4.2K May 26 19:18 test_final_check.py.bak_convert_sell_override_test_v2
+-rw-rw----.  1 root everybody 4.1K May 26 19:11 test_final_check.py.bak_debug_sell_override_response
+-rw-rw----.  1 root everybody 4.1K May 26 19:15 test_final_check.py.bak_debug_sell_override_response_v2
+-rw-rw----.  1 root everybody 4.2K May 26 19:16 test_final_check.py.bak_fix_bad_debug_newline
+-rw-rw----.  1 root everybody 4.1K May 26 19:09 test_final_check.py.bak_fix_sell_qty_keyword
+-rw-rw----.  1 root everybody 4.1K May 26 19:13 test_final_check.py.bak_sell_override_unique_cid
+-rw-rw----.  1 root everybody 2.9K May 26 18:40 test_final_check.py.bak_test_expect_forwarded
+-rw-rw----.  1 root everybody 2.9K May 26 19:04 test_final_check.py.bak_test_expect_forwarded_v2
+-rw-rw----.  1 root everybody 3.9K May 26 19:24 test_final_check.py.good_param_forwarding
+-rw-rw----.  1 root everybody 1.9K May 26 17:31 test_order_flow.py
+-rw-rw----.  1 root everybody 2.1K May 26 17:34 test_place_order_payload.py
+-rw-rw----.  1 root everybody 2.8K May 27 07:14 token_debug.out
+-rw-rw----.  1 root everybody 2.8K May 27 01:09 token_debug_clean.out
+-rw-rw----.  1 root everybody 2.8K May 27 01:14 token_debug_final.out
+-rw-rw----.  1 root everybody 2.9K May 27 08:20 token_real_debug.out
+-rw-rw----.  1 root everybody 5.7K Mar 15 15:39 ultimate_dev_lab.py
+-rw-rw----.  1 root everybody 2.3K Mar 15 15:39 ultimate_lab_log.txt
+-rw-rw----.  1 root everybody 3.2K Mar 15 18:58 ultra_guardian41.py
+-rw-rw----.  1 root everybody 2.3K Mar 15 19:11 ultra_guardian41_AI.py
+-rw-rw----.  1 root everybody 2.3K Mar 15 19:14 ultra_guardian41_EDGE.py
+-rw-rw----.  1 root everybody 1.7K Mar 15 19:16 ultra_guardian41_EDGE2.py
+-rw-rw----.  1 root everybody 2.6K Mar 15 19:04 ultra_guardian41_FINAL.py
+-rw-rw----.  1 root everybody 2.7K Mar 15 19:02 ultra_guardian41_fix.py
+-rw-rw----.  1 root everybody 5.1K Mar 15 15:39 ultra_lab.py
+-rw-rw----.  1 root everybody 2.6M Mar 15 15:41 x134.py
+
+[S43_CORE]
+total 28K
+drwxrwx---.  2 root everybody 4.0K May 27 09:33 .
+drwxrwx---. 30 root everybody  20K May 27 09:33 ..
+-rw-rw----.  1 root everybody    0 May 27 09:33 __init__.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 api.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 cli.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 config.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 helpers.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 logging_utils.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 risk.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 status.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 trading.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 wallets.py
+-rw-rw----.  1 root everybody    0 May 27 09:33 watchdog.py
+
+[ARCHIVE]
+total 5.1M
+drwxrwx---. 2 root everybody 4.0K May 27 09:33 .
+drwxrwx---. 3 root everybody 4.0K May 27 09:33 ..
+-rw-rw----. 1 root everybody 2.5M Mar 15 15:38 90000820.py
+-rw-rw----. 1 root everybody 2.7M May 26 11:09 s42.py
+
+[COMPILE]
+s43.py: SYNTAX_OK
+s43_core/__init__.py: SYNTAX_OK
+s43_core/api.py: SYNTAX_OK
+s43_core/cli.py: SYNTAX_OK
+s43_core/config.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+s43_core/logging_utils.py: SYNTAX_OK
+s43_core/risk.py: SYNTAX_OK
+s43_core/status.py: SYNTAX_OK
+s43_core/trading.py: SYNTAX_OK
+s43_core/wallets.py: SYNTAX_OK
+s43_core/watchdog.py: SYNTAX_OK
+
+[HELP]
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+  --wallets WALLETS     Comma-separated wallet slots (e.g., 1,2,3).
+  --backtest BACKTEST   Backtest symbol from RECORD_DB_PATH ticks.
+  --db DB               DB path for backtest/record (overrides
+                        RECORD_DB_PATH).
+  --status              Print one-shot status JSON then exit (no trading).
+  --token-bot           Run Telegram token bot (independent).
+  --wallet-concurrency WALLET_CONCURRENCY
+                        Concurrent wallet cycles in one process (async
+                        gather). 0=env/default.

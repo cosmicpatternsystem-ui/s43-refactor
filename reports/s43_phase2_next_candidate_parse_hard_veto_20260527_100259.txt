@@ -1,0 +1,119 @@
+===== S43 PHASE2 NEXT CANDIDATE: _parse_hard_veto_sources_env =====
+TS=20260527_100259
+
+[DEFINITION]
+32:def _parse_hard_veto_sources_env(default_sources=None):
+
+[USAGES]
+32:def _parse_hard_veto_sources_env(default_sources=None):
+34:    Fail-safe fallback for _parse_hard_veto_sources_env.
+25543:            hard_sources, hard_sources_env_set, hard_all_sources, strict_unknown_hard = _parse_hard_veto_sources_env(_default_hard_sources)
+
+[CONTEXT AROUND DEFINITION]
+class TemporaryPause(Exception):
+    def __init__(self, message="", pause_sec=None):
+        super().__init__(message)
+        self.pause_sec = pause_sec
+import socket
+class ApiError(Exception):
+    pass
+class ApiHttpError(ApiError):
+    def __init__(self, message="", status=None, body=None, headers=None, code=None, payload=None, response=None, **kwargs):
+        super().__init__(message)
+        self.status = status
+        self.body = body
+        self.headers = headers
+        self.code = code
+        self.payload = payload
+        self.response = response
+        self.extra = dict(kwargs) if kwargs else {}
+
+
+
+def _parse_hard_veto_sources_env(default_sources=None):
+    """
+    Fail-safe fallback for _parse_hard_veto_sources_env.
+    Returns safe default values to prevent dashboard crash.
+    """
+    hard_sources = default_sources if default_sources is not None else []
+    hard_sources_env_set = False
+    hard_all_sources = list(hard_sources)
+    strict_unknown_hard = False
+    return hard_sources, hard_sources_env_set, hard_all_sources, strict_unknown_hard
+
+
+import os
+import sys
+import re
+import json
+import time
+import math
+import random
+import asyncio
+import logging
+
+# S43_DEBUG_PRINTS_GATE_V1
+def _s43_debug_print_enabled() -> bool:
+    try:
+        import os as _s43_os
+        return str(_s43_os.getenv("S43_DEBUG_PRINTS", "")).strip().lower() in (
+            "1", "true", "yes", "on", "debug"
+        )
+    except Exception:
+        return False
+
+def _s43_debug_print(*args, **kwargs):
+    if _s43_debug_print_enabled():
+        print(*args, **kwargs)
+
+
+# ### SAFE_CALLHANDLERS_GUARD_V1 ###
+# Prevent broken handlers (whose emit is still logging.Handler.emit)
+# from crashing all logging with:
+#   NotImplementedError: emit must be implemented by Handler subclasses
+if not getattr(logging, "_s43_safe_callhandlers_guard_v1", False):
+    logging._s43_safe_callhandlers_guard_v1 = True
+    _s43_orig_callHandlers = logging.Logger.callHandlers
+
+    def _s43_safe_callHandlers(self, record):
+        c = self
+        found = 0
+        while c:
+            for hdlr in list(getattr(c, "handlers", [])):
+                found += 1
+                try:
+                    if record.levelno < hdlr.level:
+                        continue
+                    try:
+                        if type(hdlr).emit is logging.Handler.emit:
+                            continue
+                    except Exception:
+                        continue
+                    hdlr.handle(record)
+                except NotImplementedError:
+                    continue
+                except Exception:
+                    continue
+            if not c.propagate:
+                c = None
+            else:
+                c = c.parent
+        if found == 0:
+            try:
+                if logging.lastResort and record.levelno >= logging.lastResort.level:
+                    logging.lastResort.handle(record)
+            except Exception:
+                pass
+
+    logging.Logger.callHandlers = _s43_safe_callHandlers
+
+import traceback
+import subprocess
+import threading
+import sqlite3
+
+[COMPILE S43]
+s43.py: SYNTAX_OK
+
+[COMPILE HELPERS]
+s43_core/helpers.py: SYNTAX_OK

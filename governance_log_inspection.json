@@ -1,0 +1,30 @@
+{
+  "log_file": "E:\\اخباری\\ssl\\s43_refactor\\governance_audit.log",
+  "exists": true,
+  "file_size_bytes": 288,
+  "total_lines": 2,
+  "empty_lines": 0,
+  "valid_json_lines": 0,
+  "invalid_json_lines": 2,
+  "json_shapes": {},
+  "top_level_keys": {},
+  "outcome_like_key_presence": 0,
+  "action_like_key_presence": 0,
+  "reason_like_key_presence": 0,
+  "sample_valid_records": [],
+  "sample_invalid_lines": [
+    {
+      "line": 1,
+      "error": "Expecting value: line 1 column 2 (char 1)",
+      "raw_preview": "[PHASE15] 2026-06-13 09:34:22 | Action: TX-999 | Outcome: REJECTED | Rule: RiskThresholdPolicy | Reason: Risk score 0.95 exceeds threshold 0.7"
+    },
+    {
+      "line": 2,
+      "error": "Expecting value: line 1 column 2 (char 1)",
+      "raw_preview": "[PHASE15] 2026-06-13 11:07:16 | Action: TX-999 | Outcome: REJECTED | Rule: RiskThresholdPolicy | Reason: Risk score 0.95 exceeds threshold 0.7"
+    }
+  ],
+  "recommendations": [
+    "No valid JSON lines were detected. The reporter expects JSON Lines format: one valid JSON object per line."
+  ]
+}

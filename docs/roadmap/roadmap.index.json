@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "repository": "s43-refactor",
+  "project": "ASO-X",
+  "canonical_source": "ROADMAP_CANONICAL.md",
+  "horizon_years": 50,
+  "status": "active",
+  "baseline_date": "2026-07-05",
+  "governance_documents": [
+    "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
+    "docs/governance/ROADMAP_STEWARDSHIP_50Y.md",
+    "docs/governance/DEPRECATION_RESISTANCE.md",
+    "docs/governance/AI_HANDOFF.md",
+    "docs/governance/CURRENT_PROJECT_BASELINE.md",
+    "docs/value/VALUE_MODEL.md"
+  ],
+  "validation": {
+    "ci_required": true,
+    "workflow": ".github/workflows/roadmap-governance-gate.yml",
+    "test_file": "tests/test_roadmap_governance.py"
+  },
+  "requirements": [
+    {
+      "id": "ASO-ROADMAP-GLOBAL-001",
+      "phase": "global",
+      "type": "top-level",
+      "title": "Canonical roadmap source",
+      "status": "active",
+      "description": "The repository must define a canonical human-readable roadmap source.",
+      "canonical_source": "docs/ROADMAP.md",
+      "evidence_required": true,
+      "ci_enforced": true
+    },
+    {
+      "id": "ASO-ROADMAP-GLOBAL-002",
+      "phase": "global",
+      "type": "global",
+      "title": "50-year roadmap horizon",
+      "status": "active",
+      "description": "The roadmap governance model must preserve a 50-year durability horizon.",
+      "evidence_required": true,
+      "ci_enforced": true
+    }
+  ],
+  "machine_readable_state": "ROADMAP_CURRENT.json",
+  "role": "traceability_index",
+  "authority": "non-prevailing"
+}

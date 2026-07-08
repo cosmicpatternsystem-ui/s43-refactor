@@ -1,0 +1,3 @@
+origin	git@github.com:cosmicpatternsystem-ui/s43-refactor.git (fetch)
+origin	git@github.com:cosmicpatternsystem-ui/s43-refactor.git (push)
+EXIT_CODE=0

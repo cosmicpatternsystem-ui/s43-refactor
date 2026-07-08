@@ -1,0 +1,42 @@
+# ASO-X / PRIME-X1: The Autonomous Economic Oracle
+
+> **Logic-over-Language | Offline-First | Auditable Governance**
+
+## Overview
+**ASO-X / PRIME-X1** represents the convergence of autonomous algorithmic governance and quantum-resilient decision-making. Designed as a **Universal Safety Core**, this platform operates as an "Offline-First" economic intelligence engine, capable of analyzing global assets, governing portfolio risk, and executing ruthless decision-making cycles without external dependencies.
+
+## Core Strategic Components
+- **ASO-X / PRIME-X1 (Universal Safety Core):** The primary decision-making brain, built on pure mathematical logic.
+- **Risk Governor:** Autonomous asset scoring and portfolio risk-mitigation protocols.
+- **Governance Ledger:** A cryptographically verified chain of operations for immutable audit trails.
+- **Offline Intelligence Core:** A zero-dependency engine for air-gapped high-stakes environments.
+
+## Operational Status: GOLD STANDARD
+- Ã¢Å“â€¦ **LOCKED & VERIFIED:** Audit chain intact.
+- Ã¢Å“â€¦ **COMPETITION-READY:** Optimized for high-frequency economic simulation.
+- Ã¢Å“â€¦ **AIR-GAPPED:** No external dependencies required.
+
+## Governance
+## Autonomous Governance Operations
+
+- `docs/governance/AUTONOMOUS_GOVERNANCE_OPERATIONS_INDEX.md` Roadmap
+This project follows a rigorous, multi-phase roadmap recorded within the `roadmap_governance_evidence/` directory.
+
+## License & Integrity
+Proprietary autonomous intelligence project. Unauthorized modification of the `ASO_CORE_LOGIC` is flagged by the integrity audit system.
+## Strategic Control Plane
+- [Commercial Controls Enforcement Pack](docs/strategy/COMMERCIAL_CONTROLS_ENFORCEMENT_PACK.md)
+- [Commercial Sovereignty & Revenue Protection Doctrine](docs/strategy/COMMERCIAL_SOVEREIGNTY_REVENUE_PROTECTION_DOCTRINE.md)
+
+- `docs/strategy/STRATEGIC_CONTROL_PLANE.md`
+## Top-Level Commercial Doctrine
+
+The commercial operating model for ASO-X is defined in:
+
+- `docs/strategy/TOP_LEVEL_COMMERCIAL_OPERATING_DOCTRINE.md`
+
+This doctrine establishes the non-negotiable commercial framework for revenue quality, market positioning, customer selection, pricing discipline, roadmap governance, and institution-grade trust.
+
+- [Global Commercial Hardening Addendum](docs/strategy/GLOBAL_COMMERCIAL_HARDENING_ADDENDUM.md)
+- [Commercial Authority Matrix](docs/strategy/COMMERCIAL_AUTHORITY_MATRIX.md) - Repo-governed authority model for discounts, concessions, margin floors, escalation, and NO-GO commercial decisions.
+- docs/strategy/GLOBAL_COMMERCIAL_RESILIENCE_FRAMEWORK.md - global commercial resilience framework for pricing, cash, commitment, and counterparty discipline.

@@ -1,0 +1,11 @@
+{
+    "product": "ASO-X Prime",
+    "license_model": "Dual-License",
+    "tiers": {
+        "community": "Audit-only, no active defense",
+        "enterprise": "Full Governance + Active Defense + Chain of Truth",
+        "sovereign": "Air-gapped, Military-grade encryption, Custom Policy Engine"
+    },
+    "compliance_certification": "Pending ISO/IEC 42001 (AI Management System)",
+    "owner": "S43 Strategic Global"
+}

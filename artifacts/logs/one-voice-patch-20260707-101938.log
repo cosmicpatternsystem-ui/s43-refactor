@@ -1,0 +1,43 @@
+﻿LOG: G:\s43_work\s43_g11_work\artifacts\logs\one-voice-patch-20260707-101938.log
+PASS: repo found: G:\s43_work\s43_g11_work
+RUN: git status --short
+RUN: git fetch --prune origin
+CAPTURE: git status --porcelain
+CAPTURE: git branch --show-current
+governance/project-one-voice-doctrine
+PASS: already on branch: governance/project-one-voice-doctrine
+PASS: files written and encoding validated
+RUN: python -m py_compile .\asoctl.py
+{
+  "artifacts": [],
+  "checks": [
+    {
+      "errors": [],
+      "name": "safe_merge_contract_terms",
+      "spec_path": "repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml",
+      "status": "pass"
+    },
+    {
+      "branch": "governance/project-one-voice-doctrine",
+      "errors": [
+        "working tree is not clean"
+      ],
+      "head": "6bc7291eed875abd0a312d04da5f3edd5f356b2d",
+      "name": "git_context",
+      "status": "fail",
+      "target": "main"
+    }
+  ],
+  "decision": "fail",
+  "generated_at": "20260707T064958Z",
+  "reasons": [
+    "working tree is not clean"
+  ],
+  "repository": {
+    "branch": "governance/project-one-voice-doctrine",
+    "head": "6bc7291eed875abd0a312d04da5f3edd5f356b2d",
+    "target": "main"
+  },
+  "schema": "aso.safe_merge.verify.v1"
+}
+FAILED: safe-merge verify failed

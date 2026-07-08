@@ -1,0 +1,45 @@
+name: Artifact Retention Scheduled Audit
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scheduled-artifact-retention-audit:
+    name: Assert scheduled artifact retention evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+
+      - name: Compile artifact retention validator and tests
+        run: |
+          python -m py_compile tools/artifact_retention_check.py
+          python -m py_compile tests/test_artifact_retention.py
+          python -m py_compile tests/test_artifact_retention_negative.py
+          python -m py_compile tests/test_artifact_retention_ci_gate.py
+          python -m py_compile tests/test_artifact_retention_scheduled_audit.py
+
+      - name: Run artifact retention tests
+        run: |
+          python -m pytest tests/test_artifact_retention.py tests/test_artifact_retention_negative.py tests/test_artifact_retention_ci_gate.py tests/test_artifact_retention_scheduled_audit.py -q
+
+      - name: Validate artifact retention sample evidence
+        run: |
+          python tools/artifact_retention_check.py

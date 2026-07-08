@@ -1,0 +1,43 @@
+name: Documentation or policy request
+description: Request documentation, roadmap, policy, or governance updates
+title: "docs: "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What documentation or policy update is needed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Relevant files
+      description: List any known files or paths.
+      placeholder: |
+        - README.md
+        - AUDIT/...
+        - .github/workflows/...
+    validations:
+      required: false
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is this update needed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How do we know this is complete?
+      placeholder: |
+        - Required document updated
+        - CI remains green
+        - No ruleset changes unless explicitly approved

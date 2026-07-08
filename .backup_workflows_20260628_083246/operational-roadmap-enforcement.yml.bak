@@ -1,0 +1,42 @@
+name: Operational Roadmap Enforcement
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  roadmap:
+    name: Assert operational roadmap contract
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate committed roadmap schema
+        shell: pwsh
+        run: ./scripts/validate-roadmap.ps1
+
+      - name: Regenerate roadmap deterministically
+        shell: pwsh
+        run: ./scripts/update-roadmap.ps1
+
+      - name: Assert roadmap is current
+        shell: bash
+        run: |
+          if ! git diff --exit-code -- ROADMAP_CURRENT.json; then
+            echo "::error::ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
+            exit 1
+          fi
+
+      - name: Debug roadmap state before regenerate
+        shell: pwsh
+        run: |
+          git rev-parse HEAD
+          git status --short
+          git diff -- ROADMAP_CURRENT.json scripts/validate-roadmap.ps1 scripts/test-roadmap.ps1 scripts/update-roadmap.ps1
+          Get-Content ROADMAP_CURRENT.json -TotalCount 60
+

@@ -1,0 +1,14 @@
+PHASE 10 NEXT EDIT QUEUE
+
+Status:
+Awaiting exact user instruction for the next local edit.
+
+Template for next requested edit:
+- File:
+- Change:
+- Reason:
+- Commit required: yes/no
+- Suggested commit message:
+
+Safety reminder:
+Do not modify the frozen Phase 9 transfer package unless a new package is intentionally created later.

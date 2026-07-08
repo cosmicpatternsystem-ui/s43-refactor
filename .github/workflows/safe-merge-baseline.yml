@@ -1,0 +1,53 @@
+name: safe-merge-baseline
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: safe-merge-baseline-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  safe-merge-check:
+    name: Safe Merge Baseline
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run safe merge baseline check
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $checkOutput = & pwsh -NoProfile -ExecutionPolicy Bypass -File tools/safe_merge_check.ps1
+          $checkExitCode = $LASTEXITCODE
+          $checkOutput | Set-Content -Path safe-merge-check.json -Encoding utf8
+          "## Safe Merge Baseline Check" >> $env:GITHUB_STEP_SUMMARY
+          "" >> $env:GITHUB_STEP_SUMMARY
+          '
+```json' >> $env:GITHUB_STEP_SUMMARY
+Get-Content safe-merge-check.json >> $env:GITHUB_STEP_SUMMARY
+'
+```' >> $env:GITHUB_STEP_SUMMARY
+          if ($checkExitCode -ne 0) {
+            exit $checkExitCode
+          }
+
+      - name: Upload safe merge check artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-merge-check
+          path: safe-merge-check.json
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,11 @@
+{
+  "created_at": "2026-07-08T00:00:00Z",
+  "evidence_id": "EV-EXAMPLE-001",
+  "evidence_type": "bootstrap",
+  "integrity": "sha256:bootstrap",
+  "producer": "asoctl",
+  "retention": "50y",
+  "schema_version": "1.0",
+  "subject": "ASO-X",
+  "summary": "Default bootstrap evidence record"
+}

@@ -1,0 +1,277 @@
+import asyncio
+import os
+import time
+import types
+import unittest
+from unittest.mock import Mock, patch
+
+import s43
+from unittest import mock
+
+
+class TestPhase7CConsumerVetoHardStop(unittest.TestCase):
+    def test_consumer_parisa_veto_sets_hold_rejects_and_returns_before_collective_boost(
+        self,
+    ):
+        sym = "BTCIRT"
+
+        old_warmup = os.environ.get("BOT_WARMUP_SEC")
+        os.environ["BOT_WARMUP_SEC"] = "1"
+
+        old_boot_ts = getattr(s43, "_BOOT_TS", None)
+        had_boot_ts = hasattr(s43, "_BOOT_TS")
+
+        try:
+            # Keep FSM warm enough for RUNNING path.
+            try:
+                setattr(s43, "_BOOT_TS", time.time() - 30.0)
+            except Exception:
+                pass
+
+            bot = object.__new__(s43.TradingBotOps)
+            bot._log = Mock()
+
+            bot.cfg = types.SimpleNamespace(
+                phoenix_enabled=True,
+                phoenix_gate_mode="soft",
+                phoenix_min_conf=0.10,
+                phoenix_entry_threshold=0.10,
+                sanity_enabled=True,
+                advanced_analytics_enabled=False,
+                max_open_positions=10,
+                data_risk_no_entry=False,
+                risk_cooldown_sec=0,
+                min_depth_latency_ms=500.0,
+                phoenix_allow_spot_ready=False,
+            )
+
+            bot.advanced_analytics = None
+
+            sig = types.SimpleNamespace(
+                action="ENTRY",
+                score=0.80,
+                confidence=0.90,
+                reason="TEST_BUY",
+                meta={},
+            )
+
+            w = types.SimpleNamespace(
+                name="test_wallet",
+                dyn_max_notional_frac=1.0,
+                cfg=types.SimpleNamespace(
+                    buy_threshold=0.20,
+                    sell_threshold=0.20,
+                    collective_max_notional_frac=1.0,
+                ),
+                positions={},
+                alpha=types.SimpleNamespace(
+                    evaluate=Mock(return_value=sig),
+                ),
+                cortex=types.SimpleNamespace(
+                    entry_multiplier=Mock(
+                        return_value=(
+                            2.0,
+                            {
+                                "veto": True,
+                                "parisa_delta": -0.50,
+                                "parisa_veto_thr": -0.35,
+                                "parisa_contrib": ["stub"],
+                            },
+                        )
+                    )
+                ),
+                last_engine_status=None,
+                last_engine_reason=None,
+                last_engine_ts=None,
+                last_event=None,
+                sanity_halt=False,
+            )
+
+            async def _fetch_spot(_sym):
+                return 100.0
+
+            bot.feed = types.SimpleNamespace(
+                fetch_spot=_fetch_spot,
+                _spot_cache={sym: 100.0},
+            )
+
+            bot.phoenix = types.SimpleNamespace(
+                update=Mock(
+                    return_value=types.SimpleNamespace(
+                        state="LONG",
+                        confidence=0.90,
+                        composite=0.50,
+                        rsi=55.0,
+                        shadow_score=None,
+                        shadow_label="TEST",
+                        ready=True,
+                        reason="TEST_READY",
+                    )
+                )
+            )
+
+            bot.sanity = types.SimpleNamespace(evaluate=Mock(return_value=(False, "")))
+
+            bot.orders = types.SimpleNamespace(
+                pending=Mock(return_value=[]),
+            )
+
+            bot.dzh = types.SimpleNamespace(
+                observe_alpha=Mock(),
+                evaluate_entry=Mock(return_value=(True, "OK")),
+            )
+
+            bot.risk = types.SimpleNamespace(
+                safe_mode=False,
+                safe_level=Mock(return_value="OFF"),
+                size_notional=Mock(return_value=1000.0),
+            )
+
+            bot.net = types.SimpleNamespace(
+                is_safe_mode=Mock(return_value=False),
+            )
+
+            # Optional state containers used by the heartbeat pipeline.
+            bot._phoenix_px_hist = {}
+            bot._cycle_best_conf = 0.0
+            bot._last_buy_ts = {}
+            bot._last_risk_ts = {}
+
+            with patch.object(
+                s43, "_obs_reject", create=True
+            ) as obs_reject, patch.object(
+                s43, "_record_why_no_trade", create=True
+            ) as record_why_no_trade, patch.object(
+                s43, "_VETO_REG", create=True
+            ) as veto_reg:
+
+                # Valid top-of-book fixture: required to avoid the NOBOOK branch
+                # before reaching consumer-side PARISA_VETO.
+                now = time.time()
+                book = types.SimpleNamespace(
+                    bid=1_000_000.0,
+                    ask=1_001_000.0,
+                    mid=1_000_500.0,
+                    spread_bps=10.0,
+                    ts=now,
+                    timestamp=now,
+                    _ts_event=now,
+                    _source="TEST_BOOK",
+                )
+
+                # Provide common wallet-level book aliases used by heartbeat pipelines.
+                w.book = book
+                w.last_book = book
+                w.top = book
+                w.orderbook = book
+                w.order_book = book
+                w.book_top = book
+
+                # Production book acquisition uses self.obsvc.peek(sym) first.
+                bot.obsvc = types.SimpleNamespace(
+                    peek=mock.Mock(return_value=book),
+                    request_refresh=mock.AsyncMock(return_value=None),
+                )
+
+                # Production fallback path uses self.feed._cache.get(sym).
+                bot.feed._cache = {sym: book}
+
+                # Provide common feed-level book providers as well.
+                if not hasattr(bot, "feed") or bot.feed is None:
+                    bot.feed = mock.Mock()
+
+                bot.feed.get_book = mock.Mock(return_value=book)
+                bot.feed.book = mock.Mock(return_value=book)
+                bot.feed.top = mock.Mock(return_value=book)
+                bot.feed.get_top = mock.Mock(return_value=book)
+                bot.feed.orderbook = mock.Mock(return_value=book)
+                bot.feed.get_orderbook = mock.Mock(return_value=book)
+                bot.feed.get_orderbook_top = mock.Mock(return_value=book)
+
+                # If fetch_spot is still probed anywhere, keep it positive.
+                bot.feed.fetch_spot = mock.AsyncMock(return_value=book.mid)
+
+                bot.recorder = None
+                asyncio.run(bot._process_symbol_heartbeat(w, sym, cash_irt=10_000.0))
+
+                self.assertTrue(
+                    w.cortex.entry_multiplier.called,
+                    "Did not reach PARISA entry_multiplier; "
+                    f"last_event={getattr(w, 'last_event', None)!r}, "
+                    f"last_engine_status={getattr(w, 'last_engine_status', None)!r}, "
+                    f"last_engine_reason={getattr(w, 'last_engine_reason', None)!r}",
+                )
+                self.assertEqual(w.last_engine_status, "Hold")
+                self.assertEqual(w.last_engine_reason, "PARISA_VETO")
+                self.assertIsInstance(w.last_engine_ts, float)
+
+                warning_messages = [
+                    str(call.args[0])
+                    for call in bot._log.warning.call_args_list
+                    if call.args
+                ]
+                self.assertTrue(
+                    any("event=PARISA_VETO" in msg for msg in warning_messages),
+                    "PARISA_VETO warning log was not emitted. warnings=%r"
+                    % warning_messages,
+                )
+
+                info_messages = [
+                    str(call.args[0])
+                    for call in bot._log.info.call_args_list
+                    if call.args
+                ]
+                self.assertFalse(
+                    any("event=COLLECTIVE_BOOST" in msg for msg in info_messages),
+                    "COLLECTIVE_BOOST was reached after veto. infos=%r" % info_messages,
+                )
+
+                obs_reject.assert_called()
+                obs_args, obs_kwargs = obs_reject.call_args
+
+                self.assertGreaterEqual(len(obs_args), 2)
+                self.assertIs(obs_args[0], w)
+                self.assertEqual(obs_args[1], "PARISA_VETO")
+                self.assertEqual(obs_kwargs.get("symbol"), sym)
+
+                reject_meta = obs_kwargs.get("meta")
+                self.assertIsInstance(reject_meta, dict)
+                self.assertEqual(reject_meta.get("sym"), sym)
+                self.assertIs(reject_meta.get("veto"), True)
+                self.assertEqual(reject_meta.get("parisa_delta"), -0.50)
+                self.assertEqual(reject_meta.get("parisa_veto_thr"), -0.35)
+                self.assertEqual(reject_meta.get("parisa_contrib"), ["stub"])
+
+                veto_reg.note.assert_called()
+                veto_blob = {
+                    "args": veto_reg.note.call_args.args,
+                    "kwargs": veto_reg.note.call_args.kwargs,
+                }
+                self.assertIn("PARISA_VETO", repr(veto_blob))
+                self.assertIn("Hold", repr(veto_blob))
+
+                record_why_no_trade.assert_called()
+                why_blob = {
+                    "args": record_why_no_trade.call_args.args,
+                    "kwargs": record_why_no_trade.call_args.kwargs,
+                }
+                self.assertIn("PARISA_VETO", repr(why_blob))
+                self.assertIn("Hold", repr(why_blob))
+
+        finally:
+            if old_warmup is None:
+                os.environ.pop("BOT_WARMUP_SEC", None)
+            else:
+                os.environ["BOT_WARMUP_SEC"] = old_warmup
+
+            try:
+                if had_boot_ts:
+                    setattr(s43, "_BOOT_TS", old_boot_ts)
+                else:
+                    delattr(s43, "_BOOT_TS")
+            except Exception:
+                pass
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

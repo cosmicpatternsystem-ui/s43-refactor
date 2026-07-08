@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+dashboard/node_modules/
+state/*.sqlite
+!state/project_memory.sqlite
+artifacts/evidence/backup/*.sqlite
+dashboard/.next/
+.next/
+dist/
+build/
+coverage/
+

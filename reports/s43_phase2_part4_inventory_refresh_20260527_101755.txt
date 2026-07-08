@@ -1,0 +1,131 @@
+===== S43 PHASE2 PART4: INVENTORY REFRESH AFTER NUMERIC HELPERS =====
+TS=20260527_101755
+
+[STEP 1] BASIC FILE STATUS
+-rw-rw----. 1 root everybody 2568669 May 27 10:15 s43.py
+-rw-rw----. 1 root everybody 2759 May 27 10:11 s43_core/helpers.py
+
+[STEP 2] CONFIRM EXTRACTED HELPERS ARE NOT DEFINED IN s43.py
+REMOVED_FROM_S43_OK: _ensure_dir
+REMOVED_FROM_S43_OK: _env_bool
+REMOVED_FROM_S43_OK: _env_float
+REMOVED_FROM_S43_OK: _env_str
+REMOVED_FROM_S43_OK: _canon_symbol
+REMOVED_FROM_S43_OK: _env_int
+REMOVED_FROM_S43_OK: _first_num
+REMOVED_FROM_S43_OK: _quantize_down
+
+[STEP 3] CONFIRM EXTRACTED HELPERS EXIST IN s43_core/helpers.py
+DEFINED_IN_HELPERS_OK: _ensure_dir
+DEFINED_IN_HELPERS_OK: _env_bool
+DEFINED_IN_HELPERS_OK: _env_float
+DEFINED_IN_HELPERS_OK: _env_str
+DEFINED_IN_HELPERS_OK: _canon_symbol
+DEFINED_IN_HELPERS_OK: _env_int
+DEFINED_IN_HELPERS_OK: _first_num
+DEFINED_IN_HELPERS_OK: _quantize_down
+
+[STEP 4] IMPORT LINE
+122:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down
+
+[STEP 5] AST INVENTORY OF TOP-LEVEL PRIVATE FUNCTIONS
+TOTAL_TOP_LEVEL_FUNCTIONS=27
+TOTAL_TOP_LEVEL_PRIVATE_FUNCTIONS=22
+
+----- SUMMARY BY CLASS -----
+dashboard_or_debug: 5
+generic_candidate: 1
+high_dependency_review: 11
+indicator_or_analytics: 1
+parser_env_candidate: 1
+runtime_async: 3
+
+----- PRIVATE FUNCTION INVENTORY -----
+    32-41     def   _parse_hard_veto_sources_env                  len=10   uses~=2    class=parser_env_candidate
+    55-62     def   _s43_debug_print_enabled                      len=8    uses~=1    class=dashboard_or_debug
+    64-66     def   _s43_debug_print                              len=3    uses~=10   class=dashboard_or_debug
+  2403-2610   async _arzplus_last_trade_price                     len=208  uses~=1    class=high_dependency_review
+  2611-3512   async _arzplus_market_snapshot                      len=902  uses~=4    class=high_dependency_review
+  5558-5576   def   _calc_rsi                                     len=19   uses~=4    class=indicator_or_analytics
+ 11097-11103  def   _obs_trace_deque                              len=7    uses~=1    class=dashboard_or_debug
+ 11573-11673  def   _record_why_no_trade                          len=101  uses~=5    class=high_dependency_review
+ 11674-11752  def   _dash_param_update                            len=79   uses~=1    class=dashboard_or_debug
+ 13356-13366  def   _run_coro_sync                                len=11   uses~=6    class=runtime_async
+ 13367-13559  def   _run_raz_entry                                len=193  uses~=1    class=high_dependency_review
+ 13885-13916  async _stress_idempotency                           len=32   uses~=1    class=high_dependency_review
+ 13918-13923  def   _s43_autopatch_probe                          len=6    uses~=0    class=high_dependency_review
+ 22668-22747  def   _recorder_child_main                          len=80   uses~=1    class=high_dependency_review
+ 22749-22760  def   _gc_freeze_after_init                         len=12   uses~=1    class=high_dependency_review
+ 27751-27765  def   _orch22_fmt_fields                            len=15   uses~=1    class=generic_candidate
+ 27766-27771  def   _orch22_log                                   len=6    uses~=12   class=high_dependency_review
+ 28042-28108  async _watchdog_loop                                len=67   uses~=1    class=runtime_async
+ 28109-28152  async _task_reset                                   len=44   uses~=1    class=runtime_async
+ 28153-28295  async _hard_reset                                   len=143  uses~=1    class=high_dependency_review
+ 28296-28329  async _run_orchestrator22_monitor                   len=34   uses~=1    class=high_dependency_review
+ 28330-28403  def   _phoenix_selftests                            len=74   uses~=2    class=dashboard_or_debug
+
+----- LOW-RISK SHORTLIST: generic/numeric/parser with body_len <= 30 and uses <= 10 -----
+    32 _parse_hard_veto_sources_env                  len=10   uses~=2    class=parser_env_candidate
+       calls=['list']
+       loads=['default_sources', 'hard_all_sources', 'hard_sources', 'hard_sources_env_set', 'list', 'strict_unknown_hard']
+ 27751 _orch22_fmt_fields                            len=15   uses~=1    class=generic_candidate
+       calls=['append', 'dumps', 'isinstance', 'items', 'join', 'len', 'replace', 'str']
+       loads=['Any', 'Dict', 'Exception', 'List', 'dict', 'fields', 'isinstance', 'json', 'k', 'len', 'list', 'parts', 's', 'str', 'tuple', 'v']
+
+----- DO-NOT-TOUCH / SPECIAL REVIEW HINTS -----
+    55 _s43_debug_print_enabled                      len=8    uses~=1    class=dashboard_or_debug
+    64 _s43_debug_print                              len=3    uses~=10   class=dashboard_or_debug
+  5558 _calc_rsi                                     len=19   uses~=4    class=indicator_or_analytics
+ 11097 _obs_trace_deque                              len=7    uses~=1    class=dashboard_or_debug
+ 11674 _dash_param_update                            len=79   uses~=1    class=dashboard_or_debug
+ 13356 _run_coro_sync                                len=11   uses~=6    class=runtime_async
+ 28042 _watchdog_loop                                len=67   uses~=1    class=runtime_async
+ 28109 _task_reset                                   len=44   uses~=1    class=runtime_async
+ 28330 _phoenix_selftests                            len=74   uses~=2    class=dashboard_or_debug
+
+[STEP 6] FOCUSED GREP FOR PREVIOUSLY MENTIONED CANDIDATES
+--- _parse_hard_veto_sources_env ---
+32:def _parse_hard_veto_sources_env(default_sources=None):
+25454:            hard_sources, hard_sources_env_set, hard_all_sources, strict_unknown_hard = _parse_hard_veto_sources_env(_default_hard_sources)
+--- _calc_rsi ---
+5311:    def _calc_rsi_pair(self, closes: List[float]) -> Tuple[float, float]:
+5315:        now = _calc_rsi(closes, p)
+5316:        prev = _calc_rsi(closes[:-5], p)
+5558:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+5616:            rsi = _calc_rsi(closes, 14)
+5815:        rsi = _calc_rsi(closes, 14)
+--- _obs_trace_deque ---
+11097:def _obs_trace_deque() -> deque:
+--- _record_why_no_trade ---
+11573:def _record_why_no_trade(bot: Any, *, wallet: str = "", sym: str = "", status: str = "", reason: str = "", meta: dict | None = None) -> None:
+16970:                    _record_why_no_trade(
+18533:                            _record_why_no_trade(
+18582:                    _record_why_no_trade(
+18904:                    _record_why_no_trade(
+22570:                _record_why_no_trade(
+--- _dash_param_update ---
+11674:def _dash_param_update(bot: Any, *, wallet: str, sym: str, fields: dict) -> None:
+18373:            _dash_param_update(
+--- _run_coro_sync ---
+13356:def _run_coro_sync(coro):
+13557:        _run_coro_sync(_status_once())
+13559:    _run_coro_sync(bot.run())
+22784:        _run_coro_sync(_run_token_telegram_bot())
+22787:        _run_coro_sync(_run_orchestrator22_monitor(args))
+22816:        _run_coro_sync(_stress_idempotency(args))
+22853:        _run_coro_sync(_run_sovereign(pt))
+
+[STEP 7] COMPILE CHECKS
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+
+[STEP 8] RUNTIME IMPORT SMOKE FOR MOVED HELPERS
+S43_IMPORT_OK
+_ensure_dir: module=s43_core.helpers
+_env_bool: module=s43_core.helpers
+_env_float: module=s43_core.helpers
+_env_str: module=s43_core.helpers
+_canon_symbol: module=s43_core.helpers
+_env_int: module=s43_core.helpers
+_first_num: module=s43_core.helpers
+_quantize_down: module=s43_core.helpers

@@ -1,0 +1,49 @@
+﻿LOG: G:\s43_work\s43_g11_work\artifacts\logs\one-voice-patch-20260707-100808.log
+PASS: repo found: G:\s43_work\s43_g11_work
+RUN: git status --short
+RUN: git fetch --prune origin
+CAPTURE: git status --porcelain
+CAPTURE: git branch --show-current
+main
+PASS: already on base branch: main
+RUN: git pull --ff-only origin main
+From https://github.com/cosmicpatternsystem-ui/s43-refactor
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+CAPTURE: git branch --list governance/project-one-voice-doctrine
+RUN: git checkout -b governance/project-one-voice-doctrine
+Switched to a new branch 'governance/project-one-voice-doctrine'
+PASS: files written and encoding validated
+RUN: python -m py_compile .\asoctl.py
+{
+  "artifacts": [],
+  "checks": [
+    {
+      "errors": [],
+      "name": "safe_merge_contract_terms",
+      "spec_path": "repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml",
+      "status": "pass"
+    },
+    {
+      "branch": "governance/project-one-voice-doctrine",
+      "errors": [],
+      "head": "6bc7291eed875abd0a312d04da5f3edd5f356b2d",
+      "name": "git_context",
+      "status": "pass",
+      "target": "main"
+    }
+  ],
+  "decision": "pass",
+  "generated_at": "20260707T063829Z",
+  "reasons": [],
+  "repository": {
+    "branch": "governance/project-one-voice-doctrine",
+    "head": "6bc7291eed875abd0a312d04da5f3edd5f356b2d",
+    "target": "main"
+  },
+  "schema": "aso.safe_merge.verify.v1"
+}
+PASS: asoctl validation passed
+RUN: git add docs/governance/PROJECT_OPERATING_DOCTRINE.md docs/roadmap/ASO_X_EXECUTION_ROADMAP.md docs/governance/PROJECT_UNITY_REGISTER.md
+fatal: pathspec 'docs/governance/PROJECT_OPERATING_DOCTRINE.md' did not match any files
+FAILED: command failed: git add docs/governance/PROJECT_OPERATING_DOCTRINE.md docs/roadmap/ASO_X_EXECUTION_ROADMAP.md docs/governance/PROJECT_UNITY_REGISTER.md

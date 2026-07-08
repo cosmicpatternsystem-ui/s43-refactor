@@ -1,0 +1,14 @@
+{
+  "subject": "market-risk.guardrail",
+  "signal_type": "risk_signal",
+  "severity": "critical",
+  "confidence": 0.95,
+  "source": "p1_validation",
+  "summary": "Critical control-risk and financial-exposure signal.",
+  "requires_human_review": true,
+  "tags": [
+    "financial_exposure",
+    "control_failure",
+    "real_money"
+  ]
+}

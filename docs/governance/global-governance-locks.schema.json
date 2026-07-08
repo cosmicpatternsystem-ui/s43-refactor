@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/global-governance-locks.schema.json",
+  "title": "Global Governance Locks Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "system",
+    "status",
+    "target_durability",
+    "source_of_truth",
+    "minimum_lock_count",
+    "failure_mode",
+    "locks"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "system": { "const": "global-governance-lock-system" },
+    "status": { "enum": ["active", "superseded", "retired"] },
+    "target_durability": { "const": "50y" },
+    "source_of_truth": { "const": "repository" },
+    "minimum_lock_count": { "type": "integer", "minimum": 32 },
+    "failure_mode": { "const": "block merge" },
+    "locks": {
+      "type": "array",
+      "minItems": 32,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "scope",
+          "owner",
+          "risk_class",
+          "retention",
+          "enforcement",
+          "change_control",
+          "failure_mode",
+          "evidence_required",
+          "supersession_allowed",
+          "deletion_allowed",
+          "immutable",
+          "source_of_truth"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^GOV-LOCK-[0-9]{3}$" },
+          "name": { "type": "string", "minLength": 3 },
+          "status": { "enum": ["active", "superseded", "retired"] },
+          "scope": { "type": "string", "minLength": 3 },
+          "owner": { "type": "string", "minLength": 3 },
+          "risk_class": { "enum": ["critical", "high", "medium", "low"] },
+          "retention": { "const": "50y" },
+          "enforcement": {
+            "type": "array",
+            "minItems": 5,
+            "items": {
+              "enum": [
+                "documentation",
+                "json-registry",
+                "schema-validation",
+                "pytest",
+                "github-actions"
+              ]
+            }
+          },
+          "change_control": { "type": "string", "minLength": 10 },
+          "failure_mode": { "const": "block merge" },
+          "evidence_required": { "type": "boolean" },
+          "supersession_allowed": { "type": "boolean" },
+          "deletion_allowed": { "const": false },
+          "immutable": { "type": "boolean" },
+          "source_of_truth": { "const": "repo" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

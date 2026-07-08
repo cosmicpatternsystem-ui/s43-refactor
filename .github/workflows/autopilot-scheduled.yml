@@ -1,0 +1,43 @@
+name: Autopilot Scheduled Readiness
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autopilot-scheduled-readiness-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  readiness:
+    name: Autopilot readiness check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run autopilot readiness status
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          python asoctl.py autopilot-status > autopilot-status.json
+          python -m json.tool autopilot-status.json > /dev/null
+
+      - name: Print readiness status
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          cat autopilot-status.json

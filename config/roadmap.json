@@ -1,0 +1,33 @@
+{
+    "project": "ASO-X",
+    "codename": "PRIME-X1",
+    "global_rank_target": "TOP-1-FINTECH-GOVERNANCE",
+    "offline_mode": "ACTIVE",
+    "milestones": [
+        {
+            "id": "M1",
+            "name": "Integrity Foundation",
+            "status": "COMPLETED",
+            "score": 100
+        },
+        {
+            "id": "M2",
+            "name": "Internal AI Core",
+            "status": "COMPLETED",
+            "score": 98
+        },
+        {
+            "id": "M3",
+            "name": "Backtesting Engine",
+            "status": "COMPLETED",
+            "score": 100
+        },
+        {
+            "id": "M4",
+            "name": "Global Competition Entry",
+            "status": "READY",
+            "target": "2026-Q3"
+        }
+    ],
+    "last_auto_update": "Thu Jun 25 12:50:22 2026"
+}

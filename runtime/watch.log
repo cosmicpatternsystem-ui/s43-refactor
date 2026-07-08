@@ -1,0 +1,138 @@
+[2026-06-25T07:39:30.516475+00:00] watchdog started cycles=3 interval=3s
+[2026-06-25T07:39:30.517478+00:00] cycle 1/3 started
+[2026-06-25T07:39:31.198924+00:00] supervisor: [2026-06-25T07:39:30.916282+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:39:31.199923+00:00] supervisor: [2026-06-25T07:39:30.918284+00:00] starting engine timeout=10s
+[2026-06-25T07:39:31.202933+00:00] supervisor: [2026-06-25T07:39:31.111645+00:00] engine exit_code=0
+[2026-06-25T07:39:31.203931+00:00] supervisor: [2026-06-25T07:39:31.112648+00:00] supervisor finished successfully
+[2026-06-25T07:39:31.204932+00:00] cycle 1/3 ok
+[2026-06-25T07:39:34.241630+00:00] cycle 2/3 started
+[2026-06-25T07:39:35.992755+00:00] supervisor: [2026-06-25T07:39:35.477397+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:39:36.011688+00:00] supervisor: [2026-06-25T07:39:35.504979+00:00] starting engine timeout=10s
+[2026-06-25T07:39:36.011688+00:00] supervisor: [2026-06-25T07:39:35.964307+00:00] engine exit_code=0
+[2026-06-25T07:39:36.012689+00:00] supervisor: [2026-06-25T07:39:35.966308+00:00] supervisor finished successfully
+[2026-06-25T07:39:36.013686+00:00] cycle 2/3 ok
+[2026-06-25T07:39:39.044877+00:00] cycle 3/3 started
+[2026-06-25T07:39:39.830714+00:00] supervisor: [2026-06-25T07:39:39.513136+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:39:39.831735+00:00] supervisor: [2026-06-25T07:39:39.517695+00:00] starting engine timeout=10s
+[2026-06-25T07:39:39.833835+00:00] supervisor: [2026-06-25T07:39:39.766045+00:00] engine exit_code=0
+[2026-06-25T07:39:39.833835+00:00] supervisor: [2026-06-25T07:39:39.767456+00:00] supervisor finished successfully
+[2026-06-25T07:39:39.835071+00:00] cycle 3/3 ok
+[2026-06-25T07:39:39.837070+00:00] watchdog_finished failures=0
+[2026-06-25T07:42:15.115193+00:00] watchdog started cycles=3 interval=3s
+[2026-06-25T07:42:15.139203+00:00] cycle 1/3 started
+[2026-06-25T07:42:17.825870+00:00] supervisor: [2026-06-25T07:42:17.627088+00:00] json guard stdout:
+[2026-06-25T07:42:17.827258+00:00] supervisor: [2026-06-25T07:42:17.627728+00:00]   [2026-06-25T07:42:17.598229+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074217Z.json
+[2026-06-25T07:42:17.831279+00:00] supervisor: [2026-06-25T07:42:17.627728+00:00]   [2026-06-25T07:42:17.598229+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:17.831357+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00]   {
+[2026-06-25T07:42:17.831357+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00]     "status": "valid",
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00]     "phases": 20
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00]   }
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.629307+00:00] starting engine timeout=10s
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.793643+00:00] engine exit_code=0
+[2026-06-25T07:42:17.833427+00:00] supervisor: [2026-06-25T07:42:17.800705+00:00] supervisor finished successfully
+[2026-06-25T07:42:17.833427+00:00] cycle 1/3 ok
+[2026-06-25T07:42:20.834414+00:00] cycle 2/3 started
+[2026-06-25T07:42:21.672697+00:00] supervisor: [2026-06-25T07:42:21.512196+00:00] json guard stdout:
+[2026-06-25T07:42:21.673699+00:00] supervisor: [2026-06-25T07:42:21.513203+00:00]   [2026-06-25T07:42:21.486696+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074221Z.json
+[2026-06-25T07:42:21.676699+00:00] supervisor: [2026-06-25T07:42:21.513203+00:00]   [2026-06-25T07:42:21.486696+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:21.677699+00:00] supervisor: [2026-06-25T07:42:21.514198+00:00]   {
+[2026-06-25T07:42:21.677699+00:00] supervisor: [2026-06-25T07:42:21.514198+00:00]     "status": "valid",
+[2026-06-25T07:42:21.678703+00:00] supervisor: [2026-06-25T07:42:21.515201+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:42:21.679705+00:00] supervisor: [2026-06-25T07:42:21.515201+00:00]     "phases": 20
+[2026-06-25T07:42:21.679705+00:00] supervisor: [2026-06-25T07:42:21.516198+00:00]   }
+[2026-06-25T07:42:21.681702+00:00] supervisor: [2026-06-25T07:42:21.517582+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:21.682559+00:00] supervisor: [2026-06-25T07:42:21.519580+00:00] starting engine timeout=10s
+[2026-06-25T07:42:21.683563+00:00] supervisor: [2026-06-25T07:42:21.649385+00:00] engine exit_code=0
+[2026-06-25T07:42:21.684560+00:00] supervisor: [2026-06-25T07:42:21.650387+00:00] supervisor finished successfully
+[2026-06-25T07:42:21.685563+00:00] cycle 2/3 ok
+[2026-06-25T07:42:24.712291+00:00] cycle 3/3 started
+[2026-06-25T07:42:25.981837+00:00] supervisor: [2026-06-25T07:42:25.490959+00:00] json guard stdout:
+[2026-06-25T07:42:25.982832+00:00] supervisor: [2026-06-25T07:42:25.491958+00:00]   [2026-06-25T07:42:25.419328+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074225Z.json
+[2026-06-25T07:42:25.986205+00:00] supervisor: [2026-06-25T07:42:25.491958+00:00]   [2026-06-25T07:42:25.420341+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:25.986972+00:00] supervisor: [2026-06-25T07:42:25.492954+00:00]   {
+[2026-06-25T07:42:25.987961+00:00] supervisor: [2026-06-25T07:42:25.493954+00:00]     "status": "valid",
+[2026-06-25T07:42:25.987961+00:00] supervisor: [2026-06-25T07:42:25.493954+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:42:26.108362+00:00] supervisor: [2026-06-25T07:42:25.494954+00:00]     "phases": 20
+[2026-06-25T07:42:26.192271+00:00] supervisor: [2026-06-25T07:42:25.494954+00:00]   }
+[2026-06-25T07:42:26.277660+00:00] supervisor: [2026-06-25T07:42:25.495955+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:42:26.338175+00:00] supervisor: [2026-06-25T07:42:25.497955+00:00] starting engine timeout=10s
+[2026-06-25T07:42:26.341168+00:00] supervisor: [2026-06-25T07:42:25.891514+00:00] engine exit_code=0
+[2026-06-25T07:42:26.344171+00:00] supervisor: [2026-06-25T07:42:25.892510+00:00] supervisor finished successfully
+[2026-06-25T07:42:26.388307+00:00] cycle 3/3 ok
+[2026-06-25T07:42:26.397647+00:00] watchdog_finished failures=0
+[2026-06-25T07:44:32.778145+00:00] watchdog started cycles=3 interval=3s
+[2026-06-25T07:44:32.787150+00:00] cycle 1/3 started
+[2026-06-25T07:44:36.618526+00:00] supervisor: [2026-06-25T07:44:34.787942+00:00] json guard stdout:
+[2026-06-25T07:44:36.642819+00:00] supervisor: [2026-06-25T07:44:34.788942+00:00]   [2026-06-25T07:44:34.758636+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074434Z.json
+[2026-06-25T07:44:36.644681+00:00] supervisor: [2026-06-25T07:44:34.788942+00:00]   [2026-06-25T07:44:34.759632+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:36.645670+00:00] supervisor: [2026-06-25T07:44:34.789939+00:00]   {
+[2026-06-25T07:44:36.649669+00:00] supervisor: [2026-06-25T07:44:34.789939+00:00]     "status": "valid",
+[2026-06-25T07:44:36.651676+00:00] supervisor: [2026-06-25T07:44:34.790936+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:36.674211+00:00] supervisor: [2026-06-25T07:44:34.790936+00:00]     "phases": 20
+[2026-06-25T07:44:36.677217+00:00] supervisor: [2026-06-25T07:44:34.791937+00:00]   }
+[2026-06-25T07:44:36.680214+00:00] supervisor: [2026-06-25T07:44:36.078921+00:00] safety gate stdout:
+[2026-06-25T07:44:36.681213+00:00] supervisor: [2026-06-25T07:44:36.078921+00:00]   {
+[2026-06-25T07:44:36.681213+00:00] supervisor: [2026-06-25T07:44:36.080927+00:00]     "status": "allowed",
+[2026-06-25T07:44:36.690775+00:00] supervisor: [2026-06-25T07:44:36.081926+00:00]     "detail": {
+[2026-06-25T07:44:36.692774+00:00] supervisor: [2026-06-25T07:44:36.082923+00:00]       "policy_version": "0.1.0",
+[2026-06-25T07:44:36.692774+00:00] supervisor: [2026-06-25T07:44:36.082923+00:00]       "mode": "safe_autonomy",
+[2026-06-25T07:44:36.693775+00:00] supervisor: [2026-06-25T07:44:36.083922+00:00]       "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:36.693775+00:00] supervisor: [2026-06-25T07:44:36.084925+00:00]       "phases": 20
+[2026-06-25T07:44:36.694775+00:00] supervisor: [2026-06-25T07:44:36.084925+00:00]     }
+[2026-06-25T07:44:36.695779+00:00] supervisor: [2026-06-25T07:44:36.085929+00:00]   }
+[2026-06-25T07:44:36.695779+00:00] supervisor: [2026-06-25T07:44:36.089927+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:36.697778+00:00] supervisor: [2026-06-25T07:44:36.092928+00:00] starting engine timeout=10s
+[2026-06-25T07:44:36.697778+00:00] supervisor: [2026-06-25T07:44:36.549023+00:00] engine exit_code=0
+[2026-06-25T07:44:36.699413+00:00] supervisor: [2026-06-25T07:44:36.555017+00:00] supervisor finished successfully
+[2026-06-25T07:44:36.699413+00:00] cycle 1/3 ok
+[2026-06-25T07:44:39.714256+00:00] cycle 2/3 started
+[2026-06-25T07:44:41.241274+00:00] supervisor: [2026-06-25T07:44:40.621062+00:00] json guard stdout:
+[2026-06-25T07:44:41.243291+00:00] supervisor: [2026-06-25T07:44:40.622058+00:00]   [2026-06-25T07:44:40.581762+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074440Z.json
+[2026-06-25T07:44:41.245277+00:00] supervisor: [2026-06-25T07:44:40.622058+00:00]   [2026-06-25T07:44:40.581762+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:41.245277+00:00] supervisor: [2026-06-25T07:44:40.623064+00:00]   {
+[2026-06-25T07:44:41.246277+00:00] supervisor: [2026-06-25T07:44:40.623064+00:00]     "status": "valid",
+[2026-06-25T07:44:41.249229+00:00] supervisor: [2026-06-25T07:44:40.624056+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:41.250209+00:00] supervisor: [2026-06-25T07:44:40.624056+00:00]     "phases": 20
+[2026-06-25T07:44:41.250209+00:00] supervisor: [2026-06-25T07:44:40.625056+00:00]   }
+[2026-06-25T07:44:41.251206+00:00] supervisor: [2026-06-25T07:44:41.004100+00:00] safety gate stdout:
+[2026-06-25T07:44:41.281137+00:00] supervisor: [2026-06-25T07:44:41.004100+00:00]   {
+[2026-06-25T07:44:41.284142+00:00] supervisor: [2026-06-25T07:44:41.005098+00:00]     "status": "allowed",
+[2026-06-25T07:44:41.286143+00:00] supervisor: [2026-06-25T07:44:41.005098+00:00]     "detail": {
+[2026-06-25T07:44:41.288142+00:00] supervisor: [2026-06-25T07:44:41.006098+00:00]       "policy_version": "0.1.0",
+[2026-06-25T07:44:41.295144+00:00] supervisor: [2026-06-25T07:44:41.007094+00:00]       "mode": "safe_autonomy",
+[2026-06-25T07:44:41.296140+00:00] supervisor: [2026-06-25T07:44:41.007094+00:00]       "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:41.299506+00:00] supervisor: [2026-06-25T07:44:41.007094+00:00]       "phases": 20
+[2026-06-25T07:44:41.307511+00:00] supervisor: [2026-06-25T07:44:41.008096+00:00]     }
+[2026-06-25T07:44:41.322657+00:00] supervisor: [2026-06-25T07:44:41.008096+00:00]   }
+[2026-06-25T07:44:41.328652+00:00] supervisor: [2026-06-25T07:44:41.011098+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:41.337311+00:00] supervisor: [2026-06-25T07:44:41.013098+00:00] starting engine timeout=10s
+[2026-06-25T07:44:41.341312+00:00] supervisor: [2026-06-25T07:44:41.205982+00:00] engine exit_code=0
+[2026-06-25T07:44:41.345311+00:00] supervisor: [2026-06-25T07:44:41.208977+00:00] supervisor finished successfully
+[2026-06-25T07:44:41.351234+00:00] cycle 2/3 ok
+[2026-06-25T07:44:44.371698+00:00] cycle 3/3 started
+[2026-06-25T07:44:45.299953+00:00] supervisor: [2026-06-25T07:44:44.854952+00:00] json guard stdout:
+[2026-06-25T07:44:45.300952+00:00] supervisor: [2026-06-25T07:44:44.855956+00:00]   [2026-06-25T07:44:44.831069+00:00] valid backup saved latest=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.json stamped=G:\s43_work\s43_g11_work\runtime\backups\master_plan.valid.20260625T074444Z.json
+[2026-06-25T07:44:45.303953+00:00] supervisor: [2026-06-25T07:44:44.855956+00:00]   [2026-06-25T07:44:44.832067+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:45.303953+00:00] supervisor: [2026-06-25T07:44:44.856957+00:00]   {
+[2026-06-25T07:44:45.304954+00:00] supervisor: [2026-06-25T07:44:44.856957+00:00]     "status": "valid",
+[2026-06-25T07:44:45.305956+00:00] supervisor: [2026-06-25T07:44:44.857954+00:00]     "path": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:45.305956+00:00] supervisor: [2026-06-25T07:44:44.857954+00:00]     "phases": 20
+[2026-06-25T07:44:45.306961+00:00] supervisor: [2026-06-25T07:44:44.858958+00:00]   }
+[2026-06-25T07:44:45.306961+00:00] supervisor: [2026-06-25T07:44:45.110805+00:00] safety gate stdout:
+[2026-06-25T07:44:45.307959+00:00] supervisor: [2026-06-25T07:44:45.111018+00:00]   {
+[2026-06-25T07:44:45.308810+00:00] supervisor: [2026-06-25T07:44:45.112020+00:00]     "status": "allowed",
+[2026-06-25T07:44:45.309823+00:00] supervisor: [2026-06-25T07:44:45.112020+00:00]     "detail": {
+[2026-06-25T07:44:45.312169+00:00] supervisor: [2026-06-25T07:44:45.113022+00:00]       "policy_version": "0.1.0",
+[2026-06-25T07:44:45.313179+00:00] supervisor: [2026-06-25T07:44:45.113022+00:00]       "mode": "safe_autonomy",
+[2026-06-25T07:44:45.324123+00:00] supervisor: [2026-06-25T07:44:45.114025+00:00]       "roadmap": "G:\\s43_work\\s43_g11_work\\ROADMAP\\master_plan.json",
+[2026-06-25T07:44:45.329278+00:00] supervisor: [2026-06-25T07:44:45.114025+00:00]       "phases": 20
+[2026-06-25T07:44:45.330299+00:00] supervisor: [2026-06-25T07:44:45.115022+00:00]     }
+[2026-06-25T07:44:45.331301+00:00] supervisor: [2026-06-25T07:44:45.115022+00:00]   }
+[2026-06-25T07:44:45.331301+00:00] supervisor: [2026-06-25T07:44:45.117232+00:00] roadmap valid path=G:\s43_work\s43_g11_work\ROADMAP\master_plan.json phases=20
+[2026-06-25T07:44:45.332304+00:00] supervisor: [2026-06-25T07:44:45.119229+00:00] starting engine timeout=10s
+[2026-06-25T07:44:45.333300+00:00] supervisor: [2026-06-25T07:44:45.276026+00:00] engine exit_code=0
+[2026-06-25T07:44:45.333300+00:00] supervisor: [2026-06-25T07:44:45.278544+00:00] supervisor finished successfully
+[2026-06-25T07:44:45.334300+00:00] cycle 3/3 ok
+[2026-06-25T07:44:45.336854+00:00] watchdog_finished failures=0

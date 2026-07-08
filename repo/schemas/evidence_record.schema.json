@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "repo/schemas/evidence_record.schema.json",
+  "title": "ASO Evidence Record Schema",
+  "description": "Canonical schema for durable, reviewable evidence records associated with AI-assisted decisions and governance actions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "decision_id",
+    "decision_category",
+    "source_input_reference",
+    "ai_output_reference",
+    "governing_policy_refs",
+    "operator_disposition",
+    "final_status",
+    "owner_role",
+    "created_at_utc",
+    "secret_handling"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^evidence-[A-Za-z0-9._-]+$"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "decision_category": {
+      "type": "string",
+      "enum": [
+        "governance",
+        "safe-merge",
+        "release-readiness",
+        "roadmap",
+        "audit",
+        "ai-assisted-decision",
+        "operational"
+      ]
+    },
+    "source_input_reference": {
+      "type": "string"
+    },
+    "ai_output_reference": {
+      "type": "string"
+    },
+    "governing_policy_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "operator_disposition": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "accepted-with-limits",
+        "rejected",
+        "blocked",
+        "deferred",
+        "advisory-only"
+      ]
+    },
+    "supporting_context": {
+      "type": "string"
+    },
+    "limitations_or_uncertainty": {
+      "type": "string"
+    },
+    "final_status": {
+      "type": "string",
+      "enum": [
+        "accepted-for-promotion",
+        "accepted-for-review",
+        "advisory-only",
+        "blocked",
+        "rejected",
+        "invalid",
+        "deferred-for-review"
+      ]
+    },
+    "owner_role": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "path_or_uri",
+          "kind"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "path_or_uri": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "source-input",
+              "ai-output",
+              "policy",
+              "contract",
+              "audit",
+              "roadmap",
+              "artifact",
+              "review",
+              "other"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$"
+          }
+        }
+      }
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewed_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "secret_handling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contains_secrets",
+        "redaction_status"
+      ],
+      "properties": {
+        "contains_secrets": {
+          "type": "boolean",
+          "const": false
+        },
+        "redaction_status": {
+          "type": "string",
+          "enum": [
+            "not-required",
+            "redacted-reference-only"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

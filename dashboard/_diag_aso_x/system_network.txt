@@ -1,0 +1,202 @@
+PWD=G:\s43_work\s43_g11_work\dashboard
+
+=== IP CONFIG ===
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : DESKTOP-M7FEEOB
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+
+Ethernet adapter Ethernet:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Realtek PCIe GBE Family Controller
+   Physical Address. . . . . . . . . : A4-BA-DB-B7-63-0F
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Unknown adapter HotspotShield Network Adapter:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : HotspotShield TAP-Windows Adapter V9
+   Physical Address. . . . . . . . . : 00-FF-28-2B-CE-42
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Ethernet adapter vEthernet (WSL):
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Hyper-V Virtual Ethernet Adapter
+   Physical Address. . . . . . . . . : 00-15-5D-D9-A6-D6
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::c6b2:628b:5991:37a3%48(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 172.18.128.1(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . : 
+   DHCPv6 IAID . . . . . . . . . . . : 805311837
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-30-B7-42-BB-A4-BA-DB-B7-63-0F
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Wireless LAN adapter Local Area Connection* 1:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft Wi-Fi Direct Virtual Adapter
+   Physical Address. . . . . . . . . : F2-7B-CB-28-6D-CB
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Wireless LAN adapter Local Area Connection* 2:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft Wi-Fi Direct Virtual Adapter #2
+   Physical Address. . . . . . . . . : F2-7B-CB-28-65-CB
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Wireless LAN adapter Wi-Fi:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Broadcom 802.11n Network Adapter
+   Physical Address. . . . . . . . . : F0-7B-CB-28-6D-CB
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::c319:d3c0:8451:386%12(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 192.168.43.45(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : Friday, June 26, 2026 9:04:59 AM
+   Lease Expires . . . . . . . . . . : Friday, June 26, 2026 3:17:54 PM
+   Default Gateway . . . . . . . . . : 192.168.43.1
+   DHCP Server . . . . . . . . . . . : 192.168.43.1
+   DHCPv6 IAID . . . . . . . . . . . : 166755275
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-30-B7-42-BB-A4-BA-DB-B7-63-0F
+   DNS Servers . . . . . . . . . . . : 192.168.43.1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+
+=== DNS CLIENT SERVERS ===
+
+InterfaceAlias                InterfaceIndex AddressFamily ServerAddresses                                       
+--------------                -------------- ------------- ---------------                                       
+Ethernet                                  18 IPv4          {}                                                    
+Ethernet                                  18 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+HotspotShield Network Adapter              5 IPv4          {}                                                    
+HotspotShield Network Adapter              5 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+vEthernet (WSL)                           48 IPv4          {}                                                    
+vEthernet (WSL)                           48 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+Local Area Connection* 1                  22 IPv4          {}                                                    
+Local Area Connection* 1                  22 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+Local Area Connection* 2                   8 IPv4          {}                                                    
+Local Area Connection* 2                   8 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+Wi-Fi                                     12 IPv4          {192.168.43.1}                                        
+Wi-Fi                                     12 IPv6          {}                                                    
+Loopback Pseudo-Interface 1                1 IPv4          {}                                                    
+Loopback Pseudo-Interface 1                1 IPv6          {fec0:0:0:ffff::1, fec0:0:0:ffff::2, fec0:0:0:ffff::3}
+
+
+
+
+=== ROUTE PRINT ===
+===========================================================================
+Interface List
+ 18...a4 ba db b7 63 0f ......Realtek PCIe GBE Family Controller
+  5...00 ff 28 2b ce 42 ......HotspotShield TAP-Windows Adapter V9
+ 48...00 15 5d d9 a6 d6 ......Hyper-V Virtual Ethernet Adapter
+ 22...f2 7b cb 28 6d cb ......Microsoft Wi-Fi Direct Virtual Adapter
+  8...f2 7b cb 28 65 cb ......Microsoft Wi-Fi Direct Virtual Adapter #2
+ 12...f0 7b cb 28 6d cb ......Broadcom 802.11n Network Adapter
+  1...........................Software Loopback Interface 1
+===========================================================================
+
+IPv4 Route Table
+===========================================================================
+Active Routes:
+Network Destination        Netmask          Gateway       Interface  Metric
+          0.0.0.0          0.0.0.0     192.168.43.1    192.168.43.45     50
+        127.0.0.0        255.0.0.0         On-link         127.0.0.1    331
+        127.0.0.1  255.255.255.255         On-link         127.0.0.1    331
+  127.255.255.255  255.255.255.255         On-link         127.0.0.1    331
+     172.18.128.0    255.255.240.0         On-link      172.18.128.1    271
+     172.18.128.1  255.255.255.255         On-link      172.18.128.1    271
+   172.18.143.255  255.255.255.255         On-link      172.18.128.1    271
+     192.168.43.0    255.255.255.0         On-link     192.168.43.45    306
+    192.168.43.45  255.255.255.255         On-link     192.168.43.45    306
+   192.168.43.255  255.255.255.255         On-link     192.168.43.45    306
+        224.0.0.0        240.0.0.0         On-link         127.0.0.1    331
+        224.0.0.0        240.0.0.0         On-link     192.168.43.45    306
+        224.0.0.0        240.0.0.0         On-link      172.18.128.1    271
+  255.255.255.255  255.255.255.255         On-link         127.0.0.1    331
+  255.255.255.255  255.255.255.255         On-link     192.168.43.45    306
+  255.255.255.255  255.255.255.255         On-link      172.18.128.1    271
+===========================================================================
+Persistent Routes:
+  None
+
+IPv6 Route Table
+===========================================================================
+Active Routes:
+ If Metric Network Destination      Gateway
+  1    331 ::1/128                  On-link
+ 12    306 fe80::/64                On-link
+ 48    271 fe80::/64                On-link
+ 12    306 fe80::c319:d3c0:8451:386/128
+                                    On-link
+ 48    271 fe80::c6b2:628b:5991:37a3/128
+                                    On-link
+  1    331 ff00::/8                 On-link
+ 12    306 ff00::/8                 On-link
+ 48    271 ff00::/8                 On-link
+===========================================================================
+Persistent Routes:
+  None
+
+
+=== NETSTAT (LISTENING ONLY) ===
+
+  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       360
+  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
+  TCP    0.0.0.0:1025           0.0.0.0:0              LISTENING       776
+  TCP    0.0.0.0:5002           0.0.0.0:0              LISTENING       12136
+  TCP    0.0.0.0:5040           0.0.0.0:0              LISTENING       6484
+  TCP    0.0.0.0:5357           0.0.0.0:0              LISTENING       4
+  TCP    0.0.0.0:7070           0.0.0.0:0              LISTENING       14640
+  TCP    0.0.0.0:7680           0.0.0.0:0              LISTENING       7812
+  TCP    0.0.0.0:49664          0.0.0.0:0              LISTENING       792
+  TCP    0.0.0.0:49665          0.0.0.0:0              LISTENING       704
+  TCP    0.0.0.0:49666          0.0.0.0:0              LISTENING       1336
+  TCP    0.0.0.0:49667          0.0.0.0:0              LISTENING       1900
+  TCP    0.0.0.0:49668          0.0.0.0:0              LISTENING       3116
+  TCP    127.0.0.1:1001         0.0.0.0:0              LISTENING       4
+  TCP    127.0.0.1:1725         0.0.0.0:0              LISTENING       14528
+  TCP    127.0.0.1:5001         0.0.0.0:0              LISTENING       2860
+  TCP    127.0.0.1:7427         0.0.0.0:0              LISTENING       7544
+  TCP    127.0.0.1:23402        0.0.0.0:0              LISTENING       3920
+  TCP    127.0.0.1:57880        0.0.0.0:0              LISTENING       14148
+  TCP    172.18.128.1:139       0.0.0.0:0              LISTENING       4
+  TCP    192.168.43.45:139      0.0.0.0:0              LISTENING       4
+  TCP    [::]:135               [::]:0                 LISTENING       360
+  TCP    [::]:445               [::]:0                 LISTENING       4
+  TCP    [::]:1025              [::]:0                 LISTENING       776
+  TCP    [::]:5357              [::]:0                 LISTENING       4
+  TCP    [::]:7070              [::]:0                 LISTENING       14640
+  TCP    [::]:7680              [::]:0                 LISTENING       7812
+  TCP    [::]:49664             [::]:0                 LISTENING       792
+  TCP    [::]:49665             [::]:0                 LISTENING       704
+  TCP    [::]:49666             [::]:0                 LISTENING       1336
+  TCP    [::]:49667             [::]:0                 LISTENING       1900
+  TCP    [::]:49668             [::]:0                 LISTENING       3116
+  TCP    [::1]:5001             [::]:0                 LISTENING       2860
+  TCP    [::1]:42050            [::]:0                 LISTENING       14276
+
+
+

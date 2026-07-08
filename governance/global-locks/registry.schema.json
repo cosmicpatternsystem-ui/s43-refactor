@@ -1,0 +1,97 @@
+{
+    "$schema":  "https://json-schema.org/draft/2020-12/schema",
+    "$id":  "https://example.invalid/aso-x/global-governance-locks.schema.json",
+    "title":  "ASO-X Global Governance Lock Registry",
+    "type":  "object",
+    "required":  [
+                     "schema_version",
+                     "system",
+                     "lock_count",
+                     "locks"
+                 ],
+    "additionalProperties":  false,
+    "properties":  {
+                       "schema_version":  {
+                                              "type":  "string",
+                                              "pattern":  "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+                                          },
+                       "system":  {
+                                      "minLength":  1,
+                                      "type":  "string"
+                                  },
+                       "lock_count":  {
+                                          "const":  32,
+                                          "type":  "integer"
+                                      },
+                       "locks":  {
+                                     "type":  "array",
+                                     "minItems":  32,
+                                     "maxItems":  32,
+                                     "items":  {
+                                                   "type":  "object",
+                                                   "required":  [
+                                                                    "id",
+                                                                    "title",
+                                                                    "status",
+                                                                    "category",
+                                                                    "severity",
+                                                                    "owner",
+                                                                    "rationale",
+                                                                    "enforcement",
+                                                                    "artifacts"
+                                                                ],
+                                                   "additionalProperties":  false,
+                                                   "properties":  {
+                                                                      "id":  {
+                                                                                 "type":  "string",
+                                                                                 "pattern":  "^GOV-LOCK-[0-9]{3}$"
+                                                                             },
+                                                                      "title":  {
+                                                                                    "minLength":  1,
+                                                                                    "type":  "string"
+                                                                                },
+                                                                      "status":  {
+                                                                                     "type":  "string",
+                                                                                     "enum":  [
+                                                                                                  "locked"
+                                                                                              ]
+                                                                                 },
+                                                                      "category":  {
+                                                                                       "minLength":  1,
+                                                                                       "type":  "string"
+                                                                                   },
+                                                                      "severity":  {
+                                                                                       "type":  "string",
+                                                                                       "enum":  [
+                                                                                                    "blocking"
+                                                                                                ]
+                                                                                   },
+                                                                      "owner":  {
+                                                                                    "minLength":  1,
+                                                                                    "type":  "string"
+                                                                                },
+                                                                      "rationale":  {
+                                                                                        "minLength":  1,
+                                                                                        "type":  "string"
+                                                                                    },
+                                                                      "enforcement":  {
+                                                                                          "minItems":  1,
+                                                                                          "items":  {
+                                                                                                        "minLength":  1,
+                                                                                                        "type":  "string"
+                                                                                                    },
+                                                                                          "type":  "array"
+                                                                                      },
+                                                                      "artifacts":  {
+                                                                                        "minItems":  1,
+                                                                                        "items":  {
+                                                                                                      "minLength":  1,
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                        "type":  "array"
+                                                                                    }
+                                                                  }
+                                               }
+                                 }
+                   }
+}

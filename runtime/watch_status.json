@@ -1,0 +1,10 @@
+{
+  "project": "ASO",
+  "watchdog": "active",
+  "status": "watchdog_finished",
+  "detail": {
+    "cycles": 3,
+    "failures": 0
+  },
+  "updated_at": "2026-06-25T07:44:45.335299+00:00"
+}

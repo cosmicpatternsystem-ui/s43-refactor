@@ -1,0 +1,325 @@
+# PHASE14 Governance Core Review
+
+Generated: 2026-06-13T07:24:35.3166101+03:30
+
+
+============================================================
+FILE: .\governance\__init__.py
+============================================================
+
+L1: from .decisions import GovernanceDecision, validate_decision
+L2: from .risk_guard import evaluate_risk
+L3:
+L4: __all__ = ["GovernanceDecision", "validate_decision", "evaluate_risk"]
+
+============================================================
+FILE: .\governance\decisions.py
+============================================================
+
+L1: from dataclasses import dataclass
+L2:
+L3:
+L4: ALLOWED_SEVERITIES = {"info", "warning", "critical"}
+L5: ALLOWED_MODES = {"dry_run", "enforce", "disabled"}
+L6:
+L7:
+L8: @dataclass
+L9: class GovernanceDecision:
+L10:     allowed: bool
+L11:     severity: str
+L12:     reason: str
+L13:     rule_id: str
+L14:     mode: str
+L15:     metadata: dict
+L16:     timestamp: str
+L17:
+L18:
+L19: def validate_decision(decision: GovernanceDecision) -> None:
+L20:     if not isinstance(decision.allowed, bool):
+L21:         raise ValueError("allowed must be a bool")
+L22:
+L23:     if not isinstance(decision.severity, str):
+L24:         raise ValueError("severity must be a string")
+L25:     if decision.severity not in ALLOWED_SEVERITIES:
+L26:         raise ValueError("severity is invalid")
+L27:
+L28:     if not isinstance(decision.reason, str):
+L29:         raise ValueError("reason must be a string")
+L30:
+L31:     if not isinstance(decision.rule_id, str):
+L32:         raise ValueError("rule_id must be a string")
+L33:
+L34:     if not isinstance(decision.mode, str):
+L35:         raise ValueError("mode must be a string")
+L36:     if decision.mode not in ALLOWED_MODES:
+L37:         raise ValueError("mode is invalid")
+L38:
+L39:     if not isinstance(decision.metadata, dict):
+L40:         raise ValueError("metadata must be a dict")
+L41:
+L42:     if not isinstance(decision.timestamp, str):
+L43:         raise ValueError("timestamp must be a string")
+
+============================================================
+FILE: .\governance\risk_guard.py
+============================================================
+
+L1: from datetime import datetime, timezone
+L2:
+L3: from .decisions import GovernanceDecision, validate_decision
+L4:
+L5:
+L6: def _timestamp() -> str:
+L7:     return datetime.now(timezone.utc).isoformat()
+L8:
+L9:
+L10: def _decision(
+L11:     *,
+L12:     allowed: bool,
+L13:     severity: str,
+L14:     reason: str,
+L15:     rule_id: str,
+L16:     mode: str,
+L17:     metadata: dict | None = None,
+L18: ) -> GovernanceDecision:
+L19:     decision = GovernanceDecision(
+L20:         allowed=allowed,
+L21:         severity=severity,
+L22:         reason=reason,
+L23:         rule_id=rule_id,
+L24:         mode=mode,
+L25:         metadata=metadata or {},
+L26:         timestamp=_timestamp(),
+L27:     )
+L28:     validate_decision(decision)
+L29:     return decision
+L30:
+L31:
+L32: def evaluate_risk(context: dict, mode: str = "dry_run") -> GovernanceDecision:
+L33:     if not isinstance(context, dict):
+L34:         return _decision(
+L35:             allowed=False,
+L36:             severity="critical",
+L37:             rule_id="RG001",
+L38:             reason="invalid_context_type",
+L39:             mode=mode,
+L40:             metadata={"context_type": type(context).__name__},
+L41:         )
+L42:
+L43:     if mode == "disabled":
+L44:         return _decision(
+L45:             allowed=True,
+L46:             severity="info",
+L47:             reason="Risk Guard disabled",
+L48:             rule_id="RG000",
+L49:             mode="disabled",
+L50:             metadata={},
+L51:         )
+L52:
+L53:     if mode not in {"dry_run", "enforce", "disabled"}:
+L54:         return _decision(
+L55:             allowed=False,
+L56:             severity="warning",
+L57:             reason="Invalid mode",
+L58:             rule_id="RG001",
+L59:             mode="dry_run",
+L60:             metadata={"requested_mode": mode},
+L61:         )
+L62:
+L63:     if not context:
+L64:         return _decision(
+L65:             allowed=False,
+L66:             severity="warning",
+L67:             reason="Missing risk context",
+L68:             rule_id="RG001",
+L69:             mode="dry_run",
+L70:             metadata={},
+L71:         )
+L72:
+L73:     exposure = context.get("exposure")
+L74:     if exposure is not None and exposure > 1.0:
+L75:         return _decision(
+L76:             allowed=False,
+L77:             severity="warning",
+L78:             reason="Abnormal exposure signal detected",
+L79:             rule_id="RG002",
+L80:             mode="dry_run",
+L81:             metadata={"exposure": exposure},
+L82:         )
+L83:
+L84:     failure_count = context.get("failure_count")
+L85:     if failure_count is not None and failure_count >= 5:
+L86:         return _decision(
+L87:             allowed=False,
+L88:             severity="warning",
+L89:             reason="Repeated failure signal detected",
+L90:             rule_id="RG003",
+L91:             mode="dry_run",
+L92:             metadata={"failure_count": failure_count},
+L93:         )
+L94:
+L95:     drawdown = context.get("drawdown")
+L96:     if drawdown is not None and drawdown >= 0.35:
+L97:         return _decision(
+L98:             allowed=False,
+L99:             severity="critical",
+L100:             reason="Critical drawdown signal detected",
+L101:             rule_id="RG004",
+L102:             mode="dry_run",
+L103:             metadata={"drawdown": drawdown},
+L104:         )
+L105:
+L106:     return _decision(
+L107:         allowed=True,
+L108:         severity="info",
+L109:         reason="No risk condition detected",
+L110:         rule_id="RG000",
+L111:         mode="dry_run",
+L112:         metadata={},
+L113:     )
+
+============================================================
+FILE: .\tests\test_governance_decision_contract.py
+============================================================
+
+L1: from datetime import datetime, timezone
+L2:
+L3: import pytest
+L4:
+L5: from governance.decisions import GovernanceDecision, validate_decision
+L6:
+L7:
+L8: def make_decision(**overrides):
+L9:     base = GovernanceDecision(
+L10:         allowed=True,
+L11:         severity="info",
+L12:         reason="No risk condition detected",
+L13:         rule_id="RG000",
+L14:         mode="dry_run",
+L15:         metadata={},
+L16:         timestamp=datetime.now(timezone.utc).isoformat(),
+L17:     )
+L18:     data = base.__dict__.copy()
+L19:     data.update(overrides)
+L20:     return GovernanceDecision(**data)
+L21:
+L22:
+L23: def test_validate_decision_accepts_valid_decision():
+L24:     decision = make_decision()
+L25:     validate_decision(decision)
+L26:
+L27:
+L28: def test_validate_decision_requires_allowed_bool():
+L29:     decision = make_decision(allowed="yes")
+L30:     with pytest.raises(ValueError):
+L31:         validate_decision(decision)
+L32:
+L33:
+L34: def test_validate_decision_requires_valid_severity():
+L35:     decision = make_decision(severity="urgent")
+L36:     with pytest.raises(ValueError):
+L37:         validate_decision(decision)
+L38:
+L39:
+L40: def test_validate_decision_requires_valid_mode():
+L41:     decision = make_decision(mode="live")
+L42:     with pytest.raises(ValueError):
+L43:         validate_decision(decision)
+L44:
+L45:
+L46: def test_validate_decision_requires_string_reason():
+L47:     decision = make_decision(reason=123)
+L48:     with pytest.raises(ValueError):
+L49:         validate_decision(decision)
+L50:
+L51:
+L52: def test_validate_decision_requires_string_rule_id():
+L53:     decision = make_decision(rule_id=999)
+L54:     with pytest.raises(ValueError):
+L55:         validate_decision(decision)
+L56:
+L57:
+L58: def test_validate_decision_requires_dict_metadata():
+L59:     decision = make_decision(metadata=[])
+L60:     with pytest.raises(ValueError):
+L61:         validate_decision(decision)
+L62:
+L63:
+L64: def test_validate_decision_requires_string_timestamp():
+L65:     decision = make_decision(timestamp=None)
+L66:     with pytest.raises(ValueError):
+L67:         validate_decision(decision)
+
+============================================================
+FILE: .\tests\test_risk_guard_validation.py
+============================================================
+
+L1: import pytest
+L2:
+L3: from governance.decisions import GovernanceDecision, validate_decision
+L4:
+L5:
+L6: def test_governance_decision_exposes_required_fields():
+L7:     decision = GovernanceDecision(
+L8:         allowed=True,
+L9:         severity="info",
+L10:         reason="No risk condition detected",
+L11:         rule_id="RG000",
+L12:         mode="dry_run",
+L13:         metadata={},
+L14:         timestamp="2025-01-01T00:00:00+00:00",
+L15:     )
+L16:
+L17:     assert decision.allowed is True
+L18:     assert decision.severity == "info"
+L19:     assert decision.reason == "No risk condition detected"
+L20:     assert decision.rule_id == "RG000"
+L21:     assert decision.mode == "dry_run"
+L22:     assert decision.metadata == {}
+L23:     assert decision.timestamp == "2025-01-01T00:00:00+00:00"
+L24:
+L25:
+L26: @pytest.mark.parametrize("severity", ["info", "warning", "critical"])
+L27: def test_validate_decision_allows_expected_severities(severity):
+L28:     decision = GovernanceDecision(
+L29:         allowed=True,
+L30:         severity=severity,
+L31:         reason="ok",
+L32:         rule_id="RG000",
+L33:         mode="dry_run",
+L34:         metadata={},
+L35:         timestamp="2025-01-01T00:00:00+00:00",
+L36:     )
+L37:     validate_decision(decision)
+L38:
+L39:
+L40: @pytest.mark.parametrize("mode", ["dry_run", "enforce", "disabled"])
+L41: def test_validate_decision_allows_expected_modes(mode):
+L42:     decision = GovernanceDecision(
+L43:         allowed=True,
+L44:         severity="info",
+L45:         reason="ok",
+L46:         rule_id="RG000",
+L47:         mode=mode,
+L48:         metadata={},
+L49:         timestamp="2025-01-01T00:00:00+00:00",
+L50:     )
+L51:     validate_decision(decision)
+
+============================================================
+Git Verification
+============================================================
+
+Branch:
+phase14-governance-integration-implementation
+
+Latest commits:
+58bc87d docs: remove trailing whitespace from slice 14.1 candidate points
+e91d303 docs: collect phase 14 slice 14.1 candidate integration points
+299a2e9 docs: add phase 14 slice 14.1 implementation map
+97b222f docs: initialize phase 14 governance integration implementation
+e251d34 Phase 13 governance integration readiness (#5)
+
+Status:
+?? PHASE14_CANDIDATE_POINTS_COMPACT_REVIEW.txt
+?? PHASE14_CANDIDATE_POINTS_EXTRACT_FOR_REVIEW.txt

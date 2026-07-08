@@ -1,0 +1,7 @@
+﻿commit d2116bfc9d977401f9cdfb3aa6013a675c50ca5e
+Author:     S.Saead Lajevardy <cosmicpatternsystem@gmail.com>
+AuthorDate: Mon Jun 15 08:25:40 2026 +0330
+Commit:     S.Saead Lajevardy <cosmicpatternsystem@gmail.com>
+CommitDate: Mon Jun 15 08:25:40 2026 +0330
+
+    docs: record phase18 skipped test root-cause deferral

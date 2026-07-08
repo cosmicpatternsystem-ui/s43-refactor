@@ -1,0 +1,22 @@
+{
+  "project": "ASO",
+  "policy_version": "0.1.0",
+  "mode": "safe_autonomy",
+  "hard_stops": {
+    "emergency_stop_file": "runtime/EMERGENCY_STOP",
+    "require_valid_roadmap": true,
+    "minimum_phases": 1
+  },
+  "allowed_autonomy_level": {
+    "operations": "execute_with_guardrails",
+    "tactical": "execute_with_audit",
+    "strategic": "recommend_or_execute_only_if_policy_allows"
+  },
+  "forbidden_actions": [
+    "delete_runtime_audit",
+    "disable_supervisor_timeout",
+    "run_engine_without_supervisor",
+    "ignore_emergency_stop",
+    "overwrite_roadmap_without_backup"
+  ]
+}

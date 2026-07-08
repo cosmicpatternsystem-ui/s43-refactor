@@ -1,0 +1,179 @@
+=== Phase 3A Post-Move Inventory Refresh ===
+PWD=/sdcard/notebook
+DATE=Wed May 27 10:39:10 +0330 2026
+
+=== basic file status ===
+-rw-rw----. 1 root everybody 2567633 May 27 10:34 s43.py
+-rw-rw----. 1 root everybody    3299 May 27 10:20 s43_core/helpers.py
+-rw-rw----. 1 root everybody     586 May 27 10:33 s43_core/indicators.py
+
+=== s43_core imports in s43.py ===
+122:from s43_core.indicators import _calc_rsi
+123:from s43_core.helpers import _ensure_dir, _env_bool, _env_float, _env_str, _canon_symbol, _env_int, _first_num, _quantize_down, _orch22_fmt_fields
+
+=== _calc_rsi grep checks ===
+--- s43.py local def check ---
+--- indicators.py def check ---
+4:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+--- all _calc_rsi refs in s43.py ---
+122:from s43_core.indicators import _calc_rsi
+5312:    def _calc_rsi_pair(self, closes: List[float]) -> Tuple[float, float]:
+5316:        now = _calc_rsi(closes, p)
+5317:        prev = _calc_rsi(closes[:-5], p)
+5447:        rsi_now, rsi_prev = self._calc_rsi_pair(closes)
+5598:            rsi = _calc_rsi(closes, 14)
+5797:        rsi = _calc_rsi(closes, 14)
+--- all _calc_rsi refs in indicators.py ---
+4:def _calc_rsi(prices: List[float], period: int = 14) -> float:
+
+=== indicators.py full content ===
+from typing import List
+
+
+def _calc_rsi(prices: List[float], period: int = 14) -> float:
+    if len(prices) < period + 1:
+        return 50.0
+    gains = 0.0
+    losses = 0.0
+    for i in range(-period, 0):
+        ch = float(prices[i]) - float(prices[i - 1])
+        if ch > 0:
+            gains += ch
+        else:
+            losses += abs(ch)
+    avg_gain = gains / period
+    avg_loss = losses / period
+    if avg_loss <= 0:
+        if avg_gain <= 0:
+            return 50.0
+        return 100.0
+    rs = avg_gain / (avg_loss + 1e-9)
+    return float(100.0 - (100.0 / (1.0 + rs)))
+
+=== compile checks ===
+s43.py: SYNTAX_OK
+s43_core/helpers.py: SYNTAX_OK
+s43_core/indicators.py: SYNTAX_OK
+
+=== help check ===
+HELP_RC=0
+usage: raz_trader_plus [-h] [--live] [--dry-run] [--watchdog] [--dash]
+                       [--record]
+                       [--recorder-timeout-sec RECORDER_TIMEOUT_SEC]
+                       [--symbols SYMBOLS] [--wallets WALLETS]
+                       [--backtest BACKTEST] [--db DB] [--status]
+                       [--token-bot] [--wallet-concurrency WALLET_CONCURRENCY]
+                       [cmd]
+
+positional arguments:
+  cmd                   Command (default: trade). Examples: trade, stress,
+                        tokenbot, monitor, extract-parisa, doctor, selftest,
+                        backtest, factsheet, ...
+
+options:
+  -h, --help            show this help message and exit
+  --live                Enable live trading (LIVE_TRADING=1).
+  --dry-run             (Disabled) DRY mode is not available in this LIVE-only
+                        build.
+  --watchdog            Run parent watchdog supervisor.
+  --dash                Enable TUI dashboard (requires rich).
+  --record              Enable tick recorder (SQLite).
+  --recorder-timeout-sec RECORDER_TIMEOUT_SEC
+                        Recorder child sqlite connect timeout (sec).
+  --symbols SYMBOLS     Comma-separated symbols override (e.g.,
+                        BTCIRT,USDTIRT).
+
+=== runtime resolution checks ===
+_ensure_dir: exists=1 callable=1 module=s43_core.helpers
+_env_bool: exists=1 callable=1 module=s43_core.helpers
+_env_float: exists=1 callable=1 module=s43_core.helpers
+_env_str: exists=1 callable=1 module=s43_core.helpers
+_canon_symbol: exists=1 callable=1 module=s43_core.helpers
+_env_int: exists=1 callable=1 module=s43_core.helpers
+_first_num: exists=1 callable=1 module=s43_core.helpers
+_quantize_down: exists=1 callable=1 module=s43_core.helpers
+_orch22_fmt_fields: exists=1 callable=1 module=s43_core.helpers
+_calc_rsi: exists=1 callable=1 module=s43_core.indicators
+
+=== AST inventory: top-level functions in s43.py ===
+S43_TOP_LEVEL_FUNC_COUNT=25
+
+32:41 def _parse_hard_veto_sources_env
+55:62 def _s43_debug_print_enabled
+64:66 def _s43_debug_print
+2404:2611 async _arzplus_last_trade_price
+2612:3513 async _arzplus_market_snapshot
+11079:11085 def _obs_trace_deque
+11555:11655 def _record_why_no_trade
+11656:11734 def _dash_param_update
+13320:13337 def build_parser
+13338:13348 def _run_coro_sync
+13349:13541 def _run_raz_entry
+13805:13864 def get_arzplus_token
+13867:13898 async _stress_idempotency
+13900:13905 def _s43_autopatch_probe
+22650:22729 def _recorder_child_main
+22731:22742 def _gc_freeze_after_init
+22744:22859 def run
+27733:27738 def _orch22_log
+28009:28075 async _watchdog_loop
+28076:28119 async _task_reset
+28120:28262 async _hard_reset
+28263:28296 async _run_orchestrator22_monitor
+28297:28370 def _phoenix_selftests
+28371:28380 def main
+28398:28415 def clamp
+
+=== private top-level functions only ===
+S43_PRIVATE_TOP_LEVEL_FUNC_COUNT=20
+32:41 def _parse_hard_veto_sources_env
+55:62 def _s43_debug_print_enabled
+64:66 def _s43_debug_print
+2404:2611 async _arzplus_last_trade_price
+2612:3513 async _arzplus_market_snapshot
+11079:11085 def _obs_trace_deque
+11555:11655 def _record_why_no_trade
+11656:11734 def _dash_param_update
+13338:13348 def _run_coro_sync
+13349:13541 def _run_raz_entry
+13867:13898 async _stress_idempotency
+13900:13905 def _s43_autopatch_probe
+22650:22729 def _recorder_child_main
+22731:22742 def _gc_freeze_after_init
+27733:27738 def _orch22_log
+28009:28075 async _watchdog_loop
+28076:28119 async _task_reset
+28120:28262 async _hard_reset
+28263:28296 async _run_orchestrator22_monitor
+28297:28370 def _phoenix_selftests
+
+=== AST inventory: s43_core/helpers.py functions ===
+HELPERS_TOP_LEVEL_FUNC_COUNT=9
+6:16 def _ensure_dir
+19:32 def _env_bool
+35:49 def _env_float
+52:63 def _env_str
+66:75 def _canon_symbol
+78:92 def _env_int
+96:103 def _first_num
+105:108 def _quantize_down
+111:125 def _orch22_fmt_fields
+
+=== AST inventory: s43_core/indicators.py functions ===
+INDICATORS_TOP_LEVEL_FUNC_COUNT=1
+4:22 def _calc_rsi
+
+=== final assertions ===
+calc_rsi_import_present=1
+calc_rsi_s43_local_def_removed=1
+calc_rsi_indicators_def_exists=1
+calc_rsi_runtime_from_indicators=1
+_ensure_dir_ok=1
+_env_bool_ok=1
+_env_float_ok=1
+_env_str_ok=1
+_canon_symbol_ok=1
+_env_int_ok=1
+_first_num_ok=1
+_quantize_down_ok=1
+_orch22_fmt_fields_ok=1
