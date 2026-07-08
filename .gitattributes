@@ -1,17 +1,5 @@
-# Enforce LF for all roadmap-critical and source files (50-year durability)
 * text=auto eol=lf
-
-*.py    text eol=lf
-*.ps1   text eol=lf
-*.json  text eol=lf
-*.yml   text eol=lf
-*.yaml  text eol=lf
-*.md    text eol=lf
-*.txt   text eol=lf
-
-# Binary assets — never normalize
-*.jpg   binary
-*.png   binary
-# Audit logs: integrity-sensitive, hash-chained. Never normalize bytes.
-runtime/audit/** -text
-*.jsonl -text
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.ps1 text eol=lf
