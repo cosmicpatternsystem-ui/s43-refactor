@@ -149,7 +149,7 @@ class ASOControl:
             payload["errors"] = ["evidence record must be a JSON object"]
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 1
-        required = ["schema_version", "evidence_id", "decision_id", "decision_category", "producer", "subject", "retention"]
+        required = ["schema_version", "evidence_id", "producer", "subject", "retention"]
         missing = [k for k in required if k not in evidence]
         if missing:
             payload["decision"] = "fail"
@@ -248,7 +248,7 @@ class ASOControl:
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 1
 
-        required = ["schema_version", "evidence_id", "decision_id", "decision_category", "producer", "subject", "retention"]
+        required = ["schema_version", "evidence_id", "producer", "subject", "retention"]
         missing = [k for k in required if k not in evidence]
         if missing:
             payload["decision"] = "fail"
