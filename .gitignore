@@ -4,3 +4,5 @@ governance/reports/*.bak
 
 # Runtime audit streams should not be committed accidentally
 governance/reports/*.jsonl
+__pycache__/
+*.py[cod]
