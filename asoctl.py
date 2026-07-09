@@ -334,34 +334,74 @@ class ASOControl:
         self,
         ledger_dir: Path = LEDGER_DIR,
         schema_path: Path = LEDGER_SCHEMA_PATH,
+        strict_history: bool = False,
+        latest_only: bool = False,
+        jsonl_audit: bool = False,
     ) -> int:
         ledger_dir = Path(ledger_dir)
         schema_path = Path(schema_path)
+
+        if latest_only and strict_history:
+            verification_mode = "latest_only_strict_history"
+        elif latest_only:
+            verification_mode = "latest_only"
+        elif strict_history:
+            verification_mode = "strict_history"
+        else:
+            verification_mode = "historical_scan"
 
         payload = {
             "schema": "aso.evidence.ledger.verify.v1",
             "ledger_dir": ledger_dir.as_posix(),
             "schema_path": schema_path.as_posix(),
+            "verification_mode": verification_mode,
             "errors": [],
         }
+
+        def emit(obj, audit_kind=None):
+            if audit_kind == "entry" and not jsonl_audit:
+                return
+
+            outbound = dict(obj)
+
+            if jsonl_audit and audit_kind:
+                outbound["audit_kind"] = audit_kind
+
+            if jsonl_audit and audit_kind == "entry":
+                outbound["verification_mode"] = verification_mode
+
+            if jsonl_audit and audit_kind == "summary" and "entries" in outbound:
+                outbound["entry_count"] = len(outbound["entries"])
+                outbound.pop("entries", None)
+
+            if jsonl_audit:
+                print(json.dumps(outbound, ensure_ascii=True, sort_keys=True, separators=(",", ":")))
+            else:
+                print(json.dumps(outbound, ensure_ascii=True, sort_keys=True, indent=2))
 
         if not ledger_dir.exists():
             payload["decision"] = "error"
             payload["status"] = "error"
             payload["reason"] = f"ledger directory not found: {ledger_dir.as_posix()}"
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            emit(payload, audit_kind="summary")
             return 2
 
-        files = sorted([fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0], key=lambda p: p.name)
+        files = sorted(
+            [fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0],
+            key=lambda p: p.name,
+        )
         if not files:
             payload["decision"] = "fail"
             payload["status"] = "fail"
             payload["reason"] = "no ledger entries found"
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            emit(payload, audit_kind="summary")
             return 1
 
         previous_hash = ""
-        verified = 0
+        results = []
+        evaluatable_results = []
+        broken_count = 0
+
         required_fields = [
             "ledger_version",
             "entry_id",
@@ -379,80 +419,176 @@ class ASOControl:
         ]
 
         for fp in files:
+            entry_payload = {
+                "ledger_entry_path": fp.as_posix(),
+            }
+
             try:
                 entry = json.loads(fp.read_text(encoding="utf-8-sig"))
             except json.JSONDecodeError as exc:
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = f"invalid JSON in ledger entry: {exc}"
-                payload["ledger_entry_path"] = fp.as_posix()
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+                broken_count += 1
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = f"invalid JSON in ledger entry: {exc}"
+                entry_payload["classification"] = "broken_entry"
+                results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
 
-            missing = [k for k in required_fields if k not in entry]
+            missing = [key for key in required_fields if key not in entry]
             if missing:
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = "missing required fields in ledger entry"
-                payload["ledger_entry_path"] = fp.as_posix()
-                payload["missing_fields"] = missing
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+                broken_count += 1
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = "missing required fields in ledger entry"
+                entry_payload["missing_fields"] = missing
+                entry_payload["classification"] = "broken_entry"
+                results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
 
             if entry["predecessor_entry_hash"] != previous_hash:
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = "predecessor hash mismatch"
-                payload["ledger_entry_path"] = fp.as_posix()
-                payload["expected_predecessor_entry_hash"] = previous_hash
-                payload["actual_predecessor_entry_hash"] = entry["predecessor_entry_hash"]
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+                broken_count += 1
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = "predecessor hash mismatch"
+                entry_payload["expected_predecessor_entry_hash"] = previous_hash
+                entry_payload["actual_predecessor_entry_hash"] = entry["predecessor_entry_hash"]
+                entry_payload["classification"] = "broken_entry"
+                results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
 
-            entry_copy = dict(entry)
-            actual_hash = entry_copy.pop("entry_hash")
-            expected_hash = self._sha256_text(self._json_c14n(entry_copy))
-            if actual_hash != expected_hash:
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = "entry hash mismatch"
-                payload["ledger_entry_path"] = fp.as_posix()
-                payload["expected_entry_hash"] = expected_hash
-                payload["actual_entry_hash"] = actual_hash
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+            canonical_entry = dict(entry)
+            expected_entry_hash = canonical_entry.pop("entry_hash")
+            actual_entry_hash = self._sha256_text(self._json_c14n(canonical_entry))
+            if actual_entry_hash != expected_entry_hash:
+                broken_count += 1
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = "entry hash mismatch"
+                entry_payload["expected_entry_hash"] = expected_entry_hash
+                entry_payload["actual_entry_hash"] = actual_entry_hash
+                entry_payload["classification"] = "broken_entry"
+                results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
 
+            previous_hash = actual_entry_hash
             evidence_path = Path(entry["evidence_path"])
+
             if not evidence_path.exists():
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = "referenced evidence file not found"
-                payload["ledger_entry_path"] = fp.as_posix()
-                payload["referenced_evidence_path"] = entry["evidence_path"]
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+                broken_count += 1
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = "referenced evidence file not found"
+                entry_payload["referenced_evidence_path"] = entry["evidence_path"]
+                entry_payload["classification"] = "broken_entry"
+                results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
 
-            expected_evidence_hash = self._sha256_file(evidence_path)
-            if entry["evidence_hash"] != expected_evidence_hash:
-                payload["decision"] = "fail"
-                payload["status"] = "fail"
-                payload["reason"] = "evidence hash mismatch"
-                payload["ledger_entry_path"] = fp.as_posix()
-                payload["referenced_evidence_path"] = entry["evidence_path"]
-                payload["expected_evidence_hash"] = expected_evidence_hash
-                payload["actual_evidence_hash"] = entry["evidence_hash"]
-                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-                return 1
+            expected_evidence_hash = entry["evidence_hash"]
+            actual_evidence_hash = self._sha256_file(evidence_path)
 
-            previous_hash = actual_hash
-            verified += 1
+            entry_payload["referenced_evidence_path"] = entry["evidence_path"]
+            entry_payload["expected_evidence_hash"] = expected_evidence_hash
+            entry_payload["actual_evidence_hash"] = actual_evidence_hash
 
-        payload["decision"] = "pass"
-        payload["status"] = "pass"
+            if actual_evidence_hash != expected_evidence_hash:
+                entry_payload["decision"] = "fail"
+                entry_payload["status"] = "fail"
+                entry_payload["reason"] = "evidence hash mismatch"
+                entry_payload["classification"] = "stale_referenced_evidence"
+                results.append(entry_payload)
+                evaluatable_results.append(entry_payload)
+                emit(entry_payload, audit_kind="entry")
+                continue
+
+            entry_payload["decision"] = "pass"
+            entry_payload["status"] = "pass"
+            entry_payload["reason"] = "evidence hash matches"
+            results.append(entry_payload)
+            evaluatable_results.append(entry_payload)
+            emit(entry_payload, audit_kind="entry")
+
+        if latest_only:
+            selected_results = evaluatable_results[-1:] if evaluatable_results else []
+        else:
+            selected_results = list(evaluatable_results)
+
+        verified = sum(1 for item in selected_results if item.get("status") == "pass")
+        stale_count = sum(
+            1
+            for item in selected_results
+            if item.get("classification") == "stale_referenced_evidence"
+        )
+
         payload["verified_entries"] = verified
+        payload["valid_entry_count"] = verified
+        payload["stale_entry_count"] = stale_count
+        payload["broken_entry_count"] = broken_count
         payload["chain_head"] = previous_hash
-        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-        return 0
+
+        if latest_only and broken_count == 0:
+            payload["entries"] = list(selected_results)
+        else:
+            payload["entries"] = list(results)
+
+        if broken_count > 0:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["reason"] = "one or more ledger entries are structurally broken"
+            emit(payload, audit_kind="summary")
+            return 1
+
+        if latest_only:
+            if verified > 0:
+                payload["decision"] = "pass"
+                payload["status"] = "pass"
+                payload["reason"] = "latest ledger entry matches current evidence state"
+                emit(payload, audit_kind="summary")
+                return 0
+
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["reason"] = "latest ledger entry does not match current evidence state"
+            emit(payload, audit_kind="summary")
+            return 1
+
+        if strict_history:
+            if stale_count > 0:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "strict_history requires every historical ledger entry to match current evidence state"
+                emit(payload, audit_kind="summary")
+                return 1
+
+            if verified > 0:
+                payload["decision"] = "pass"
+                payload["status"] = "pass"
+                payload["reason"] = "all historical ledger entries match current evidence state"
+                emit(payload, audit_kind="summary")
+                return 0
+
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["reason"] = "no ledger entry matches current evidence state"
+            emit(payload, audit_kind="summary")
+            return 1
+
+        if verified > 0:
+            payload["decision"] = "pass"
+            payload["status"] = "pass"
+            payload["reason"] = "at least one ledger entry matches current evidence state; stale historical entries retained"
+            emit(payload, audit_kind="summary")
+            return 0
+
+        payload["decision"] = "fail"
+        payload["status"] = "fail"
+        payload["reason"] = "no ledger entry matches current evidence state"
+        emit(payload, audit_kind="summary")
+        return 1
 
     def safe_merge_verify(
         self,
@@ -657,6 +793,21 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence ledger schema path",
     )
+    evidence_ledger_verify.add_argument(
+        "--strict-history",
+        action="store_true",
+        help="Fail if any historical ledger entry is stale or broken.",
+    )
+    evidence_ledger_verify.add_argument(
+        "--latest-only",
+        action="store_true",
+        help="Verify only the latest ledger entry against the current evidence state.",
+    )
+    evidence_ledger_verify.add_argument(
+        "--jsonl-audit",
+        action="store_true",
+        help="Emit per-entry audit lines before the final summary payload.",
+    )
 
     safe_merge = subcommands.add_parser(
         "safe-merge",
@@ -720,6 +871,9 @@ def main(argv: list[str] | None = None) -> int:
             return control.evidence_ledger_verify(
                 ledger_dir=args.ledger_dir,
                 schema_path=args.schema,
+                strict_history=args.strict_history,
+                latest_only=args.latest_only,
+                jsonl_audit=args.jsonl_audit,
             )
         parser.error(f"unknown evidence command: {args.evidence_command}")
         return 2
