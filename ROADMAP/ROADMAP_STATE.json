@@ -3,5 +3,12 @@
     "authority_file":  "docs/governance/REPOSITORY_TRUTH.md",
     "default_branch":  "main",
     "current_phase":  "22.13",
-    "last_integrity_check":  "2026-07-08T21:25:26Z"
+    "last_integrity_check":  "2026-07-08T21:25:26Z",
+    "project":  "ASO-X",
+    "current_branch":  "main",
+    "phase_title":  "Phase 22.13",
+    "previous_phase":  "22.12",
+    "roadmap_sync_status":  "in_sync",
+    "next_action":  "Continue Phase 22.13 execution and keep roadmap artifacts synchronized.",
+    "updated_at":  "2026-07-09T18:58:37Z"
 }
