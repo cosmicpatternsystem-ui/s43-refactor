@@ -4,14 +4,19 @@ root = true
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
 trim_trailing_whitespace = false
 
-[*.{ps1,psm1,py,js,json,md,yml,yaml,sh}]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
+[*.ps1]
+indent_style = space
+indent_size = 4
 
-[*.jsonl]
-charset = utf-8
-insert_final_newline = true
-trim_trailing_whitespace = false
+[*.py]
+indent_style = space
+indent_size = 4
+
+[*.js]
+indent_style = space
+indent_size = 2

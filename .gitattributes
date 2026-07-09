@@ -1,19 +1,18 @@
-* text=auto eol=lf
-*.py text eol=lf
-*.json text eol=lf
-*.md text eol=lf
-*.ps1 text eol=lf
-
 * text=auto
 *.ps1 text eol=lf
 *.psm1 text eol=lf
 *.py text eol=lf
 *.js text eol=lf
 *.json text eol=lf
+*.jsonl text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
 *.sh text eol=lf
-
-runtime/audit/*.jsonl -text
-runtime/audit/*.jsonl binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.7z binary
+*.pdf binary
