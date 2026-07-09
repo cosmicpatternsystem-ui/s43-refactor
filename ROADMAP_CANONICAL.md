@@ -1,14 +1,43 @@
-# ASO-X CANONICAL ROADMAP
+# ASO-X ROADMAP CANONICAL
 
-## PHASE 3: EVIDENCE LEDGER & SIGNING (CURRENT)
-- [x] P3.1: Core Utility Consolidation
-- [x] P3.2: Evidence Record Schema & Validation
-- [x] P3.3: Ledger Verification Logic
-- [x] P3.4: Digital Signing Integration
-- [>] P3.5: Commercial Positioning & Policy Matrix (IN PROGRESS)
-- [ ] P3.6: Multi-Market Overlay Support
+## Canonical Status
+This file is the human-readable canonical roadmap view for ASO-X governance-aligned planning.
 
-## PHASE 4: AUTOPILOT & GLOBAL SCALING
-- [ ] P4.1: Autonomous Risk Mitigation
-- [ ] P4.2: Revenue-Taxing Protocol Implementation
-- [ ] P4.3: Decentralized Artifact Retention
+## Current Phase
+- Active Phase: **22.13**
+- Default Branch: **main**
+- Project: **ASO-X**
+
+## Governance Commitments
+- Repository files on the default branch are the only operational source of truth.
+- Roadmap changes must be consistent with governance contracts and validation gates.
+- Canonical roadmap updates must not contradict repository authority documents.
+- Automation must fail closed when roadmap authority is unclear.
+
+## Phase 22.13 Objectives
+- Stabilize roadmap governance contracts.
+- Preserve single-source-of-truth authority across repository artifacts.
+- Ensure validator-compatible roadmap state and release hygiene.
+- Maintain immutable audit and evidence handling rules.
+- Support safe merge automation and policy-driven repository operations.
+
+## Authority Alignment
+This document must remain consistent with:
+- docs/governance/REPOSITORY_TRUTH.md
+- ROADMAP/ROADMAP_STATE.json
+- ROADMAP_CURRENT.json
+
+If any conflict exists, the higher-authority governance document prevails and this file must be updated in the same change set.
+
+## Operational Rules
+- No chat transcript, pasted text, screenshot, or local scratch file is authoritative.
+- No runtime artifact may override committed governance documents.
+- No derivative roadmap view may override canonical roadmap truth.
+- All roadmap-affecting changes must remain repository-verifiable.
+
+## Phase 22.13 Exit Criteria
+- Governance authority documents are conflict-free.
+- Roadmap state is validator-compatible.
+- Release and PR hygiene contracts pass.
+- Audit-sensitive artifacts remain integrity-safe.
+- Canonical and machine-readable roadmap artifacts are mutually consistent.

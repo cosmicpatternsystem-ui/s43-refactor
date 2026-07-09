@@ -1,4 +1,12 @@
-﻿import pathlib
+#!/usr/bin/env python3
+"""ASO-X project control utility.
+
+Provides durable-state checks, local backups, and basic environment bootstrap
+for the ASO-X workspace.
+"""
+
+from __future__ import annotations
+
 import argparse
 import datetime as dt
 import hashlib
@@ -6,113 +14,131 @@ import json
 import os
 import shutil
 import sqlite3
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
-from aso_signing import sign_bytes, verify_bytes
 
-DB_DEFAULT_PATH = Path("state/project_memory.sqlite")
-BACKUP_DIR = Path("state/backups")
-EVIDENCE_RECORD_DEFAULT_PATH = pathlib.Path("artifacts/examples/evidence_record.example.json")
+PROJECT_NAME = "ASO-X"
+STATE_DIR = Path("runtime/state")
+DB_PATH = STATE_DIR / "project_memory.sqlite"
+BACKUP_DIR = STATE_DIR / "backups"
+SAFE_MERGE_SPEC_PATH = Path("repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml")
+SAFE_MERGE_AUDIT_DIR = Path("artifacts/audits/safe-merge")
 EVIDENCE_RECORD_SCHEMA_PATH = Path("repo/schemas/evidence_record.schema.json")
+EVIDENCE_RECORD_DEFAULT_PATH = Path("artifacts/examples/evidence_record.example.json")
 LEDGER_DIR = Path("artifacts/evidence/ledger")
 LEDGER_SCHEMA_PATH = Path("repo/schemas/evidence_ledger_entry.schema.json")
-SAFE_MERGE_AUDIT_DIR = Path("artifacts/safe-merge")
+
 
 def utc_timestamp() -> str:
-    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
-def run_git(args: list[str]) -> tuple[int, str]:
-    import subprocess
-    p = subprocess.run(["git"] + args, capture_output=True, text=True)
-    return p.returncode, p.stdout.strip()
+
+def run_git(args: list[str]) -> tuple[int, str, str]:
+    completed = subprocess.run(
+        ["git", *args],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    return completed.returncode, completed.stdout.strip(), completed.stderr.strip()
+
 
 def write_json_atomic(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temp_path = path.with_suffix(path.suffix + ".tmp")
     data = json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2) + "\n"
-    with open(temp_path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(data)
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        newline="\n",
+        delete=False,
+        dir=path.parent,
+    ) as handle:
+        handle.write(data)
+        temp_path = Path(handle.name)
     temp_path.replace(path)
 
+
 class ASOControl:
-    def __init__(self, state_dir=None) -> None:
-        self.db_path = Path(state_dir)/"ledger.db" if state_dir else DB_DEFAULT_PATH
-        self.backup_dir = Path(state_dir)/"backups" if state_dir else BACKUP_DIR
+    def __init__(self, state_dir: Path = STATE_DIR) -> None:
+        self.state_dir = state_dir
+        self.db_path = state_dir / "project_memory.sqlite"
+        self.backup_dir = state_dir / "backups"
 
     def ensure_directories(self) -> None:
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self.state_dir.mkdir(parents=True, exist_ok=True)
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
     def init(self) -> int:
         self.ensure_directories()
-        payload = {"status": "ok", "timestamp": utc_timestamp()}
-        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        print(f"[OK] {PROJECT_NAME} environment initialized")
+        print(f"[INFO] state_dir={self.state_dir}")
+        print(f"[INFO] backup_dir={self.backup_dir}")
         return 0
 
     def check(self) -> int:
-        payload = {
-            "schema": "aso.durable.check.v1",
-            "timestamp": utc_timestamp(),
-            "status": "error",
-            "errors": [],
-        }
-        if not self.db_path.exists():
-            payload["errors"].append(f"database file not found: {self.db_path.as_posix()}")
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 2
-        try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            cursor.execute("PRAGMA integrity_check;")
-            res = cursor.fetchone()
-            if res and res[0] == "ok":
-                payload["status"] = "pass"
-            else:
-                payload["status"] = "fail"
-                payload["errors"].append(f"integrity check failure: {res}")
-            conn.close()
-        except Exception as exc:
-            payload["status"] = "fail"
-            payload["errors"].append(str(exc))
+        self.ensure_directories()
+        print(f"{PROJECT_NAME} health check")
+        print(f"cwd={Path.cwd()}")
+        print(f"state_dir={self.state_dir}")
+        print(f"db_path={self.db_path}")
 
-        if payload["status"] == "pass":
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 0
-        else:
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        if not self.db_path.exists():
+            print("[WARN] project memory database not found")
             return 1
+
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                integrity = conn.execute("PRAGMA integrity_check").fetchone()
+                quick = conn.execute("PRAGMA quick_check").fetchone()
+                tables = conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+                ).fetchall()
+        except sqlite3.Error as exc:
+            print(f"[FAIL] sqlite check failed: {exc}")
+            return 2
+
+        integrity_value = integrity[0] if integrity else "missing"
+        quick_value = quick[0] if quick else "missing"
+        table_names = ", ".join(row[0] for row in tables) if tables else "(none)"
+
+        print(f"integrity_check={integrity_value}")
+        print(f"quick_check={quick_value}")
+        print(f"tables={table_names}")
+
+        if integrity_value == "ok" and quick_value == "ok":
+            print("[OK] durable state is healthy")
+            return 0
+
+        print("[FAIL] durable state integrity check returned a non-ok result")
+        return 3
 
     def backup(self) -> int:
-        payload = {
-            "schema": "aso.durable.backup.v1",
-            "timestamp": utc_timestamp(),
-            "status": "error",
-            "errors": [],
-        }
+        self.ensure_directories()
+
         if not self.db_path.exists():
-            payload["errors"].append("source database not found")
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 2
-        try:
-            self.ensure_directories()
-            ts = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-            dest = self.backup_dir / f"project_memory_{ts}.sqlite"
-            shutil.copy2(self.db_path, dest)
-            payload["status"] = "pass"
-            payload["backup_path"] = dest.as_posix()
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 0
-        except Exception as exc:
-            payload["status"] = "fail"
-            payload["errors"].append(str(exc))
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            print(f"[WARN] no database found at {self.db_path}")
             return 1
 
+        backup_path = self.backup_dir / f"project_memory_{utc_timestamp()}.sqlite"
+
+        try:
+            shutil.copy2(self.db_path, backup_path)
+        except OSError as exc:
+            print(f"[FAIL] backup failed: {exc}")
+            return 2
+
+        print(f"[OK] backup created: {backup_path}")
+        return 0
+
     def autopilot_status(self) -> int:
-        repo_root = Path(__file__).parent
-        import tools.autopilot_status as autopilot_status
-        payload = autopilot_status.collect_autopilot_status(repo_root)
+        from tools.autopilot_status import collect_autopilot_status
+
+        payload = collect_autopilot_status(Path.cwd())
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
@@ -121,55 +147,48 @@ class ASOControl:
         evidence_path: Path = EVIDENCE_RECORD_DEFAULT_PATH,
         schema_path: Path = EVIDENCE_RECORD_SCHEMA_PATH,
     ) -> int:
-        evidence_path = Path(evidence_path)
-        schema_path = Path(schema_path)
+        from repo.tools.validate_evidence_record import validate_record
+
         payload = {
             "schema": "aso.evidence.validate.v1",
             "evidence_path": evidence_path.as_posix(),
             "schema_path": schema_path.as_posix(),
             "errors": [],
         }
+
+        if not schema_path.exists():
+            payload["decision"] = "error"
+            payload["reason"] = f"schema not found: {schema_path.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
         if not evidence_path.exists():
             payload["decision"] = "error"
-            payload["status"] = "error"
             payload["reason"] = f"evidence record not found: {evidence_path.as_posix()}"
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 2
+
         try:
-            evidence = json.loads(evidence_path.read_text(encoding="utf-8-sig"))
-        except json.JSONDecodeError as exc:
+            validate_record(evidence_path)
+        except ValueError as exc:
             payload["decision"] = "fail"
-            payload["status"] = "fail"
             payload["errors"] = [str(exc)]
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 1
-        if not isinstance(evidence, dict):
+        except json.JSONDecodeError as exc:
             payload["decision"] = "fail"
-            payload["status"] = "fail"
-            payload["errors"] = ["evidence record must be a JSON object"]
+            payload["errors"] = [str(exc)]
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 1
-        required = ["schema_version", "evidence_id", "producer", "subject", "retention"]
-        missing = [k for k in required if k not in evidence]
-        if missing:
-            payload["decision"] = "fail"
-            payload["status"] = "fail"
-            payload["errors"] = [f"missing required field: {k}" for k in missing]
-            payload["missing_fields"] = missing
+        except OSError as exc:
+            payload["decision"] = "error"
+            payload["reason"] = str(exc)
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 1
-        retention = evidence.get("retention")
-        if retention in (None, "", []):
-            payload["decision"] = "fail"
-            payload["status"] = "fail"
-            payload["errors"] = ["retention must be present"]
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 1
+            return 2
+
         payload["decision"] = "pass"
-        payload["status"] = "pass"
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
-
     def _json_c14n(self, value) -> str:
         return json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
 
@@ -297,15 +316,6 @@ class ASOControl:
         }
 
         entry["entry_hash"] = self._sha256_text(self._json_c14n(entry))
-        # Digital Signing Integration
-        private_key_path = locals().get("private_key_path") or globals().get("private_key_path")
-        # Extract signing parameters dynamically if passed in kwargs or parsed arguments
-        sign_payload = self._json_c14n({k: v for k, v in entry.items() if k not in ("signature", "signature_algorithm", "signature_key_id")}).encode("utf-8")
-        if private_key_path is not None:
-            entry["signature_algorithm"] = "ed25519"
-            entry["signature_key_id"] = "default-ed25519"
-            entry["signature"] = sign_bytes(Path(private_key_path), sign_payload)
-
         self._atomic_write_text(
             out_path,
             json.dumps(entry, ensure_ascii=True, sort_keys=True, indent=2) + "\n",
@@ -325,7 +335,6 @@ class ASOControl:
         ledger_dir: Path = LEDGER_DIR,
         schema_path: Path = LEDGER_SCHEMA_PATH,
     ) -> int:
-        import aso_signing
         ledger_dir = Path(ledger_dir)
         schema_path = Path(schema_path)
 
@@ -451,48 +460,125 @@ class ASOControl:
         artifact_dir: Path = SAFE_MERGE_AUDIT_DIR,
         write_artifact: bool = True,
     ) -> int:
-        artifact_dir = Path(artifact_dir)
-        payload = {
-            "schema": "aso.safemerge.verify.v1",
-            "target_branch": target,
-            "timestamp": utc_timestamp(),
-            "status": "error",
-            "errors": [],
-        }
-        rc, out = run_git(["status", "--porcelain"])
-        if rc != 0:
-            payload["errors"].append(f"git status command failed: {out}")
+        timestamp = utc_timestamp()
+        reasons: list[str] = []
+        checks: list[dict] = []
+        artifacts: list[str] = []
+
+        repo_root_rc, repo_root, repo_root_err = run_git(["rev-parse", "--show-toplevel"])
+        if repo_root_rc != 0:
+            payload = {
+                "schema": "aso.safe_merge.verify.v1",
+                "generated_at": timestamp,
+                "decision": "fail",
+                "reasons": ["not inside a git repository", repo_root_err],
+                "checks": [],
+                "artifacts": [],
+                "repository": {
+                    "branch": "",
+                    "target": target,
+                    "head": "",
+                },
+            }
             print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
             return 2
-        if out:
-            payload["status"] = "fail"
-            payload["errors"].append("workspace has uncommitted changes")
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 1
-        rc, merge_base = run_git(["merge-base", "HEAD", f"origin/{target}"])
-        if rc != 0:
-            rc, merge_base = run_git(["merge-base", "HEAD", target])
-        if rc != 0:
-            payload["errors"].append(f"failed to find merge base with {target}")
-            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-            return 2
-        payload["status"] = "pass"
-        payload["merge_base"] = merge_base
+
+        root = Path(repo_root)
+        branch_rc, branch, branch_err = run_git(["branch", "--show-current"])
+        head_rc, head, head_err = run_git(["rev-parse", "HEAD"])
+        status_rc, status, status_err = run_git(["status", "--porcelain"])
+
+        if branch_rc != 0:
+            reasons.append(f"unable to determine current branch: {branch_err}")
+        if head_rc != 0:
+            reasons.append(f"unable to determine HEAD: {head_err}")
+        if status_rc != 0:
+            reasons.append(f"unable to inspect working tree: {status_err}")
+        elif status:
+            reasons.append("working tree is not clean")
+
+        spec_path = root / SAFE_MERGE_SPEC_PATH
+        required_terms = [
+            "pr_only_mutation",
+            "required_checks_green",
+            "post_merge_audit_retained",
+            "immutable_traceability",
+            "artifacts/audits/",
+        ]
+
+        spec_errors: list[str] = []
+        if not spec_path.exists():
+            spec_errors.append("Missing SAFE_MERGE_AUTOMATION_SPEC.yaml")
+        else:
+            spec_text = spec_path.read_text(encoding="utf-8")
+            for term in required_terms:
+                if term not in spec_text:
+                    spec_errors.append(f"Missing required safe-merge term: {term}")
+
+        checks.append(
+            {
+                "name": "safe_merge_contract_terms",
+                "status": "pass" if not spec_errors else "fail",
+                "errors": spec_errors,
+                "spec_path": SAFE_MERGE_SPEC_PATH.as_posix(),
+            }
+        )
+        reasons.extend(spec_errors)
+
+        git_context_errors = [
+            reason
+            for reason in reasons
+            if reason.startswith("unable to") or reason == "working tree is not clean"
+        ]
+        checks.append(
+            {
+                "name": "git_context",
+                "status": "pass" if not git_context_errors else "fail",
+                "errors": git_context_errors,
+                "branch": branch,
+                "target": target,
+                "head": head,
+            }
+        )
+
+        decision = "pass" if not reasons else "fail"
+        artifact_path = artifact_dir / f"aso-safe-merge-verify-{timestamp}.json"
         if write_artifact:
-            artifact_dir.mkdir(parents=True, exist_ok=True)
-            write_json_atomic(artifact_dir / "safe_merge_audit.json", payload)
+            artifacts.append(artifact_path.as_posix())
+
+        payload = {
+            "schema": "aso.safe_merge.verify.v1",
+            "generated_at": timestamp,
+            "decision": decision,
+            "reasons": reasons,
+            "checks": checks,
+            "artifacts": artifacts,
+            "repository": {
+                "branch": branch,
+                "target": target,
+                "head": head,
+            },
+        }
+
+        if write_artifact:
+            write_json_atomic(root / artifact_path, payload)
+
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
-        return 0
+        return 0 if decision == "pass" else 1
 
     def status(self) -> int:
-        print("ASO-X local state")
+        self.ensure_directories()
+        print(f"{PROJECT_NAME} local state")
         print(f"db_exists={self.db_path.exists()}")
         print(f"backup_dir_exists={self.backup_dir.exists()}")
-        backups = sorted(self.backup_dir.glob("project_memory_*.sqlite")) if self.backup_dir.exists() else []
+
+        backups = sorted(self.backup_dir.glob("project_memory_*.sqlite"))
         print(f"backup_count={len(backups)}")
-        latest_backup = backups[-1].name if backups else ""
-        print(f"latest_backup={latest_backup}")
+        if backups:
+            print(f"latest_backup={backups[-1]}")
+
         return 0
+
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -532,7 +618,6 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence schema path",
     )
-
     evidence_ledger_record = evidence_subcommands.add_parser(
         "ledger-record",
         help="Record an immutable evidence ledger entry",
@@ -599,6 +684,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     return parser
 
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -644,13 +731,15 @@ def main(argv: list[str] | None = None) -> int:
                 artifact_dir=args.artifact_dir,
                 write_artifact=not args.no_artifact,
             )
-        parser.error(f"unknown safe-merge command: {args.safe_merge_command}")
-        return 2
 
     parser.error(f"unknown command: {args.command}")
     return 2
 
+
+
+def cmd_roadmap(args):
+    import subprocess
+    return subprocess.run([sys.executable, 'scripts/roadmap_generator.py']).returncode
+
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
