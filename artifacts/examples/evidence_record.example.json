@@ -1,6 +1,9 @@
 {
   "schema_version": "1.0.0",
   "evidence_id": "evidence-p3.2-schema-baseline-example",
+  "producer": "asoctl",
+  "subject": "ASO-X",
+  "retention": "50y",
   "decision_id": "decision-p3.2-evidence-record-schema-baseline",
   "decision_category": "governance",
   "source_input_reference": "AUDIT/AI_DECISION_EVIDENCE_CONTRACT.md",
