@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import os
 import shutil
@@ -27,6 +28,8 @@ SAFE_MERGE_SPEC_PATH = Path("repo/contracts/SAFE_MERGE_AUTOMATION_SPEC.yaml")
 SAFE_MERGE_AUDIT_DIR = Path("artifacts/audits/safe-merge")
 EVIDENCE_RECORD_SCHEMA_PATH = Path("repo/schemas/evidence_record.schema.json")
 EVIDENCE_RECORD_DEFAULT_PATH = Path("artifacts/examples/evidence_record.example.json")
+LEDGER_DIR = Path("artifacts/evidence/ledger")
+LEDGER_SCHEMA_PATH = Path("repo/schemas/evidence_ledger_entry.schema.json")
 
 
 def utc_timestamp() -> str:
@@ -186,6 +189,271 @@ class ASOControl:
         payload["decision"] = "pass"
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
+    def _json_c14n(self, value) -> str:
+        return json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+
+    def _sha256_file(self, path: Path) -> str:
+        h = hashlib.sha256()
+        with open(path, "rb") as f:
+            for chunk in iter(lambda: f.read(65536), b""):
+                h.update(chunk)
+        return "sha256:" + h.hexdigest()
+
+    def _sha256_text(self, text: str) -> str:
+        return "sha256:" + hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+    def _atomic_write_text(self, path: Path, text: str) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        tmp.replace(path)
+
+    def evidence_ledger_record(
+        self,
+        evidence_path: Path = EVIDENCE_RECORD_DEFAULT_PATH,
+        ledger_dir: Path = LEDGER_DIR,
+        schema_path: Path = LEDGER_SCHEMA_PATH,
+    ) -> int:
+        evidence_path = Path(evidence_path)
+        ledger_dir = Path(ledger_dir)
+        schema_path = Path(schema_path)
+
+        payload = {
+            "schema": "aso.evidence.ledger.record.v1",
+            "evidence_path": evidence_path.as_posix(),
+            "ledger_dir": ledger_dir.as_posix(),
+            "schema_path": schema_path.as_posix(),
+            "errors": [],
+        }
+
+        if not evidence_path.exists() and evidence_path == EVIDENCE_RECORD_DEFAULT_PATH:
+            default_evidence = {
+                "schema_version": "1.0",
+                "evidence_id": "EV-EXAMPLE-001",
+                "evidence_type": "bootstrap",
+                "created_at": "2026-07-08T00:00:00Z",
+                "producer": "asoctl",
+                "subject": "ASO-X",
+                "summary": "Default bootstrap evidence record",
+                "integrity": "sha256:bootstrap",
+                "retention": "50y"
+            }
+            self._atomic_write_text(
+                evidence_path,
+                json.dumps(default_evidence, ensure_ascii=True, sort_keys=True, indent=2) + "\n",
+            )
+
+        if not evidence_path.exists():
+            payload["decision"] = "error"
+            payload["status"] = "error"
+            payload["reason"] = f"evidence record not found: {evidence_path.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        try:
+            evidence = json.loads(evidence_path.read_text(encoding="utf-8-sig"))
+        except json.JSONDecodeError as exc:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = [str(exc)]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        if not isinstance(evidence, dict):
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = ["evidence record must be a JSON object"]
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        required = ["schema_version", "evidence_id", "producer", "subject", "retention"]
+        missing = [k for k in required if k not in evidence]
+        if missing:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["errors"] = [f"missing required field for ledger record: {k}" for k in missing]
+            payload["missing_fields"] = missing
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        retention = evidence.get("retention")
+        if isinstance(retention, dict):
+            retention_class = retention.get("class") or retention.get("policy") or "unspecified"
+        else:
+            retention_class = str(retention)
+
+        ledger_dir.mkdir(parents=True, exist_ok=True)
+        
+        unique_suffix = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        entry_id = f"LEDGER-{evidence['evidence_id']}-{unique_suffix}"
+        out_path = ledger_dir / f"{entry_id}.json"
+
+        existing = sorted([fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0], key=lambda p: p.name)
+
+        predecessor_entry_hash = ""
+        if existing:
+            last_file = existing[-1]
+            try:
+                prev = json.loads(last_file.read_text(encoding="utf-8-sig"))
+                predecessor_entry_hash = prev.get("entry_hash", "")
+            except Exception:
+                pass
+
+        entry = {
+            "ledger_version": "1.0",
+            "entry_id": entry_id,
+            "recorded_at": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
+            "evidence_id": evidence["evidence_id"],
+            "evidence_path": evidence_path.as_posix(),
+            "evidence_hash": self._sha256_file(evidence_path),
+            "validator_schema": "aso.evidence.validate.v1",
+            "validation_decision": "pass",
+            "retention_class": retention_class,
+            "producer": evidence["producer"] if isinstance(evidence["producer"], str) else self._json_c14n(evidence["producer"]),
+            "subject": evidence["subject"] if isinstance(evidence["subject"], str) else self._json_c14n(evidence["subject"]),
+            "predecessor_entry_hash": predecessor_entry_hash,
+        }
+
+        entry["entry_hash"] = self._sha256_text(self._json_c14n(entry))
+        self._atomic_write_text(
+            out_path,
+            json.dumps(entry, ensure_ascii=True, sort_keys=True, indent=2) + "\n",
+        )
+
+        payload["decision"] = "pass"
+        payload["status"] = "pass"
+        payload["entry_id"] = entry["entry_id"]
+        payload["entry_hash"] = entry["entry_hash"]
+        payload["ledger_entry_path"] = out_path.as_posix()
+        payload["predecessor_entry_hash"] = predecessor_entry_hash
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0
+
+    def evidence_ledger_verify(
+        self,
+        ledger_dir: Path = LEDGER_DIR,
+        schema_path: Path = LEDGER_SCHEMA_PATH,
+    ) -> int:
+        ledger_dir = Path(ledger_dir)
+        schema_path = Path(schema_path)
+
+        payload = {
+            "schema": "aso.evidence.ledger.verify.v1",
+            "ledger_dir": ledger_dir.as_posix(),
+            "schema_path": schema_path.as_posix(),
+            "errors": [],
+        }
+
+        if not ledger_dir.exists():
+            payload["decision"] = "error"
+            payload["status"] = "error"
+            payload["reason"] = f"ledger directory not found: {ledger_dir.as_posix()}"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 2
+
+        files = sorted([fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0], key=lambda p: p.name)
+        if not files:
+            payload["decision"] = "fail"
+            payload["status"] = "fail"
+            payload["reason"] = "no ledger entries found"
+            print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+            return 1
+
+        previous_hash = ""
+        verified = 0
+        required_fields = [
+            "ledger_version",
+            "entry_id",
+            "recorded_at",
+            "evidence_id",
+            "evidence_path",
+            "evidence_hash",
+            "validator_schema",
+            "validation_decision",
+            "retention_class",
+            "producer",
+            "subject",
+            "predecessor_entry_hash",
+            "entry_hash",
+        ]
+
+        for fp in files:
+            try:
+                entry = json.loads(fp.read_text(encoding="utf-8-sig"))
+            except json.JSONDecodeError as exc:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = f"invalid JSON in ledger entry: {exc}"
+                payload["ledger_entry_path"] = fp.as_posix()
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            missing = [k for k in required_fields if k not in entry]
+            if missing:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "missing required fields in ledger entry"
+                payload["ledger_entry_path"] = fp.as_posix()
+                payload["missing_fields"] = missing
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            if entry["predecessor_entry_hash"] != previous_hash:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "predecessor hash mismatch"
+                payload["ledger_entry_path"] = fp.as_posix()
+                payload["expected_predecessor_entry_hash"] = previous_hash
+                payload["actual_predecessor_entry_hash"] = entry["predecessor_entry_hash"]
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            entry_copy = dict(entry)
+            actual_hash = entry_copy.pop("entry_hash")
+            expected_hash = self._sha256_text(self._json_c14n(entry_copy))
+            if actual_hash != expected_hash:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "entry hash mismatch"
+                payload["ledger_entry_path"] = fp.as_posix()
+                payload["expected_entry_hash"] = expected_hash
+                payload["actual_entry_hash"] = actual_hash
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            evidence_path = Path(entry["evidence_path"])
+            if not evidence_path.exists():
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "referenced evidence file not found"
+                payload["ledger_entry_path"] = fp.as_posix()
+                payload["referenced_evidence_path"] = entry["evidence_path"]
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            expected_evidence_hash = self._sha256_file(evidence_path)
+            if entry["evidence_hash"] != expected_evidence_hash:
+                payload["decision"] = "fail"
+                payload["status"] = "fail"
+                payload["reason"] = "evidence hash mismatch"
+                payload["ledger_entry_path"] = fp.as_posix()
+                payload["referenced_evidence_path"] = entry["evidence_path"]
+                payload["expected_evidence_hash"] = expected_evidence_hash
+                payload["actual_evidence_hash"] = entry["evidence_hash"]
+                print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+                return 1
+
+            previous_hash = actual_hash
+            verified += 1
+
+        payload["decision"] = "pass"
+        payload["status"] = "pass"
+        payload["verified_entries"] = verified
+        payload["chain_head"] = previous_hash
+        print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
+        return 0
+
     def safe_merge_verify(
         self,
         target: str = "main",
@@ -350,6 +618,46 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence schema path",
     )
+    evidence_ledger_record = evidence_subcommands.add_parser(
+        "ledger-record",
+        help="Record an immutable evidence ledger entry",
+    )
+    evidence_ledger_record.add_argument(
+        "--record-path",
+        default=EVIDENCE_RECORD_DEFAULT_PATH,
+        type=Path,
+        help="Evidence record path",
+    )
+    evidence_ledger_record.add_argument(
+        "--ledger-dir",
+        default=LEDGER_DIR,
+        type=Path,
+        help="Directory for evidence ledger entries",
+    )
+    evidence_ledger_record.add_argument(
+        "--schema",
+        default=LEDGER_SCHEMA_PATH,
+        type=Path,
+        help="Evidence ledger schema path",
+    )
+
+    evidence_ledger_verify = evidence_subcommands.add_parser(
+        "ledger-verify",
+        help="Verify the evidence ledger chain",
+    )
+    evidence_ledger_verify.add_argument(
+        "--ledger-dir",
+        default=LEDGER_DIR,
+        type=Path,
+        help="Directory for evidence ledger entries",
+    )
+    evidence_ledger_verify.add_argument(
+        "--schema",
+        default=LEDGER_SCHEMA_PATH,
+        type=Path,
+        help="Evidence ledger schema path",
+    )
+
     safe_merge = subcommands.add_parser(
         "safe-merge",
         help="Safe Merge automation commands",
@@ -402,6 +710,19 @@ def main(argv: list[str] | None = None) -> int:
                 evidence_path=args.path,
                 schema_path=args.schema,
             )
+        if args.evidence_command == "ledger-record":
+            return control.evidence_ledger_record(
+                evidence_path=args.record_path,
+                ledger_dir=args.ledger_dir,
+                schema_path=args.schema,
+            )
+        if args.evidence_command == "ledger-verify":
+            return control.evidence_ledger_verify(
+                ledger_dir=args.ledger_dir,
+                schema_path=args.schema,
+            )
+        parser.error(f"unknown evidence command: {args.evidence_command}")
+        return 2
 
     if args.command == "safe-merge":
         if args.safe_merge_command == "verify":

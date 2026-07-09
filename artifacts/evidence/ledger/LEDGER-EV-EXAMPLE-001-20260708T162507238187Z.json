@@ -1,0 +1,15 @@
+{
+  "entry_hash": "sha256:684bf961cde322d8e420135383488cb71683883d78ec3b54450420c266f66b78",
+  "entry_id": "LEDGER-EV-EXAMPLE-001-20260708T162507238187Z",
+  "evidence_hash": "sha256:bd4329625419945f17e34ab8929d9ccc5fcc2f5ee223f58cd0d45faee1b8a801",
+  "evidence_id": "EV-EXAMPLE-001",
+  "evidence_path": "artifacts/examples/evidence_record.example.json",
+  "ledger_version": "1.0",
+  "predecessor_entry_hash": "sha256:cfe47886a3d4f3746ab191a26cc751c8d0d8bf4a3d9fc3616a161e3215997ea2",
+  "producer": "human-operator",
+  "recorded_at": "2026-07-08T16:25:07.238187Z",
+  "retention_class": "50y",
+  "subject": "system-alignment",
+  "validation_decision": "pass",
+  "validator_schema": "aso.evidence.validate.v1"
+}

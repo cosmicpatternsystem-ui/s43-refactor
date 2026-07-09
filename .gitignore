@@ -1,7 +1,7 @@
 # Python cache
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.pyc
 *.pyo
 *.pyd
@@ -47,46 +47,10 @@ AUTO_SNAPSHOT_LAST_STATUS.json
 # Phase 17 runtime artifacts - never commit
 *.runtime.log
 *.runtime.tmp
-AUDIT/phase17_patch_v2_backups_*/
 
-# Local transfer/archive artifacts
-S43_LAPTOP_USB_TRANSFER_20260607_071516/
-*.tar.gz
-dashboard/.next/
-dashboard/node_modules/
+# Local transient governance diagnostics
+governance/reports/*.tmp
+governance/reports/*.bak
 
-# ASO-X local durable runtime state
-project_memory.sqlite
-runtime/state/backups/
-dashboard/_diag_aso_x/
-dashboard/dashboard_bridge.py.bak_20260626_145456
-
-# Roadmap runtime backups
-.roadmap_backups/
-
-# governance backup artifacts
-*.governance-backup.json
-
-# Roadmap archive and retired files
-.roadmap_archive/
-*.RETIRED.txt
-archive_legacy.ps1
-roadmap_canonicalize.ps1
-
-# Runtime data and journals (Phase B.3+)
-data/
-data/journal/
-AUDIT/ARCHIVE/
-
-# Temp / backup artifacts
-*.bak_*
-*.backup_*
-patch_log_*.txt
-patch-yaml-fix*.ps1
-
-_recovery_autopilot_*/
-
-.runtime/
-*.old
-*.orig
-*.rej
+# Governance report streams should not be committed accidentally
+governance/reports/*.jsonl

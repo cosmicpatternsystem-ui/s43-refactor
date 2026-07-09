@@ -1,0 +1,67 @@
+{
+  "authority": {
+    "chat_memory": "disposable",
+    "precedence": [
+      "constitution",
+      "roadmap",
+      "policy",
+      "gates",
+      "artifacts"
+    ],
+    "source_of_truth": "repository"
+  },
+  "category": "commercial_governance_and_evidence_infrastructure",
+  "decision_id": "ASOX-COMMERCIAL-DECISION-0001",
+  "enterprise_kpis": [
+    "machine_verifiable_evidence_coverage",
+    "policy_enforcement_coverage",
+    "tamper_detection_coverage",
+    "audit_reconstruction_time",
+    "retention_survivability",
+    "ledger_verification_reliability",
+    "governance_bypass_prevention",
+    "artifact_provenance_completeness"
+  ],
+  "not_positioned_as": [
+    "generic_devops_tool",
+    "cli_utility_only",
+    "patch_helper",
+    "chat_memory_workflow",
+    "project_specific_script"
+  ],
+  "positioning": "global_trust_infrastructure_platform",
+  "prioritization_rule": {
+    "required_value_increase": [
+      "trust",
+      "auditability",
+      "immutability",
+      "enforceability",
+      "retention_durability",
+      "tamper_evidence",
+      "operator_accountability",
+      "independent_verifiability"
+    ]
+  },
+  "product_pillars": [
+    "governance_engine",
+    "evidence_operating_system",
+    "durable_trust_layer"
+  ],
+  "revenue_model": [
+    "platform_license",
+    "assurance_modules",
+    "enterprise_control_plane",
+    "professional_services"
+  ],
+  "status": "active",
+  "target_segments": [
+    "fintech",
+    "treasury_operations",
+    "regulated_saas",
+    "insurance_operations",
+    "financial_reporting_pipelines",
+    "critical_enterprise_change_management",
+    "long_retention_audit_environments",
+    "high_assurance_delivery"
+  ]
+}
