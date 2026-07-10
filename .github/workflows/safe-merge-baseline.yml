@@ -35,15 +35,12 @@ jobs:
           $checkOutput | Set-Content -Path safe-merge-check.json -Encoding utf8
           "## Safe Merge Baseline Check" >> $env:GITHUB_STEP_SUMMARY
           "" >> $env:GITHUB_STEP_SUMMARY
-          '
-```json' >> $env:GITHUB_STEP_SUMMARY
-Get-Content safe-merge-check.json >> $env:GITHUB_STEP_SUMMARY
-'
-```' >> $env:GITHUB_STEP_SUMMARY
+          '```json' >> $env:GITHUB_STEP_SUMMARY
+          Get-Content safe-merge-check.json >> $env:GITHUB_STEP_SUMMARY
+          '```' >> $env:GITHUB_STEP_SUMMARY
           if ($checkExitCode -ne 0) {
             exit $checkExitCode
           }
-
       - name: Upload safe merge check artifact
         uses: actions/upload-artifact@v4
         with:
