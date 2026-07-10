@@ -1,0 +1,15 @@
+{
+    "tag":  "v3.2.1",
+    "title":  "feat(evidence): add ledger verify modes and align contract",
+    "utc":  "2026-07-10 04:04:43Z",
+    "branch":  "main",
+    "head_before_repair":  "981b1d09",
+    "head_verified_before_commit":  "981b1d09",
+    "example_path":  "artifacts/examples/evidence_record.example.json",
+    "ledger_dir":  "artifacts/evidence/ledger",
+    "default_verify":  "pass",
+    "latest_only_verify":  "pass",
+    "jsonl_audit_verify":  "pass",
+    "strict_history":  "informational",
+    "result":  "verified_before_commit"
+}

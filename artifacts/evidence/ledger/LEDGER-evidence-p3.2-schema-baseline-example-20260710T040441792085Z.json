@@ -1,0 +1,15 @@
+{
+  "entry_hash": "sha256:214f649f6cd94f73e8776c744c27dc048fcde6f550906b2c82f52571c1ed6431",
+  "entry_id": "LEDGER-evidence-p3.2-schema-baseline-example-20260710T040441792085Z",
+  "evidence_hash": "sha256:26d9465c524b04cbad475d55b3fd86e6a484a592004c71e5b689f4230ba4e2a7",
+  "evidence_id": "evidence-p3.2-schema-baseline-example",
+  "evidence_path": "artifacts/examples/evidence_record.example.json",
+  "ledger_version": "1.0",
+  "predecessor_entry_hash": "sha256:684bf961cde322d8e420135383488cb71683883d78ec3b54450420c266f66b78",
+  "producer": "asoctl",
+  "recorded_at": "2026-07-10T04:04:41.792085Z",
+  "retention_class": "50y",
+  "subject": "ASO-X",
+  "validation_decision": "pass",
+  "validator_schema": "aso.evidence.validate.v1"
+}
