@@ -8,6 +8,9 @@
   "required": [
     "schema_version",
     "evidence_id",
+    "retention",
+    "subject",
+    "producer",
     "decision_id",
     "decision_category",
     "source_input_reference",
@@ -27,6 +30,49 @@
     "evidence_id": {
       "type": "string",
       "pattern": "^evidence-[A-Za-z0-9._-]+$"
+    },
+    "producer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "class": {
+              "type": "string",
+              "minLength": 1
+            },
+            "policy": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "class"
+              ]
+            },
+            {
+              "required": [
+                "policy"
+              ]
+            }
+          ]
+        }
+      ]
     },
     "decision_id": {
       "type": "string"

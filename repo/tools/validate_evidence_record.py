@@ -22,6 +22,9 @@ REQUIRED = [
     "owner_role",
     "created_at_utc",
     "secret_handling",
+    "producer",
+    "subject",
+    "retention",
 ]
 
 OPTIONAL = {
@@ -122,6 +125,30 @@ def validate_record(path: Path) -> None:
     evidence_id = require_string(path, data, "evidence_id")
     if not EVIDENCE_ID_RE.fullmatch(evidence_id):
         fail(path, "evidence_id must match ^evidence-[A-Za-z0-9._-]+$")
+
+    require_string(path, data, "producer")
+    require_string(path, data, "subject")
+
+    retention = data.get("retention")
+    if isinstance(retention, str):
+        if not retention.strip():
+            fail(path, "retention must be a non-empty string")
+    elif isinstance(retention, dict):
+        if not retention:
+            fail(path, "retention must not be an empty object")
+        extra_retention = sorted(set(retention) - {"class", "policy"})
+        if extra_retention:
+            fail(path, "retention unexpected properties: " + ", ".join(extra_retention))
+        retention_class = retention.get("class")
+        retention_policy = retention.get("policy")
+        if retention_class is None and retention_policy is None:
+            fail(path, "retention object must contain class or policy")
+        if retention_class is not None and (not isinstance(retention_class, str) or not retention_class.strip()):
+            fail(path, "retention.class must be a non-empty string")
+        if retention_policy is not None and (not isinstance(retention_policy, str) or not retention_policy.strip()):
+            fail(path, "retention.policy must be a non-empty string")
+    else:
+        fail(path, "retention must be a non-empty string or object")
 
     require_string(path, data, "decision_id")
     require_string(path, data, "source_input_reference")
