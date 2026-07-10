@@ -54,3 +54,8 @@ governance/reports/*.bak
 
 # Governance report streams should not be committed accidentally
 governance/reports/*.jsonl
+phase3a_evidence_*/
+phase3a_evidence_*.zip
+repair-phase3a-complete.ps1.bak.*
+repair-phase3a-complete.ps1.txt
+asox-autopilot-phase3a-incomplete.txt
