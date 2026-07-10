@@ -1,0 +1,13 @@
+{
+    "branch_ready":  true,
+    "pr_merged":  true,
+    "pr_number":  "273",
+    "pr_ready":  true,
+    "tag_pushed":  true,
+    "main_reset":  true,
+    "tag_created":  true,
+    "repo_prepared":  true,
+    "completed":  true,
+    "branch_pushed":  true,
+    "auto_merge_enabled":  true
+}
