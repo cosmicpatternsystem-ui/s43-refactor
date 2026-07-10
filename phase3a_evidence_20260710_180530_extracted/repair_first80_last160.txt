@@ -1,0 +1,246 @@
+FILE: G:\s43_work\s43_g11_work\repair-phase3a-complete.ps1
+TOTAL_LINES: 486
+
+----- FIRST 80 LINES -----
+     1: & {
+     2:     Set-StrictMode -Version Latest
+     3:     $ErrorActionPreference = 'Stop'
+     4:     $ProgressPreference = 'SilentlyContinue'
+     5: 
+     6:     $SourcePath = Join-Path (Get-Location) 'asox-autopilot-phase3a-incomplete.txt'
+     7:     $OutputPath = Join-Path (Get-Location) 'asox-autopilot-phase3a.audit-only.ps1'
+     8:     $LockPath = $OutputPath + '.repair.lock'
+     9:     $ExpectedSourceSha256 = '75E922D109CE085078921DAE9F609DB9309E69D3F981AE042AE79ACFCE4D4434'
+    10:     $Utf8NoBom = New-Object System.Text.UTF8Encoding($false, $true)
+    11:     $LockStream = $null
+    12:     $TemporaryPath = $null
+    13: 
+    14:     function Write-Status {
+    15:         param([Parameter(Mandatory = $true)][string]$Text)
+    16: 
+    17:         try {
+    18:             [Console]::Out.WriteLine($Text)
+    19:         }
+    20:         catch {
+    21:             Write-Output $Text
+    22:         }
+    23:     }
+    24: 
+    25:     function Stop-Repair {
+    26:         param([Parameter(Mandatory = $true)][string]$Message)
+    27: 
+    28:         throw ('PHASE3A_REPAIR_FAILED: ' + $Message)
+    29:     }
+    30: 
+    31:     try {
+    32:         Write-Status 'ASO-X Phase 3A complete audit-only reconstruction'
+    33:         Write-Status ('Source: ' + $SourcePath)
+    34:         Write-Status ('Output: ' + $OutputPath)
+    35: 
+    36:         if (-not (Test-Path -LiteralPath $SourcePath -PathType Leaf)) {
+    37:             Stop-Repair ('Source file not found: ' + $SourcePath)
+    38:         }
+    39: 
+    40:         $LockStream = New-Object System.IO.FileStream(
+    41:             $LockPath,
+    42:             [System.IO.FileMode]::CreateNew,
+    43:             [System.IO.FileAccess]::Write,
+    44:             [System.IO.FileShare]::None
+    45:         )
+    46: 
+    47:         $LockPayload = (
+    48:             'PID=' + [string]$PID + "`n" +
+    49:             'UTC=' + [DateTime]::UtcNow.ToString('o') + "`n"
+    50:         )
+    51:         $LockBytes = $Utf8NoBom.GetBytes($LockPayload)
+    52:         $LockStream.Write($LockBytes, 0, $LockBytes.Length)
+    53:         $LockStream.Flush($true)
+    54: 
+    55:         $SourceBytes = [System.IO.File]::ReadAllBytes($SourcePath)
+    56: 
+    57:         $Hasher = [System.Security.Cryptography.SHA256]::Create()
+    58:         try {
+    59:             $SourceDigestBytes = $Hasher.ComputeHash($SourceBytes)
+    60:         }
+    61:         finally {
+    62:             $Hasher.Dispose()
+    63:         }
+    64: 
+    65:         $SourceSha256 = (
+    66:             [System.BitConverter]::ToString($SourceDigestBytes)
+    67:         ).Replace('-', '').ToUpperInvariant()
+    68: 
+    69:         if ($SourceSha256 -ne $ExpectedSourceSha256) {
+    70:             Stop-Repair (
+    71:                 'Source SHA-256 mismatch. Expected=' +
+    72:                 $ExpectedSourceSha256 +
+    73:                 ' Actual=' +
+    74:                 $SourceSha256
+    75:             )
+    76:         }
+    77: 
+    78:         Write-Status ('PASS source SHA-256: ' + $SourceSha256)
+    79: 
+    80:         $Utf8Offset = 0
+
+----- LAST 160 LINES -----
+   327:             '                    }'
+   328:             '                }'
+   329:             '        )'
+   330:             ''
+   331:             '        $Manifest = [ordered]@{'
+   332:             '            SchemaVersion = 1'
+   333:             '            Algorithm = ''SHA-256'''
+   334:             '            GeneratedUtc = [DateTime]::UtcNow.ToString(''o'')'
+   335:             '            Files = $ManifestEntries'
+   336:             '        }'
+   337:             ''
+   338:             '        Write-FinalAtomicText `'
+   339:             '            -Path $ManifestPath `'
+   340:             '            -Value (($Manifest | ConvertTo-Json -Depth 20) + "`n")'
+   341:             ''
+   342:             '        Write-AsciiStatus (''PASS evidence directory: '' + $EvidenceDir)'
+   343:             '        Write-AsciiStatus (''PASS gap count: '' + [string]@($Gaps).Count)'
+   344:             '        Write-AsciiStatus (''PASS exit code: '' + [string]$script:ASOXAuditExitCode)'
+   345:             '    }'
+   346:             '    catch {'
+   347:             '        $script:ASOXAuditExitCode = 3'
+   348:             '        Write-AsciiStatus (''[BLOCKER] Final evidence generation failed: '' + $_.Exception.Message)'
+   349:             '    }'
+   350:             '}'
+   351:             ''
+   352:             'exit [int]$script:ASOXAuditExitCode'
+   353:         )
+   354: 
+   355:         $Reconstructed += (($TailLines -join "`n") + "`n")
+   356: 
+   357:         $FinalTokens = $null
+   358:         $FinalParseErrors = $null
+   359: 
+   360:         [void][System.Management.Automation.Language.Parser]::ParseInput(
+   361:             $Reconstructed,
+   362:             [ref]$FinalTokens,
+   363:             [ref]$FinalParseErrors
+   364:         )
+   365: 
+   366:         if ($FinalParseErrors.Count -ne 0) {
+   367:             $FinalErrorSummary = (
+   368:                 $FinalParseErrors |
+   369:                     ForEach-Object {
+   370:                         $_.ErrorId + ': ' + $_.Message
+   371:                     }
+   372:             ) -join ' | '
+   373: 
+   374:             Stop-Repair (
+   375:                 'Reconstructed script did not pass the parser: ' +
+   376:                 $FinalErrorSummary
+   377:             )
+   378:         }
+   379: 
+   380:         foreach ($ForbiddenPattern in $ForbiddenPatterns) {
+   381:             if ([regex]::IsMatch($Reconstructed, $ForbiddenPattern)) {
+   382:                 Stop-Repair (
+   383:                     'Reconstructed output failed mutation scan. Pattern=' +
+   384:                     $ForbiddenPattern
+   385:                 )
+   386:             }
+   387:         }
+   388: 
+   389:         $OutputDirectory = Split-Path -Parent $OutputPath
+   390:         $TemporaryPath = Join-Path $OutputDirectory (
+   391:             '.' +
+   392:             [IO.Path]::GetFileName($OutputPath) +
+   393:             '.tmp.' +
+   394:             [Guid]::NewGuid().ToString('N')
+   395:         )
+   396: 
+   397:         [IO.File]::WriteAllText(
+   398:             $TemporaryPath,
+   399:             $Reconstructed,
+   400:             $Utf8NoBom
+   401:         )
+   402: 
+   403:         $VerificationBytes = [IO.File]::ReadAllBytes($TemporaryPath)
+   404: 
+   405:         if (
+   406:             $VerificationBytes.Length -ge 3 -and
+   407:             $VerificationBytes[0] -eq 0xEF -and
+   408:             $VerificationBytes[1] -eq 0xBB -and
+   409:             $VerificationBytes[2] -eq 0xBF
+   410:         ) {
+   411:             Stop-Repair 'Temporary output unexpectedly contains a UTF-8 BOM.'
+   412:         }
+   413: 
+   414:         $VerificationText = $Utf8NoBom.GetString($VerificationBytes)
+   415: 
+   416:         if ($VerificationText.Contains("`r")) {
+   417:             Stop-Repair 'Temporary output contains non-LF line endings.'
+   418:         }
+   419: 
+   420:         if (Test-Path -LiteralPath $OutputPath -PathType Leaf) {
+   421:             $BackupPath = (
+   422:                 $OutputPath +
+   423:                 '.pre-complete-repair.' +
+   424:                 (Get-Date -Format 'yyyyMMdd-HHmmss') +
+   425:                 '.bak'
+   426:             )
+   427: 
+   428:             [IO.File]::Replace(
+   429:                 $TemporaryPath,
+   430:                 $OutputPath,
+   431:                 $BackupPath,
+   432:                 $true
+   433:             )
+   434: 
+   435:             $TemporaryPath = $null
+   436:             Write-Status ('Previous output backup: ' + $BackupPath)
+   437:         }
+   438:         else {
+   439:             [IO.File]::Move($TemporaryPath, $OutputPath)
+   440:             $TemporaryPath = $null
+   441:         }
+   442: 
+   443:         $OutputHash = (
+   444:             Get-FileHash -LiteralPath $OutputPath -Algorithm SHA256
+   445:         ).Hash.ToUpperInvariant()
+   446: 
+   447:         $WrittenText = [IO.File]::ReadAllText($OutputPath, $Utf8NoBom)
+   448:         $WrittenTokens = $null
+   449:         $WrittenErrors = $null
+   450: 
+   451:         [void][System.Management.Automation.Language.Parser]::ParseInput(
+   452:             $WrittenText,
+   453:             [ref]$WrittenTokens,
+   454:             [ref]$WrittenErrors
+   455:         )
+   456: 
+   457:         if ($WrittenErrors.Count -ne 0) {
+   458:             Stop-Repair 'Post-write parser verification failed.'
+   459:         }
+   460: 
+   461:         Write-Status 'PASS reconstruction completed'
+   462:         Write-Status 'PASS PowerShell parser verification'
+   463:         Write-Status 'PASS UTF-8 without BOM'
+   464:         Write-Status 'PASS LF-only line endings'
+   465:         Write-Status 'PASS audit-only mutation scan'
+   466:         Write-Status ('OUTPUT=' + $OutputPath)
+   467:         Write-Status ('SHA256=' + $OutputHash)
+   468:         Write-Status 'NOTE: Output was generated and verified, but not executed.'
+   469:     }
+   470:     finally {
+   471:         if ($null -ne $LockStream) {
+   472:             $LockStream.Dispose()
+   473:         }
+   474: 
+   475:         if (
+   476:             $null -ne $TemporaryPath -and
+   477:             (Test-Path -LiteralPath $TemporaryPath -PathType Leaf)
+   478:         ) {
+   479:             Remove-Item -LiteralPath $TemporaryPath -Force
+   480:         }
+   481: 
+   482:         if (Test-Path -LiteralPath $LockPath -PathType Leaf) {
+   483:             Remove-Item -LiteralPath $LockPath -Force
+   484:         }
+   485:     }
+   486: }

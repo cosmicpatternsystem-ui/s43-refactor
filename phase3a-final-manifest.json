@@ -1,0 +1,17 @@
+﻿{
+    "phase":  "3A",
+    "status":  "completed",
+    "completed_utc":  "2026-07-10T18:10:36.9392578Z",
+    "branch":  "main",
+    "canonical_file":  "G:\\s43_work\\s43_g11_work\\asox-autopilot-phase3a.ps1",
+    "canonical_sha256":  "809F3C5CB6BEE651A9D051FEC626E7ECA20720851C085B77EC0749D6E6A492F5",
+    "repair_source":  "G:\\s43_work\\s43_g11_work\\repair-phase3a-complete.ps1",
+    "repair_sha256":  "809F3C5CB6BEE651A9D051FEC626E7ECA20720851C085B77EC0749D6E6A492F5",
+    "target_compared":  "G:\\s43_work\\s43_g11_work\\run-phase3a-repair.ps1",
+    "collector_script":  "G:\\s43_work\\s43_g11_work\\collect-phase3a-evidence.ps1",
+    "automation_script":  "G:\\s43_work\\s43_g11_work\\phase3a-auto.ps1",
+    "evidence_zip":  "G:\\s43_work\\s43_g11_work\\phase3a_evidence_20260710_180530.zip",
+    "evidence_zip_size":  11373,
+    "evidence_directory":  "G:\\s43_work\\s43_g11_work\\phase3a_evidence_20260710_180530_extracted",
+    "extracted_files":  8
+}
