@@ -1,10 +1,11 @@
 # Governance State
 
-Generated at: 2026-07-11T06:04:36Z
+Generated at: 2026-07-11T06:09:18Z
 
 ## Durable Facts
-- Branch: main
-- HEAD: 49b5a7e (49b5a7e667474377a54da32d853d0499d07d49e0)
+- Current branch: docs/governance-state-f14321d
+- Target branch: main
+- HEAD: f14321d (f14321dc7774c8adca1e5fcc0a83d08fe40fe52e)
 - Working tree clean before persist step: False
 - Remote origin: git@github.com:cosmicpatternsystem-ui/s43-refactor.git
 
@@ -22,7 +23,9 @@ Generated at: 2026-07-11T06:04:36Z
 - Ledger present: True
 - Log present: True
 - Evidence directory present: True
+- Persisted state JSON present: True
+- Persisted validation log present: True
 
 ## Source of Truth
-This file is generated from the repository state, git metadata, and command output.
+This file is generated from repository state, git metadata, and command output.
 It does not rely on chat memory.

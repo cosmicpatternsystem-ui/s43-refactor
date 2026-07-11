@@ -1,0 +1,13 @@
+VALIDATION PASSED.
+
+
+RepoRoot      : G:\s43_work\s43_g11_work
+Manifest      : G:\s43_work\s43_g11_work\out\governance-manifest.json
+AuditCsv      : G:\s43_work\s43_g11_work\out\governance-audit.csv
+Ledger        : G:\s43_work\s43_g11_work\state\governance-ledger.jsonl
+Log           : G:\s43_work\s43_g11_work\logs\governance-log.jsonl
+Evidence      : G:\s43_work\s43_g11_work\out\evidence
+ItemCount     : 1407
+AuditRows     : 1407
+LogEntries    : 1
+LedgerEntries : 1

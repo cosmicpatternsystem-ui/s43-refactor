@@ -1,0 +1,32 @@
+{
+    "generated_at_utc":  "2026-07-11T06:09:18Z",
+    "repo_root":  "G:\\s43_work\\s43_g11_work",
+    "current_branch":  "docs/governance-state-f14321d",
+    "target_branch":  "main",
+    "head_commit":  "f14321dc7774c8adca1e5fcc0a83d08fe40fe52e",
+    "head_short":  "f14321d",
+    "remote_origin":  "git@github.com:cosmicpatternsystem-ui/s43-refactor.git",
+    "working_tree_clean_before_persist":  false,
+    "validation_command":  "python .\\asoctl.py validate",
+    "syntax_command":  "python -c \"import ast, pathlib; ast.parse(pathlib.Path(\u0027asoctl.py\u0027).read_text(encoding=\u0027utf-8-sig\u0027)); print(\u0027syntax: ok\u0027)\"",
+    "asoctl_path":  "asoctl.py",
+    "governance_validate_definitions":  {
+                                            "value":  [
+                                                          {
+                                                              "lineno":  708,
+                                                              "end_lineno":  714
+                                                          }
+                                                      ],
+                                            "Count":  1
+                                        },
+    "governance_validate_definition_count":  1,
+    "artifacts":  {
+                      "manifest":  true,
+                      "auditCsv":  true,
+                      "ledger":  true,
+                      "log":  true,
+                      "evidenceDir":  true,
+                      "persistedStateJson":  true,
+                      "persistedValidationLog":  true
+                  }
+}
