@@ -42,9 +42,25 @@ function Exec-And-Capture {
 
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $FilePath
+
+    $escapedArgs = @()
     foreach ($arg in $Arguments) {
-        [void]$psi.Arguments.Add($arg)
+        if ($null -eq $arg) {
+            $escapedArgs += '""'
+            continue
+        }
+
+        $s = [string]$arg
+        if ($s -match '[\s"]') {
+            $s = $s -replace '(\\*)"', '$1$1\"'
+            $s = $s -replace '(\\+)$', '$1$1'
+            $s = '"' + $s + '"'
+        }
+
+        $escapedArgs += $s
     }
+
+    $psi.Arguments = ($escapedArgs -join ' ')
     $psi.UseShellExecute = $false
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
