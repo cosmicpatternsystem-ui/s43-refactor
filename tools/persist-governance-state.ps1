@@ -99,7 +99,9 @@ function Exec-And-Capture {
     $startInfo.RedirectStandardOutput = $true
     $startInfo.RedirectStandardError = $true
     $startInfo.CreateNoWindow = $true
-    if (-not [string]::IsNullOrWhiteSpace($WorkingDirectory)) {
+    if ([string]::IsNullOrWhiteSpace($WorkingDirectory)) {
+        $startInfo.WorkingDirectory = $repoRoot
+    } else {
         $startInfo.WorkingDirectory = $WorkingDirectory
     }
 

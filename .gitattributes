@@ -33,3 +33,15 @@ runtime/audit/** -text
 *.rar   binary
 *.exe   binary
 *.dll   binary
+*.ps1 text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+out/*.json text eol=lf
+out/*.csv text eol=lf
+logs/*.jsonl text eol=lf
+state/*.jsonl text eol=lf
+runtime/audit/** -text
