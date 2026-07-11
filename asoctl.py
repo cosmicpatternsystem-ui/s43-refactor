@@ -142,13 +142,6 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
-    def governance_validate(self) -> int:
-        repo_root = Path(__file__).resolve().parent
-        gov_script = repo_root / 'tools' / 'governance.ps1'
-        if not gov_script.exists():
-            print(json.dumps({'error': 'script_not_found', 'path': str(gov_script)}, indent=2))
-            return 2
-        return subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(gov_script), 'validate'], check=False).returncode
 
     def evidence_validate(
         self,
@@ -198,13 +191,6 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
-    def governance_validate(self) -> int:
-        repo_root = Path(__file__).resolve().parent
-        gov_script = repo_root / 'tools' / 'governance.ps1'
-        if not gov_script.exists():
-            print(json.dumps({'error': 'script_not_found', 'path': str(gov_script)}, indent=2))
-            return 2
-        return subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(gov_script), 'validate'], check=False).returncode
     def _json_c14n(self, value) -> str:
         return json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
 
@@ -346,13 +332,6 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
-    def governance_validate(self) -> int:
-        repo_root = Path(__file__).resolve().parent
-        gov_script = repo_root / 'tools' / 'governance.ps1'
-        if not gov_script.exists():
-            print(json.dumps({'error': 'script_not_found', 'path': str(gov_script)}, indent=2))
-            return 2
-        return subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(gov_script), 'validate'], check=False).returncode
 
     def evidence_ledger_verify(
         self,
