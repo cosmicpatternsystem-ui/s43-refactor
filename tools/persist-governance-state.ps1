@@ -309,7 +309,7 @@ if ($Push) {
         Write-Host "No origin remote configured; skipping push." -ForegroundColor Yellow
     } else {
         Write-Step "Push current branch"
-        $pushResult = Exec-And-Capture -FilePath "git" -Arguments @("push", "-u", "origin", $currentBranch)
+        $pushResult = Exec-And-Capture -FilePath "git" -Arguments @("push", "-u", "origin", $currentBranch) -WorkingDirectory $repoRoot
         $pushResult.Output
         $pushSucceeded = ($pushResult.ExitCode -eq 0)
 
@@ -319,7 +319,7 @@ if ($Push) {
             git checkout -b $fallbackBranch
             $currentBranch = $fallbackBranch
 
-            $fallbackPush = Exec-And-Capture -FilePath "git" -Arguments @("push", "-u", "origin", $currentBranch)
+            $fallbackPush = Exec-And-Capture -FilePath "git" -Arguments @("push", "-u", "origin", $currentBranch) -WorkingDirectory $repoRoot
             $fallbackPush.Output
             if ($fallbackPush.ExitCode -ne 0) {
                 throw "Push failed for fallback branch: $currentBranch"
@@ -338,7 +338,7 @@ if ($Push) {
 
         if ($TagRelease) {
             Write-Step "Push tags"
-            $tagPushResult = Exec-And-Capture -FilePath "git" -Arguments @("push", "origin", "--tags")
+            $tagPushResult = Exec-And-Capture -FilePath "git" -Arguments @("push", "origin", "--tags") -WorkingDirectory $repoRoot
             $tagPushResult.Output
             if ($tagPushResult.ExitCode -ne 0) { throw "Failed to push tags" }
         }
