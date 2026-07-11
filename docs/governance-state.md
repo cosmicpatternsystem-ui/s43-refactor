@@ -1,11 +1,11 @@
 # Governance State
 
-Generated at: 2026-07-11T06:09:18Z
+Generated at: 2026-07-11T06:10:30Z
 
 ## Durable Facts
 - Current branch: docs/governance-state-f14321d
 - Target branch: main
-- HEAD: f14321d (f14321dc7774c8adca1e5fcc0a83d08fe40fe52e)
+- HEAD: 94affae (94affaede7b9dfe8cb657a70172c3084f2ddbb78)
 - Working tree clean before persist step: False
 - Remote origin: git@github.com:cosmicpatternsystem-ui/s43-refactor.git
 

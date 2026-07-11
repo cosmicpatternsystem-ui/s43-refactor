@@ -1,10 +1,10 @@
 {
-    "generated_at_utc":  "2026-07-11T06:09:18Z",
+    "generated_at_utc":  "2026-07-11T06:10:30Z",
     "repo_root":  "G:\\s43_work\\s43_g11_work",
     "current_branch":  "docs/governance-state-f14321d",
     "target_branch":  "main",
-    "head_commit":  "f14321dc7774c8adca1e5fcc0a83d08fe40fe52e",
-    "head_short":  "f14321d",
+    "head_commit":  "94affaede7b9dfe8cb657a70172c3084f2ddbb78",
+    "head_short":  "94affae",
     "remote_origin":  "git@github.com:cosmicpatternsystem-ui/s43-refactor.git",
     "working_tree_clean_before_persist":  false,
     "validation_command":  "python .\\asoctl.py validate",
