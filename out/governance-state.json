@@ -1,13 +1,13 @@
 {
-    "generated_at_utc":  "2026-07-11T06:50:38Z",
+    "generated_at_utc":  "2026-07-11T07:31:16Z",
     "repo_root":  "G:\\s43_work\\s43_g11_work",
     "current_branch":  "docs/governance-state-f14321d",
     "target_branch":  "main",
-    "head_commit":  "de082266b6a66d4a89caf6737af419f81e669b62",
-    "head_short":  "de08226",
+    "head_commit":  "df8f56a2a1340bc2c8538f48d9045d0eb3bc5257",
+    "head_short":  "df8f56a",
     "remote_origin":  "git@github.com:cosmicpatternsystem-ui/s43-refactor.git",
-    "working_tree_clean_before_persist":  true,
-    "validation_command":  "python .\\asoctl.py validate",
+    "working_tree_clean_before_persist":  false,
+    "validation_command":  "python .\\asoctl.py check",
     "syntax_command":  "python -c \"import ast, pathlib; ast.parse(pathlib.Path(\u0027asoctl.py\u0027).read_text(encoding=\u0027utf-8-sig\u0027)); print(\u0027syntax: ok\u0027)\"",
     "asoctl_path":  "asoctl.py",
     "governance_validate_definitions":  {

@@ -1,17 +1,17 @@
 # Governance State
 
-Generated at: 2026-07-11T06:50:38Z
+Generated at: 2026-07-11T07:31:16Z
 
 ## Durable Facts
 - Current branch: docs/governance-state-f14321d
 - Target branch: main
-- HEAD: de08226 (de082266b6a66d4a89caf6737af419f81e669b62)
-- Working tree clean before persist step: True
+- HEAD: df8f56a (df8f56a2a1340bc2c8538f48d9045d0eb3bc5257)
+- Working tree clean before persist step: False
 - Remote origin: git@github.com:cosmicpatternsystem-ui/s43-refactor.git
 
 ## Verification
 - Syntax check: python -c "import ast, pathlib; ast.parse(pathlib.Path('asoctl.py').read_text(encoding='utf-8-sig')); print('syntax: ok')"
-- Governance validation: python .\asoctl.py validate
+- Governance validation: python .\asoctl.py check
 
 ## ASO Control
 - File: soctl.py
