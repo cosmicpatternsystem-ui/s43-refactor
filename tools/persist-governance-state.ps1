@@ -184,7 +184,7 @@ Write-Step "Check current branch"
 $currentBranch = (git rev-parse --abbrev-ref HEAD).Trim()
 
 Write-Step "Run syntax check"
-    $syntaxResult = Exec-And-Capture -FilePath "python" -Arguments @("-c", "import ast, pathlib; ast.parse(pathlib.Path('asoctl.py').read_text(encoding='utf-8-sig')); print('syntax: ok')")
+    $syntaxResult = Exec-And-Capture -FilePath "python" -Arguments @("-c", "import ast, pathlib; ast.parse(pathlib.Path('asoctl.py').read_text(encoding='utf-8-sig')); print('syntax: ok')") -WorkingDirectory $repoRoot
     $syntaxResult.Output
     if ($syntaxResult.ExitCode -ne 0) { throw "Syntax check failed" }
 
