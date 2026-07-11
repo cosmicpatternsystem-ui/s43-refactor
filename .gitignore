@@ -69,14 +69,10 @@ _inbox_external_files/
 /out/
 /state/
 
-<<<<<<< HEAD
-# Temporary generated files
-=======
-# Temporary and backup files
+# Temporary generated and backup files
 *.bak
 *.bak.*
 *.tmp
->>>>>>> ee03d1e (chore(gitignore): exclude governance runtime artifacts)
 asoctl_candidates.csv
 
 # Do not vendor platform-specific service wrappers
