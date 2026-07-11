@@ -62,3 +62,17 @@ asox-autopilot-phase3a-incomplete.txt
 
 # Local quarantine for external project files
 _inbox_external_files/
+
+# ASO-X governance runtime artifacts
+/logs/
+/out/
+/state/
+
+# Temporary and backup files
+*.bak
+*.bak.*
+*.tmp
+asoctl_candidates.csv
+
+# Do not vendor platform-specific service wrappers
+/tools/nssm.exe
