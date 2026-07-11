@@ -4,6 +4,7 @@ param(
     [switch]$Push = $true,
     [switch]$TagRelease,
     [switch]$OpenPR = $true
+
 )
 
 $ErrorActionPreference = "Stop"
@@ -147,6 +148,7 @@ function Exec-And-Capture {
         Output = $output.ToArray()
         ExitCode = $exitCode
     }
+
 }
 
 Require-Command git
@@ -191,7 +193,7 @@ Write-Step "Run syntax check"
     if ($syntaxResult.ExitCode -ne 0) { throw "Syntax check failed" }
 
 Write-Step "Run governance validation"
-    $validateResult = Exec-And-Capture -FilePath "python" -Arguments @(".\asoctl.py", "check") -WorkingDirectory $repoRoot
+    $validateResult = Exec-And-Capture -FilePath "python" -Arguments @(".\asoctl.py", "validate") -WorkingDirectory $repoRoot
     $validateOutput = $validateResult.Output
 $validateText = ($validateOutput | Out-String).TrimEnd()
 Write-Utf8NoBom -Path $validationLogPath -Content ($validateText + "`n")
@@ -234,7 +236,7 @@ $state = [ordered]@{
     head_short = $headShort
     remote_origin = $remoteUrl
     working_tree_clean_before_persist = $isCleanBefore
-    validation_command = "python .\asoctl.py check"
+    validation_command = "python .\asoctl.py validate"
     syntax_command = "python -c `"import ast, pathlib; ast.parse(pathlib.Path('asoctl.py').read_text(encoding='utf-8-sig')); print('syntax: ok')`""
     asoctl_path = "asoctl.py"
     governance_validate_definitions = $governanceDefsObj
@@ -246,6 +248,7 @@ $stateJson = $state | ConvertTo-Json -Depth 8
 Write-Utf8NoBom -Path $stateJsonPath -Content ($stateJson + "`n")
 
 $md = @"
+
 # Governance State
 
 Generated at: $timestamp
@@ -255,11 +258,13 @@ Generated at: $timestamp
 - Target branch: $Branch
 - HEAD: $headShort ($headCommit)
 - Working tree clean before persist step: $isCleanBefore
+
 - Remote origin: $remoteUrl
 
 ## Verification
 - Syntax check: `python -c "import ast, pathlib; ast.parse(pathlib.Path('asoctl.py').read_text(encoding='utf-8-sig')); print('syntax: ok')"`
-- Governance validation: `python .\asoctl.py check`
+- Governance validation: `python .\asoctl.py validate`
+
 
 ## ASO Control
 - File: `asoctl.py`
@@ -343,6 +348,7 @@ if ($Push) {
             $tagPushResult = Exec-And-Capture -FilePath "git" -Arguments @("push", "origin", "--tags") -WorkingDirectory $repoRoot
             $tagPushResult.Output
             if ($tagPushResult.ExitCode -ne 0) { throw "Failed to push tags" }
+
         }
     }
 }
@@ -350,5 +356,6 @@ if ($Push) {
 Write-Step "Final status"
 git status --short
 git log -1 --oneline
+
 
 
