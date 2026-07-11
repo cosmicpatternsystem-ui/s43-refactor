@@ -142,6 +142,31 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
+    def governance_validate(self) -> int:
+        repo_root = Path(__file__).resolve().parent
+        gov_script = repo_root / "tools" / "governance.ps1"
+        if not gov_script.exists():
+            print(
+                json.dumps(
+                    {"error": "script_not_found", "path": str(gov_script)},
+                    ensure_ascii=True,
+                    sort_keys=True,
+                    indent=2,
+                )
+            )
+            return 2
+        return subprocess.run(
+            [
+                "powershell",
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(gov_script),
+                "validate",
+            ],
+            check=False,
+        ).returncode
 
     def evidence_validate(
         self,
@@ -239,7 +264,7 @@ class ASOControl:
                 "subject": "ASO-X",
                 "summary": "Default bootstrap evidence record",
                 "integrity": "sha256:bootstrap",
-                "retention": "50y"
+                "retention": "50y",
             }
             self._atomic_write_text(
                 evidence_path,
@@ -286,12 +311,15 @@ class ASOControl:
             retention_class = str(retention)
 
         ledger_dir.mkdir(parents=True, exist_ok=True)
-        
+
         unique_suffix = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         entry_id = f"LEDGER-{evidence['evidence_id']}-{unique_suffix}"
         out_path = ledger_dir / f"{entry_id}.json"
 
-        existing = sorted([fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0], key=lambda p: p.name)
+        existing = sorted(
+            [fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0],
+            key=lambda p: p.name,
+        )
 
         predecessor_entry_hash = ""
         if existing:
@@ -312,8 +340,16 @@ class ASOControl:
             "validator_schema": "aso.evidence.validate.v1",
             "validation_decision": "pass",
             "retention_class": retention_class,
-            "producer": evidence["producer"] if isinstance(evidence["producer"], str) else self._json_c14n(evidence["producer"]),
-            "subject": evidence["subject"] if isinstance(evidence["subject"], str) else self._json_c14n(evidence["subject"]),
+            "producer": (
+                evidence["producer"]
+                if isinstance(evidence["producer"], str)
+                else self._json_c14n(evidence["producer"])
+            ),
+            "subject": (
+                evidence["subject"]
+                if isinstance(evidence["subject"], str)
+                else self._json_c14n(evidence["subject"])
+            ),
             "predecessor_entry_hash": predecessor_entry_hash,
         }
 
@@ -331,7 +367,6 @@ class ASOControl:
         payload["predecessor_entry_hash"] = predecessor_entry_hash
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
-
 
     def evidence_ledger_verify(
         self,
@@ -563,7 +598,10 @@ class ASOControl:
             if stale_count > 0:
                 payload["decision"] = "fail"
                 payload["status"] = "fail"
-                payload["reason"] = "strict_history requires every historical ledger entry to match current evidence state"
+                payload["reason"] = (
+                    "strict_history requires every historical ledger entry "
+                    "to match current evidence state"
+                )
                 emit(payload, audit_kind="summary")
                 return 1
 
@@ -583,7 +621,10 @@ class ASOControl:
         if verified > 0:
             payload["decision"] = "pass"
             payload["status"] = "pass"
-            payload["reason"] = "at least one ledger entry matches current evidence state; stale historical entries retained"
+            payload["reason"] = (
+                "at least one ledger entry matches current evidence state; "
+                "stale historical entries retained"
+            )
             emit(payload, audit_kind="summary")
             return 0
 
@@ -705,14 +746,6 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
-    def governance_validate(self) -> int:
-        repo_root = Path(__file__).resolve().parent
-        gov_script = repo_root / 'tools' / 'governance.ps1'
-        if not gov_script.exists():
-            print(json.dumps({'error': 'script_not_found', 'path': str(gov_script)}, indent=2))
-            return 2
-        return subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(gov_script), 'validate'], check=False).returncode
-
     def status(self) -> int:
         self.ensure_directories()
         print(f"{PROJECT_NAME} local state")
@@ -741,6 +774,7 @@ def build_parser() -> argparse.ArgumentParser:
         "autopilot-status",
         help="Show autopilot readiness status as JSON",
     )
+
     evidence = subcommands.add_parser(
         "evidence",
         help="Evidence record commands",
@@ -759,155 +793,4 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence record path",
     )
-    evidence_validate.add_argument(
-        "--schema",
-        default=EVIDENCE_RECORD_SCHEMA_PATH,
-        type=Path,
-        help="Evidence schema path",
-    )
-    evidence_ledger_record = evidence_subcommands.add_parser(
-        "ledger-record",
-        help="Record an immutable evidence ledger entry",
-    )
-    evidence_ledger_record.add_argument(
-        "--record-path",
-        default=EVIDENCE_RECORD_DEFAULT_PATH,
-        type=Path,
-        help="Evidence record path",
-    )
-    evidence_ledger_record.add_argument(
-        "--ledger-dir",
-        default=LEDGER_DIR,
-        type=Path,
-        help="Directory for evidence ledger entries",
-    )
-    evidence_ledger_record.add_argument(
-        "--schema",
-        default=LEDGER_SCHEMA_PATH,
-        type=Path,
-        help="Evidence ledger schema path",
-    )
-
-    evidence_ledger_verify = evidence_subcommands.add_parser(
-        "ledger-verify",
-        help="Verify the evidence ledger chain",
-    )
-    evidence_ledger_verify.add_argument(
-        "--ledger-dir",
-        default=LEDGER_DIR,
-        type=Path,
-        help="Directory for evidence ledger entries",
-    )
-    evidence_ledger_verify.add_argument(
-        "--schema",
-        default=LEDGER_SCHEMA_PATH,
-        type=Path,
-        help="Evidence ledger schema path",
-    )
-    evidence_ledger_verify.add_argument(
-        "--strict-history",
-        action="store_true",
-        help="Fail if any historical ledger entry is stale or broken.",
-    )
-    evidence_ledger_verify.add_argument(
-        "--latest-only",
-        action="store_true",
-        help="Verify only the latest ledger entry against the current evidence state.",
-    )
-    evidence_ledger_verify.add_argument(
-        "--jsonl-audit",
-        action="store_true",
-        help="Emit per-entry audit lines before the final summary payload.",
-    )
-
-    validate = subcommands.add_parser('validate', help='Run governance validation')
-    safe_merge = subcommands.add_parser(
-        "safe-merge",
-        help="Safe Merge automation commands",
-    )
-    safe_merge_subcommands = safe_merge.add_subparsers(
-        dest="safe_merge_command",
-        required=True,
-    )
-    safe_merge_verify = safe_merge_subcommands.add_parser(
-        "verify",
-        help="Verify Safe Merge baseline contract and emit an audit artifact",
-    )
-    safe_merge_verify.add_argument("--target", default="main", help="Target branch context")
-    safe_merge_verify.add_argument(
-        "--artifact-dir",
-        default=SAFE_MERGE_AUDIT_DIR,
-        type=Path,
-        help="Directory for Safe Merge audit artifacts",
-    )
-    safe_merge_verify.add_argument(
-        "--no-artifact",
-        action="store_true",
-        help="Do not write an audit artifact",
-    )
-    return parser
-
-
-
-def main(argv: list[str] | None = None) -> int:
-    parser = build_parser()
-    args = parser.parse_args(argv)
-
-    control = ASOControl()
-
-    if args.command == "init":
-        return control.init()
-    if args.command == "check":
-        return control.check()
-    if args.command == "backup":
-        return control.backup()
-    if args.command == "status":
-        return control.status()
-
-    if args.command == "autopilot-status":
-        return control.autopilot_status()
-    if args.command == 'validate':
-        return control.governance_validate()
-
-    if args.command == "evidence":
-        if args.evidence_command == "validate":
-            return control.evidence_validate(
-                evidence_path=args.path,
-                schema_path=args.schema,
-            )
-        if args.evidence_command == "ledger-record":
-            return control.evidence_ledger_record(
-                evidence_path=args.record_path,
-                ledger_dir=args.ledger_dir,
-                schema_path=args.schema,
-            )
-        if args.evidence_command == "ledger-verify":
-            return control.evidence_ledger_verify(
-                ledger_dir=args.ledger_dir,
-                schema_path=args.schema,
-                strict_history=args.strict_history,
-                latest_only=args.latest_only,
-                jsonl_audit=args.jsonl_audit,
-            )
-        parser.error(f"unknown evidence command: {args.evidence_command}")
-        return 2
-
-    if args.command == "safe-merge":
-        if args.safe_merge_command == "verify":
-            return control.safe_merge_verify(
-                target=args.target,
-                artifact_dir=args.artifact_dir,
-                write_artifact=not args.no_artifact,
-            )
-
-    parser.error(f"unknown command: {args.command}")
-    return 2
-
-
-
-def cmd_roadmap(args):
-    import subprocess
-    return subprocess.run([sys.executable, 'scripts/roadmap_generator.py']).returncode
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    evidence_val
