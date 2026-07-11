@@ -2,21 +2,14 @@
 
 ## Decision
 - Decision: NO-GO for final commercial/release sign-off
-- Timestamp (UTC): 2026-07-11T22:09:33Z
-- Scope: ASO-X commercial readiness and final sign-off posture
+- Project: ASO-X
+- Timestamp (UTC): 2026-07-11T22:33:04Z
 
-## Decision Basis
-The project is not rejected. However, final sign-off is blocked by an evidence integrity gap. Engineering direction is strong, and governance structure is materially improved, but the repository still needs a tighter chain of proof for auditability, reproducibility, and real-money resilience.
+## Basis
+Engineering and governance posture are strong, but commercial/release sign-off remains blocked by an evidence integrity gap. Current repository evidence is not yet sufficiently reproducible, reviewable, and audit-ready for final assurance.
 
-## Why This Matters
-For enterprise-grade and long-durability operation, the source repository must support:
-- clear provenance
-- repeatable validation
-- durable evidence retention
-- clean separation between source-of-truth artifacts and runtime byproducts
-
-## Exit Criteria For GO
-- Governance validation rerun and retained as evidence
-- Self-test outputs retained and reviewable
-- Clean working tree for sign-off candidate state
-- Evidence manifests and supporting outputs reviewed
+## Required Before GO
+1. Re-run governance validation and retain outputs.
+2. Re-run self-tests and retain outputs.
+3. Confirm clean, reviewable sign-off candidate state.
+4. Separate runtime/log churn from governance evidence.

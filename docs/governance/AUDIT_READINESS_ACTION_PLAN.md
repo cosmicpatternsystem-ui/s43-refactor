@@ -1,22 +1,13 @@
 # Audit Readiness Action Plan
 
-## Objective
-Close the evidence integrity gap blocking final commercial/release sign-off.
+## Current Gate
+- Commercial sign-off: NO-GO
+- Primary blocker: evidence integrity gap
+- Recorded at (UTC): 2026-07-11T22:33:04Z
 
-## Immediate Actions
-1. Run governance validation in a controlled, reproducible manner.
-2. Run governance self-tests and retain outputs.
-3. Capture repository identity evidence:
-   - current branch
-   - HEAD commit
-   - working tree status
-   - latest commit metadata
-4. Store outputs in a durable, reviewable evidence location.
-5. Ensure sign-off commits exclude runtime logs and unrelated artifact churn.
-
-## Acceptance Criteria
-- Evidence is reproducible
-- Evidence is attributable to a known commit
-- Evidence is reviewable in repository context
-- Evidence is separated from incidental runtime output
-- Final sign-off can be defended under audit scrutiny
+## Action Plan
+1. Re-run governance validation and retain generated outputs in repo-reviewable form.
+2. Re-run self-tests and retain generated outputs in repo-reviewable form.
+3. Confirm artifact provenance and repeatability for sign-off-sensitive evidence.
+4. Isolate runtime logs and incidental churn from governance evidence paths.
+5. Re-evaluate commercial/release sign-off only after evidence is reproducible and reviewable.

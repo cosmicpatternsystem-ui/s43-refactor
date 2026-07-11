@@ -6,7 +6,7 @@
 - Governance posture: STRONG
 - Commercial sign-off: NO-GO
 - Primary blocker: evidence integrity gap
-- Decision timestamp (UTC): 2026-07-11T22:09:33Z
+- Decision timestamp (UTC): 2026-07-11T22:33:04Z
 
 ## Summary
 ASO-X demonstrates strong engineering and governance direction, but final commercial or release sign-off is currently blocked. The repository does not yet provide a sufficiently complete, reproducible, and audit-ready evidence chain to support real-money or commercial assurance with the required confidence.
