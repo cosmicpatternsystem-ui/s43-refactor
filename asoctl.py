@@ -793,4 +793,156 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence record path",
     )
-    evidence_val
+    evidence_validate.add_argument(
+        "--schema",
+        default=EVIDENCE_RECORD_SCHEMA_PATH,
+        type=Path,
+        help="Evidence schema path",
+    )
+
+    evidence_ledger_record = evidence_subcommands.add_parser(
+        "ledger-record",
+        help="Record an immutable evidence ledger entry",
+    )
+    evidence_ledger_record.add_argument(
+        "--record-path",
+        default=EVIDENCE_RECORD_DEFAULT_PATH,
+        type=Path,
+        help="Evidence record path",
+    )
+    evidence_ledger_record.add_argument(
+        "--ledger-dir",
+        default=LEDGER_DIR,
+        type=Path,
+        help="Directory for evidence ledger entries",
+    )
+    evidence_ledger_record.add_argument(
+        "--schema",
+        default=LEDGER_SCHEMA_PATH,
+        type=Path,
+        help="Evidence ledger schema path",
+    )
+
+    evidence_ledger_verify = evidence_subcommands.add_parser(
+        "ledger-verify",
+        help="Verify the evidence ledger chain",
+    )
+    evidence_ledger_verify.add_argument(
+        "--ledger-dir",
+        default=LEDGER_DIR,
+        type=Path,
+        help="Directory for evidence ledger entries",
+    )
+    evidence_ledger_verify.add_argument(
+        "--schema",
+        default=LEDGER_SCHEMA_PATH,
+        type=Path,
+        help="Evidence ledger schema path",
+    )
+    evidence_ledger_verify.add_argument(
+        "--strict-history",
+        action="store_true",
+        help="Fail if any historical ledger entry is stale or broken.",
+    )
+    evidence_ledger_verify.add_argument(
+        "--latest-only",
+        action="store_true",
+        help="Verify only the latest ledger entry against the current evidence state.",
+    )
+    evidence_ledger_verify.add_argument(
+        "--jsonl-audit",
+        action="store_true",
+        help="Emit per-entry audit lines before the final summary payload.",
+    )
+
+    validate = subcommands.add_parser('validate', help='Run governance validation')
+    safe_merge = subcommands.add_parser(
+        "safe-merge",
+        help="Safe Merge automation commands",
+    )
+    safe_merge_subcommands = safe_merge.add_subparsers(
+        dest="safe_merge_command",
+        required=True,
+    )
+    safe_merge_verify = safe_merge_subcommands.add_parser(
+        "verify",
+        help="Verify Safe Merge baseline contract and emit an audit artifact",
+    )
+    safe_merge_verify.add_argument("--target", default="main", help="Target branch context")
+    safe_merge_verify.add_argument(
+        "--artifact-dir",
+        default=SAFE_MERGE_AUDIT_DIR,
+        type=Path,
+        help="Directory for Safe Merge audit artifacts",
+    )
+    safe_merge_verify.add_argument(
+        "--no-artifact",
+        action="store_true",
+        help="Do not write an audit artifact",
+    )
+    return parser
+
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    control = ASOControl()
+
+    if args.command == "init":
+        return control.init()
+    if args.command == "check":
+        return control.check()
+    if args.command == "backup":
+        return control.backup()
+    if args.command == "status":
+        return control.status()
+
+    if args.command == "autopilot-status":
+        return control.autopilot_status()
+    if args.command == 'validate':
+        return control.governance_validate()
+
+    if args.command == "evidence":
+        if args.evidence_command == "validate":
+            return control.evidence_validate(
+                evidence_path=args.path,
+                schema_path=args.schema,
+            )
+        if args.evidence_command == "ledger-record":
+            return control.evidence_ledger_record(
+                evidence_path=args.record_path,
+                ledger_dir=args.ledger_dir,
+                schema_path=args.schema,
+            )
+        if args.evidence_command == "ledger-verify":
+            return control.evidence_ledger_verify(
+                ledger_dir=args.ledger_dir,
+                schema_path=args.schema,
+                strict_history=args.strict_history,
+                latest_only=args.latest_only,
+                jsonl_audit=args.jsonl_audit,
+            )
+        parser.error(f"unknown evidence command: {args.evidence_command}")
+        return 2
+
+    if args.command == "safe-merge":
+        if args.safe_merge_command == "verify":
+            return control.safe_merge_verify(
+                target=args.target,
+                artifact_dir=args.artifact_dir,
+                write_artifact=not args.no_artifact,
+            )
+
+    parser.error(f"unknown command: {args.command}")
+    return 2
+
+
+
+def cmd_roadmap(args):
+    import subprocess
+    return subprocess.run([sys.executable, 'scripts/roadmap_generator.py']).returncode
+
+if __name__ == "__main__":
+    raise SystemExit(main())
