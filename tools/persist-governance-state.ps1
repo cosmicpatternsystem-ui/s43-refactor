@@ -91,7 +91,7 @@ $persistFiles = @(
     "out/governance-manifest.json",
     "out/governance-audit.csv"
 )
-Exec-Or-Throw "git" (@("add", "-f", "--") + $persistFiles)
+$null = Exec-Or-Throw "git" (@("add", "-f", "--") + $persistFiles)
 
 Write-Host "==> Commit if staged changes exist" -ForegroundColor Cyan
 & git diff --cached --quiet --exit-code
@@ -108,7 +108,7 @@ if ($hasStagedChanges) {
 
 if ($Push) {
     Write-Host "==> Push current branch" -ForegroundColor Cyan
-    Exec-Or-Throw "git" @("push", "origin", $currentBranch)
+    $null = Exec-Or-Throw "git" @("push", "origin", $currentBranch)
 }
 
 if ($OpenPR) {
