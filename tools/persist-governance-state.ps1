@@ -1,9 +1,9 @@
-$ErrorActionPreference = "Stop"
-
 param(
     [switch]$Push,
     [switch]$OpenPR
 )
+
+$ErrorActionPreference = "Stop"
 
 function Exec-And-Capture {
     param(
