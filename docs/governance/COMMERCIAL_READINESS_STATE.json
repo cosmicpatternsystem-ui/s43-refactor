@@ -1,0 +1,19 @@
+{
+  "project": "ASO-X",
+  "timestamp_utc": "2026-07-11T22:09:33Z",
+  "engineering_posture": "STRONG",
+  "governance_posture": "STRONG",
+  "commercial_signoff": "NO-GO",
+  "decision_type": "TEMPORARY_GATE",
+  "primary_blocker": "evidence integrity gap",
+  "required_before_go": [
+    "capture reproducible governance evidence",
+    "retain self-test and validation outputs in repository-managed evidence form",
+    "separate runtime logs and incidental artifact churn from sign-off state",
+    "verify provenance and repeatability of readiness evidence"
+  ],
+  "notes": [
+    "This is not a project rejection.",
+    "This is a temporary commercial and release gate pending stronger chain-of-proof evidence."
+  ]
+}

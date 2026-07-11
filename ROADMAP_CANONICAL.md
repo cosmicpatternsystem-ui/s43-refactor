@@ -41,3 +41,22 @@ If any conflict exists, the higher-authority governance document prevails and th
 - Release and PR hygiene contracts pass.
 - Audit-sensitive artifacts remain integrity-safe.
 - Canonical and machine-readable roadmap artifacts are mutually consistent.
+
+<!-- BEGIN CURRENT_READINESS_GATE -->
+## Current Readiness Gate
+
+- Commercial sign-off: **NO-GO**
+- Engineering posture: **STRONG**
+- Governance posture: **STRONG**
+- Primary blocker: **evidence integrity gap**
+- Recorded at (UTC): **2026-07-11T22:09:33Z**
+
+### Meaning
+This gate does **not** reject the project. It records that final commercial/release sign-off must wait until reproducible, reviewable, repo-retained evidence is captured and verified.
+
+### Required Before GO
+1. Re-run governance validation and retain outputs.
+2. Re-run self-tests and retain outputs.
+3. Confirm clean, reviewable sign-off candidate state.
+4. Separate runtime/log churn from governance evidence.
+<!-- END CURRENT_READINESS_GATE -->
