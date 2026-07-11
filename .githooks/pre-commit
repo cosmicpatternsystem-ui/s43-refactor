@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "[ASO-X] Running Pre-Commit Governance Validation..."
+
+# اجرای اسکریپت حاکمیتی با استفاده از PowerShell Core/Windows PowerShell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "./tools/governance.ps1" validate
+rc=$?
+
+if [ $rc -ne 0 ]; then
+  echo ""
+  echo "============================================================"
+  echo "[ASO-X] CRITICAL: Governance validation failed!"
+  echo "[ASO-X] Commit aborted. Please resolve validation errors."
+  echo "============================================================"
+  exit 1
+fi
+
+echo "[ASO-X] Validation passed. Proceeding with commit..."
+exit 0

@@ -1,0 +1,21 @@
+{
+  "$schema": "./governance.schema.json",
+  "version": 1,
+  "governance": {
+    "mutexName": "Global\\S43.ExternalFileGovernance",
+    "ledgerPath": "./state/governance-ledger.jsonl",
+    "logPath": "./logs/governance-log.jsonl",
+    "quarantineDir": "./quarantine",
+    "manifestPath": "./out/governance-manifest.json",
+    "auditCsvPath": "./out/governance-audit.csv",
+    "evidenceDir": "./out/evidence",
+    "retentionDays": 30,
+    "secretPatterns": [
+      "(?i)password",
+      "(?i)secret",
+      "(?i)token",
+      "(?i)apikey",
+      "(?i)private[_-]?key"
+    ]
+  }
+}

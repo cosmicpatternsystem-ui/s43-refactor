@@ -1,0 +1,8 @@
+ASO-X health check
+cwd=G:\s43_work\s43_g11_work
+state_dir=runtime\state
+db_path=runtime\state\project_memory.sqlite
+integrity_check=ok
+quick_check=ok
+tables=ai_pattern_records, audit_events, change_ledger, roadmap_state, schema_migrations, sqlite_sequence
+[OK] durable state is healthy
