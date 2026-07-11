@@ -1,25 +1,4 @@
-function Exec-Or-Throw {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$FilePath,
-
-        [string[]]$Arguments = @(),
-
-        [string]$ErrorMessage
-    )
-
-    $result = Exec-And-Capture -FilePath $FilePath -Arguments $Arguments
-
-    if ($result.ExitCode -ne 0) {
-        if ($result.Output) {
-            throw ($ErrorMessage + "`n" + $result.Output)
-        }
-
-        throw $ErrorMessage
-    }
-
-    return $result
-}[CmdletBinding()]
+[CmdletBinding()]
 param(
     [string]$Branch = "main",
     [switch]$Push = $true,
