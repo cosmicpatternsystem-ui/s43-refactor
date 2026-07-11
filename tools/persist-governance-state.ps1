@@ -43,7 +43,7 @@ function Exec-And-Capture {
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $FilePath
     foreach ($arg in $Arguments) {
-        [void]$psi.ArgumentList.Add($arg)
+        [void]$psi.Arguments.Add($arg)
     }
     $psi.UseShellExecute = $false
     $psi.RedirectStandardOutput = $true
