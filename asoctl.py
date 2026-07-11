@@ -142,6 +142,31 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
+    def governance_validate(self) -> int:
+        repo_root = Path(__file__).resolve().parent
+        gov_script = repo_root / "tools" / "governance.ps1"
+        if not gov_script.exists():
+            print(
+                json.dumps(
+                    {"error": "script_not_found", "path": str(gov_script)},
+                    ensure_ascii=True,
+                    sort_keys=True,
+                    indent=2,
+                )
+            )
+            return 2
+        return subprocess.run(
+            [
+                "powershell",
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(gov_script),
+                "validate",
+            ],
+            check=False,
+        ).returncode
 
     def evidence_validate(
         self,
@@ -239,7 +264,7 @@ class ASOControl:
                 "subject": "ASO-X",
                 "summary": "Default bootstrap evidence record",
                 "integrity": "sha256:bootstrap",
-                "retention": "50y"
+                "retention": "50y",
             }
             self._atomic_write_text(
                 evidence_path,
@@ -286,12 +311,15 @@ class ASOControl:
             retention_class = str(retention)
 
         ledger_dir.mkdir(parents=True, exist_ok=True)
-        
+
         unique_suffix = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         entry_id = f"LEDGER-{evidence['evidence_id']}-{unique_suffix}"
         out_path = ledger_dir / f"{entry_id}.json"
 
-        existing = sorted([fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0], key=lambda p: p.name)
+        existing = sorted(
+            [fp for fp in ledger_dir.glob("*.json") if fp.stat().st_size > 0],
+            key=lambda p: p.name,
+        )
 
         predecessor_entry_hash = ""
         if existing:
@@ -312,8 +340,16 @@ class ASOControl:
             "validator_schema": "aso.evidence.validate.v1",
             "validation_decision": "pass",
             "retention_class": retention_class,
-            "producer": evidence["producer"] if isinstance(evidence["producer"], str) else self._json_c14n(evidence["producer"]),
-            "subject": evidence["subject"] if isinstance(evidence["subject"], str) else self._json_c14n(evidence["subject"]),
+            "producer": (
+                evidence["producer"]
+                if isinstance(evidence["producer"], str)
+                else self._json_c14n(evidence["producer"])
+            ),
+            "subject": (
+                evidence["subject"]
+                if isinstance(evidence["subject"], str)
+                else self._json_c14n(evidence["subject"])
+            ),
             "predecessor_entry_hash": predecessor_entry_hash,
         }
 
@@ -331,7 +367,6 @@ class ASOControl:
         payload["predecessor_entry_hash"] = predecessor_entry_hash
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
-
 
     def evidence_ledger_verify(
         self,
@@ -563,7 +598,10 @@ class ASOControl:
             if stale_count > 0:
                 payload["decision"] = "fail"
                 payload["status"] = "fail"
-                payload["reason"] = "strict_history requires every historical ledger entry to match current evidence state"
+                payload["reason"] = (
+                    "strict_history requires every historical ledger entry "
+                    "to match current evidence state"
+                )
                 emit(payload, audit_kind="summary")
                 return 1
 
@@ -583,7 +621,10 @@ class ASOControl:
         if verified > 0:
             payload["decision"] = "pass"
             payload["status"] = "pass"
-            payload["reason"] = "at least one ledger entry matches current evidence state; stale historical entries retained"
+            payload["reason"] = (
+                "at least one ledger entry matches current evidence state; "
+                "stale historical entries retained"
+            )
             emit(payload, audit_kind="summary")
             return 0
 
@@ -705,14 +746,6 @@ class ASOControl:
         print(json.dumps(payload, ensure_ascii=True, sort_keys=True, indent=2))
         return 0
 
-    def governance_validate(self) -> int:
-        repo_root = Path(__file__).resolve().parent
-        gov_script = repo_root / 'tools' / 'governance.ps1'
-        if not gov_script.exists():
-            print(json.dumps({'error': 'script_not_found', 'path': str(gov_script)}, indent=2))
-            return 2
-        return subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(gov_script), 'validate'], check=False).returncode
-
     def status(self) -> int:
         self.ensure_directories()
         print(f"{PROJECT_NAME} local state")
@@ -741,6 +774,7 @@ def build_parser() -> argparse.ArgumentParser:
         "autopilot-status",
         help="Show autopilot readiness status as JSON",
     )
+
     evidence = subcommands.add_parser(
         "evidence",
         help="Evidence record commands",
@@ -765,6 +799,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Evidence schema path",
     )
+
     evidence_ledger_record = evidence_subcommands.add_parser(
         "ledger-record",
         help="Record an immutable evidence ledger entry",
