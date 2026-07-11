@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASO-X Governance Config",
+  "type": "object",
+  "required": ["version", "governance"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "mutexName",
+        "ledgerPath",
+        "logPath",
+        "quarantineDir",
+        "manifestPath",
+        "auditCsvPath",
+        "evidenceDir",
+        "retentionDays",
+        "secretPatterns"
+      ],
+      "properties": {
+        "mutexName": { "type": "string", "minLength": 1 },
+        "ledgerPath": { "type": "string", "minLength": 1 },
+        "logPath": { "type": "string", "minLength": 1 },
+        "quarantineDir": { "type": "string", "minLength": 1 },
+        "manifestPath": { "type": "string", "minLength": 1 },
+        "auditCsvPath": { "type": "string", "minLength": 1 },
+        "evidenceDir": { "type": "string", "minLength": 1 },
+        "retentionDays": { "type": "integer", "minimum": 1 },
+        "secretPatterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
