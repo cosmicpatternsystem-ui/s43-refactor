@@ -75,7 +75,6 @@ def test_p33_validator_cli_pass_valid(tmp_path: Path) -> None:
         "created_at_utc": "2026-07-08T00:00:00Z",
         "secret_handling": {
             "contains_secrets": False,
-            "redaction_status": "not-required"
         }
     }
     _write_json_no_bom(good_record, data)

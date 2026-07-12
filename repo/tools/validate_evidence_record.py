@@ -75,10 +75,6 @@ EVIDENCE_KINDS = {
     "other",
 }
 
-REDACTION_STATUSES = {
-    "not-required",
-    "redacted-reference-only",
-}
 
 SHA256_RE = re.compile(r"^[a-fA-F0-9]{64}$")
 EVIDENCE_ID_RE = re.compile(r"^evidence-[A-Za-z0-9._-]+$")
@@ -205,7 +201,7 @@ def validate_record(path: Path) -> None:
     if not isinstance(secret_handling, dict):
         fail(path, "secret_handling must be an object")
 
-    allowed_secret_keys = {"contains_secrets", "redaction_status", "notes"}
+    allowed_secret_keys = {"contains_secrets", "notes"}
     extra_secret = sorted(set(secret_handling) - allowed_secret_keys)
     if extra_secret:
         fail(path, "secret_handling unexpected properties: " + ", ".join(extra_secret))
@@ -213,8 +209,6 @@ def validate_record(path: Path) -> None:
     if secret_handling.get("contains_secrets") is not False:
         fail(path, "secret_handling.contains_secrets must be false")
 
-    if secret_handling.get("redaction_status") not in REDACTION_STATUSES:
-        fail(path, "secret_handling.redaction_status is not allowed")
 
     if "notes" in secret_handling and not isinstance(secret_handling["notes"], str):
         fail(path, "secret_handling.notes must be a string")
