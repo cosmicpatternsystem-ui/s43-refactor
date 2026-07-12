@@ -1,0 +1,58 @@
+﻿name: readiness-final-audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - chore/readiness-no-go-state
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  readiness-audit:
+    if: github.ref_name == 'chore/readiness-no-go-state' || github.event.pull_request.head.ref == 'chore/readiness-no-go-state'
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PowerShell
+        shell: pwsh
+        run: |
+          $PSVersionTable.PSVersion.ToString()
+
+      - name: Ensure base branch is available
+        shell: pwsh
+        run: |
+          git fetch --no-tags origin main --depth=1
+
+      - name: Run final readiness audit
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run-final-readiness-audit.ps1
+
+      - name: Upload readiness audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readiness-audit-receipt
+          path: out/evidence/readiness-audit-receipt.json
+          if-no-files-found: error
