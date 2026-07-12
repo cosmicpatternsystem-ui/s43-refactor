@@ -96,10 +96,10 @@ function Get-GitStatusSnapshot {
     [pscustomobject]@{
         Branch = Get-GitText -Arguments @('branch', '--show-current')
         Head = Get-GitText -Arguments @('rev-parse', 'HEAD')
-        StatusShort = Get-GitLines -Arguments @('status', '--short')
-        StatusPorcelain = Get-GitLines -Arguments @('status', '--porcelain=v1')
-        DiffNameOnly = Get-GitLines -Arguments @('diff', '--name-only')
-        DiffCachedNameOnly = Get-GitLines -Arguments @('diff', '--cached', '--name-only')
+        StatusShort = @(Get-GitLines -Arguments @('status', '--short'))
+        StatusPorcelain = @(Get-GitLines -Arguments @('status', '--porcelain=v1'))
+        DiffNameOnly = @(Get-GitLines -Arguments @('diff', '--name-only'))
+        DiffCachedNameOnly = @(Get-GitLines -Arguments @('diff', '--cached', '--name-only'))
     }
 }
 
@@ -125,7 +125,7 @@ function Assert-CleanWorktree {
     [CmdletBinding()]
     param()
 
-    $status = Get-GitLines -Arguments @('status', '--porcelain=v1')
+    $status = @(Get-GitLines -Arguments @('status', '--porcelain=v1'))
     if ($status.Count -gt 0) {
         $detail = $status -join ' | '
         throw "Working tree is not clean: $detail"
