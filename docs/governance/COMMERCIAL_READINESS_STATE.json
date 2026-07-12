@@ -1,0 +1,14 @@
+{
+  "project": "ASO-X",
+  "recorded_at_utc": "2026-07-11T22:33:04Z",
+  "engineering_posture": "STRONG",
+  "governance_posture": "STRONG",
+  "commercial_signoff": "NO-GO",
+  "primary_blocker": "evidence integrity gap",
+  "required_before_go": [
+    "Capture reproducible governance validation evidence",
+    "Capture reproducible self-test evidence",
+    "Confirm clean reviewable sign-off candidate state",
+    "Separate runtime churn from governance evidence"
+  ]
+}
