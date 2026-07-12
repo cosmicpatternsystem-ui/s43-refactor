@@ -47,6 +47,29 @@ function Get-GitOutput {
     return ($output | Out-String).Trim()
 }
 
+function Get-GitOutputLines {
+    param(
+        [Parameter(Mandatory)]
+        [string[]]$Arguments
+    )
+
+    $output = & git @Arguments
+    $exitCode = $LASTEXITCODE
+    if ($exitCode -ne 0) {
+        throw "git $($Arguments -join ' ') failed with exit code $exitCode."
+    }
+
+    if ($null -eq $output) {
+        return @()
+    }
+
+    return @($output | ForEach-Object {
+        if ($null -ne $_) {
+            $_.ToString().Trim()
+        }
+    } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+}
+
 function Invoke-GovernanceValidateIsolated {
     param(
         [Parameter(Mandatory)]
@@ -121,11 +144,6 @@ if ($currentBranch -ne $ExpectedBranch) {
 
 $head = Get-GitOutput -Arguments @('rev-parse', 'HEAD')
 $actualMessage = Get-GitOutput -Arguments @('log', '-1', '--format=%s', 'HEAD')
-$readinessCommit = Get-GitOutput -Arguments @('log', '--format=%H', "--grep=^$CommitMessage$", "$Remote/$BaseBranch..HEAD")
-
-if ([string]::IsNullOrWhiteSpace($readinessCommit)) {
-    throw "No commit with message '$CommitMessage' exists on this branch ahead of $Remote/$BaseBranch."
-}
 
 & git merge-base --is-ancestor "$Remote/$BaseBranch" HEAD
 if ($LASTEXITCODE -ne 0) {
@@ -137,9 +155,28 @@ if ([int]$aheadCountText -lt 1) {
     throw "Branch has no commits ahead of $Remote/$BaseBranch."
 }
 
+$matchingCommits = Get-GitOutputLines -Arguments @(
+    'log',
+    '--format=%H',
+    "--grep=^$CommitMessage$",
+    "$Remote/$BaseBranch..HEAD"
+)
+
+if ($matchingCommits.Count -eq 0) {
+    throw "No commit with message '$CommitMessage' exists on this branch ahead of $Remote/$BaseBranch."
+}
+
+$readinessCommit = $matchingCommits[0]
+$matchCount = $matchingCommits.Count
+
 Write-Host "Current HEAD: $head"
 Write-Host "HEAD message: $actualMessage"
-Write-Host "Readiness commit found: $readinessCommit"
+Write-Host "Readiness commit selected: $readinessCommit"
+Write-Host "Readiness commit matches: $matchCount"
+
+if ($matchCount -gt 1) {
+    Write-Warning "Multiple readiness commits matched the subject. Using the most recent matching commit on this branch."
+}
 
 Invoke-Git -Arguments @('log', '--oneline', '--decorate', "$Remote/$BaseBranch..HEAD") | Out-Null
 Invoke-Git -Arguments @('diff', '--name-status', "$Remote/$BaseBranch...HEAD") | Out-Null
