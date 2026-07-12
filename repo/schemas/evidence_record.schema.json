@@ -184,21 +184,14 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "contains_secrets",
-        "redaction_status"
+        "contains_secrets"
       ],
       "properties": {
         "contains_secrets": {
           "type": "boolean",
           "const": false
         },
-        "redaction_status": {
-          "type": "string",
-          "enum": [
-            "not-required",
-            "redacted-reference-only"
-          ]
-        },
+
         "notes": {
           "type": "string"
         }

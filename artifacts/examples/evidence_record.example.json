@@ -44,7 +44,6 @@
   "created_at_utc": "2026-07-07T00:00:00Z",
   "secret_handling": {
     "contains_secrets": false,
-    "redaction_status": "not-required",
     "notes": "No secrets, credentials, tokens, cookies, wallet seeds, private keys, or private operational credentials are included."
   }
 }
