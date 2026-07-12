@@ -138,8 +138,9 @@ function New-DiagnosticObject {
         [Parameter(Mandatory = $true)]
         [bool]$Ok,
 
-        [Parameter(Mandatory = $true)]
-        [string]$ErrorMessage
+        [Parameter(Mandatory = $false)]
+        [AllowEmptyString()]
+        [string]$ErrorMessage = ""
     )
 
     $snapshot = Get-GitStatusSnapshot
