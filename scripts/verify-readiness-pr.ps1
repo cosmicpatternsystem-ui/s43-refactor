@@ -102,33 +102,54 @@ $currentBranch = Get-GitOutput -Arguments @('branch', '--show-current')
 Require ($currentBranch -eq $ExpectedBranch) "Expected branch '$ExpectedBranch', but current branch is '$currentBranch'."
 
 $head = Get-GitOutput -Arguments @('rev-parse', 'HEAD')
-$statusLines = Get-GitOutputLines -Arguments @('status', '--short', '--branch')
-Require ($statusLines.Count -eq 1) "Working tree is not clean: $($statusLines -join ' | ')"
+
+$statusLines = @(
+    Get-GitOutputLines -Arguments @('status', '--short', '--branch')
+)
+$statusLineCount = @($statusLines).Count
+Require ($statusLineCount -eq 1) "Working tree is not clean: $($statusLines -join ' | ')"
 
 & git merge-base --is-ancestor "${Remote}/${BaseBranch}" HEAD
 Require ($LASTEXITCODE -eq 0) "HEAD is not based on ${Remote}/${BaseBranch}."
 
-$aheadCount = [int](Get-GitOutput -Arguments @('rev-list', '--count', "${Remote}/${BaseBranch}..HEAD"))
+$aheadCountRaw = Get-GitOutput -Arguments @('rev-list', '--count', "${Remote}/${BaseBranch}..HEAD")
+$aheadCount = [int]$aheadCountRaw
 Require ($aheadCount -ge 1) "Branch has no commits ahead of ${Remote}/${BaseBranch}."
 
-$aheadCommits = Get-GitOutputLines -Arguments @('rev-list', "${Remote}/${BaseBranch}..HEAD")
-$matchingCommits = @()
+$aheadCommits = @(
+    Get-GitOutputLines -Arguments @('rev-list', "${Remote}/${BaseBranch}..HEAD")
+)
+$aheadCommitCount = @($aheadCommits).Count
+Require ($aheadCommitCount -ge 1) "No ahead commits were enumerated from ${Remote}/${BaseBranch}..HEAD."
 
+$matchingCommits = @()
 foreach ($commit in $aheadCommits) {
     if (Test-CommitHasTrailer -CommitSha $commit -TrailerLine $ReadinessTrailer) {
         $matchingCommits += $commit
     }
 }
 
-Require ($matchingCommits.Count -eq 1) "Expected exactly one readiness commit with trailer '$ReadinessTrailer', found $($matchingCommits.Count)."
+$matchingCommitCount = @($matchingCommits).Count
+Require ($matchingCommitCount -eq 1) "Expected exactly one readiness commit with trailer '$ReadinessTrailer', found $matchingCommitCount."
 
 $readinessCommit = $matchingCommits[0]
 $readinessSubject = Get-GitOutput -Arguments @('log', '-1', '--format=%s', $readinessCommit)
 Require ($readinessSubject -eq $ReadinessCommitMessage) "Readiness commit subject mismatch: '$readinessSubject'"
 
-$stashLines = Get-GitOutputLines -Arguments @('stash', 'list')
-$stashMatch = $stashLines | Where-Object { $_ -match [regex]::Escape($ExpectedStashLabel) }
-Require ($stashMatch.Count -ge 1) "Expected stash label not found: $ExpectedStashLabel"
+$stashLines = @(
+    Get-GitOutputLines -Arguments @('stash', 'list')
+)
+
+$stashMatch = @(
+    foreach ($line in $stashLines) {
+        if ($line -match [regex]::Escape($ExpectedStashLabel)) {
+            $line
+        }
+    }
+)
+
+$stashMatchCount = @($stashMatch).Count
+Require ($stashMatchCount -ge 1) "Expected stash label not found: $ExpectedStashLabel"
 
 $gh = Get-Command gh -ErrorAction SilentlyContinue
 Require ($null -ne $gh) "GitHub CLI 'gh' is not available."
@@ -152,7 +173,8 @@ Write-Host "HEAD: $head"
 Write-Host "Readiness commit: $readinessCommit"
 Write-Host "Readiness trailer: $ReadinessTrailer"
 Write-Host "Ahead of ${Remote}/${BaseBranch}: $aheadCount commit(s)"
+Write-Host "Stash matches: $stashMatchCount"
+Write-Host "Stash preserved: $($stashMatch[0])"
 Write-Host "PR: #$($pr.number) $($pr.title)"
 Write-Host "PR URL: $($pr.url)"
-Write-Host "Stash preserved: $($stashMatch[0])"
 Write-Host '[PASS] Readiness PR state is valid, published, clean, and recoverable.'
