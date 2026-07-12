@@ -2,24 +2,25 @@ import json
 import sys
 from pathlib import Path
 
-STATE_PATH = Path("ROADMAP/ROADMAP_STATE.json")
+STATE_PATH = Path("ROADMAP_CURRENT.json")
 
-required_fields = [
+REQUIRED_TOP_LEVEL_FIELDS = [
     "schema_version",
-    "project",
-    "default_branch",
-    "current_phase",
-    "current_branch",
-    "phase_title",
-    "previous_phase",
-    "roadmap_sync_status",
-    "next_action",
-    "updated_at",
+    "source_of_truth",
+    "canonical_roadmap",
+    "phases",
+    "phase_count",
+    "enforcement_model",
+    "operational_metadata_schema",
+    "generated_by",
+    "updated_at_utc",
 ]
+
 
 def fail(message: str) -> None:
     print(f"ROADMAP_STATE_INVALID: {message}", file=sys.stderr)
     sys.exit(1)
+
 
 if not STATE_PATH.exists():
     fail(f"missing {STATE_PATH}")
@@ -29,20 +30,23 @@ try:
 except Exception as exc:
     fail(f"invalid JSON: {exc}")
 
-for field in required_fields:
+for field in REQUIRED_TOP_LEVEL_FIELDS:
     if field not in state:
         fail(f"missing required field: {field}")
 
-if state["default_branch"] != "main":
-    fail("default_branch must be main")
+if not state["source_of_truth"]:
+    fail("source_of_truth must not be empty")
 
-if str(state["current_phase"]) != "22.13":
-    fail("current_phase must be 22.13")
+if not state["canonical_roadmap"]:
+    fail("canonical_roadmap must not be empty")
 
-if "phase22-12-baseline-verification-execution" in str(state.get("current_branch", "")):
-    fail("current_branch still references stale Phase 22.12 branch")
+if not isinstance(state["phases"], list):
+    fail("phases must be a list")
 
-if "Prepare Phase 22.12 baseline verification PR" in str(state.get("next_action", "")):
-    fail("next_action still references stale Phase 22.12 PR preparation")
+if not isinstance(state["phase_count"], int):
+    fail("phase_count must be an integer")
+
+if state["phase_count"] != len(state["phases"]):
+    fail("phase_count must match phases length")
 
 print("ROADMAP_STATE_VALID")
