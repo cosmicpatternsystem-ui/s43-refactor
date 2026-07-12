@@ -1,58 +1,83 @@
 ﻿name: readiness-final-audit
 
 on:
-  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - chore/readiness-no-go-state
-  pull_request:
-    branches:
-      - main
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
 
 permissions:
   contents: read
-  pull-requests: read
-  actions: read
 
 jobs:
   readiness-audit:
-    if: github.ref_name == 'chore/readiness-no-go-state' || github.event.pull_request.head.ref == 'chore/readiness-no-go-state'
     runs-on: windows-latest
-    timeout-minutes: 15
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
 
-      - name: Setup PowerShell
+      - name: Resolve expected branch
         shell: pwsh
         run: |
-          $PSVersionTable.PSVersion.ToString()
+          $branch = ""
+          if ("${{ github.event_name }}" -eq "pull_request") {
+            $branch = "${{ github.head_ref }}"
+          }
+          else {
+            $branch = "${{ github.ref_name }}"
+          }
 
-      - name: Ensure base branch is available
+          if ([string]::IsNullOrWhiteSpace($branch)) {
+            throw "Could not resolve expected branch from GitHub context."
+          }
+
+          Write-Host "Resolved expected branch: $branch"
+          "EXPECTED_BRANCH=$branch" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Fetch base branch
         shell: pwsh
         run: |
           git fetch --no-tags origin main --depth=1
 
+      - name: Dump git status before audit
+        shell: pwsh
+        run: |
+          Write-Host "Branch:"
+          git branch --show-current
+          Write-Host "HEAD:"
+          git rev-parse HEAD
+          Write-Host "Status --short:"
+          git status --short
+          Write-Host "Status --porcelain=v1:"
+          git status --porcelain=v1
+          Write-Host "Diff --name-only:"
+          git diff --name-only
+          Write-Host "Diff --cached --name-only:"
+          git diff --cached --name-only
+
       - name: Run final readiness audit
         shell: pwsh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run-final-readiness-audit.ps1
+          ./scripts/run-final-readiness-audit.ps1 `
+            -ExpectedBranch "$env:EXPECTED_BRANCH" `
+            -ExpectedBaseBranch "main"
 
-      - name: Upload readiness audit receipt
-        if: always()
+      - name: Upload readiness receipt
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: readiness-audit-receipt
           path: out/evidence/readiness-audit-receipt.json
           if-no-files-found: error
+
+      - name: Upload readiness diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readiness-audit-diagnostics
+          path: out/evidence/readiness-audit-diagnostic.json
+          if-no-files-found: warn
