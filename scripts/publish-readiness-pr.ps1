@@ -203,7 +203,7 @@ if ($matchingCommits.Count -eq 0) {
 }
 
 if ($matchingCommits.Count -gt 1) {
-    throw "Multiple readiness commits with trailer '$ReadinessTrailer' exist on this branch ahead of $Remote/$BaseBranch: $($matchingCommits -join ', ')"
+    throw "Multiple readiness commits with trailer '$ReadinessTrailer' exist on this branch ahead of $Remote/${BaseBranch}: $($matchingCommits -join ', ')"
 }
 
 $readinessCommit = $matchingCommits[0]
