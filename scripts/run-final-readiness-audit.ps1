@@ -1,39 +1,68 @@
 ﻿[CmdletBinding()]
 param(
-    [string]$VerifierScript = "scripts\verify-readiness-pr.ps1",
-    [string]$OutputFile = "out\evidence\readiness-audit-receipt.json"
+    [string]$RepoRoot = (Get-Location).Path,
+    [string]$VerifyScriptPath = 'scripts\verify-readiness-pr.ps1',
+    [string]$ReceiptPath = 'out\evidence\readiness-audit-receipt.json'
 )
 
 $ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
 
-Write-Host "[ASO-X] Initiating final readiness audit execution..." -ForegroundColor Cyan
+function Require {
+    param(
+        [Parameter(Mandatory)]
+        [bool]$Condition,
+        [Parameter(Mandatory)]
+        [string]$Message
+    )
 
-# اجرای اسکریپت صحتسنجی و ضبط خروجی متنی
-$verificationOutput = & powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File $VerifierScript
-$exitCode = $LASTEXITCODE
-
-if ($exitCode -ne 0) {
-    Write-Error "Verification script failed with exit code $exitCode"
-    exit $exitCode
+    if (-not $Condition) {
+        throw $Message
+    }
 }
 
-# استخراج دادههای کلیدی از خروجی متنی جهت ثبت در مانیفست الکترونیکی
-$auditRecord = [ordered]@{
-    Timestamp      = (Get-Date -Format "yyyy-MM-dd HH:mm:ss K")
-    Status         = "PASS"
-    Validator      = "verify-readiness-pr.ps1"
-    Branch         = "chore/readiness-no-go-state"
-    PrNumber       = 282
-    PrUrl          = "https://github.com/cosmicpatternsystem-ui/s43-refactor/pull/282"
-    StashPreserved = $true
-    CommitHash     = (git rev-parse HEAD)
-    VerificationRawLog = $verificationOutput
+Set-Location -LiteralPath $RepoRoot
+
+Require (Test-Path -LiteralPath $VerifyScriptPath) "Verify script not found: $VerifyScriptPath"
+
+$receiptDir = Split-Path -Parent $ReceiptPath
+if (-not [string]::IsNullOrWhiteSpace($receiptDir)) {
+    New-Item -ItemType Directory -Force -Path $receiptDir | Out-Null
 }
 
-# خروجی گرفتن به صورت UTF-8 LF بدون BOM
-$jsonString = $auditRecord | ConvertTo-Json -Depth 5
-$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-[System.IO.File]::WriteAllText((Get-Item -LiteralPath .).FullName + "\" + $OutputFile, $jsonString, $utf8NoBom)
+$verifyOutput = & powershell -NoProfile -ExecutionPolicy Bypass -File $VerifyScriptPath -RepoRoot $RepoRoot -EmitJson 2>&1
+$verifyExitCode = $LASTEXITCODE
+if ($verifyExitCode -ne 0) {
+    throw "Verification failed with exit code $verifyExitCode.`n$($verifyOutput | Out-String)"
+}
 
-Write-Host $verificationOutput
-Write-Host "[OK] Audit receipt written to $OutputFile" -ForegroundColor Green
+$jsonText = ($verifyOutput | Out-String).Trim()
+Require (-not [string]::IsNullOrWhiteSpace($jsonText)) 'Verification returned empty JSON.'
+
+$receipt = $jsonText | ConvertFrom-Json
+
+Require ($receipt.pass -eq $true) 'Receipt indicates a failed audit.'
+Require (-not [string]::IsNullOrWhiteSpace($receipt.branch)) 'Receipt missing branch.'
+Require (-not [string]::IsNullOrWhiteSpace($receipt.head)) 'Receipt missing head.'
+Require (-not [string]::IsNullOrWhiteSpace($receipt.readinessCommit)) 'Receipt missing readinessCommit.'
+Require ([int]$receipt.prNumber -gt 0) 'Receipt missing valid prNumber.'
+Require ($receipt.prState -eq 'OPEN') "Receipt PR state is not OPEN: $($receipt.prState)"
+
+$finalReceipt = [ordered]@{
+    schemaVersion = 1
+    auditName = 'readiness-final-audit'
+    status = 'PASS'
+    generatedAtUtc = [DateTime]::UtcNow.ToString('o')
+    receipt = $receipt
+}
+
+$finalReceipt | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $ReceiptPath -Encoding UTF8
+
+$receiptReloaded = Get-Content -LiteralPath $ReceiptPath -Raw | ConvertFrom-Json
+Require ($receiptReloaded.status -eq 'PASS') 'Saved receipt failed validation after reload.'
+Require ($receiptReloaded.receipt.pass -eq $true) 'Saved nested receipt failed validation after reload.'
+
+Write-Host "[PASS] Verification JSON captured."
+Write-Host "[PASS] Receipt written to $ReceiptPath"
+Write-Host "[PASS] Receipt validated after reload."
+Write-Host '[PASS] Final readiness audit completed successfully.'

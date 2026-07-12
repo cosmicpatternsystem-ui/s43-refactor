@@ -8,7 +8,8 @@ param(
     [string]$ReadinessTrailer = 'ASOX-Readiness: commercial-no-go',
     [int]$ExpectedPrNumber = 282,
     [string]$ExpectedPrTitle = 'Record commercial readiness NO-GO state',
-    [string]$ExpectedStashLabel = 'ASOX-Readiness: backup unrelated local logs and evidence before final run'
+    [string]$ExpectedStashLabel = 'ASOX-Readiness: backup unrelated local logs and evidence before final run',
+    [switch]$EmitJson
 )
 
 $ErrorActionPreference = 'Stop'
@@ -112,15 +113,13 @@ Require ($statusLineCount -eq 1) "Working tree is not clean: $($statusLines -joi
 & git merge-base --is-ancestor "${Remote}/${BaseBranch}" HEAD
 Require ($LASTEXITCODE -eq 0) "HEAD is not based on ${Remote}/${BaseBranch}."
 
-$aheadCountRaw = Get-GitOutput -Arguments @('rev-list', '--count', "${Remote}/${BaseBranch}..HEAD")
-$aheadCount = [int]$aheadCountRaw
+$aheadCount = [int](Get-GitOutput -Arguments @('rev-list', '--count', "${Remote}/${BaseBranch}..HEAD"))
 Require ($aheadCount -ge 1) "Branch has no commits ahead of ${Remote}/${BaseBranch}."
 
 $aheadCommits = @(
     Get-GitOutputLines -Arguments @('rev-list', "${Remote}/${BaseBranch}..HEAD")
 )
-$aheadCommitCount = @($aheadCommits).Count
-Require ($aheadCommitCount -ge 1) "No ahead commits were enumerated from ${Remote}/${BaseBranch}..HEAD."
+Require (@($aheadCommits).Count -ge 1) "No ahead commits were enumerated from ${Remote}/${BaseBranch}..HEAD."
 
 $matchingCommits = @()
 foreach ($commit in $aheadCommits) {
@@ -139,7 +138,6 @@ Require ($readinessSubject -eq $ReadinessCommitMessage) "Readiness commit subjec
 $stashLines = @(
     Get-GitOutputLines -Arguments @('stash', 'list')
 )
-
 $stashMatch = @(
     foreach ($line in $stashLines) {
         if ($line -match [regex]::Escape($ExpectedStashLabel)) {
@@ -147,34 +145,55 @@ $stashMatch = @(
         }
     }
 )
-
 $stashMatchCount = @($stashMatch).Count
 Require ($stashMatchCount -ge 1) "Expected stash label not found: $ExpectedStashLabel"
 
-$gh = Get-Command gh -ErrorAction SilentlyContinue
-Require ($null -ne $gh) "GitHub CLI 'gh' is not available."
+$ghVersionOutput = & gh --version 2>$null
+Require ($LASTEXITCODE -eq 0) 'GitHub CLI is not available on PATH.'
 
-& gh auth status *> $null
-Require ($LASTEXITCODE -eq 0) "GitHub CLI is not authenticated."
+$authStatusOutput = & gh auth status 2>&1
+Require ($LASTEXITCODE -eq 0) "GitHub CLI is not authenticated. Output: $($authStatusOutput | Out-String).Trim()"
 
-$prJson = & gh pr view $ExpectedPrNumber --json number,title,state,headRefName,baseRefName,url
-Require ($LASTEXITCODE -eq 0) "Failed to read PR #$ExpectedPrNumber."
+$prJson = & gh pr view $ExpectedPrNumber --json number,title,state,headRefName,baseRefName,url 2>&1
+Require ($LASTEXITCODE -eq 0) "Unable to query PR #$ExpectedPrNumber. Output: $($prJson | Out-String).Trim()"
 
 $pr = $prJson | ConvertFrom-Json
 
-Require ($pr.number -eq $ExpectedPrNumber) "PR number mismatch."
-Require ($pr.title -eq $ExpectedPrTitle) "PR title mismatch: '$($pr.title)'"
-Require ($pr.state -eq 'OPEN') "PR is not OPEN."
-Require ($pr.headRefName -eq $ExpectedBranch) "PR head branch mismatch: '$($pr.headRefName)'"
-Require ($pr.baseRefName -eq $BaseBranch) "PR base branch mismatch: '$($pr.baseRefName)'"
+Require ([int]$pr.number -eq $ExpectedPrNumber) "PR number mismatch. Got $($pr.number)"
+Require ($pr.title -eq $ExpectedPrTitle) "PR title mismatch. Got '$($pr.title)'"
+Require ($pr.state -eq 'OPEN') "PR #$ExpectedPrNumber is not OPEN. State: $($pr.state)"
+Require ($pr.headRefName -eq $ExpectedBranch) "PR head branch mismatch. Got '$($pr.headRefName)'"
+Require ($pr.baseRefName -eq $BaseBranch) "PR base branch mismatch. Got '$($pr.baseRefName)'"
 
-Write-Host "Branch: $currentBranch"
-Write-Host "HEAD: $head"
-Write-Host "Readiness commit: $readinessCommit"
-Write-Host "Readiness trailer: $ReadinessTrailer"
-Write-Host "Ahead of ${Remote}/${BaseBranch}: $aheadCount commit(s)"
-Write-Host "Stash matches: $stashMatchCount"
-Write-Host "Stash preserved: $($stashMatch[0])"
-Write-Host "PR: #$($pr.number) $($pr.title)"
-Write-Host "PR URL: $($pr.url)"
+$result = [ordered]@{
+    repoRoot = $RepoRoot
+    branch = $currentBranch
+    head = $head
+    remote = $Remote
+    baseBranch = $BaseBranch
+    aheadCount = $aheadCount
+    readinessCommit = $readinessCommit
+    readinessCommitSubject = $readinessSubject
+    readinessTrailer = $ReadinessTrailer
+    stashMatchCount = $stashMatchCount
+    stashLabel = $ExpectedStashLabel
+    prNumber = [int]$pr.number
+    prTitle = $pr.title
+    prState = $pr.state
+    prUrl = $pr.url
+    verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
+    pass = $true
+}
+
+if ($EmitJson) {
+    $result | ConvertTo-Json -Depth 8
+    exit 0
+}
+
+Write-Host "[PASS] Branch: $($result.branch)"
+Write-Host "[PASS] HEAD: $($result.head)"
+Write-Host "[PASS] Readiness commit: $($result.readinessCommit)"
+Write-Host "[PASS] PR #$($result.prNumber): $($result.prTitle) [$($result.prState)]"
+Write-Host "[PASS] Stash matches: $($result.stashMatchCount)"
+Write-Host "[PASS] Verified at UTC: $($result.verifiedAtUtc)"
 Write-Host '[PASS] Readiness PR state is valid, published, clean, and recoverable.'
