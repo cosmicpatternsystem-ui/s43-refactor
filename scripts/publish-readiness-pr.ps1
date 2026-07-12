@@ -5,6 +5,7 @@ param(
     [string]$Remote = 'origin',
     [string]$BaseBranch = 'main',
     [string]$CommitMessage = 'record commercial readiness no-go state',
+    [string]$ReadinessTrailer = 'ASOX-Readiness: commercial-no-go',
     [string]$PrTitle = 'Record commercial readiness NO-GO state',
     [switch]$OpenPr
 )
@@ -63,11 +64,15 @@ function Get-GitOutputLines {
         return @()
     }
 
-    return @($output | ForEach-Object {
-        if ($null -ne $_) {
-            $_.ToString().Trim()
-        }
-    } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    return @(
+        $output |
+        ForEach-Object {
+            if ($null -ne $_) {
+                $_.ToString().Trim()
+            }
+        } |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    )
 }
 
 function Invoke-GovernanceValidateIsolated {
@@ -126,6 +131,35 @@ function Get-PullRequestUrlFromRemote {
     return $null
 }
 
+function Get-CommitsAheadOfBase {
+    param(
+        [Parameter(Mandatory)]
+        [string]$BaseRef
+    )
+
+    return Get-GitOutputLines -Arguments @('rev-list', "$BaseRef..HEAD")
+}
+
+function Test-CommitHasTrailer {
+    param(
+        [Parameter(Mandatory)]
+        [string]$CommitSha,
+        [Parameter(Mandatory)]
+        [string]$TrailerLine
+    )
+
+    $body = Get-GitOutput -Arguments @('show', '-s', '--format=%B', $CommitSha)
+    $lines = @($body -split "`r?`n")
+
+    foreach ($line in $lines) {
+        if ($line.Trim() -ceq $TrailerLine) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
 Set-Location -LiteralPath $RepoRoot
 
 $insideRepo = Get-GitOutput -Arguments @('rev-parse', '--is-inside-work-tree')
@@ -155,28 +189,34 @@ if ([int]$aheadCountText -lt 1) {
     throw "Branch has no commits ahead of $Remote/$BaseBranch."
 }
 
-$matchingCommits = Get-GitOutputLines -Arguments @(
-    'log',
-    '--format=%H',
-    "--grep=^$CommitMessage$",
-    "$Remote/$BaseBranch..HEAD"
-)
+$aheadCommits = Get-CommitsAheadOfBase -BaseRef "$Remote/$BaseBranch"
+$matchingCommits = @()
+
+foreach ($commit in $aheadCommits) {
+    if (Test-CommitHasTrailer -CommitSha $commit -TrailerLine $ReadinessTrailer) {
+        $matchingCommits += $commit
+    }
+}
 
 if ($matchingCommits.Count -eq 0) {
-    throw "No commit with message '$CommitMessage' exists on this branch ahead of $Remote/$BaseBranch."
+    throw "No readiness commit with trailer '$ReadinessTrailer' exists on this branch ahead of $Remote/$BaseBranch."
+}
+
+if ($matchingCommits.Count -gt 1) {
+    throw "Multiple readiness commits with trailer '$ReadinessTrailer' exist on this branch ahead of $Remote/$BaseBranch: $($matchingCommits -join ', ')"
 }
 
 $readinessCommit = $matchingCommits[0]
-$matchCount = $matchingCommits.Count
+$readinessSubject = Get-GitOutput -Arguments @('log', '-1', '--format=%s', $readinessCommit)
+
+if ($readinessSubject -ne $CommitMessage) {
+    throw "Readiness commit '$readinessCommit' has subject '$readinessSubject', expected '$CommitMessage'."
+}
 
 Write-Host "Current HEAD: $head"
 Write-Host "HEAD message: $actualMessage"
 Write-Host "Readiness commit selected: $readinessCommit"
-Write-Host "Readiness commit matches: $matchCount"
-
-if ($matchCount -gt 1) {
-    Write-Warning "Multiple readiness commits matched the subject. Using the most recent matching commit on this branch."
-}
+Write-Host "Readiness trailer: $ReadinessTrailer"
 
 Invoke-Git -Arguments @('log', '--oneline', '--decorate', "$Remote/$BaseBranch..HEAD") | Out-Null
 Invoke-Git -Arguments @('diff', '--name-status', "$Remote/$BaseBranch...HEAD") | Out-Null
@@ -207,6 +247,10 @@ Materialize and record the current commercial-readiness NO-GO decision.
 - Repository governance validation passes.
 - The committed diff was checked for whitespace errors.
 - Unrelated local evidence and log changes were not staged or committed.
+
+## Traceability
+
+- Readiness trailer: $ReadinessTrailer
 "@
 
             $ghArgs = @(
