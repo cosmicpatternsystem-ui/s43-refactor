@@ -1,3 +1,13 @@
+
+<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
+ASO-X canonical human roadmap metadata
+
+Canonical machine source: `ROADMAP_CURRENT.json`
+Canonical machine SHA256: `$json_sha = b597122a69a4005a4e9c272e91478974799bc1ada3ffb051cd5b77355eb344f4`
+Authority status: CANONICAL_HUMAN_VIEW
+Drift policy: Any mismatch with `ROADMAP_CURRENT.json` is release-blocking.
+<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
+
 # ASO-X Canonical Roadmap
 
 ## Vision: Formal-Grade Governance
