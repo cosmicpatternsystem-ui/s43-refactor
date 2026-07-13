@@ -1,8 +1,56 @@
+if (-not $PSVersionTable.PSEdition -or $PSVersionTable.PSEdition -ne 'Core') {
+    throw 'This script must be run with PowerShell Core (pwsh).'
+}
 #Requires -Version 5.1
 [CmdletBinding()]
 param()
 
 Set-StrictMode -Version Latest
+function Invoke-SafeAtomicReplace {
+    param(
+        [Parameter(Mandatory)][string]$SourcePath,
+        [Parameter(Mandatory)][string]$DestinationPath,
+        [string]$BackupPath
+    )
+
+    $sourceFull = [System.IO.Path]::GetFullPath($SourcePath)
+    $destinationFull = [System.IO.Path]::GetFullPath($DestinationPath)
+    $destinationDir = [System.IO.Path]::GetDirectoryName($destinationFull)
+
+    if ([string]::IsNullOrWhiteSpace($destinationDir)) {
+        throw "Destination directory could not be resolved: $DestinationPath"
+    }
+
+    if (-not (Test-Path -LiteralPath $destinationDir -PathType Container)) {
+        [System.IO.Directory]::CreateDirectory($destinationDir) | Out-Null
+    }
+
+    if (Test-Path -LiteralPath $destinationFull -PathType Leaf) {
+        try {
+            [System.IO.File]::Replace($sourceFull, $destinationFull, $BackupPath, $true)
+            return
+        }
+        catch {
+            if (-not [string]::IsNullOrWhiteSpace($BackupPath)) {
+                $backupFull = [System.IO.Path]::GetFullPath($BackupPath)
+                $backupDir = [System.IO.Path]::GetDirectoryName($backupFull)
+                if (-not [string]::IsNullOrWhiteSpace($backupDir) -and -not (Test-Path -LiteralPath $backupDir -PathType Container)) {
+                    [System.IO.Directory]::CreateDirectory($backupDir) | Out-Null
+                }
+                [System.IO.File]::Copy($destinationFull, $backupFull, $true)
+            }
+
+            if (Test-Path -LiteralPath $destinationFull -PathType Leaf) {
+                Remove-Item -LiteralPath $destinationFull -Force
+            }
+
+            Move-Item -LiteralPath $sourceFull -Destination $destinationFull -Force
+            return
+        }
+    }
+
+    Move-Item -LiteralPath $sourceFull -Destination $destinationFull -Force
+}
 $ErrorActionPreference = 'Stop'
 
 $Repo = 'G:\s43_work\s43_g11_work'
