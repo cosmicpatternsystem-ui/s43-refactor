@@ -1,3 +1,37 @@
+<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
+Canonical machine source: `ROADMAP_CURRENT.json`
+`$json_sha = 29990983e726ad06b1fee36aef86204ec229a13ea37bde57f0b88e75d2590337`
+<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
+
+# Canonical Roadmap Declaration
+
+Status: active
+Role: canonical_human_declaration
+Authority: prevailing
+Machine-readable state: ROADMAP_CURRENT.json
+Scope horizon: 50+ years
+# Canonical Roadmap Declaration
+
+> Status: active
+> Role: canonical_human_declaration
+> Authority: prevailing
+> Machine-readable state: ROADMAP_CURRENT.json
+> Scope horizon: 50+ years
+
+This file is the canonical human-readable roadmap declaration for the active ASO-X roadmap state.
+Derived roadmap views, indexes, summaries, and projections must not supersede this declaration.
+
+Status: Active
+Scope: ASO-X / s43-refactor
+Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+# ASO-X Roadmap Canonical
+
+Status: Active
+Scope: ASO-X / s43-refactor
+Authority: canonical-human
+Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+Canonical human-readable roadmap: ROADMAP_CANONICAL.md
 # ASO-X ROADMAP CANONICAL
 
 ## Canonical Status
