@@ -1,3 +1,6 @@
+if (-not $PSVersionTable.PSEdition -or $PSVersionTable.PSEdition -ne 'Core') {
+    throw 'This script must be run with PowerShell Core (pwsh).'
+}
 & {
     Set-StrictMode -Version Latest
     $ErrorActionPreference = 'Stop'
@@ -260,10 +263,10 @@
             '            [IO.File]::WriteAllText($Temporary, $Value, $Utf8NoBom)'
             ''
             '            if (Test-Path -LiteralPath $Path -PathType Leaf) {'
-            '                [IO.File]::Replace($Temporary, $Path, $null, $true)'
+            '                try { [IO.File]::Replace([IO.Path]::GetFullPath($Temporary), [IO.Path]::GetFullPath($Path), $null, $true) } catch { if (Test-Path -LiteralPath $Path -PathType Leaf) { Remove-Item -LiteralPath $Path -Force }; Move-Item -LiteralPath $Temporary -Destination $Path -Force }'
             '            }'
             '            else {'
-            '                [IO.File]::Move($Temporary, $Path)'
+            '                Move-Item -LiteralPath $Temporary -Destination $Path -Force'
             '            }'
             '        }'
             '        finally {'
@@ -425,18 +428,27 @@
                 '.bak'
             )
 
-            [IO.File]::Replace(
-                $TemporaryPath,
-                $OutputPath,
-                $BackupPath,
-                $true
-            )
+            try {
+                [IO.File]::Replace(
+                    [IO.Path]::GetFullPath($TemporaryPath),
+                    [IO.Path]::GetFullPath($OutputPath),
+                    [IO.Path]::GetFullPath($BackupPath),
+                    $true
+                )
+            }
+            catch {
+                if (Test-Path -LiteralPath $OutputPath -PathType Leaf) {
+                    Copy-Item -LiteralPath $OutputPath -Destination $BackupPath -Force
+                    Remove-Item -LiteralPath $OutputPath -Force
+                }
+                Move-Item -LiteralPath $TemporaryPath -Destination $OutputPath -Force
+            }
 
             $TemporaryPath = $null
             Write-Status ('Previous output backup: ' + $BackupPath)
         }
         else {
-            [IO.File]::Move($TemporaryPath, $OutputPath)
+            Move-Item -LiteralPath $TemporaryPath -Destination $OutputPath -Force
             $TemporaryPath = $null
         }
 

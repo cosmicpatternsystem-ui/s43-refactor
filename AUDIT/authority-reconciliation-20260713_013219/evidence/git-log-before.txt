@@ -1,0 +1,10 @@
+c8e1270 Merge pull request #287 from cosmicpatternsystem-ui/chore/gitignore-utf8-lf
+2e719c0 chore: normalize gitignore to UTF-8 LF
+a42d8c2 Merge branch 'feature/evidence-ingestion-smoke'
+9ccc27c chore: ignore trading_bot logs in gitignore
+4492368 chore: ignore trading_bot logs in git
+79a6cca style(test): fix trailing whitespace in smoke test
+ce3b80a refactor(evidence): remove redaction_status from schema and ingestor
+2583296 Merge pull request #285 from cosmicpatternsystem-ui/fix/redaction-policy-alignment
+3dd24af Align evidence ingestion with redaction policy
+0597ac4 Merge pull request #283 from cosmicpatternsystem-ui/fix/roadmap-validator-alignment
