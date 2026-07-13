@@ -1,0 +1,15 @@
+{
+    "version":  "1.0.0",
+    "name":  "Standardized Evidence Schema",
+    "notes":  "Prepares the ledger for the upcoming Hash-Chain upgrade.",
+    "mandatory_fields":  [
+                             "timestamp",
+                             "actor",
+                             "action",
+                             "rationale",
+                             "artifact_hash",
+                             "previous_record_hash"
+                         ],
+    "policy_id":  "ASOX-POL-003",
+    "validation_schema":  "repo/schemas/evidence_ledger_entry.schema.json"
+}
