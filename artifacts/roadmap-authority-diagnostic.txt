@@ -1,0 +1,2173 @@
+
+========================================================================================
+ENVIRONMENT
+========================================================================================
+Repository root: G:\s43_work\s43_g11_work
+PowerShell: 7.6.3
+Edition: Core
+Timestamp: 2026-07-13T13:21:28.3664657+03:30
+
+========================================================================================
+VALIDATOR SOURCE
+========================================================================================
+    1: from __future__ import annotations
+    2: 
+    3: import hashlib
+    4: import json
+    5: import re
+    6: import sys
+    7: from pathlib import Path
+    8: 
+    9: REPO_ROOT = Path(__file__).resolve().parents[2]
+   10: 
+   11: CANONICAL_MACHINE = REPO_ROOT / "ROADMAP_CURRENT.json"
+   12: CANONICAL_HUMAN = REPO_ROOT / "ROADMAP_CANONICAL.md"
+   13: 
+   14: AUTHORITY_DOCS = [
+   15:     REPO_ROOT / "docs" / "governance" / "REPOSITORY_TRUTH.md",
+   16:     REPO_ROOT / "docs" / "governance" / "SOURCE_OF_TRUTH_HIERARCHY.md",
+   17:     REPO_ROOT / "docs" / "governance" / "CANONICAL_ROADMAP_DECLARATION.md",
+   18: ]
+   19: 
+   20: DERIVED_TEXT = [
+   21:     REPO_ROOT / "ROADMAP.md",
+   22:     REPO_ROOT / "docs" / "ROADMAP.md",
+   23:     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+   24: ]
+   25: 
+   26: DERIVED_JSON_LIKE = [
+   27:     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+   28: ]
+   29: 
+   30: LEGACY = [
+   31:     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+   32:     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+   33: ]
+   34: 
+   35: DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+   36: HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+   37: HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+   38: 
+   39: FORBIDDEN_AUTHORITY_CLAIMS = {
+   40:     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+   41:     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+   42:     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+   43:     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+   44:     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+   45:     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+   46: }
+   47: 
+   48: def read_text(path: Path) -> str:
+   49:     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+   50: 
+   51: def sha256_file(path: Path) -> str:
+   52:     h = hashlib.sha256()
+   53:     with path.open("rb") as fh:
+   54:         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+   55:             h.update(chunk)
+   56:     return h.hexdigest()
+   57: 
+   58: def fail(errors: list[str]) -> int:
+   59:     report = {"ok": False, "errors": errors}
+   60:     print(json.dumps(report, indent=2, ensure_ascii=False))
+   61:     return 1
+   62: 
+   63: def ok(data: dict) -> int:
+   64:     print(json.dumps({"ok": True, **data}, indent=2, ensure_ascii=False))
+   65:     return 0
+   66: 
+   67: def main() -> int:
+   68:     errors: list[str] = []
+   69: 
+   70:     if not CANONICAL_MACHINE.exists():
+   71:         errors.append(f"missing canonical machine file: {CANONICAL_MACHINE.relative_to(REPO_ROOT)}")
+   72:     if not CANONICAL_HUMAN.exists():
+   73:         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+   74:     if errors:
+   75:         return fail(errors)
+   76: 
+   77:     machine_sha = sha256_file(CANONICAL_MACHINE)
+   78:     human_text = read_text(CANONICAL_HUMAN)
+   79: 
+   80:     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+   81:         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+   82:     else:
+   83:         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+   84:             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+   85:         if f"`$json_sha = {machine_sha}`" not in human_text:
+   86:             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+   87: 
+   88:     for path in AUTHORITY_DOCS:
+   89:         if not path.exists():
+   90:             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+   91:             continue
+   92:         text = read_text(path)
+   93:         if "ROADMAP_CURRENT.json" not in text:
+   94:             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+   95:         if "ROADMAP_CANONICAL.md" not in text:
+   96:             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+   97: 
+   98:     for path in DERIVED_TEXT:
+   99:         if not path.exists():
+  100:             continue
+  101:         text = read_text(path)
+  102:         if not text.startswith(DERIVED_HEADER):
+  103:             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  104: 
+  105:     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  106: 
+  107:     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  108:         path = REPO_ROOT / relative_str
+  109:         if not path.exists():
+  110:             continue
+  111:         text = read_text(path)
+  112:         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  113:             continue
+  114:         for raw_pat in patterns:
+  115:             if re.search(raw_pat, text, re.IGNORECASE):
+  116:                 # allow explicit negation language in markdown docs where we inserted the managed block
+  117:                 negations = [
+  118:                     "not authoritative",
+  119:                     "non-canonical",
+  120:                     "legacy or migration artifacts",
+  121:                     "must not be consumed by active enforcement",
+  122:                     "explicitly non-canonical",
+  123:                 ]
+  124:                 lowered = text.lower()
+  125:                 if not any(n in lowered for n in negations):
+  126:                     errors.append(f"forbidden authority claim remains in {relative_str}")
+  127: 
+  128:     if errors:
+  129:         return fail(errors)
+  130: 
+  131:     data = {
+  132:         "canonical_machine": str(CANONICAL_MACHINE.relative_to(REPO_ROOT)),
+  133:         "canonical_human": str(CANONICAL_HUMAN.relative_to(REPO_ROOT)),
+  134:         "canonical_machine_sha256": machine_sha,
+  135:         "derived_text": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_TEXT if p.exists()],
+  136:         "derived_json_like": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_JSON_LIKE if p.exists()],
+  137:         "legacy": [str(p.relative_to(REPO_ROOT)) for p in LEGACY if p.exists()],
+  138:     }
+  139:     return ok(data)
+  140: 
+  141: if __name__ == "__main__":
+  142:     raise SystemExit(main())
+
+========================================================================================
+GATE SOURCE
+========================================================================================
+    1: $ErrorActionPreference = "Stop"
+    2: Set-StrictMode -Version Latest
+    3: 
+    4: $RepoRoot = (& git rev-parse --show-toplevel).Trim()
+    5: Set-Location $RepoRoot
+    6: 
+    7: $python = (Get-Command python -ErrorAction Stop).Source
+    8: & $python "tools/governance/validate_roadmap_authority.py"
+    9: if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+   10: 
+   11: & $python -m pytest "tests/test_roadmap_governance.py" -q
+   12: exit $LASTEXITCODE
+
+========================================================================================
+VALIDATOR RELEVANT MATCHES WITH CONTEXT
+========================================================================================
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:11
+  PRE  | from __future__ import annotations
+  PRE  | 
+  PRE  | import hashlib
+  PRE  | import json
+  PRE  | import re
+  PRE  | import sys
+  PRE  | from pathlib import Path
+  PRE  | 
+  PRE  | REPO_ROOT = Path(__file__).resolve().parents[2]
+  PRE  | 
+  MATCH| CANONICAL_MACHINE = REPO_ROOT / "ROADMAP_CURRENT.json"
+  POST | CANONICAL_HUMAN = REPO_ROOT / "ROADMAP_CANONICAL.md"
+  POST | 
+  POST | AUTHORITY_DOCS = [
+  POST |     REPO_ROOT / "docs" / "governance" / "REPOSITORY_TRUTH.md",
+  POST |     REPO_ROOT / "docs" / "governance" / "SOURCE_OF_TRUTH_HIERARCHY.md",
+  POST |     REPO_ROOT / "docs" / "governance" / "CANONICAL_ROADMAP_DECLARATION.md",
+  POST | ]
+  POST | 
+  POST | DERIVED_TEXT = [
+  POST |     REPO_ROOT / "ROADMAP.md",
+  POST |     REPO_ROOT / "docs" / "ROADMAP.md",
+  POST |     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+  POST | ]
+  POST | 
+  POST | DERIVED_JSON_LIKE = [
+  POST |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  POST | ]
+  POST | 
+  POST | LEGACY = [
+  POST |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:12
+  PRE  | from __future__ import annotations
+  PRE  | 
+  PRE  | import hashlib
+  PRE  | import json
+  PRE  | import re
+  PRE  | import sys
+  PRE  | from pathlib import Path
+  PRE  | 
+  PRE  | REPO_ROOT = Path(__file__).resolve().parents[2]
+  PRE  | 
+  PRE  | CANONICAL_MACHINE = REPO_ROOT / "ROADMAP_CURRENT.json"
+  MATCH| CANONICAL_HUMAN = REPO_ROOT / "ROADMAP_CANONICAL.md"
+  POST | 
+  POST | AUTHORITY_DOCS = [
+  POST |     REPO_ROOT / "docs" / "governance" / "REPOSITORY_TRUTH.md",
+  POST |     REPO_ROOT / "docs" / "governance" / "SOURCE_OF_TRUTH_HIERARCHY.md",
+  POST |     REPO_ROOT / "docs" / "governance" / "CANONICAL_ROADMAP_DECLARATION.md",
+  POST | ]
+  POST | 
+  POST | DERIVED_TEXT = [
+  POST |     REPO_ROOT / "ROADMAP.md",
+  POST |     REPO_ROOT / "docs" / "ROADMAP.md",
+  POST |     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+  POST | ]
+  POST | 
+  POST | DERIVED_JSON_LIKE = [
+  POST |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  POST | ]
+  POST | 
+  POST | LEGACY = [
+  POST |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  POST |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:27
+  PRE  |     REPO_ROOT / "docs" / "governance" / "REPOSITORY_TRUTH.md",
+  PRE  |     REPO_ROOT / "docs" / "governance" / "SOURCE_OF_TRUTH_HIERARCHY.md",
+  PRE  |     REPO_ROOT / "docs" / "governance" / "CANONICAL_ROADMAP_DECLARATION.md",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_TEXT = [
+  PRE  |     REPO_ROOT / "ROADMAP.md",
+  PRE  |     REPO_ROOT / "docs" / "ROADMAP.md",
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_JSON_LIKE = [
+  MATCH|     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  POST | ]
+  POST | 
+  POST | LEGACY = [
+  POST |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  POST |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  POST | ]
+  POST | 
+  POST | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  POST | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  POST | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  POST | 
+  POST | FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:32
+  PRE  | DERIVED_TEXT = [
+  PRE  |     REPO_ROOT / "ROADMAP.md",
+  PRE  |     REPO_ROOT / "docs" / "ROADMAP.md",
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_JSON_LIKE = [
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  MATCH|     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  POST | ]
+  POST | 
+  POST | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  POST | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  POST | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  POST | 
+  POST | FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:35
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "aso-x-integrated-mandatory-roadmap.md",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_JSON_LIKE = [
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  MATCH| DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  POST | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  POST | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  POST | 
+  POST | FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:36
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_JSON_LIKE = [
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  MATCH| HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  POST | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  POST | 
+  POST | FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:37
+  PRE  | 
+  PRE  | DERIVED_JSON_LIKE = [
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  MATCH| HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  POST | 
+  POST | FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:39
+  PRE  |     REPO_ROOT / "docs" / "roadmap" / "roadmap.index.json",
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  MATCH| FORBIDDEN_AUTHORITY_CLAIMS = {
+  POST |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:40
+  PRE  | ]
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  MATCH|     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:41
+  PRE  | 
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  PRE  |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  MATCH|     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+  POST |     return 1
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:42
+  PRE  | LEGACY = [
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  PRE  |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  MATCH|     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+  POST |     return 1
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:43
+  PRE  |     REPO_ROOT / "ROADMAP" / "ROADMAP_STATE.json",
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  PRE  |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  MATCH|     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+  POST |     return 1
+  POST | 
+  POST | def ok(data: dict) -> int:
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:44
+  PRE  |     REPO_ROOT / "repo" / "roadmap" / "roadmap.yaml",
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  PRE  |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  MATCH|     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  POST |     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+  POST |     return 1
+  POST | 
+  POST | def ok(data: dict) -> int:
+  POST |     print(json.dumps({"ok": True, **data}, indent=2, ensure_ascii=False))
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:45
+  PRE  | ]
+  PRE  | 
+  PRE  | DERIVED_HEADER = "> DERIVED VIEW - NOT AUTHORITATIVE"
+  PRE  | HUMAN_METADATA_START = "<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->"
+  PRE  | HUMAN_METADATA_END = "<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->"
+  PRE  | 
+  PRE  | FORBIDDEN_AUTHORITY_CLAIMS = {
+  PRE  |     "docs/ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
+  PRE  |     "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+  MATCH|     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
+  POST | }
+  POST | 
+  POST | def read_text(path: Path) -> str:
+  POST |     return path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+  POST | 
+  POST | def sha256_file(path: Path) -> str:
+  POST |     h = hashlib.sha256()
+  POST |     with path.open("rb") as fh:
+  POST |         for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+  POST |             h.update(chunk)
+  POST |     return h.hexdigest()
+  POST | 
+  POST | def fail(errors: list[str]) -> int:
+  POST |     report = {"ok": False, "errors": errors}
+  POST |     print(json.dumps(report, indent=2, ensure_ascii=False))
+  POST |     return 1
+  POST | 
+  POST | def ok(data: dict) -> int:
+  POST |     print(json.dumps({"ok": True, **data}, indent=2, ensure_ascii=False))
+  POST |     return 0
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:73
+  PRE  |     return 1
+  PRE  | 
+  PRE  | def ok(data: dict) -> int:
+  PRE  |     print(json.dumps({"ok": True, **data}, indent=2, ensure_ascii=False))
+  PRE  |     return 0
+  PRE  | 
+  PRE  | def main() -> int:
+  PRE  |     errors: list[str] = []
+  PRE  | 
+  PRE  |     if not CANONICAL_MACHINE.exists():
+  PRE  |         errors.append(f"missing canonical machine file: {CANONICAL_MACHINE.relative_to(REPO_ROOT)}")
+  PRE  |     if not CANONICAL_HUMAN.exists():
+  MATCH|         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+  POST |     if errors:
+  POST |         return fail(errors)
+  POST | 
+  POST |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  POST |     human_text = read_text(CANONICAL_HUMAN)
+  POST | 
+  POST |     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  POST |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  POST |     else:
+  POST |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  POST |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  POST |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  POST |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:80
+  PRE  |     errors: list[str] = []
+  PRE  | 
+  PRE  |     if not CANONICAL_MACHINE.exists():
+  PRE  |         errors.append(f"missing canonical machine file: {CANONICAL_MACHINE.relative_to(REPO_ROOT)}")
+  PRE  |     if not CANONICAL_HUMAN.exists():
+  PRE  |         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+  PRE  |     if errors:
+  PRE  |         return fail(errors)
+  PRE  | 
+  PRE  |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  PRE  |     human_text = read_text(CANONICAL_HUMAN)
+  PRE  | 
+  MATCH|     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  POST |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  POST |     else:
+  POST |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  POST |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  POST |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  POST |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:81
+  PRE  | 
+  PRE  |     if not CANONICAL_MACHINE.exists():
+  PRE  |         errors.append(f"missing canonical machine file: {CANONICAL_MACHINE.relative_to(REPO_ROOT)}")
+  PRE  |     if not CANONICAL_HUMAN.exists():
+  PRE  |         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+  PRE  |     if errors:
+  PRE  |         return fail(errors)
+  PRE  | 
+  PRE  |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  PRE  |     human_text = read_text(CANONICAL_HUMAN)
+  PRE  | 
+  PRE  |     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  MATCH|         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  POST |     else:
+  POST |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  POST |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  POST |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  POST |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:83
+  PRE  |         errors.append(f"missing canonical machine file: {CANONICAL_MACHINE.relative_to(REPO_ROOT)}")
+  PRE  |     if not CANONICAL_HUMAN.exists():
+  PRE  |         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+  PRE  |     if errors:
+  PRE  |         return fail(errors)
+  PRE  | 
+  PRE  |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  PRE  |     human_text = read_text(CANONICAL_HUMAN)
+  PRE  | 
+  PRE  |     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  PRE  |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  PRE  |     else:
+  MATCH|         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  POST |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  POST |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  POST |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:84
+  PRE  |     if not CANONICAL_HUMAN.exists():
+  PRE  |         errors.append(f"missing canonical human file: {CANONICAL_HUMAN.relative_to(REPO_ROOT)}")
+  PRE  |     if errors:
+  PRE  |         return fail(errors)
+  PRE  | 
+  PRE  |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  PRE  |     human_text = read_text(CANONICAL_HUMAN)
+  PRE  | 
+  PRE  |     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  PRE  |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  PRE  |     else:
+  PRE  |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  MATCH|             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  POST |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  POST |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:86
+  PRE  |     if errors:
+  PRE  |         return fail(errors)
+  PRE  | 
+  PRE  |     machine_sha = sha256_file(CANONICAL_MACHINE)
+  PRE  |     human_text = read_text(CANONICAL_HUMAN)
+  PRE  | 
+  PRE  |     if HUMAN_METADATA_START not in human_text or HUMAN_METADATA_END not in human_text:
+  PRE  |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  PRE  |     else:
+  PRE  |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  PRE  |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  PRE  |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  MATCH|             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  POST | 
+  POST |     for path in AUTHORITY_DOCS:
+  POST |         if not path.exists():
+  POST |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:93
+  PRE  |         errors.append("canonical human metadata block missing from ROADMAP_CANONICAL.md")
+  PRE  |     else:
+  PRE  |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  PRE  |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  PRE  |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  PRE  |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  PRE  | 
+  PRE  |     for path in AUTHORITY_DOCS:
+  PRE  |         if not path.exists():
+  PRE  |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  MATCH|         if "ROADMAP_CURRENT.json" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:94
+  PRE  |     else:
+  PRE  |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  PRE  |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  PRE  |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  PRE  |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  PRE  | 
+  PRE  |     for path in AUTHORITY_DOCS:
+  PRE  |         if not path.exists():
+  PRE  |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  MATCH|             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  POST |         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:95
+  PRE  |         if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+  PRE  |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  PRE  |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  PRE  |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  PRE  | 
+  PRE  |     for path in AUTHORITY_DOCS:
+  PRE  |         if not path.exists():
+  PRE  |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  MATCH|         if "ROADMAP_CANONICAL.md" not in text:
+  POST |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:96
+  PRE  |             errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+  PRE  |         if f"`$json_sha = {machine_sha}`" not in human_text:
+  PRE  |             errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+  PRE  | 
+  PRE  |     for path in AUTHORITY_DOCS:
+  PRE  |         if not path.exists():
+  PRE  |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  PRE  |         if "ROADMAP_CANONICAL.md" not in text:
+  MATCH|             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     for path in DERIVED_TEXT:
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:102
+  PRE  |             errors.append(f"missing authority doc: {path.relative_to(REPO_ROOT)}")
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  PRE  |         if "ROADMAP_CANONICAL.md" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     for path in DERIVED_TEXT:
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  MATCH|         if not text.startswith(DERIVED_HEADER):
+  POST |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  POST |                 negations = [
+  POST |                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:103
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  PRE  |         if "ROADMAP_CANONICAL.md" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     for path in DERIVED_TEXT:
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if not text.startswith(DERIVED_HEADER):
+  MATCH|             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  POST | 
+  POST |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  POST |                 negations = [
+  POST |                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+  POST |                 ]
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:105
+  PRE  |         if "ROADMAP_CURRENT.json" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+  PRE  |         if "ROADMAP_CANONICAL.md" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     for path in DERIVED_TEXT:
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if not text.startswith(DERIVED_HEADER):
+  PRE  |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  MATCH|     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  POST | 
+  POST |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  POST |                 negations = [
+  POST |                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+  POST |                 ]
+  POST |                 lowered = text.lower()
+  POST |                 if not any(n in lowered for n in negations):
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:107
+  PRE  |         if "ROADMAP_CANONICAL.md" not in text:
+  PRE  |             errors.append(f"authority doc missing ROADMAP_CANONICAL.md reference: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     for path in DERIVED_TEXT:
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if not text.startswith(DERIVED_HEADER):
+  PRE  |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  PRE  | 
+  MATCH|     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  POST |         path = REPO_ROOT / relative_str
+  POST |         if not path.exists():
+  POST |             continue
+  POST |         text = read_text(path)
+  POST |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  POST |                 negations = [
+  POST |                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+  POST |                 ]
+  POST |                 lowered = text.lower()
+  POST |                 if not any(n in lowered for n in negations):
+  POST |                     errors.append(f"forbidden authority claim remains in {relative_str}")
+  POST | 
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:112
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if not text.startswith(DERIVED_HEADER):
+  PRE  |             errors.append(f"derived text file missing non-authoritative header: {path.relative_to(REPO_ROOT)}")
+  PRE  | 
+  PRE  |     canonical_word = re.compile(r"\b(canonical|authoritative|source of truth)\b", re.IGNORECASE)
+  PRE  | 
+  PRE  |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  PRE  |         path = REPO_ROOT / relative_str
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  MATCH|         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  POST |             continue
+  POST |         for raw_pat in patterns:
+  POST |             if re.search(raw_pat, text, re.IGNORECASE):
+  POST |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  POST |                 negations = [
+  POST |                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+  POST |                 ]
+  POST |                 lowered = text.lower()
+  POST |                 if not any(n in lowered for n in negations):
+  POST |                     errors.append(f"forbidden authority claim remains in {relative_str}")
+  POST | 
+  POST |     if errors:
+  POST |         return fail(errors)
+  POST | 
+  POST |     data = {
+  POST |         "canonical_machine": str(CANONICAL_MACHINE.relative_to(REPO_ROOT)),
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:118
+  PRE  | 
+  PRE  |     for relative_str, patterns in FORBIDDEN_AUTHORITY_CLAIMS.items():
+  PRE  |         path = REPO_ROOT / relative_str
+  PRE  |         if not path.exists():
+  PRE  |             continue
+  PRE  |         text = read_text(path)
+  PRE  |         if "DERIVED VIEW - NOT AUTHORITATIVE" in text:
+  PRE  |             continue
+  PRE  |         for raw_pat in patterns:
+  PRE  |             if re.search(raw_pat, text, re.IGNORECASE):
+  PRE  |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  PRE  |                 negations = [
+  MATCH|                     "not authoritative",
+  POST |                     "non-canonical",
+  POST |                     "legacy or migration artifacts",
+  POST |                     "must not be consumed by active enforcement",
+  POST |                     "explicitly non-canonical",
+  POST |                 ]
+  POST |                 lowered = text.lower()
+  POST |                 if not any(n in lowered for n in negations):
+  POST |                     errors.append(f"forbidden authority claim remains in {relative_str}")
+  POST | 
+  POST |     if errors:
+  POST |         return fail(errors)
+  POST | 
+  POST |     data = {
+  POST |         "canonical_machine": str(CANONICAL_MACHINE.relative_to(REPO_ROOT)),
+  POST |         "canonical_human": str(CANONICAL_HUMAN.relative_to(REPO_ROOT)),
+  POST |         "canonical_machine_sha256": machine_sha,
+  POST |         "derived_text": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_TEXT if p.exists()],
+  POST |         "derived_json_like": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_JSON_LIKE if p.exists()],
+  POST |         "legacy": [str(p.relative_to(REPO_ROOT)) for p in LEGACY if p.exists()],
+  POST |     }
+
+MATCH: G:\s43_work\s43_g11_work\tools\governance\validate_roadmap_authority.py:126
+  PRE  |         for raw_pat in patterns:
+  PRE  |             if re.search(raw_pat, text, re.IGNORECASE):
+  PRE  |                 # allow explicit negation language in markdown docs where we inserted the managed block
+  PRE  |                 negations = [
+  PRE  |                     "not authoritative",
+  PRE  |                     "non-canonical",
+  PRE  |                     "legacy or migration artifacts",
+  PRE  |                     "must not be consumed by active enforcement",
+  PRE  |                     "explicitly non-canonical",
+  PRE  |                 ]
+  PRE  |                 lowered = text.lower()
+  PRE  |                 if not any(n in lowered for n in negations):
+  MATCH|                     errors.append(f"forbidden authority claim remains in {relative_str}")
+  POST | 
+  POST |     if errors:
+  POST |         return fail(errors)
+  POST | 
+  POST |     data = {
+  POST |         "canonical_machine": str(CANONICAL_MACHINE.relative_to(REPO_ROOT)),
+  POST |         "canonical_human": str(CANONICAL_HUMAN.relative_to(REPO_ROOT)),
+  POST |         "canonical_machine_sha256": machine_sha,
+  POST |         "derived_text": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_TEXT if p.exists()],
+  POST |         "derived_json_like": [str(p.relative_to(REPO_ROOT)) for p in DERIVED_JSON_LIKE if p.exists()],
+  POST |         "legacy": [str(p.relative_to(REPO_ROOT)) for p in LEGACY if p.exists()],
+  POST |     }
+  POST |     return ok(data)
+  POST | 
+  POST | if __name__ == "__main__":
+  POST |     raise SystemExit(main())
+
+========================================================================================
+CURRENT TARGET FILE HEADERS
+========================================================================================
+
+--- ROADMAP_CANONICAL.md ---
+   1: # Canonical Roadmap Declaration
+   2: 
+   3: Status: Active
+   4: Scope: ASO-X / s43-refactor
+   5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+   6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+   7: # ASO-X Roadmap Canonical
+   8: 
+   9: Status: Active
+  10: Scope: ASO-X / s43-refactor
+  11: Authority: canonical-human
+  12: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+  13: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+  14: # ASO-X ROADMAP CANONICAL
+  15: 
+  16: ## Canonical Status
+  17: This file is the human-readable canonical roadmap view for ASO-X governance-aligned planning.
+  18: 
+  19: ## Current Phase
+  20: - Active Phase: **22.13**
+  21: - Default Branch: **main**
+  22: - Project: **ASO-X**
+  23: 
+  24: ## Governance Commitments
+  25: - Repository files on the default branch are the only operational source of truth.
+  26: - Roadmap changes must be consistent with governance contracts and validation gates.
+  27: - Canonical roadmap updates must not contradict repository authority documents.
+  28: - Automation must fail closed when roadmap authority is unclear.
+  29: 
+  30: ## Phase 22.13 Objectives
+  31: - Stabilize roadmap governance contracts.
+  32: - Preserve single-source-of-truth authority across repository artifacts.
+  33: - Ensure validator-compatible roadmap state and release hygiene.
+  34: - Maintain immutable audit and evidence handling rules.
+  35: - Support safe merge automation and policy-driven repository operations.
+  36: 
+  37: ## Authority Alignment
+  38: This document must remain consistent with:
+  39: - docs/governance/REPOSITORY_TRUTH.md
+  40: - ROADMAP/ROADMAP_STATE.json
+  41: - ROADMAP_CURRENT.json
+  42: 
+  43: If any conflict exists, the higher-authority governance document prevails and this file must be updated in the same change set.
+  44: 
+  45: ## Operational Rules
+  46: - No chat transcript, pasted text, screenshot, or local scratch file is authoritative.
+  47: - No runtime artifact may override committed governance documents.
+  48: - No derivative roadmap view may override canonical roadmap truth.
+  49: - All roadmap-affecting changes must remain repository-verifiable.
+  50: 
+  51: ## Phase 22.13 Exit Criteria
+  52: - Governance authority documents are conflict-free.
+  53: - Roadmap state is validator-compatible.
+  54: - Release and PR hygiene contracts pass.
+  55: - Audit-sensitive artifacts remain integrity-safe.
+  56: - Canonical and machine-readable roadmap artifacts are mutually consistent.
+  57: 
+  58: <!-- BEGIN CURRENT_READINESS_GATE -->
+  59: ## Current Readiness Gate
+  60: 
+  61: - Commercial sign-off: **NO-GO**
+  62: - Engineering posture: **STRONG**
+  63: - Governance posture: **STRONG**
+  64: - Primary blocker: **evidence integrity gap**
+  65: - Recorded at (UTC): **2026-07-11T22:33:04Z**
+  66: 
+  67: ### Meaning
+  68: This gate does **not** reject the project. It records that final commercial/release sign-off must wait until reproducible, reviewable, repo-retained evidence is captured and verified.
+  69: 
+  70: ### Required Before GO
+  71: 1. Re-run governance validation and retain outputs.
+  72: 2. Re-run self-tests and retain outputs.
+  73: 3. Confirm clean, reviewable sign-off candidate state.
+  74: 4. Separate runtime/log churn from governance evidence.
+  75: <!-- END CURRENT_READINESS_GATE -->
+
+--- ROADMAP.md ---
+   1: # DERIVED VIEW - NOT AUTHORITATIVE
+   2: 
+   3: Status: Active
+   4: Authority: non-prevailing
+   5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+   6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+   7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+   8: # ASO-X 50-Year Roadmap
+   9: 
+  10: ## Mission
+  11: 
+  12: Build durable global financial intelligence infrastructure with strong governance, auditability, and revenue orientation.
+  13: 
+  14: ## Horizon 1: Foundation
+  15: 
+  16: - Preserve canonical governance.
+  17: - Keep repo-native state current.
+  18: - Validate all changes locally and in CI.
+  19: 
+  20: ## Horizon 2: Revenue Readiness
+  21: 
+  22: - Convert intelligence capabilities into measurable value.
+  23: - Keep high-risk financial actions manually gated.
+  24: - Maintain audit trails for decisions and artifacts.
+  25: 
+  26: ## Horizon 3: Durable Automation
+  27: 
+  28: - Expand safe autopilot functions.
+  29: - Keep policy matrix as the boundary for automation.
+  30: - Use PRs and tests as the default governance enforcement path.
+  31: 
+  32: ## Horizon 4: 50-Year Durability
+  33: 
+  34: - Prefer simple, documented, portable systems.
+  35: - Preserve artifact history.
+  36: - Avoid hidden operational state outside the repo.
+  37: ## Authority Notice
+  38: This document is derivative and non-prevailing when conflicting with higher-authority artifacts.
+  39: 
+  40: <!-- BEGIN CURRENT_READINESS_GATE -->
+  41: ## Current Readiness Gate
+  42: 
+  43: - Commercial sign-off: **NO-GO**
+  44: - Engineering posture: **STRONG**
+  45: - Governance posture: **STRONG**
+  46: - Primary blocker: **evidence integrity gap**
+  47: - Recorded at (UTC): **2026-07-11T22:33:04Z**
+  48: 
+  49: ### Meaning
+  50: This gate does **not** reject the project. It records that final commercial/release sign-off must wait until reproducible, reviewable, repo-retained evidence is captured and verified.
+  51: 
+  52: ### Required Before GO
+  53: 1. Re-run governance validation and retain outputs.
+  54: 2. Re-run self-tests and retain outputs.
+  55: 3. Confirm clean, reviewable sign-off candidate state.
+  56: 4. Separate runtime/log churn from governance evidence.
+  57: <!-- END CURRENT_READINESS_GATE -->
+
+--- docs/ROADMAP.md ---
+   1: # DERIVED VIEW - NOT AUTHORITATIVE
+   2: 
+   3: Status: Active
+   4: Authority: non-prevailing
+   5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+   6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+   7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+   8: # Roadmap
+   9: 
+  10: ## Strategic Objective
+  11: 
+  12: Maintain the human-readable governance roadmap aligned with ROADMAP_CURRENT.json.
+  13: 
+  14: This file is the human-readable roadmap view.
+  15: 
+  16: Canonical source: `ROADMAP_CURRENT.json`
+  17: 
+  18: ## R-001 — Governance Hardening Pack v1
+  19: 
+  20: Status: done
+  21: 
+  22: Priority: critical
+  23: 
+  24: Category: governance
+  25: 
+  26: Evidence:
+  27: 
+  28: - `PROJECT_CHARTER.md`
+  29: - `tools/governance_hardening_check.py`
+  30: - `tests/test_governance_hardening_pack.py`
+  31: - `.github/workflows/repo-governance-hardening-gate.yml`
+  32: 
+  33: ## R-002 — Global Project Constitution and Autonomous Governance Layer
+  34: 
+  35: Status: in_progress
+  36: 
+  37: Priority: critical
+  38: 
+  39: Category: governance
+  40: 
+  41: Evidence:
+  42: 
+  43: - `AGENT_ENTRYPOINT.md`
+  44: - `docs/governance/GOAL_CONSTITUTION.md`
+  45: - `docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md`
+  46: - `docs/governance/WORK_PROTOCOL.md`
+  47: - `docs/governance/AUTONOMY_MODEL.md`
+  48: - `docs/governance/DURABILITY_STANDARD.md`
+  49: - `repo/contracts/PROJECT_CONSTITUTION.yaml`
+  50: - `tools/project_constitution_check.py`
+  51: - `tests/test_project_constitution_pack.py`
+  52: - `.github/workflows/project-constitution-gate.yml`
+  53: 
+  54: ## R-003 — Drift Detection Expansion
+  55: 
+  56: Status: planned
+  57: 
+  58: Priority: critical
+  59: 
+  60: Category: automation
+  61: 
+  62: Objective: Detect contradictions between roadmap, contracts, docs, tests, workflows, and implementation.
+  63: 
+  64: ## R-004 — Roadmap Auto-Update Proposal System
+  65: 
+  66: Status: planned
+  67: 
+  68: Priority: high
+  69: 
+  70: Category: automation
+  71: 
+  72: Objective: Generate controlled roadmap update proposals from merged repository changes.
+  73: 
+  74: ## R-005 — Governance Health Score
+  75: 
+  76: Status: planned
+  77: 
+  78: Priority: high
+  79: 
+  80: Category: reporting
+  81: 
+  82: Objective: Produce a repeatable project health score for governance, roadmap freshness, durability, autonomy, and commercial readiness.
+  83: 
+  84: ## R-006 — Commercial Productization Architecture
+  85: 
+  86: Status: planned
+  87: 
+  88: Priority: high
+  89: 
+  90: Category: commercial
+  91: 
+  92: Objective: Convert commercial direction into deployable product tiers, value propositions, and enterprise trust requirements.
+  93: 
+  94: ## R-007 — Extension Architecture for Derived Projects
+  95: 
+  96: Status: planned
+  97: 
+  98: Priority: high
+  99: 
+ 100: Category: architecture
+
+--- docs/roadmap/aso-x-integrated-mandatory-roadmap.md ---
+   1: # DERIVED VIEW - NOT AUTHORITATIVE
+   2: 
+   3: Status: Active
+   4: Authority: non-prevailing
+   5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+   6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+   7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+   8: # ASO-X Integrated Mandatory Roadmap
+   9: 
+  10: Status: Mandatory
+  11: Scope: ASO-X core repository and all future commercial extensions
+  12: Owner: ASO-X maintainers
+  13: Durability Target: 50 years
+  14: Primary Objective: Non-obsolescent, evidence-retaining, policy-driven, cryptography-agile intelligence infrastructure
+  15: Last Updated: 2026-07-05
+  16: 
+  17: ---
+  18: 
+  19: ## 1. Executive Mandate
+  20: 
+  21: ASO-X MUST evolve from a repository-centered automation project into a durable intelligence operating layer.
+  22: 
+  23: The project MUST remain useful, auditable, migratable, and commercially extensible across multiple technology eras, including future post-quantum and hybrid classical/quantum computing environments.
+  24: 
+  25: ASO-X MUST NOT depend permanently on any single hosting vendor, runtime, cryptographic algorithm, CI provider, storage backend, or programming language implementation.
+  26: 
+  27: This roadmap is mandatory for all future high-impact work.
+  28: 
+  29: ---
+  30: 
+  31: ## 2. Long-Horizon Mission
+  32: 
+  33: ASO-X exists to provide a durable, policy-governed, evidence-retaining automation and intelligence framework for financial, compliance, audit, release-governance, and commercial decision systems.
+  34: 
+  35: The system MUST support:
+  36: 
+  37: - global financial intelligence workflows;
+  38: - long-term artifact retention;
+  39: - auditability and evidence preservation;
+  40: - safe concurrent development;
+  41: - immutable change history;
+  42: - policy-driven automation;
+  43: - cryptographic agility;
+  44: - post-quantum readiness;
+  45: - migration across infrastructure generations;
+  46: - commercial module expansion;
+  47: - independent verification by future maintainers.
+  48: 
+  49: ---
+  50: 
+  51: ## 3. Non-Obsolescence Principles
+  52: 
+  53: Every strategic feature MUST satisfy the following questions:
+  54: 
+  55: 1. Can it be understood 10 years from now?
+  56: 2. Can it be migrated 20 years from now?
+  57: 3. Can it be independently verified 50 years from now?
+  58: 4. Can it survive without GitHub as the sole operational dependency?
+  59: 5. Can it survive runtime, CI, cloud, and cryptographic algorithm replacement?
+  60: 6. Does it produce durable evidence when it changes state?
+  61: 7. Does it have a schema, policy, test, and operational documentation when required?
+  62: 8. Can commercial modules reuse it without corrupting the core?
+  63: 
+  64: If a feature fails these questions, it is not considered ASO-X-grade.
+  65: 
+  66: ---
+  67: 
+  68: ## 4. Mandatory Architecture Layers
+  69: 
+  70: ASO-X MUST be organized around the following durable architecture layers.
+  71: 
+  72: ### 4.1 Canonical Data Layer
+  73: 
+  74: The canonical data layer MUST define stable, versioned, human-readable, machine-validatable records.
+  75: 
+  76: Required practices:
+  77: 
+  78: - JSON Schema for durable machine validation;
+  79: - Markdown for human-readable governance documents;
+  80: - plain text formats for long-term preservation where practical;
+  81: - explicit schema versions;
+  82: - migration records for breaking changes;
+  83: - no undocumented binary-only source of truth.
+  84: 
+  85: ### 4.2 Policy and Governance Layer
+  86: 
+  87: Policy MUST drive critical automation behavior.
+  88: 
+  89: The following domains MUST be policy-governed:
+  90: 
+  91: - artifact retention;
+  92: - audit execution;
+  93: - release evidence;
+  94: - merge safety;
+  95: - branch lifecycle;
+  96: - dependency integrity;
+  97: - commercial module boundaries;
+  98: - cryptographic algorithm lifecycle;
+  99: - re-attestation schedules;
+ 100: - migration requirements.
+
+--- docs/roadmap/roadmap.index.json ---
+   1: {
+   2:   "schema_version": "1.0",
+   3:   "repository": "s43-refactor",
+   4:   "project": "ASO-X",
+   5:   "horizon_years": 50,
+   6:   "baseline_date": "2026-07-05",
+   7:   "governance_documents": [
+   8:     "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
+   9:     "docs/governance/ROADMAP_STEWARDSHIP_50Y.md",
+  10:     "docs/governance/DEPRECATION_RESISTANCE.md",
+  11:     "docs/governance/AI_HANDOFF.md",
+  12:     "docs/governance/CURRENT_PROJECT_BASELINE.md",
+  13:     "docs/value/VALUE_MODEL.md"
+  14:   ],
+  15:   "validation": {
+  16:     "ci_required": true,
+  17:     "workflow": ".github/workflows/roadmap-governance-gate.yml",
+  18:     "test_file": "tests/test_roadmap_governance.py"
+  19:   },
+  20:   "requirements": [
+  21:     {
+  22:       "id": "ASO-ROADMAP-GLOBAL-001",
+  23:       "phase": "global",
+  24:       "type": "top-level",
+  25:       "title": "Canonical roadmap source",
+  26:       "status": "active",
+  27:       "description": "The repository must define a canonical human-readable roadmap source.",
+  28:       "canonical_source": "ROADMAP_CANONICAL.md",
+  29:       "evidence_required": true,
+  30:       "ci_enforced": true
+  31:     },
+  32:     {
+  33:       "id": "ASO-ROADMAP-GLOBAL-002",
+  34:       "phase": "global",
+  35:       "type": "global",
+  36:       "title": "50-year roadmap horizon",
+  37:       "status": "active",
+  38:       "description": "The roadmap governance model must preserve a 50-year durability horizon.",
+  39:       "evidence_required": true,
+  40:       "ci_enforced": true
+  41:     }
+  42:   ],
+  43:   "machine_readable_state": "ROADMAP_CURRENT.json",
+  44:   "role": "traceability_index",
+  45:   "authority": "non-prevailing",
+  46:   "status": "active",
+  47:   "canonical_source": "ROADMAP_CANONICAL.md"
+  48: }
+
+--- repo/roadmap/roadmap.yaml ---
+   1: authority: non-prevailing
+   2: role: legacy_non_authoritative
+   3: machine_readable_state: ROADMAP_CURRENT.json
+   4: roadmap_items:
+   5:   - id: R-001
+   6:     title: Repository governance entrypoint
+   7:     status: active
+   8:   - id: R-002
+   9:     title: Goal constitution
+  10:     status: active
+  11:   - id: R-003
+  12:     title: Source of truth hierarchy
+  13:     status: active
+  14:   - id: R-004
+  15:     title: Work protocol
+  16:     status: active
+  17:   - id: R-005
+  18:     title: Autonomy model
+  19:     status: active
+  20:   - id: R-006
+  21:     title: Durability standard
+  22:     status: active
+  23:   - id: R-007
+  24:     title: Compatibility and constitution contract
+  25:     status: active
+  26:   - id: R-008
+  27:     title: CI validation gate
+  28:     status: active
+
+--- docs/governance/REPOSITORY_TRUTH.md ---
+   1: # Repository Truth Contract
+   2: 
+   3: ## Mission
+   4: ASO-X repository is the sole authoritative source of operational truth.
+   5: 
+   6: ## Authoritative Scope
+   7: Only committed repository artifacts on the default branch, validated by governance gates, are authoritative.
+   8: 
+   9: ## Non-Authoritative Scope
+  10: The following are never authoritative:
+  11: - chat transcripts
+  12: - local notes
+  13: - copied prompts
+  14: - temporary files
+  15: - backup files
+  16: - retired files
+  17: - unmerged branch state
+  18: - external memory
+  19: - screenshots without committed textual normalization
+  20: 
+  21: ## Authority Order
+  22: 1. docs/governance/GOAL_CONSTITUTION.md
+  23: 2. docs/governance/ROADMAP_CONSTITUTION.md
+  24: 3. ROADMAP_CURRENT.json
+  25: 4. ROADMAP_CANONICAL.md
+  26: 5. PROJECT_STATE.md
+  27: 6. POLICY_MATRIX.md
+  28: 7. ROADMAP.md
+  29: 8. README.md
+  30: 
+  31: ## Conflict Resolution
+  32: If two artifacts conflict, the artifact with higher authority prevails.
+  33: Lower-authority artifacts must be updated in the same change set.
+  34: Unresolved authority conflicts are release-blocking.
+  35: 
+  36: ## Roadmap Rules
+  37: 
+  38: `ROADMAP_CURRENT.json` is the machine-readable active roadmap state.
+  39: 
+  40: `ROADMAP_CANONICAL.md` is the human-readable canonical roadmap.
+  41: 
+  42: `ROADMAP.md` and `docs/ROADMAP.md` are derivative roadmap views and must never override canonical truth.
+  43: 
+  44: `docs/roadmap/roadmap.index.json` is a non-prevailing traceability index.
+  45: 
+  46: `ROADMAP/ROADMAP_STATE.json` and `repo/roadmap/roadmap.yaml` are non-authoritative unless explicitly promoted through a future governance PR that updates all authority documents, validators, and CI gates in the same change set.
+  47: 
+  48: ## Artifact Retention Rules
+  49: Historical artifacts may exist only as retention artifacts and are never active inputs.
+  50: Files matching these patterns are non-authoritative:
+  51: - *.bak
+  52: - *.tmp
+  53: - *.old
+  54: - *.orig
+  55: - *.rej
+  56: - *.RETIRED.txt
+  57: - *.disabled
+  58: - *patch_log*
+  59: 
+  60: ## AI and Automation Rules
+  61: No AI, script, or contributor may invent goals, alter authority order, or treat non-authoritative artifacts as active truth.
+  62: All roadmap-affecting changes must preserve cross-file consistency.
+  63: 
+  64: ## Required Repository Guarantees
+  65: - UTF-8 without BOM
+  66: - LF line endings
+  67: - atomic writes for generated state
+  68: - cp1252-safe stdout
+  69: - repo-relative paths only
+  70: - CI enforcement for governance truth
+
+--- docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md ---
+   1: # Source of Truth Hierarchy
+   2: 
+   3: This document defines precedence when project artifacts disagree.
+   4: 
+   5: ## Highest Authority
+   6: 
+   7: 1. `docs/governance/GOAL_CONSTITUTION.md`
+   8: 2. `repo/contracts/PROJECT_CONSTITUTION.yaml`
+   9: 3. `repo/contracts/CANONICAL_SOURCES.yaml`
+  10: 4. `docs/governance/REPOSITORY_TRUTH.md`
+  11: 5. `docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md`
+  12: 6. `docs/governance/ROADMAP_CONSTITUTION.md`
+  13: 7. `PROJECT_CHARTER.md`
+  14: 8. `ROADMAP_CURRENT.json`
+  15: 9. `ROADMAP_CANONICAL.md`
+  16: 10. `PROJECT_STATE.md`
+  17: 11. `POLICY_MATRIX.md`
+  18: 12. `ROADMAP.md`
+  19: 13. `docs/ROADMAP.md`
+  20: 14. `docs/roadmap/roadmap.index.json`
+  21: 15. `docs/governance/POLICY_MATRIX.md`
+  22: 16. `docs/governance/COMPATIBILITY_CONTRACT.md`
+  23: 17. `docs/OPERATIONS_RUNBOOK.md`
+  24: 18. `docs/COMMERCIAL_MODEL.md`
+  25: 19. `docs/governance/DECISION_LOG.md`
+  26: 20. implementation code
+  27: 21. generated artifacts
+  28: 22. chat transcripts and external notes
+  29: 
+  30: ## Conflict Rule
+  31: 
+  32: When two artifacts conflict, the higher-ranked artifact controls until a PR updates the lower-ranked artifact or records an explicit decision.
+  33: 
+  34: ## Repository Rule
+  35: 
+  36: Repository files outrank chat memory, local memory, screenshots, informal notes, and undocumented assumptions.
+  37: 
+  38: ## Machine-Readable Rule
+  39: 
+  40: When a human-readable document and its machine-readable contract disagree, the machine-readable contract controls for automation, but the conflict must be fixed.
+  41: 
+  42: ## Roadmap Rule
+  43: 
+  44: `ROADMAP_CURRENT.json` is the active machine-readable roadmap state.
+  45: 
+  46: `ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.
+  47: 
+  48: `ROADMAP.md`, `docs/ROADMAP.md`, and `docs/roadmap/roadmap.index.json` are derivative, index, or public-facing views. They must remain synchronized with canonical roadmap truth but must never override `ROADMAP_CURRENT.json` or `ROADMAP_CANONICAL.md`.
+  49: 
+  50: `repo/roadmap/roadmap.yaml` and `ROADMAP/ROADMAP_STATE.json` are non-authoritative unless explicitly promoted by a future governance PR and reflected in this hierarchy.
+  51: 
+  52: ## Decision Rule
+  53: 
+  54: Major direction changes require an entry in `docs/governance/DECISION_LOG.md` or a successor decision mechanism declared in `repo/contracts/PROJECT_CONSTITUTION.yaml`.
+  55: 
+  56: ## Safety Rule
+  57: 
+  58: If precedence cannot be resolved, no irreversible change should be made until the source-of-truth hierarchy is updated.
+
+--- docs/governance/CANONICAL_ROADMAP_DECLARATION.md ---
+   1: # CANONICAL ROADMAP DECLARATION
+   2: 
+   3: Status: Active
+   4: Scope: ASO-X / s43-refactor
+   5: Canonical machine-readable roadmap state: `ROADMAP_CURRENT.json`
+   6: Canonical human-readable roadmap: `ROADMAP_CANONICAL.md`
+   7: Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+   8: Traceability index: `docs/roadmap/roadmap.index.json`
+   9: Governance class: 50-year durable roadmap governance
+  10: Baseline date: 2026-07-05
+  11: Baseline state: CLOSED / MERGED / VERIFIED / BASELINE-RECORDED / CLEAN
+  12: 
+  13: ## Canonical Sources
+  14: 
+  15: - Machine-readable active roadmap state: `ROADMAP_CURRENT.json`
+  16: - Human-readable canonical roadmap: `ROADMAP_CANONICAL.md`
+  17: - Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+  18: - Non-prevailing traceability index: `docs/roadmap/roadmap.index.json`
+  19: 
+  20: ## Governance Rules
+  21: 
+  22: 1. `ROADMAP_CURRENT.json` is the active machine-readable roadmap state.
+  23: 2. `ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.
+  24: 3. `ROADMAP.md` and `docs/ROADMAP.md` are derivative views and must never override canonical roadmap truth.
+  25: 4. `docs/roadmap/roadmap.index.json` is a traceability index and must not declare independent roadmap authority.
+  26: 5. Durable roadmap requirements must have stable IDs.
+  27: 6. Requirement IDs must never be reused after retirement.
+  28: 7. Active governance requirements must be CI-validatable where applicable.
+  29: 8. Governance artifacts must remain portable and long-lived.
+  30: 9. Repository state is authoritative over prior conversation state.
+  31: 10. Any future promotion of a new roadmap source requires an explicit governance PR updating `REPOSITORY_TRUTH.md`, `SOURCE_OF_TRUTH_HIERARCHY.md`, validators, and CI gates in the same change set.
+  32: 
+
+========================================================================================
+SUSPICIOUS AUTHORITY CLAIMS IN TARGET FILES
+========================================================================================
+ROADMAP_CANONICAL.md:1: # Canonical Roadmap Declaration
+ROADMAP_CANONICAL.md:5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+ROADMAP_CANONICAL.md:6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+ROADMAP_CANONICAL.md:7: # ASO-X Roadmap Canonical
+ROADMAP_CANONICAL.md:11: Authority: canonical-human
+ROADMAP_CANONICAL.md:12: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+ROADMAP_CANONICAL.md:13: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+ROADMAP_CANONICAL.md:14: # ASO-X ROADMAP CANONICAL
+ROADMAP_CANONICAL.md:16: ## Canonical Status
+ROADMAP_CANONICAL.md:17: This file is the human-readable canonical roadmap view for ASO-X governance-aligned planning.
+ROADMAP_CANONICAL.md:25: - Repository files on the default branch are the only operational source of truth.
+ROADMAP_CANONICAL.md:27: - Canonical roadmap updates must not contradict repository authority documents.
+ROADMAP_CANONICAL.md:28: - Automation must fail closed when roadmap authority is unclear.
+ROADMAP_CANONICAL.md:32: - Preserve single-source-of-truth authority across repository artifacts.
+ROADMAP_CANONICAL.md:37: ## Authority Alignment
+ROADMAP_CANONICAL.md:41: - ROADMAP_CURRENT.json
+ROADMAP_CANONICAL.md:43: If any conflict exists, the higher-authority governance document prevails and this file must be updated in the same change set.
+ROADMAP_CANONICAL.md:46: - No chat transcript, pasted text, screenshot, or local scratch file is authoritative.
+ROADMAP_CANONICAL.md:48: - No derivative roadmap view may override canonical roadmap truth.
+ROADMAP_CANONICAL.md:52: - Governance authority documents are conflict-free.
+ROADMAP_CANONICAL.md:56: - Canonical and machine-readable roadmap artifacts are mutually consistent.
+ROADMAP.md:1: # DERIVED VIEW - NOT AUTHORITATIVE
+ROADMAP.md:4: Authority: non-prevailing
+ROADMAP.md:5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+ROADMAP.md:6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+ROADMAP.md:7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+ROADMAP.md:16: - Preserve canonical governance.
+ROADMAP.md:37: ## Authority Notice
+ROADMAP.md:38: This document is derivative and non-prevailing when conflicting with higher-authority artifacts.
+docs\ROADMAP.md:1: # DERIVED VIEW - NOT AUTHORITATIVE
+docs\ROADMAP.md:4: Authority: non-prevailing
+docs\ROADMAP.md:5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+docs\ROADMAP.md:6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+docs\ROADMAP.md:7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+docs\ROADMAP.md:12: Maintain the human-readable governance roadmap aligned with ROADMAP_CURRENT.json.
+docs\ROADMAP.md:16: Canonical source: `ROADMAP_CURRENT.json`
+docs\ROADMAP.md:45: - `docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md`
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:1: # DERIVED VIEW - NOT AUTHORITATIVE
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:4: Authority: non-prevailing
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:5: Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:6: Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:7: Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:72: ### 4.1 Canonical Data Layer
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:74: The canonical data layer MUST define stable, versioned, human-readable, machine-validatable records.
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:83: - no undocumented binary-only source of truth.
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:274: The repository remains the operational source of truth for current development, but long-horizon durability MUST NOT assume GitHub alone is permanent.
+docs\roadmap\aso-x-integrated-mandatory-roadmap.md:393: - undocumented source-of-truth files;
+docs\roadmap\roadmap.index.json:8:     "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
+docs\roadmap\roadmap.index.json:25:       "title": "Canonical roadmap source",
+docs\roadmap\roadmap.index.json:27:       "description": "The repository must define a canonical human-readable roadmap source.",
+docs\roadmap\roadmap.index.json:28:       "canonical_source": "ROADMAP_CANONICAL.md",
+docs\roadmap\roadmap.index.json:43:   "machine_readable_state": "ROADMAP_CURRENT.json",
+docs\roadmap\roadmap.index.json:45:   "authority": "non-prevailing",
+docs\roadmap\roadmap.index.json:47:   "canonical_source": "ROADMAP_CANONICAL.md"
+repo\roadmap\roadmap.yaml:1: authority: non-prevailing
+repo\roadmap\roadmap.yaml:2: role: legacy_non_authoritative
+repo\roadmap\roadmap.yaml:3: machine_readable_state: ROADMAP_CURRENT.json
+repo\roadmap\roadmap.yaml:12:     title: Source of truth hierarchy
+docs\governance\REPOSITORY_TRUTH.md:4: ASO-X repository is the sole authoritative source of operational truth.
+docs\governance\REPOSITORY_TRUTH.md:6: ## Authoritative Scope
+docs\governance\REPOSITORY_TRUTH.md:7: Only committed repository artifacts on the default branch, validated by governance gates, are authoritative.
+docs\governance\REPOSITORY_TRUTH.md:9: ## Non-Authoritative Scope
+docs\governance\REPOSITORY_TRUTH.md:10: The following are never authoritative:
+docs\governance\REPOSITORY_TRUTH.md:21: ## Authority Order
+docs\governance\REPOSITORY_TRUTH.md:24: 3. ROADMAP_CURRENT.json
+docs\governance\REPOSITORY_TRUTH.md:25: 4. ROADMAP_CANONICAL.md
+docs\governance\REPOSITORY_TRUTH.md:32: If two artifacts conflict, the artifact with higher authority prevails.
+docs\governance\REPOSITORY_TRUTH.md:33: Lower-authority artifacts must be updated in the same change set.
+docs\governance\REPOSITORY_TRUTH.md:34: Unresolved authority conflicts are release-blocking.
+docs\governance\REPOSITORY_TRUTH.md:38: `ROADMAP_CURRENT.json` is the machine-readable active roadmap state.
+docs\governance\REPOSITORY_TRUTH.md:40: `ROADMAP_CANONICAL.md` is the human-readable canonical roadmap.
+docs\governance\REPOSITORY_TRUTH.md:42: `ROADMAP.md` and `docs/ROADMAP.md` are derivative roadmap views and must never override canonical truth.
+docs\governance\REPOSITORY_TRUTH.md:44: `docs/roadmap/roadmap.index.json` is a non-prevailing traceability index.
+docs\governance\REPOSITORY_TRUTH.md:46: `ROADMAP/ROADMAP_STATE.json` and `repo/roadmap/roadmap.yaml` are non-authoritative unless explicitly promoted through a future governance PR that updates all authority documents, validators, and CI gates in the same change set.
+docs\governance\REPOSITORY_TRUTH.md:50: Files matching these patterns are non-authoritative:
+docs\governance\REPOSITORY_TRUTH.md:61: No AI, script, or contributor may invent goals, alter authority order, or treat non-authoritative artifacts as active truth.
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:1: # Source of Truth Hierarchy
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:5: ## Highest Authority
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:9: 3. `repo/contracts/CANONICAL_SOURCES.yaml`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:11: 5. `docs/governance/SOURCE_OF_TRUTH_HIERARCHY.md`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:14: 8. `ROADMAP_CURRENT.json`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:15: 9. `ROADMAP_CANONICAL.md`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:19: 13. `docs/ROADMAP.md`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:20: 14. `docs/roadmap/roadmap.index.json`
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:44: `ROADMAP_CURRENT.json` is the active machine-readable roadmap state.
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:46: `ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:48: `ROADMAP.md`, `docs/ROADMAP.md`, and `docs/roadmap/roadmap.index.json` are derivative, index, or public-facing views. They must remain synchronized with canonical roadmap truth but must never override `ROADMAP_CURRENT.json` or `ROADMAP_CANONICAL.md`.
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:50: `repo/roadmap/roadmap.yaml` and `ROADMAP/ROADMAP_STATE.json` are non-authoritative unless explicitly promoted by a future governance PR and reflected in this hierarchy.
+docs\governance\SOURCE_OF_TRUTH_HIERARCHY.md:58: If precedence cannot be resolved, no irreversible change should be made until the source-of-truth hierarchy is updated.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:1: # CANONICAL ROADMAP DECLARATION
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:5: Canonical machine-readable roadmap state: `ROADMAP_CURRENT.json`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:6: Canonical human-readable roadmap: `ROADMAP_CANONICAL.md`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:7: Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:8: Traceability index: `docs/roadmap/roadmap.index.json`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:13: ## Canonical Sources
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:15: - Machine-readable active roadmap state: `ROADMAP_CURRENT.json`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:16: - Human-readable canonical roadmap: `ROADMAP_CANONICAL.md`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:17: - Derivative roadmap views: `ROADMAP.md`, `docs/ROADMAP.md`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:18: - Non-prevailing traceability index: `docs/roadmap/roadmap.index.json`
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:22: 1. `ROADMAP_CURRENT.json` is the active machine-readable roadmap state.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:23: 2. `ROADMAP_CANONICAL.md` is the canonical human-readable roadmap.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:24: 3. `ROADMAP.md` and `docs/ROADMAP.md` are derivative views and must never override canonical roadmap truth.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:25: 4. `docs/roadmap/roadmap.index.json` is a traceability index and must not declare independent roadmap authority.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:30: 9. Repository state is authoritative over prior conversation state.
+docs\governance\CANONICAL_ROADMAP_DECLARATION.md:31: 10. Any future promotion of a new roadmap source requires an explicit governance PR updating `REPOSITORY_TRUTH.md`, `SOURCE_OF_TRUTH_HIERARCHY.md`, validators, and CI gates in the same change set.
+
+========================================================================================
+LITERAL BACKTICK-N DETECTION
+========================================================================================
+
+========================================================================================
+JSON VALIDATION
+========================================================================================
+JSON parse: PASS
+{
+  "schema_version": "1.0",
+  "repository": "s43-refactor",
+  "project": "ASO-X",
+  "horizon_years": 50,
+  "baseline_date": "2026-07-05",
+  "governance_documents": [
+    "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
+    "docs/governance/ROADMAP_STEWARDSHIP_50Y.md",
+    "docs/governance/DEPRECATION_RESISTANCE.md",
+    "docs/governance/AI_HANDOFF.md",
+    "docs/governance/CURRENT_PROJECT_BASELINE.md",
+    "docs/value/VALUE_MODEL.md"
+  ],
+  "validation": {
+    "ci_required": true,
+    "workflow": ".github/workflows/roadmap-governance-gate.yml",
+    "test_file": "tests/test_roadmap_governance.py"
+  },
+  "requirements": [
+    {
+      "id": "ASO-ROADMAP-GLOBAL-001",
+      "phase": "global",
+      "type": "top-level",
+      "title": "Canonical roadmap source",
+      "status": "active",
+      "description": "The repository must define a canonical human-readable roadmap source.",
+      "canonical_source": "ROADMAP_CANONICAL.md",
+      "evidence_required": true,
+      "ci_enforced": true
+    },
+    {
+      "id": "ASO-ROADMAP-GLOBAL-002",
+      "phase": "global",
+      "type": "global",
+      "title": "50-year roadmap horizon",
+      "status": "active",
+      "description": "The roadmap governance model must preserve a 50-year durability horizon.",
+      "evidence_required": true,
+      "ci_enforced": true
+    }
+  ],
+  "machine_readable_state": "ROADMAP_CURRENT.json",
+  "role": "traceability_index",
+  "authority": "non-prevailing",
+  "status": "active",
+  "canonical_source": "ROADMAP_CANONICAL.md"
+}
+
+========================================================================================
+GIT DIFF
+========================================================================================
+warning: in the working copy of 'docs/roadmap/roadmap.index.json', CRLF will be replaced by LF the next time Git touches it
+diff --git a/ROADMAP.md b/ROADMAP.md
+index 79d4585..2596cd0 100644
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,3 +1,10 @@
++# DERIVED VIEW - NOT AUTHORITATIVE
++
++Status: Active
++Authority: non-prevailing
++Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
++Canonical human-readable roadmap: ROADMAP_CANONICAL.md
++Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+ # ASO-X 50-Year Roadmap
+ 
+ ## Mission
+@@ -47,4 +54,4 @@ This gate does **not** reject the project. It records that final commercial/rele
+ 2. Re-run self-tests and retain outputs.
+ 3. Confirm clean, reviewable sign-off candidate state.
+ 4. Separate runtime/log churn from governance evidence.
+-<!-- END CURRENT_READINESS_GATE -->
+\ No newline at end of file
++<!-- END CURRENT_READINESS_GATE -->
+diff --git a/ROADMAP_CANONICAL.md b/ROADMAP_CANONICAL.md
+index 468709b..ae39c8a 100644
+--- a/ROADMAP_CANONICAL.md
++++ b/ROADMAP_CANONICAL.md
+@@ -1,3 +1,16 @@
++# Canonical Roadmap Declaration
++
++Status: Active
++Scope: ASO-X / s43-refactor
++Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
++Canonical human-readable roadmap: ROADMAP_CANONICAL.md
++# ASO-X Roadmap Canonical
++
++Status: Active
++Scope: ASO-X / s43-refactor
++Authority: canonical-human
++Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
++Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+ # ASO-X ROADMAP CANONICAL
+ 
+ ## Canonical Status
+@@ -59,4 +72,4 @@ This gate does **not** reject the project. It records that final commercial/rele
+ 2. Re-run self-tests and retain outputs.
+ 3. Confirm clean, reviewable sign-off candidate state.
+ 4. Separate runtime/log churn from governance evidence.
+-<!-- END CURRENT_READINESS_GATE -->
+\ No newline at end of file
++<!-- END CURRENT_READINESS_GATE -->
+diff --git a/docs/ROADMAP.md b/docs/ROADMAP.md
+index 82faad7..d5fcd94 100644
+--- a/docs/ROADMAP.md
++++ b/docs/ROADMAP.md
+@@ -1,13 +1,19 @@
+-# Roadmap
++# DERIVED VIEW - NOT AUTHORITATIVE
+ 
++Status: Active
++Authority: non-prevailing
++Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
++Canonical human-readable roadmap: ROADMAP_CANONICAL.md
++Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
++# Roadmap
+ 
+ ## Strategic Objective
+ 
+-Maintain the human-readable governance roadmap aligned with repo/roadmap/roadmap.yaml.
++Maintain the human-readable governance roadmap aligned with ROADMAP_CURRENT.json.
+ 
+ This file is the human-readable roadmap view.
+ 
+-Canonical source: `repo/roadmap/roadmap.yaml`
++Canonical source: `ROADMAP_CURRENT.json`
+ 
+ ## R-001 ΓÇö Governance Hardening Pack v1
+ 
+diff --git a/docs/roadmap/aso-x-integrated-mandatory-roadmap.md b/docs/roadmap/aso-x-integrated-mandatory-roadmap.md
+index 0b1f621..2a4a31c 100644
+--- a/docs/roadmap/aso-x-integrated-mandatory-roadmap.md
++++ b/docs/roadmap/aso-x-integrated-mandatory-roadmap.md
+@@ -1,3 +1,10 @@
++# DERIVED VIEW - NOT AUTHORITATIVE
++
++Status: Active
++Authority: non-prevailing
++Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
++Canonical human-readable roadmap: ROADMAP_CANONICAL.md
++Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+ # ASO-X Integrated Mandatory Roadmap
+ 
+ Status: Mandatory
+@@ -431,4 +438,4 @@ This roadmap is mandatory guidance for all future ASO-X work.
+ 
+ A future change may update this roadmap, but it MUST do so explicitly, through reviewable repository history, and with clear rationale.
+ 
+-Silent drift away from this roadmap is not allowed.
+\ No newline at end of file
++Silent drift away from this roadmap is not allowed.
+diff --git a/docs/roadmap/roadmap.index.json b/docs/roadmap/roadmap.index.json
+index 51ac546..6de51d1 100644
+--- a/docs/roadmap/roadmap.index.json
++++ b/docs/roadmap/roadmap.index.json
+@@ -2,9 +2,7 @@
+   "schema_version": "1.0",
+   "repository": "s43-refactor",
+   "project": "ASO-X",
+-  "canonical_source": "ROADMAP_CANONICAL.md",
+   "horizon_years": 50,
+-  "status": "active",
+   "baseline_date": "2026-07-05",
+   "governance_documents": [
+     "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
+@@ -27,7 +25,7 @@
+       "title": "Canonical roadmap source",
+       "status": "active",
+       "description": "The repository must define a canonical human-readable roadmap source.",
+-      "canonical_source": "docs/ROADMAP.md",
++      "canonical_source": "ROADMAP_CANONICAL.md",
+       "evidence_required": true,
+       "ci_enforced": true
+     },
+@@ -44,5 +42,7 @@
+   ],
+   "machine_readable_state": "ROADMAP_CURRENT.json",
+   "role": "traceability_index",
+-  "authority": "non-prevailing"
++  "authority": "non-prevailing",
++  "status": "active",
++  "canonical_source": "ROADMAP_CANONICAL.md"
+ }
+diff --git a/repo/roadmap/roadmap.yaml b/repo/roadmap/roadmap.yaml
+index 1283ee9..aeba42d 100644
+--- a/repo/roadmap/roadmap.yaml
++++ b/repo/roadmap/roadmap.yaml
+@@ -1,3 +1,6 @@
++authority: non-prevailing
++role: legacy_non_authoritative
++machine_readable_state: ROADMAP_CURRENT.json
+ roadmap_items:
+   - id: R-001
+     title: Repository governance entrypoint
+
+========================================================================================
+GATE OUTPUT
+========================================================================================
+{
+  "ok": false,
+  "errors": [
+    "canonical human metadata block missing from ROADMAP_CANONICAL.md",
+    "derived text file missing non-authoritative header: ROADMAP.md",
+    "derived text file missing non-authoritative header: docs\\ROADMAP.md",
+    "derived text file missing non-authoritative header: docs\\roadmap\\aso-x-integrated-mandatory-roadmap.md",
+    "forbidden authority claim remains in docs/roadmap/roadmap.index.json",
+    "forbidden authority claim remains in repo/roadmap/roadmap.yaml",
+    "forbidden authority claim remains in repo/roadmap/roadmap.yaml"
+  ]
+}
+
+Gate exit code: 1

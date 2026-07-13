@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "errors": [
+    "canonical human metadata block missing from ROADMAP_CANONICAL.md",
+    "derived text file missing non-authoritative header: ROADMAP.md",
+    "derived text file missing non-authoritative header: docs\\ROADMAP.md",
+    "derived text file missing non-authoritative header: docs\\roadmap\\aso-x-integrated-mandatory-roadmap.md",
+    "forbidden authority claim remains in docs/ROADMAP.md",
+    "forbidden authority claim remains in ROADMAP.md",
+    "forbidden authority claim remains in docs/roadmap/aso-x-integrated-mandatory-roadmap.md",
+    "forbidden authority claim remains in docs/roadmap/aso-x-integrated-mandatory-roadmap.md",
+    "forbidden authority claim remains in docs/roadmap/roadmap.index.json",
+    "forbidden authority claim remains in repo/roadmap/roadmap.yaml"
+  ]
+}
