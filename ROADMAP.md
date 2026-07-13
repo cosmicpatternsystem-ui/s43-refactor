@@ -1,3 +1,12 @@
+> DERIVED VIEW - NOT AUTHORITATIVE
+
+# DERIVED VIEW - NOT AUTHORITATIVE
+
+Status: active
+Authority: non-prevailing
+Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
 # ASO-X 50-Year Roadmap
 
 ## Mission

@@ -1,3 +1,7 @@
+# > DERIVED VIEW - NOT AUTHORITATIVE
+authority: non-prevailing
+role: legacy_non_authoritative
+machine_readable_state: ROADMAP_CURRENT.json
 roadmap_items:
   - id: R-001
     title: Repository governance entrypoint

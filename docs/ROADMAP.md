@@ -1,13 +1,21 @@
-# Roadmap
+> DERIVED VIEW - NOT AUTHORITATIVE
 
+# DERIVED VIEW - NOT AUTHORITATIVE
+
+Status: active
+Authority: non-prevailing
+Canonical machine-readable roadmap state: ROADMAP_CURRENT.json
+Canonical human-readable roadmap: ROADMAP_CANONICAL.md
+Purpose: Derived/public/traceability view only. This file must not be used as the prevailing roadmap authority.
+# Roadmap
 
 ## Strategic Objective
 
-Maintain the human-readable governance roadmap aligned with repo/roadmap/roadmap.yaml.
+Maintain the human-readable governance roadmap aligned with ROADMAP_CURRENT.json.
 
 This file is the human-readable roadmap view.
 
-Canonical source: `repo/roadmap/roadmap.yaml`
+Canonical source: `ROADMAP_CURRENT.json`
 
 ## R-001 — Governance Hardening Pack v1
 

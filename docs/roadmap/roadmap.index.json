@@ -1,11 +1,10 @@
 {
-  "schema_version": "1.0",
-  "repository": "s43-refactor",
-  "project": "ASO-X",
-  "canonical_source": "ROADMAP_CANONICAL.md",
+  "validation": {
+    "ci_required": true,
+    "workflow": ".github/workflows/roadmap-governance-gate.yml",
+    "test_file": "tests/test_roadmap_governance.py"
+  },
   "horizon_years": 50,
-  "status": "active",
-  "baseline_date": "2026-07-05",
   "governance_documents": [
     "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
     "docs/governance/ROADMAP_STEWARDSHIP_50Y.md",
@@ -14,11 +13,8 @@
     "docs/governance/CURRENT_PROJECT_BASELINE.md",
     "docs/value/VALUE_MODEL.md"
   ],
-  "validation": {
-    "ci_required": true,
-    "workflow": ".github/workflows/roadmap-governance-gate.yml",
-    "test_file": "tests/test_roadmap_governance.py"
-  },
+  "project": "ASO-X",
+  "baseline_date": "2026-07-05",
   "requirements": [
     {
       "id": "ASO-ROADMAP-GLOBAL-001",
@@ -27,7 +23,7 @@
       "title": "Canonical roadmap source",
       "status": "active",
       "description": "The repository must define a canonical human-readable roadmap source.",
-      "canonical_source": "docs/ROADMAP.md",
+      "canonical_source": "ROADMAP_CANONICAL.md",
       "evidence_required": true,
       "ci_enforced": true
     },
@@ -42,7 +38,12 @@
       "ci_enforced": true
     }
   ],
+  "canonical_source": "ROADMAP_CANONICAL.md",
+  "status": "active",
   "machine_readable_state": "ROADMAP_CURRENT.json",
+  "authority": "non-prevailing",
+  "repository": "s43-refactor",
   "role": "traceability_index",
-  "authority": "non-prevailing"
+  "schema_version": "1.0",
+  "authority_notice": "DERIVED VIEW - NOT AUTHORITATIVE"
 }
