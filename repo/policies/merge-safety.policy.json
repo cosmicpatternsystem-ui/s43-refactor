@@ -1,0 +1,23 @@
+{
+    "enforcement_level":  "strict",
+    "name":  "Formal Merge Safety",
+    "policy_id":  "ASOX-POL-002",
+    "requirements":  [
+                         {
+                             "mandatory":  true,
+                             "criterion":  "evidence-presence",
+                             "desc":  "Every PR must link to a valid Evidence Record."
+                         },
+                         {
+                             "mandatory":  true,
+                             "criterion":  "formal-verification-target",
+                             "desc":  "Critical paths must include mathematical proof or formal spec."
+                         },
+                         {
+                             "mandatory":  true,
+                             "criterion":  "no-drift-rule",
+                             "desc":  "Merge is blocked if ROADMAP_CANONICAL drifts from machine state."
+                         }
+                     ],
+    "version":  "1.0.0"
+}

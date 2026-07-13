@@ -1,0 +1,12 @@
+{
+    "version":  "1.0.0",
+    "name":  "Artifact Retention and Durability",
+    "retention_period_years":  50,
+    "storage_class":  "immutable-ledger",
+    "policy_id":  "ASOX-POL-001",
+    "rules":  [
+                  "All AUDIT artifacts must be preserved for the full retention period.",
+                  "Deletions from the evidence ledger are strictly prohibited (Append-only).",
+                  "Checksum integrity must be verified annually."
+              ]
+}
