@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Evidence Record Schema",
+  "description": "Standard schema for ASO-X Evidence records (Aligned with event_type and payload_hash)",
+  "type": "object",
+  "required": ["evidence_id", "timestamp", "event_type", "provider_id", "payload_hash"],
+  "properties": {
+    "evidence_id": { "type": "string", "pattern": "^EVD-[0-9]{8}-[A-F0-9]{6}$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "event_type": { 
+      "type": "string", 
+      "enum": ["AUTH_GRANT", "ASSET_TRANSFER", "POLICY_UPDATE", "EVIDENCE_SIGNING", "SYSTEM_LOCK"] 
+    },
+    "provider_id": { "type": "string" },
+    "payload_hash": { 
+      "type": "string", 
+      "pattern": "^[a-f0-9]{64,128}$",
+      "description": "SHA-256 or SHA-512 hash of the evidence payload"
+    },
+    "metadata": { "type": "object" }
+  }
+}
