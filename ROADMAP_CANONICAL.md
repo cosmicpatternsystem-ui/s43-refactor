@@ -1,3 +1,4 @@
+ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
 <!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
