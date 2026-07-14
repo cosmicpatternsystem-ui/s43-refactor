@@ -1,4 +1,4 @@
-{
+﻿{
   "created_at": "2026-07-08T00:00:00Z",
   "evidence_id": "EV-EXAMPLE-001",
   "event_type": "bootstrap",
@@ -9,3 +9,4 @@
   "subject": "ASO-X",
   "summary": "Default bootstrap evidence record"
 }
+

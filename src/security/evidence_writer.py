@@ -1,4 +1,4 @@
-import json
+﻿import json
 import os
 import tempfile
 from pathlib import Path
@@ -186,3 +186,4 @@ class EvidencePipeline:
             self._write_without_schema_validation(dest_filepath, secured_record)
 
         return secured_record
+

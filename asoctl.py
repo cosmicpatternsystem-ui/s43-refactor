@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """ASO-X project control utility.
 
 Provides durable-state checks, local backups, and basic environment bootstrap
@@ -946,3 +946,4 @@ def cmd_roadmap(args):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
