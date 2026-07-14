@@ -9,7 +9,7 @@ def test_full_evidence_pipeline_integration(tmp_path):
     evidence_payload = {
         "version": "1.0.0",
         "timestamp": "2026-07-14T12:00:00Z",
-        "evidence_type": "transaction_checkpoint",
+        "event_type": "transaction_checkpoint",
         "payload": {
             "transaction_id": "tx_99999",
             "amount": 15000.50,
@@ -48,7 +48,7 @@ def test_pipeline_validation_failure():
     pipeline = EvidencePipeline()
     private_key, public_key = EvidenceSigner.generate_keypair()
     invalid_payload = {
-        "evidence_type": "malformed_data",
+        "event_type": "malformed_data",
         "payload": {}
     }
     with pytest.raises(Exception):

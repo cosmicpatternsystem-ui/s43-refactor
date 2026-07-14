@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from src.security.evidence_writer import AtomicEvidenceWriter
 
-SCHEMA_PATH = Path(__file__).parent.parent / "schemas" / "evidence-record.schema.json"
+SCHEMA_PATH = Path(__file__).resolve().parents[1] / "src" / "schemas" / "evidence-record.schema.json"
 
 @pytest.fixture
 def writer():

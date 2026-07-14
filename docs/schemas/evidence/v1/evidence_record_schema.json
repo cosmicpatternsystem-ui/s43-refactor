@@ -6,7 +6,7 @@
   "required": [
     "schema_version",
     "evidence_id",
-    "evidence_type",
+    "event_type",
     "created_at",
     "producer",
     "subject",
@@ -17,7 +17,7 @@
   "properties": {
     "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "evidence_id": { "type": "string" },
-    "evidence_type": { "type": "string" },
+    "event_type": { "type": "string" },
     "created_at": { "type": "string", "format": "date-time" },
     "producer": { "type": "string" },
     "subject": { "type": "string" },
