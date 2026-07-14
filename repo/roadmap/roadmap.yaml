@@ -1,5 +1,5 @@
 # > DERIVED VIEW - NOT AUTHORITATIVE
-authority: non-prevailing
+authority: legacy_non_authoritative
 role: legacy_non_authoritative
 machine_readable_state: ROADMAP_CURRENT.json
 roadmap_items:
@@ -27,3 +27,5 @@ roadmap_items:
   - id: R-008
     title: CI validation gate
     status: active
+independent_authority: false
+canonical: ROADMAP_CURRENT.json
