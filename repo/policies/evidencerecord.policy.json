@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "policy_id": "evidencerecord.policy",
+  "version": "1.0.0",
+  "status": "active",
+  "scope": "evidence",
+  "intent": "Enforce canonical evidence record requirements.",
+  "required_fields": [
+    "evidence_id",
+    "timestamp",
+    "event_type",
+    "provider_id",
+    "payload_hash"
+  ],
+  "payload_hash_format": "^sha256:[a-f0-9]{64}$"
+}

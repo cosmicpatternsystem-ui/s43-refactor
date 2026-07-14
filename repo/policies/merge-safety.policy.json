@@ -1,23 +1,21 @@
 {
-    "enforcement_level":  "strict",
-    "name":  "Formal Merge Safety",
-    "policy_id":  "ASOX-POL-002",
-    "requirements":  [
-                         {
-                             "mandatory":  true,
-                             "criterion":  "evidence-presence",
-                             "desc":  "Every PR must link to a valid Evidence Record."
-                         },
-                         {
-                             "mandatory":  true,
-                             "criterion":  "formal-verification-target",
-                             "desc":  "Critical paths must include mathematical proof or formal spec."
-                         },
-                         {
-                             "mandatory":  true,
-                             "criterion":  "no-drift-rule",
-                             "desc":  "Merge is blocked if ROADMAP_CANONICAL drifts from machine state."
-                         }
-                     ],
-    "version":  "1.0.0"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "policy_id": "merge-safety.policy",
+  "version": "1.0.0",
+  "status": "active",
+  "scope": "git/github",
+  "intent": "Prevent unsafe merges, shadow authorities, and drift-based promotion.",
+  "rules": [
+    {
+      "id": "block-unsafe-merge",
+      "effect": "deny",
+      "conditions": [
+        "dirty worktree",
+        "uncommitted governance drift",
+        "failed governance guard",
+        "missing review",
+        "failed CI"
+      ]
+    }
+  ]
 }
