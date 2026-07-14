@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aso-x.internal/schemas/evidence-record.schema.json",
+  "title": "EvidenceRecord",
+  "description": "Schema for ASO-X High-Integrity Evidence Records (Policy P3.2)",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "pipeline_gate_pass",
+        "authority_reconciliation",
+        "ledger_rotation",
+        "manual_override"
+      ]
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-fA-F]{64}$"
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key_id": { "type": "string" },
+          "signature": { "type": "string", "pattern": "^[0-9a-fA-F]+$" }
+        },
+        "required": ["key_id", "signature"],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "version",
+    "uuid",
+    "timestamp",
+    "producer",
+    "event_type",
+    "payload_hash",
+    "signatures"
+  ],
+  "additionalProperties": false
+}
