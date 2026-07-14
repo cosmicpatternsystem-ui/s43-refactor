@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atomic Roadmap Writer — Phase B/D/E/F Durability"""
+"""Atomic Roadmap Writer â€” Phase B/D/E/F Durability"""
 import json
 import os
 import shutil
@@ -25,12 +25,12 @@ def atomic_write(path: Path, content: str) -> None:
         "target": str(path),
         "temp_file": str(temp_path),
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "content_hash": compute_hash(content)
+        "payload_hash": compute_hash(content)
     }
     journal_path.write_text(json.dumps(journal_entry, indent=2), encoding="utf-8")
     temp_path.write_text(content, encoding="utf-8")
     actual_hash = compute_hash(temp_path.read_text(encoding="utf-8"))
-    if actual_hash != journal_entry["content_hash"]:
+    if actual_hash != journal_entry["payload_hash"]:
         temp_path.unlink()
         raise ValueError("Hash mismatch")
     temp_path.replace(path)
@@ -71,7 +71,7 @@ def save_roadmap(data: dict) -> None:
     backup_roadmap()
     content = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
     atomic_write(ROADMAP_PATH, content)
-    print(f"✓ Roadmap saved: {ROADMAP_PATH}")
+    print(f"âœ“ Roadmap saved: {ROADMAP_PATH}")
     print(f"  Hash: {compute_hash(content)[:16]}...")
     print(f"  Backups: {len(list(BACKUP_DIR.glob('*.json')))} retained")
 
@@ -85,11 +85,11 @@ def recover_from_journal() -> None:
         target = Path(entry["target"])
         if temp.exists():
             content = temp.read_text(encoding="utf-8")
-            if compute_hash(content) == entry["content_hash"]:
+            if compute_hash(content) == entry["payload_hash"]:
                 temp.replace(target)
-                print(f"✓ Recovered: {target}")
+                print(f"âœ“ Recovered: {target}")
             else:
-                print(f"✗ Hash mismatch, discarding: {temp}")
+                print(f"âœ— Hash mismatch, discarding: {temp}")
                 temp.unlink()
         j.unlink()
 
