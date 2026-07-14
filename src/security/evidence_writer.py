@@ -90,7 +90,7 @@ class EvidenceSigner:
 class EvidencePipeline:
     """Integrates validation, signing, and atomic writing."""
 
-    REQUIRED_FIELDS = ("version", "timestamp", "evidence_type", "payload")
+    REQUIRED_FIELDS = ("version", "timestamp", "event_type", "payload")
 
     def __init__(self, schema_path=None):
         self.writer = AtomicEvidenceWriter(schema_path) if schema_path else None
@@ -110,8 +110,8 @@ class EvidencePipeline:
         if not isinstance(evidence["timestamp"], str) or not evidence["timestamp"].strip():
             raise ValueError("timestamp must be a non-empty string.")
 
-        if not isinstance(evidence["evidence_type"], str) or not evidence["evidence_type"].strip():
-            raise ValueError("evidence_type must be a non-empty string.")
+        if not isinstance(evidence["event_type"], str) or not evidence["event_type"].strip():
+            raise ValueError("event_type must be a non-empty string.")
 
         if not isinstance(evidence["payload"], dict):
             raise ValueError("payload must be a dictionary.")
@@ -157,7 +157,7 @@ class EvidencePipeline:
         base_record = {
             "version": evidence["version"],
             "timestamp": evidence["timestamp"],
-            "evidence_type": evidence["evidence_type"],
+            "event_type": evidence["event_type"],
             "payload": evidence["payload"],
         }
 
@@ -186,3 +186,5 @@ class EvidencePipeline:
             self._write_without_schema_validation(dest_filepath, secured_record)
 
         return secured_record
+
+

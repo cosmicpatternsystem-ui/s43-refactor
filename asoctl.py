@@ -258,7 +258,7 @@ class ASOControl:
             default_evidence = {
                 "schema_version": "1.0",
                 "evidence_id": "EV-EXAMPLE-001",
-                "evidence_type": "bootstrap",
+                "event_type": "bootstrap",
                 "created_at": "2026-07-08T00:00:00Z",
                 "producer": "asoctl",
                 "subject": "ASO-X",
@@ -946,3 +946,5 @@ def cmd_roadmap(args):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+

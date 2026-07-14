@@ -1,7 +1,7 @@
 {
   "created_at": "2026-07-08T00:00:00Z",
   "evidence_id": "EV-P33-LIVE-001",
-  "evidence_type": "validation_test",
+  "event_type": "validation_test",
   "integrity": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
   "producer": "asoctl",
   "retention": "50y",
@@ -9,3 +9,4 @@
   "subject": "P3.3 Evidence Validator live validation",
   "summary": "Minimal positive evidence record for strict validator."
 }
+

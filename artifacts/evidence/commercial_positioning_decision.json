@@ -1,7 +1,7 @@
 {
   "schema": "aso.commercial.positioning.v1",
   "status": "active",
-  "evidence_type": "commercial_positioning_decision",
+  "event_type": "commercial_positioning_decision",
   "decision": "commercial_ready",
   "artifacts": [
     "docs/ASO-X_COMMERCIAL_POSITIONING.md",

@@ -36,8 +36,9 @@ def test_commercial_positioning_policy_prioritization_controls():
 def test_commercial_positioning_evidence_links_artifacts():
     evidence = json.loads(Path("artifacts/evidence/commercial_positioning_decision.json").read_text(encoding="utf-8"))
     assert evidence["status"] == "active"
-    assert evidence["evidence_type"] == "commercial_positioning_decision"
+    assert evidence["event_type"] == "commercial_positioning_decision"
     assert "docs/ASO-X_COMMERCIAL_POSITIONING.md" in evidence["artifacts"]
     assert "policies/commercial_positioning.policy.json" in evidence["artifacts"]
     assert "repository_first_authority" in evidence["controls"]
     assert "machine_verifiable_governance" in evidence["controls"]
+
