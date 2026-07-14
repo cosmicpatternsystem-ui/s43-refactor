@@ -4,7 +4,6 @@
     "workflow": ".github/workflows/roadmap-governance-gate.yml",
     "test_file": "tests/test_roadmap_governance.py"
   },
-  "horizon_years": 50,
   "governance_documents": [
     "docs/governance/CANONICAL_ROADMAP_DECLARATION.md",
     "docs/governance/ROADMAP_STEWARDSHIP_50Y.md",
@@ -38,12 +37,17 @@
       "ci_enforced": true
     }
   ],
-  "canonical_source": "ROADMAP_CANONICAL.md",
-  "status": "active",
-  "machine_readable_state": "ROADMAP_CURRENT.json",
-  "authority": "non-prevailing",
   "repository": "s43-refactor",
-  "role": "traceability_index",
   "schema_version": "1.0",
-  "authority_notice": "DERIVED VIEW - NOT AUTHORITATIVE"
+  "authority_notice": "DERIVED VIEW - NOT AUTHORITATIVE",
+  "canonical_source": "ROADMAP_CANONICAL.md",
+  "derived_source_reference": "ROADMAP_CANONICAL.md",
+  "derived_machine_reference": "ROADMAP_MACHINE.json",
+  "derived_human_reference": "ROADMAP_HUMAN.md",
+  "independent_authority": false,
+  "machine_readable_state": "ROADMAP_CURRENT.json",
+  "role": "traceability_index",
+  "authority": "non-prevailing",
+  "status": "active",
+  "horizon_years": 50
 }
