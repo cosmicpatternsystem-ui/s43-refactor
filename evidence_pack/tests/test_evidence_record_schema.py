@@ -63,3 +63,7 @@ def test_wrong_hash_prefix_is_rejected():
 
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(instance=invalid_record, schema=schema)
+def test_schema_disallows_additional_properties():
+    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+        schema = json.load(f)
+    assert schema["additionalProperties"] is False
