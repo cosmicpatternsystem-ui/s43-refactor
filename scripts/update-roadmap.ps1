@@ -113,7 +113,7 @@ function Get-RoadmapMetadata {
             }
         }
     }
-    # Ã¢â€â‚¬Ã¢â€â‚¬ Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) Ã¢â€â‚¬Ã¢â€â‚¬
+    # ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
     if ($content -match '(?ms)^---\s*\r?\n(.*?)\r?\n---') {
         $yamlText = $Matches[1]
         $yamlLines = $yamlText -split '\r?\n'
@@ -472,7 +472,7 @@ $phases = foreach ($phaseFile in $phaseFiles) {
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
         $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $dependsOn -PhaseReferenceMap $phaseReferenceMap
 
-        # ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Phase-42.03: extract phase_id and title from H1 header ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+        # ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Phase-42.03: extract phase_id and title from H1 header ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
         $phaseId = $null
         $title   = $null
         $firstHeader = ($content -split "`n" |
@@ -519,12 +519,12 @@ $roadmap = [ordered]@{
         last_verified_at = "ISO-8601 UTC string|null"
     }
     updated_at_utc = "GENERATED"
-    canonical_roadmap = "ROADMAP_CANONICAL.md"
+    canonical_roadmap = "docs/governance/ROADMAP_CANONICAL.md"
     phase_count = @($phases).Count
     phases = @($phases)
 }
 # === Stable Timestamp Logic ===
-$outputPath = Join-Path (Get-Location) "ROADMAP_CURRENT.json"
+$outputPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\docs\governance\ROADMAP_CURRENT.json"))
 $existingTimestamp = $null; $existingJsonContent = $null
 if (Test-Path $outputPath) {
     try {
@@ -562,6 +562,6 @@ if ($newHash -eq $oldHash -and $existingTimestamp) {
 }
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
-& (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path (Join-Path (Get-Location) "ROADMAP_CURRENT.json") -Content $json
+& (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path $outputPath -Content $json
 
-Write-Host "ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
+Write-Host "docs/governance/ROADMAP_CURRENT.json regenerated from PHASE_*.md files"
