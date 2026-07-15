@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from pathlib import Path
-import sys
+import json
 import re
+from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ROADMAP_ID_PATTERN = re.compile(r"\bP\d-[A-Z0-9-]+\b")
 
 REQUIRED_FILES = [
     "AGENT_ENTRYPOINT.md",
     "PROJECT_CHARTER.md",
-    "docs/ROADMAP.md",
     "docs/COMMERCIAL_MODEL.md",
     "docs/OPERATIONS_RUNBOOK.md",
     "docs/governance/GOAL_CONSTITUTION.md",
@@ -21,9 +21,10 @@ REQUIRED_FILES = [
     "docs/governance/POLICY_MATRIX.md",
     "docs/governance/COMPATIBILITY_CONTRACT.md",
     "docs/governance/DECISION_LOG.md",
+    "docs/governance/ROADMAP_CURRENT.json",
+    "docs/governance/ROADMAP_CANONICAL.md",
     "repo/contracts/CANONICAL_SOURCES.yaml",
     "repo/contracts/PROJECT_CONSTITUTION.yaml",
-    "repo/roadmap/roadmap.yaml",
     "tests/test_project_constitution_pack.py",
     ".github/workflows/project-constitution-gate.yml",
 ]
@@ -68,6 +69,11 @@ REQUIRED_PHRASES = {
         "anti-obsolescence",
         "artifact retention",
     ],
+    "docs/governance/ROADMAP_CANONICAL.md": [
+        "P0-ROADMAP-AUTHORITY",
+        "P2-COMMERCIAL-VALIDATION",
+        "canonical machine-readable roadmap authority",
+    ],
     "repo/contracts/PROJECT_CONSTITUTION.yaml": [
         "repository_is_source_of_truth: true",
         "chat_memory_is_source_of_truth: false",
@@ -75,22 +81,12 @@ REQUIRED_PHRASES = {
         "autonomy_targets:",
         "canonical_files:",
     ],
-    "repo/roadmap/roadmap.yaml": [
-        "roadmap_items:",
-        "R-001",
-        "R-008",
-    ],
-    "docs/ROADMAP.md": [
-        "R-001",
-        "R-008",
-        "Canonical source",
-    ],
 }
 
 
 def fail(message: str) -> None:
     print(f"ERROR: {message}")
-    sys.exit(1)
+    raise SystemExit(1)
 
 
 def read_text(path: Path) -> str:
@@ -126,25 +122,62 @@ def ensure_required_phrases(texts: dict[str, str]) -> None:
                 fail(f"{rel} missing required phrase: {phrase}")
 
 
-def roadmap_ids_from_yaml(text: str) -> list[str]:
-    return re.findall(r"^\s*-\s*id:\s*(R-\d{3})\s*$", text, flags=re.MULTILINE)
+def extract_roadmap_ids(value: object) -> list[str]:
+    ids: list[str] = []
+
+    def collect(candidate: object) -> None:
+        if isinstance(candidate, str) and ROADMAP_ID_PATTERN.fullmatch(candidate):
+            ids.append(candidate)
+
+    def visit(node: object) -> None:
+        if isinstance(node, dict):
+            for key, child in node.items():
+                collect(key)
+                visit(child)
+            return
+        if isinstance(node, list):
+            for child in node:
+                visit(child)
+            return
+        collect(node)
+
+    visit(value)
+
+    unique_ids: list[str] = []
+    for item in ids:
+        if item not in unique_ids:
+            unique_ids.append(item)
+    return unique_ids
+
+
+def roadmap_ids_from_json(text: str) -> list[str]:
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as exc:
+        fail(f"docs/governance/ROADMAP_CURRENT.json is invalid JSON: {exc}")
+
+    ids = extract_roadmap_ids(data)
+    if not ids:
+        fail("docs/governance/ROADMAP_CURRENT.json does not expose any roadmap ids")
+    return ids
 
 
 def roadmap_ids_from_markdown(text: str) -> list[str]:
-    return re.findall(r"\b(R-\d{3})\b", text)
+    ids = ROADMAP_ID_PATTERN.findall(text)
+    unique_ids: list[str] = []
+    for item in ids:
+        if item not in unique_ids:
+            unique_ids.append(item)
+    return unique_ids
 
 
 def ensure_roadmap_sync(texts: dict[str, str]) -> None:
-    yaml_ids = roadmap_ids_from_yaml(texts["repo/roadmap/roadmap.yaml"])
-    md_ids = roadmap_ids_from_markdown(texts["docs/ROADMAP.md"])
-    md_unique = []
-    for item in md_ids:
-        if item not in md_unique:
-            md_unique.append(item)
-    if yaml_ids != md_unique:
+    json_ids = roadmap_ids_from_json(texts["docs/governance/ROADMAP_CURRENT.json"])
+    md_ids = roadmap_ids_from_markdown(texts["docs/governance/ROADMAP_CANONICAL.md"])
+    if json_ids != md_ids:
         fail(
-            "roadmap ids differ between repo/roadmap/roadmap.yaml and docs/ROADMAP.md: "
-            f"{yaml_ids} != {md_unique}"
+            "roadmap ids differ between docs/governance/ROADMAP_CURRENT.json and "
+            f"docs/governance/ROADMAP_CANONICAL.md: {json_ids} != {md_ids}"
         )
 
 
@@ -159,7 +192,8 @@ def ensure_constitution_links(texts: dict[str, str]) -> None:
         "docs/governance/DURABILITY_STANDARD.md",
         "repo/contracts/CANONICAL_SOURCES.yaml",
         "repo/contracts/PROJECT_CONSTITUTION.yaml",
-        "repo/roadmap/roadmap.yaml",
+        "docs/governance/ROADMAP_CURRENT.json",
+        "docs/governance/ROADMAP_CANONICAL.md",
     ]
     for ref in expected_refs:
         if ref not in charter:

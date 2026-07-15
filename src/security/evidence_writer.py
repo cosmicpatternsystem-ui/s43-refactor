@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import tempfile
 from pathlib import Path
 from typing import Any, Dict
@@ -90,7 +91,7 @@ class EvidenceSigner:
 class EvidencePipeline:
     """Integrates validation, signing, and atomic writing."""
 
-    REQUIRED_FIELDS = ("version", "timestamp", "event_type", "payload")
+    REQUIRED_FIELDS = ("version", "timestamp", "event_type", "payload_hash")
 
     def __init__(self, schema_path=None):
         self.writer = AtomicEvidenceWriter(schema_path) if schema_path else None
@@ -113,8 +114,11 @@ class EvidencePipeline:
         if not isinstance(evidence["event_type"], str) or not evidence["event_type"].strip():
             raise ValueError("event_type must be a non-empty string.")
 
-        if not isinstance(evidence["payload"], dict):
-            raise ValueError("payload must be a dictionary.")
+        if not isinstance(evidence["payload_hash"], str):
+            raise ValueError("payload_hash must be a string.")
+
+        if not re.fullmatch(r"sha256:[0-9a-f]{64}", evidence["payload_hash"]):
+            raise ValueError("payload_hash must match sha256:<64 lowercase hex>.")
 
     @staticmethod
     def _public_key_to_hex(public_key) -> str:
@@ -158,7 +162,7 @@ class EvidencePipeline:
             "version": evidence["version"],
             "timestamp": evidence["timestamp"],
             "event_type": evidence["event_type"],
-            "payload": evidence["payload"],
+            "payload_hash": evidence["payload_hash"],
         }
 
         signable_record = {

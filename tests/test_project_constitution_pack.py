@@ -1,11 +1,42 @@
 from __future__ import annotations
 
+import json
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ROADMAP_ID_PATTERN = re.compile(r"\bP\d-[A-Z0-9-]+\b")
+
+
+def extract_roadmap_ids(value: object) -> list[str]:
+    ids: list[str] = []
+
+    def collect(candidate: object) -> None:
+        if isinstance(candidate, str) and ROADMAP_ID_PATTERN.fullmatch(candidate):
+            ids.append(candidate)
+
+    def visit(node: object) -> None:
+        if isinstance(node, dict):
+            for key, child in node.items():
+                collect(key)
+                visit(child)
+            return
+        if isinstance(node, list):
+            for child in node:
+                visit(child)
+            return
+        collect(node)
+
+    visit(value)
+
+    unique_ids: list[str] = []
+    for item in ids:
+        if item not in unique_ids:
+            unique_ids.append(item)
+    return unique_ids
 
 
 def test_project_constitution_check_passes() -> None:
@@ -23,20 +54,27 @@ def test_project_constitution_check_passes() -> None:
 def test_agent_entrypoint_rejects_chat_memory_as_source_of_truth() -> None:
     text = (ROOT / "AGENT_ENTRYPOINT.md").read_text(encoding="utf-8")
     assert "No project-critical decision may rely on chat memory" in text
-    assert "Repository files outrank chat memory" not in text or "source of truth" in text.lower()
+    assert "source of truth" in text.lower()
 
 
 def test_roadmap_source_and_view_are_synchronized_by_ids() -> None:
-    import re
+    roadmap = json.loads(
+        (ROOT / "docs/governance/ROADMAP_CURRENT.json").read_text(encoding="utf-8")
+    )
+    view = (ROOT / "docs/governance/ROADMAP_CANONICAL.md").read_text(encoding="utf-8")
 
-    roadmap = (ROOT / "repo/roadmap/roadmap.yaml").read_text(encoding="utf-8")
-    view = (ROOT / "docs/ROADMAP.md").read_text(encoding="utf-8")
+    roadmap_ids = extract_roadmap_ids(roadmap)
 
-    roadmap_ids = re.findall(r"^\s*-\s*id:\s*(R-\d{3})\s*$", roadmap, flags=re.MULTILINE)
-    view_ids = re.findall(r"^##\s+(R-\d{3})\s+—", view, flags=re.MULTILINE)
+    view_ids = ROADMAP_ID_PATTERN.findall(view)
+    view_unique: list[str] = []
+    for item in view_ids:
+        if item not in view_unique:
+            view_unique.append(item)
 
-    assert roadmap_ids == view_ids
-    assert roadmap_ids == ["R-001", "R-002", "R-003", "R-004", "R-005", "R-006", "R-007", "R-008"]
+    assert roadmap_ids
+    assert roadmap_ids == view_unique
+    assert roadmap_ids[0] == "P0-ROADMAP-AUTHORITY"
+    assert roadmap_ids[-1] == "P2-COMMERCIAL-VALIDATION"
 
 
 def test_constitution_declares_commercial_and_durability_posture() -> None:

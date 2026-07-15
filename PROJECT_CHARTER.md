@@ -77,3 +77,11 @@ AGENT_ENTRYPOINT.md is the required continuation entrypoint for autonomous agent
 - repo/contracts/CANONICAL_SOURCES.yaml
 - repo/roadmap/roadmap.yaml
 - docs/ROADMAP.md
+
+## Roadmap Authority
+
+The sole authoritative roadmap source is `docs/governance/ROADMAP_CURRENT.json`.
+
+`docs/governance/ROADMAP_CANONICAL.md` is the human-readable canonical projection and must remain semantically synchronized with the JSON source.
+
+All other roadmap representations are derived projections and are not independent sources of truth.

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "policy_id": "artifactretention.policy",
+  "version": "1.0.0",
+  "status": "active",
+  "scope": "repo/governance",
+  "intent": "Govern retained artifacts, retention windows, and purge controls with fail-closed enforcement.",
+  "rules": [
+    {
+      "id": "retain-canonical-governance-artifacts",
+      "effect": "allow",
+      "applies_to": [
+        "docs/governance/ROADMAP_CURRENT.json",
+        "docs/governance/ROADMAP_CANONICAL.md",
+        "docs/governance/DECISION_MATRIX.json",
+        "docs/governance/DECISION_MATRIX.md"
+      ],
+      "conditions": [
+        "registered in governance manifest",
+        "UTF-8 without BOM",
+        "LF line endings"
+      ]
+    }
+  ]
+}

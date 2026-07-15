@@ -10,11 +10,7 @@ def test_full_evidence_pipeline_integration(tmp_path):
         "version": "1.0.0",
         "timestamp": "2026-07-14T12:00:00Z",
         "event_type": "transaction_checkpoint",
-        "payload": {
-            "transaction_id": "tx_99999",
-            "amount": 15000.50,
-            "currency": "USD"
-        }
+        "payload_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }
     filepath = os.path.join(tmp_path, "evidence_record_secured.json")
     pipeline = EvidencePipeline()
