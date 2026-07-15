@@ -113,7 +113,7 @@ function Get-RoadmapMetadata {
             }
         }
     }
-    # ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
+    # Phase-42.03: parse YAML frontmatter (takes precedence over comment-based metadata)
     if ($content -match '(?ms)^---\s*\r?\n(.*?)\r?\n---') {
         $yamlText = $Matches[1]
         $yamlLines = $yamlText -split '\r?\n'
@@ -471,8 +471,7 @@ $phases = foreach ($phaseFile in $phaseFiles) {
         $metadata["owner"] = Normalize-RoadmapScalar $metadata["owner"]
         $metadata["priority"] = Normalize-RoadmapPriority $metadata["priority"]
         $metadata["depends_on"] = Resolve-RoadmapDependsOn -Value $dependsOn -PhaseReferenceMap $phaseReferenceMap
-
-        # ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Phase-42.03: extract phase_id and title from H1 header ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+        # Phase-42.03: extract phase_id and title from H1 header
         $phaseId = $null
         $title   = $null
         $firstHeader = ($content -split "`n" |
