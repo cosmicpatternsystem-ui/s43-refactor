@@ -33,7 +33,7 @@ jobs:
           python tools/release_governance_check.py
           python -m pytest tests/test_release_governance_enforcement.py -q
 
-- name: Run roadmap governance tests
+      - name: Run roadmap governance tests
         shell: bash
         run: |
           python -m pytest tests/test_roadmap_governance.py -q
