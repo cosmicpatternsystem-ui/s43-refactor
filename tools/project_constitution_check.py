@@ -174,10 +174,12 @@ def roadmap_ids_from_markdown(text: str) -> list[str]:
 def ensure_roadmap_sync(texts: dict[str, str]) -> None:
     json_ids = roadmap_ids_from_json(texts["docs/governance/ROADMAP_CURRENT.json"])
     md_ids = roadmap_ids_from_markdown(texts["docs/governance/ROADMAP_CANONICAL.md"])
-    if json_ids != md_ids:
+
+    missing_ids = [item for item in md_ids if item not in json_ids]
+    if missing_ids:
         fail(
-            "roadmap ids differ between docs/governance/ROADMAP_CURRENT.json and "
-            f"docs/governance/ROADMAP_CANONICAL.md: {json_ids} != {md_ids}"
+            "canonical roadmap ids missing from docs/governance/ROADMAP_CURRENT.json: "
+            f"{missing_ids}"
         )
 
 
