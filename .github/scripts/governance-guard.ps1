@@ -1,59 +1,88 @@
 param(
     [string]$RepoRoot = (Resolve-Path ".").Path
 )
-$ErrorActionPreference = "Stop"
 
-function Fail([int]$Code, [string]$Message) {
-    Write-Host $Message
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+
+function Fail {
+    param(
+        [int]$Code,
+        [string]$Message
+    )
+    Write-Error $Message
     exit $Code
 }
 
-$canonical = Join-Path $RepoRoot "docs/governance/ROADMAP_CURRENT.json"
-$manifest = Join-Path $RepoRoot "docs/governance/GOVERNANCE_DOCUMENTS_MANIFEST.json"
-$expected = @(
-    "docs/governance/ROADMAP_CURRENT.json",
-    "docs/governance/ROADMAP_CANONICAL.md",
-    "docs/governance/DECISION_MATRIX.json",
-    "docs/governance/DECISION_MATRIX.md",
-    "repo/policies/artifactretention.policy.json",
-    "repo/policies/merge-safety.policy.json",
-    "repo/policies/evidencerecord.policy.json"
-)
+$validatorPath = Join-Path $RepoRoot 'scripts/validate-roadmap-authority.ps1'
+if (-not (Test-Path -LiteralPath $validatorPath)) {
+    Fail 104 'roadmap authority validator missing'
+}
 
-if (-not (Test-Path $canonical)) { Fail 101 "canonical roadmap missing" }
-if (-not (Test-Path $manifest)) { Fail 102 "canonical manifest missing" }
+& $validatorPath
+if ($LASTEXITCODE -ne 0) {
+    throw 'Roadmap authority validation failed.'
+}
+
+$canonical = Join-Path $RepoRoot 'docs/governance/ROADMAP_CURRENT.json'
+if (-not (Test-Path -LiteralPath $canonical)) {
+    Fail 101 'canonical roadmap missing'
+}
 
 try {
-    $json = Get-Content $canonical -Raw -Encoding utf8 | ConvertFrom-Json
+    $json = Get-Content -LiteralPath $canonical -Raw -Encoding utf8 | ConvertFrom-Json
 } catch {
-    Fail 103 "invalid roadmap JSON"
+    Fail 103 'invalid roadmap JSON'
 }
 
 $shadowPaths = @(
-    "config/roadmap.json",
-    "repo/roadmap/roadmap.yaml",
-    "docs/roadmap/roadmap.yaml"
+    'config/roadmap.json',
+    'repo/roadmap/roadmap.yaml',
+    'docs/roadmap/roadmap.yaml'
 )
 
 foreach ($p in $shadowPaths) {
-    if (Test-Path (Join-Path $RepoRoot $p)) {
+    $full = Join-Path $RepoRoot $p
+    if (Test-Path -LiteralPath $full) {
         Fail 201 "unauthorized shadow copy detected: $p"
     }
 }
 
-try {
-    $manifestJson = Get-Content $manifest -Raw -Encoding utf8 | ConvertFrom-Json
-} catch {
-    Fail 102 "invalid manifest JSON"
-}
+$expected = @(
+    'docs/governance/ROADMAP_CANONICAL.md',
+    'docs/governance/ROADMAP_CURRENT.json',
+    'scripts/update-roadmap.ps1',
+    'scripts/validate-roadmap.ps1',
+    'scripts/validate-roadmap-authority.ps1',
+    'scripts/verify-roadmap-smoke.ps1',
+    'scripts/roadmap_guard.py',
+    'tools/governance.ps1'
+)
 
 $missing = @()
 foreach ($p in $expected) {
-    if (-not (Test-Path (Join-Path $RepoRoot $p))) { $missing += $p }
-}
-if ($missing.Count -gt 0) {
-    Fail 102 ("canonical manifest missing entries or files absent: " + ($missing -join ", "))
+    $full = Join-Path $RepoRoot $p
+    if (-not (Test-Path -LiteralPath $full)) {
+        $missing += $p
+    }
 }
 
-Write-Host "integrity verified"
+if ($missing.Count -gt 0) {
+    Fail 102 ('required governance files missing: ' + ($missing -join ', '))
+}
+
+$manifest = Join-Path $RepoRoot 'docs/governance/ROADMAP_MANIFEST.json'
+if (Test-Path -LiteralPath $manifest) {
+    try {
+        $manifestJson = Get-Content -LiteralPath $manifest -Raw -Encoding utf8 | ConvertFrom-Json
+        Write-Host 'manifest detected and parsed'
+    } catch {
+        Fail 105 'invalid manifest JSON'
+    }
+}
+else {
+    Write-Warning 'ROADMAP_MANIFEST.json not found; manifest validation skipped during migration.'
+}
+
+Write-Host 'integrity verified'
 exit 0

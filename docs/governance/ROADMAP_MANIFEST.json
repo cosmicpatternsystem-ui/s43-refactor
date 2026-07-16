@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "migration-baseline",
+  "generated_by": "manual-governance-repair",
+  "files": [
+    "docs/governance/ROADMAP_CANONICAL.md",
+    "docs/governance/ROADMAP_CURRENT.json",
+    "scripts/update-roadmap.ps1",
+    "scripts/validate-roadmap.ps1",
+    "scripts/validate-roadmap-authority.ps1",
+    "scripts/verify-roadmap-smoke.ps1",
+    "scripts/roadmap_guard.py",
+    "tools/governance.ps1"
+  ]
+}
