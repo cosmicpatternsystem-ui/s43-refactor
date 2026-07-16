@@ -87,3 +87,8 @@ finally {
         }
     }
 }
+$validatorPath = Join-Path $PSScriptRoot 'validate-roadmap-authority.ps1'
+& $validatorPath
+if ($LASTEXITCODE -ne 0) {
+    throw 'Smoke validation failed: roadmap authority.'
+}
