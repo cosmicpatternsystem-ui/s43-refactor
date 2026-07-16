@@ -1,0 +1,17 @@
+﻿  origin/HEAD -> origin/main
+  origin/auto/aso-x-20260626-063732
+  origin/cp003-b-integration-planning
+  origin/docs/governance-state-f14321d
+  origin/feature/aso-x-intelligence-core-v1.2
+  origin/fix/guard-runtime-refs-clean
+  origin/governance/authority-reconciliation-single-voice
+  origin/main
+  origin/main-clean
+  origin/phase11-readiness
+  origin/phase14-governance-integration-implementation
+  origin/phase16-core-governance-integration
+  origin/phase17-controlled-development
+  origin/phase17-working-snapshot-20260614
+  origin/release/v3.2.1-evidence-ledger-repair
+  origin/review/final-verified-change
+  origin/work/roadmap-metadata-coverage

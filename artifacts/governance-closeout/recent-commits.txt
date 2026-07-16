@@ -1,0 +1,10 @@
+﻿59ffbc5 (HEAD -> main, origin/main, origin/HEAD) governance: record roadmap authority journal evidence (#304)
+b1050ca Merge pull request #303 from cosmicpatternsystem-ui/chore/roadmap-authority-hardening
+2dbcc65 Harden roadmap authority enforcement and stabilize governance guard
+6a5092d Merge pull request #301 from cosmicpatternsystem-ui/fix/add-repo-status-audit-script
+0b9b4ac feat(audit): add repo status audit script
+e6d9bb1 Merge pull request #300 from cosmicpatternsystem-ui/fix/release-governance-workflow-indentation
+497a85c fix(ci): repair release governance workflow indentation
+0176b57 Merge pull request #299 from cosmicpatternsystem-ui/fix/post-merge-cleanup-roadmap-v3
+ae26070 fix(governance): align roadmap test paths with canonical roadmap location
+7b96d7a fix(governance): align roadmap sync checks with canonical subset contract
