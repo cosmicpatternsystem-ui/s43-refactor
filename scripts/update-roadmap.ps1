@@ -494,22 +494,28 @@ function Resolve-RoadmapDependsOn {
     )
 
     $resolved = @()
+    $unresolved = @()
 
     foreach ($item in @(Normalize-RoadmapList $Value)) {
         $normalized = Normalize-RoadmapScalar $item
 
-        if ($null -eq $normalized) {
+        if ([string]::IsNullOrWhiteSpace($normalized)) {
             continue
         }
 
-        $lookupKey = $normalized.ToLowerInvariant()
+        $lookupKey = $normalized.Trim().ToLowerInvariant()
 
         if ($PhaseReferenceMap.ContainsKey($lookupKey)) {
             $resolved += $PhaseReferenceMap[$lookupKey]
         }
         else {
-            $resolved += $normalized
+            $unresolved += $normalized
         }
+    }
+
+    if ($unresolved.Count -gt 0) {
+        $targets = ($unresolved | Sort-Object -Unique) -join ", "
+        throw "Unresolved Depends On target(s): $targets"
     }
 
     return @($resolved)
@@ -699,7 +705,24 @@ function Get-StringHash { param([string]$Text)
     try { (Get-FileHash -Algorithm SHA256 -InputStream $stream).Hash }
     finally { $stream.Dispose() } }
 $roadmapForHash = [ordered]@{}
-foreach ($k in $roadmap.Keys) { if ($k -ne "updated_at_utc") { $roadmapForHash[$k] = $roadmap[$k] } }
+foreach ($k in $roadmap.Keys) {
+    if ($k -eq "updated_at_utc") {
+        continue
+    }
+
+    if ($k -eq "lifecycle" -and $null -ne $roadmap[$k]) {
+        $lifecycleForHash = [ordered]@{}
+        foreach ($lp in $roadmap[$k].Keys) {
+            if ($lp -ne "updated_at" -and $lp -ne "updated_at_utc") {
+                $lifecycleForHash[$lp] = $roadmap[$k][$lp]
+            }
+        }
+        $roadmapForHash[$k] = $lifecycleForHash
+        continue
+    }
+
+    $roadmapForHash[$k] = $roadmap[$k]
+}
 $jsonForHash = (Format-CanonicalJson -Value $roadmapForHash).Replace("`r`n", "`n")
 $newHash = Get-StringHash $jsonForHash
 $oldHash = $null
@@ -708,13 +731,32 @@ if ($existingJsonContent) {
         $ed = $existingJsonContent | ConvertFrom-Json
         $eo = [ordered]@{}
         foreach ($p in $ed.PSObject.Properties) {
-            if ($p.Name -ne "updated_at_utc") { $eo[$p.Name] = $p.Value }
+            if ($p.Name -eq "updated_at_utc") {
+                continue
+            }
+
+            if ($p.Name -eq "lifecycle" -and $null -ne $p.Value) {
+                $lifecycleExisting = [ordered]@{}
+                foreach ($lp in $p.Value.PSObject.Properties) {
+                    if ($lp.Name -ne "updated_at" -and $lp.Name -ne "updated_at_utc") {
+                        $lifecycleExisting[$lp.Name] = $lp.Value
+                    }
+                }
+                $eo[$p.Name] = $lifecycleExisting
+                continue
+            }
+
+            $eo[$p.Name] = $p.Value
         }
         $oldHash = Get-StringHash (Format-CanonicalJson -Value $eo).Replace("`r`n", "`n")
     } catch { Write-Verbose "Hash existing failed: $_" }
 }
 if ($newHash -eq $oldHash -and $existingTimestamp) {
-    $timestampToUse = $existingTimestamp
+    try {
+        $timestampToUse = ([datetime]$existingTimestamp).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
+    } catch {
+        $timestampToUse = [string]$existingTimestamp
+    }
 } else {
     $timestampToUse = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
 }

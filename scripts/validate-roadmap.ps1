@@ -1,8 +1,8 @@
-param()
+param(
+  [string]$Path = (Join-Path (Join-Path $PSScriptRoot "..") "docs/governance/ROADMAP_CURRENT.json")
+)
 
 $ErrorActionPreference = "Stop"
-
-$path = "ROADMAP_CURRENT.json"
 
 function Fail {
   param(
@@ -10,7 +10,7 @@ function Fail {
     [string]$Message
   )
 
-  Write-Error $Message
+  [Console]::Error.WriteLine($Message)
   exit 1
 }
 
@@ -67,19 +67,21 @@ function Assert-ArrayProperty {
   }
 }
 
-if (!(Test-Path $path)) {
-  Fail "ROADMAP_CURRENT.json is required but was not found."
+if (!(Test-Path $Path)) {
+  Fail "ROADMAP_CURRENT.json is required but was not found: $Path"
 }
 
 try {
-  $json = Get-Content $path -Raw | ConvertFrom-Json
+  $json = Get-Content $Path -Raw | ConvertFrom-Json -DateKind String
 } catch {
   Fail ("ROADMAP_CURRENT.json parse failed: " + $PSItem.Exception.Message)
 }
 
 $required = @(
   "schema_version",
-  "source_of_truth",
+  "roadmap_version",
+  "authority",
+  "lifecycle",
   "generated_by",
   "enforcement_model",
   "updated_at_utc",
@@ -92,8 +94,28 @@ foreach ($field in $required) {
   Assert-Property -Object $json -Name $field -Scope "ROADMAP_CURRENT.json"
 }
 
-if ($json.schema_version -lt 2) {
-  Fail "ROADMAP_CURRENT.json schema_version must be 2 or greater."
+if ([string]$json.schema_version -ne "2.0") {
+  Fail "ROADMAP_CURRENT.json schema_version must be `"2.0`"."
+}
+
+if ([string]$json.roadmap_version -ne "current") {
+  Fail "ROADMAP_CURRENT.json roadmap_version must be `"current`"."
+}
+
+Assert-Property -Object $json.authority -Name "source" -Scope "authority"
+if ([string]$json.authority.source -ne "repository_files_only") {
+  Fail "authority.source must be `"repository_files_only`"."
+}
+
+Assert-Property -Object $json.lifecycle -Name "status" -Scope "lifecycle"
+Assert-Property -Object $json.lifecycle -Name "updated_at" -Scope "lifecycle"
+
+if ([string]::IsNullOrWhiteSpace([string]$json.lifecycle.status)) {
+  Fail "lifecycle.status must not be empty."
+}
+
+if (($json.lifecycle.updated_at -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
+  Fail "lifecycle.updated_at must be an ISO-8601 UTC timestamp ending with Z."
 }
 
 if ($json.enforcement_model -ne "generated-and-diff-enforced-in-pr") {
@@ -102,6 +124,10 @@ if ($json.enforcement_model -ne "generated-and-diff-enforced-in-pr") {
 
 if ($json.generated_by -ne "scripts/update-roadmap.ps1") {
   Fail "Invalid roadmap generated_by value."
+}
+
+if (($json.updated_at_utc -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
+  Fail "updated_at_utc must be an ISO-8601 UTC timestamp ending with Z."
 }
 
 if ($json.phase_count -ne $json.phases.Count) {
@@ -123,11 +149,14 @@ foreach ($field in $metadataFields) {
 
 $allowedStatuses = @("recorded", "complete")
 $allowedPriorities = @("critical", "high", "medium", "low")
+$idPattern = '^P\d+[A-Z0-9-]*-[A-Z0-9-]+$'
 
 for ($i = 0; $i -lt $json.phases.Count; $i++) {
   $phase = $json.phases[$i]
   $scope = "phases[$i]"
 
+  Assert-Property -Object $phase -Name "id" -Scope $scope
+  Assert-Property -Object $phase -Name "legacy_id" -Scope $scope
   Assert-Property -Object $phase -Name "file" -Scope $scope
   Assert-Property -Object $phase -Name "status" -Scope $scope
   Assert-Property -Object $phase -Name "documentation_only" -Scope $scope
@@ -138,15 +167,27 @@ for ($i = 0; $i -lt $json.phases.Count; $i++) {
   Assert-ArrayProperty -Object $phase -Name "evidence" -Scope $scope
   Assert-Property -Object $phase -Name "last_verified_at" -Scope $scope
 
-  if ([string]::IsNullOrWhiteSpace($phase.file)) {
+  if ([string]::IsNullOrWhiteSpace([string]$phase.id)) {
+    Fail "$scope id must not be empty."
+  }
+
+  if ([string]::IsNullOrWhiteSpace([string]$phase.legacy_id)) {
+    Fail "$scope legacy_id must not be empty."
+  }
+
+  if ([string]::IsNullOrWhiteSpace([string]$phase.file)) {
     Fail "$scope file must not be empty."
+  }
+
+  if (($phase.id -notmatch $idPattern)) {
+    Fail "$scope has invalid id format: $($phase.id)"
   }
 
   if ($allowedStatuses -notcontains $phase.status) {
     Fail "$scope has invalid status: $($phase.status)"
   }
 
-  if (($null -ne $phase.priority) -and ($allowedPriorities -notcontains $phase.priority)) {
+  if (($null -ne $phase.priority) -and ($allowedPriorities -notcontains ([string]$phase.priority).ToLowerInvariant())) {
     Fail "$scope has invalid priority: $($phase.priority)"
   }
 
@@ -160,42 +201,43 @@ for ($i = 0; $i -lt $json.phases.Count; $i++) {
   }
 }
 
-# Validate dependency references after all phase files are known.
 $phaseFileSet = @{}
+$phaseIdSet = @{}
 
 foreach ($phase in @($json.phases)) {
-    $phaseFile = [string]$phase.file
+  $phaseFile = [string]$phase.file
+  $phaseId = [string]$phase.id
 
-    if ([string]::IsNullOrWhiteSpace($phaseFile)) {
-        throw "Roadmap phase has an empty file value."
-    }
+  if ($phaseFileSet.ContainsKey($phaseFile)) {
+    Fail "Duplicate roadmap phase file: $phaseFile"
+  }
 
-    if ($phaseFileSet.ContainsKey($phaseFile)) {
-        throw "Duplicate roadmap phase file: $phaseFile"
-    }
+  if ($phaseIdSet.ContainsKey($phaseId)) {
+    Fail "Duplicate roadmap phase id: $phaseId"
+  }
 
-    $phaseFileSet[$phaseFile] = $true
+  $phaseFileSet[$phaseFile] = $true
+  $phaseIdSet[$phaseId] = $true
 }
 
 foreach ($phase in @($json.phases)) {
-    $phaseFile = [string]$phase.file
+  $phaseFile = [string]$phase.file
 
-    foreach ($dependency in @($phase.depends_on)) {
-        $dependencyFile = [string]$dependency
+  foreach ($dependency in @($phase.depends_on)) {
+    $dependencyFile = [string]$dependency
 
-        if ([string]::IsNullOrWhiteSpace($dependencyFile)) {
-            throw "Roadmap phase '$phaseFile' has an empty depends_on entry."
-        }
-
-        if ($dependencyFile -eq $phaseFile) {
-            throw "Roadmap phase '$phaseFile' cannot depend on itself."
-        }
-
-        if (-not $phaseFileSet.ContainsKey($dependencyFile)) {
-            throw "Roadmap phase '$phaseFile' depends on missing phase '$dependencyFile'."
-        }
+    if ([string]::IsNullOrWhiteSpace($dependencyFile)) {
+      Fail "Roadmap phase '$phaseFile' has an empty depends_on entry."
     }
+
+    if ($dependencyFile -eq $phaseFile) {
+      Fail "Roadmap phase '$phaseFile' cannot depend on itself."
+    }
+
+    if (-not $phaseFileSet.ContainsKey($dependencyFile)) {
+      Fail "Roadmap phase '$phaseFile' depends on missing phase '$dependencyFile'."
+    }
+  }
 }
+
 Write-Host "ROADMAP_CURRENT.json schema validation passed"
-
-
