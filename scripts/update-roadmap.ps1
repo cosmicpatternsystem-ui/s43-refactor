@@ -1,3 +1,116 @@
+function Get-CanonicalRoadmapEntries {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path $Path)) {
+        throw "Canonical roadmap file not found: $Path"
+    }
+
+    $lines = Get-Content -Path $Path
+    $entries = @()
+    $seen = @{}
+
+    foreach ($line in $lines) {
+        $matches = [regex]::Matches($line, '\bP\d-[A-Z0-9-]+\b')
+        foreach ($match in $matches) {
+            $id = $match.Value
+            if (-not $seen.ContainsKey($id)) {
+                $seen[$id] = $true
+
+                $title = $id
+                $suffix = $line.Substring($match.Index + $match.Length).Trim()
+                if (-not [string]::IsNullOrWhiteSpace($suffix)) {
+                    $suffix = $suffix.TrimStart(':', '-').Trim()
+                    if (-not [string]::IsNullOrWhiteSpace($suffix)) {
+                        $title = $suffix
+                    }
+                }
+
+                $entries += [pscustomobject]@{
+                    id    = $id
+                    title = $title
+                }
+            }
+        }
+    }
+
+    return @($entries)
+}
+
+function Get-RoadmapPhaseId {
+    param(
+        [string]$FileName,
+        [string]$Content
+    )
+
+    $sources = @($Content, $FileName)
+    foreach ($source in $sources) {
+        if ([string]::IsNullOrWhiteSpace($source)) { continue }
+        $m = [regex]::Match($source, '\bP\d-[A-Z0-9-]+\b')
+        if ($m.Success) { return $m.Value }
+    }
+
+    if ($FileName) {
+        $base = [System.IO.Path]::GetFileNameWithoutExtension($FileName).ToUpperInvariant()
+        $base = $base -replace '[^A-Z0-9]+', '-'
+        $base = $base.Trim('-')
+        return "P0-$base"
+    }
+
+    return "P0-UNSPECIFIED"
+}
+function Merge-CanonicalRoadmapPhases {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object[]]$GeneratedPhases,
+
+        [Parameter(Mandatory = $true)]
+        [object[]]$CanonicalEntries
+    )
+
+    $knownIds = @{}
+    $merged = @()
+
+    foreach ($phase in $GeneratedPhases) {
+        $merged += $phase
+        if ($null -ne $phase -and $phase.PSObject.Properties['id'] -and $phase.id) {
+            $knownIds[[string]$phase.id] = $true
+        }
+    }
+
+    foreach ($entry in $CanonicalEntries) {
+        if (-not $knownIds.ContainsKey([string]$entry.id)) {
+            if ([string]::IsNullOrWhiteSpace([string]$entry.id)) {
+                $canonicalLegacyId = "docs/governance/ROADMAP_CANONICAL.md"
+                $canonicalFile = "docs/governance/ROADMAP_CANONICAL.md"
+            }
+            else {
+                $canonicalLegacyId = [string]$entry.id
+                $canonicalFile = "docs/governance/ROADMAP_CANONICAL.md#" + ([string]$entry.id)
+            }
+
+            $merged += [ordered]@{
+                id                  = $entry.id
+                legacy_id           = $canonicalLegacyId
+                title               = $entry.title
+                file                = $canonicalFile
+                status              = "recorded"
+                documentation_only  = $true
+                owner               = $null
+                priority            = $null
+                depends_on          = @()
+                acceptance_criteria = @()
+                evidence            = @()
+                last_verified_at    = $null
+            }
+        }
+    }
+
+    return @($merged)
+}
+
 function ConvertTo-JsonStringLiteral {
     param([AllowNull()][string]$Text)
     if ($null -eq $Text) { return '""' }
@@ -478,19 +591,49 @@ $phases = foreach ($phaseFile in $phaseFiles) {
             Where-Object { $_ -match '^#\s+Phase\s' } |
             Select-Object -First 1)
 
+        if ($firstHeader -match '\b(P\d-[A-Z0-9-]+)\b') {
+            $phaseId = $Matches[1]
+            if (-not $title) {
+                $title = $firstHeader -replace '^#\s+',''
+                $title = $title -replace '.*\bP\d-[A-Z0-9-]+\b\s*[:\-]?\s*',''
+                $title = $title.Trim()
+            }
+        } elseif ($content -match '\b(P\d-[A-Z0-9-]+)\b') {
+            $phaseId = $Matches[1]
+        }
+
+        $legacyPhaseId = $null
         if ($firstHeader -match '^#\s+Phase\s+([\d]+)\.(\d+)\s+-\s+(.+?)\s*$') {
-            $phaseId = "PHASE_$($Matches[1])_$('{0:D2}' -f [int]$Matches[2])"
-            $title   = $Matches[3].Trim()
+            $legacyPhaseId = "PHASE_$($Matches[1])_$('{0:D2}' -f [int]$Matches[2])"
+            if (-not $title) { $title = $Matches[3].Trim() }
         } elseif ($firstHeader -match '^#\s+Phase\s+([\d]+)\s+-\s+(.+?)\s*$') {
-            $phaseId = "PHASE_$($Matches[1])"
-            $title   = $Matches[2].Trim()
+            $legacyPhaseId = "PHASE_$($Matches[1])"
+            if (-not $title) { $title = $Matches[2].Trim() }
         }
 
         if (-not $phaseId) {
-            $phaseId = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+            $fileStem = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name).ToUpperInvariant()
+            $fileStem = $fileStem -replace '[^A-Z0-9]+', '-'
+            $fileStem = $fileStem.Trim('-')
+            $phaseId = "P0-$fileStem"
         }
+
+        if (-not $legacyPhaseId) {
+            $legacyPhaseId = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+        }
+
+    $primaryRoadmapId = $phaseId
+    if ([string]::IsNullOrWhiteSpace($legacyPhaseId)) {
+        $legacyPhaseId = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+    }
+
+    if ([string]::IsNullOrWhiteSpace($title)) {
+        $title = [System.IO.Path]::GetFileNameWithoutExtension($phaseFile.Name)
+    }
+
     [ordered]@{
-        phase_id = $phaseId
+        id = $primaryRoadmapId
+        legacy_id = $legacyPhaseId
         title = $title
         file = $phaseFile.Name
         status = $status
@@ -504,11 +647,28 @@ $phases = foreach ($phaseFile in $phaseFiles) {
     }
 }
 
+
+$canonicalRoadmapPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\docs\governance\ROADMAP_CANONICAL.md"))
+$canonicalEntries = Get-CanonicalRoadmapEntries -Path $canonicalRoadmapPath
+$phases = Merge-CanonicalRoadmapPhases -GeneratedPhases @($phases) -CanonicalEntries @($canonicalEntries)
 $roadmap = [ordered]@{
-    schema_version = 2
+    schema_version = "2.0"
+    roadmap_version = "current"
     source_of_truth = "repository_files_only"
     generated_by = "scripts/update-roadmap.ps1"
     enforcement_model = "generated-and-diff-enforced-in-pr"
+    canonical_roadmap = "docs/governance/ROADMAP_CANONICAL.md"
+    authority = [ordered]@{
+        source = "repository_files_only"
+        canonical_roadmap = "docs/governance/ROADMAP_CANONICAL.md"
+        generated_by = "scripts/update-roadmap.ps1"
+        enforcement_model = "generated-and-diff-enforced-in-pr"
+    }
+    lifecycle = [ordered]@{
+        status = "active"
+        updated_at = "GENERATED"
+        updated_at_utc = "GENERATED"
+    }
     operational_metadata_schema = [ordered]@{
         owner = "string|null"
         priority = "critical|high|medium|low|null"
@@ -518,7 +678,6 @@ $roadmap = [ordered]@{
         last_verified_at = "ISO-8601 UTC string|null"
     }
     updated_at_utc = "GENERATED"
-    canonical_roadmap = "docs/governance/ROADMAP_CANONICAL.md"
     phase_count = @($phases).Count
     phases = @($phases)
 }
@@ -530,7 +689,7 @@ if (Test-Path $outputPath) {
         $existingJsonContent = Get-Content -Raw -Path $outputPath -ErrorAction Stop
         if ($existingJsonContent) {
             $existingData = $existingJsonContent | ConvertFrom-Json
-            $existingTimestamp = $existingData.updated_at_utc
+            $existingTimestamp = $existingData.updated_at_utc; if (-not $existingTimestamp -and $existingData.lifecycle) { $existingTimestamp = $existingData.lifecycle.updated_at_utc }
         }
     } catch { Write-Verbose "Cannot parse existing roadmap: $_" }
 }
@@ -555,10 +714,17 @@ if ($existingJsonContent) {
     } catch { Write-Verbose "Hash existing failed: $_" }
 }
 if ($newHash -eq $oldHash -and $existingTimestamp) {
-    $roadmap["updated_at_utc"] = $existingTimestamp
+    $timestampToUse = $existingTimestamp
 } else {
-    $roadmap["updated_at_utc"] = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
+    $timestampToUse = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", [System.Globalization.CultureInfo]::InvariantCulture)
 }
+
+$roadmap["updated_at_utc"] = $timestampToUse
+if ($roadmap["lifecycle"]) {
+    $roadmap["lifecycle"]["updated_at"] = $timestampToUse
+    $roadmap["lifecycle"]["updated_at_utc"] = $timestampToUse
+}
+
 $json = Format-CanonicalJson -Value $roadmap
 $json = $json.Replace("`r`n", "`n") + "`n"
 & (Join-Path $PSScriptRoot "Write-AtomicJson.ps1") -Path $outputPath -Content $json
