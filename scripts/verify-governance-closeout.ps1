@@ -82,16 +82,12 @@ function Get-NonAllowedWorkingTreePaths {
 
     $paths = @()
     foreach ($line in $lines) {
-        if ($line.Length -lt 4) {
-            continue
+        if ($line -match '^(..)\s+(.+)$') {
+            $path = $Matches[2].Trim()
+            if (-not [string]::IsNullOrWhiteSpace($path)) {
+                $paths += $path
+            }
         }
-
-        $path = $line.Substring(3).Trim()
-        if ([string]::IsNullOrWhiteSpace($path)) {
-            continue
-        }
-
-        $paths += $path
     }
 
     return @(
