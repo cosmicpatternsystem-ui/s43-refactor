@@ -22,6 +22,7 @@ function Get-ScriptRootStrict {
 $script:ScriptRoot = Get-ScriptRootStrict
 $script:RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $script:ScriptRoot '..'))
 $script:ConfigPath = Join-Path $script:ScriptRoot 'governance.config.json'
+$script:CanonicalRoadmapPath = Join-Path $script:RepoRoot 'docs/governance/ROADMAP_CANONICAL.md'
 
 function ConvertTo-Utf8NoBomJson {
     param(
@@ -118,6 +119,10 @@ function Get-GovernancePaths {
     $config = Read-GovernanceConfig
     $governance = $config.governance
 
+    if (-not (Test-Path -LiteralPath $script:CanonicalRoadmapPath)) {
+        throw "Missing canonical roadmap: $script:CanonicalRoadmapPath"
+    }
+
     $ledgerPath = Resolve-RepoPath ([string]$governance.ledgerPath)
     $logPath = Resolve-RepoPath ([string]$governance.logPath)
     $manifestPath = Resolve-RepoPath ([string]$governance.manifestPath)
@@ -131,6 +136,7 @@ function Get-GovernancePaths {
         ManifestPath = $manifestPath
         AuditCsvPath = $auditCsvPath
         EvidenceDir = $evidenceDir
+        CanonicalRoadmapPath = $script:CanonicalRoadmapPath
     }
 }
 
