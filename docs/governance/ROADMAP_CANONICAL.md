@@ -7,7 +7,7 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 - Repo + GitHub are the operational source of truth.
 - `docs/governance/ROADMAP_CANONICAL.md` defines canonical roadmap intent, release policy, and roadmap authority.
 - `docs/governance/ROADMAP_MANIFEST.json` defines generator and enforcement relationships for roadmap artifacts.
-- `docs/governance/ROADMAP_CURRENT.json` is a generated machine-readable projection and must remain semantically equivalent to this file.
+- `docs/governance/ROADMAP_CURRENT.json` is the canonical machine-readable roadmap authority for operational consumption, but it is generated from this file and must remain a semantically equivalent machine-readable projection of this canonical authority.
 - Any drift, shadow authority, invalid schema, BOM, CRLF/CR line ending, or unregistered governance asset is release-blocking.
 
 ## Mandatory execution order
