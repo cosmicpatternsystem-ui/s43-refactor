@@ -4,6 +4,38 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+
+function Convert-ToCanonicalUtcTimestamp {
+  param(
+    [Parameter(Mandatory = $false)]
+    $Value
+  )
+
+  if ($null -eq $Value) {
+    return $null
+  }
+
+  if ($Value -is [datetime]) {
+    return $Value.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+  }
+
+  $text = [string]$Value
+  if ([string]::IsNullOrWhiteSpace($text)) {
+    return $text
+  }
+
+  try {
+    $dto = [datetimeoffset]::Parse(
+      $text,
+      [System.Globalization.CultureInfo]::InvariantCulture,
+      [System.Globalization.DateTimeStyles]::RoundtripKind
+    )
+    return $dto.UtcDateTime.ToString('yyyy-MM-ddTHH:mm:ssZ')
+  }
+  catch {
+    return $text
+  }
+}
 function Fail {
   param(
     [Parameter(Mandatory = $true)]
@@ -72,7 +104,7 @@ if (!(Test-Path $Path)) {
 }
 
 try {
-  $json = Get-Content $Path -Raw | ConvertFrom-Json -DateKind String
+  $json = Get-Content $Path -Raw | ConvertFrom-Json
 } catch {
   Fail ("ROADMAP_CURRENT.json parse failed: " + $PSItem.Exception.Message)
 }
@@ -114,6 +146,7 @@ if ([string]::IsNullOrWhiteSpace([string]$json.lifecycle.status)) {
   Fail "lifecycle.status must not be empty."
 }
 
+$json.lifecycle.updated_at = Convert-ToCanonicalUtcTimestamp $json.lifecycle.updated_at
 if (($json.lifecycle.updated_at -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
   Fail "lifecycle.updated_at must be an ISO-8601 UTC timestamp ending with Z."
 }
@@ -126,6 +159,7 @@ if ($json.generated_by -ne "scripts/update-roadmap.ps1") {
   Fail "Invalid roadmap generated_by value."
 }
 
+$json.updated_at_utc = Convert-ToCanonicalUtcTimestamp $json.updated_at_utc
 if (($json.updated_at_utc -notmatch "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")) {
   Fail "updated_at_utc must be an ISO-8601 UTC timestamp ending with Z."
 }
@@ -191,7 +225,8 @@ for ($i = 0; $i -lt $json.phases.Count; $i++) {
     Fail "$scope has invalid priority: $($phase.priority)"
   }
 
-  $lastVerifiedAt = $phase.last_verified_at
+  $lastVerifiedAt = Convert-ToCanonicalUtcTimestamp $phase.last_verified_at
+$phase.last_verified_at = $lastVerifiedAt
   if ($lastVerifiedAt -is [datetime]) {
     $lastVerifiedAt = $lastVerifiedAt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
   }
