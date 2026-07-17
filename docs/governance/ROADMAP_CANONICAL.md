@@ -1,12 +1,13 @@
 # ROADMAP_CANONICAL
 
-This document is the human-readable rendering of `docs/governance/ROADMAP_CURRENT.json`.
+This document is the canonical human-governed roadmap authority for ASO-X.
 
 ## Binding rules
 
 - Repo + GitHub are the operational source of truth.
-- `docs/governance/ROADMAP_CURRENT.json` is the canonical machine-readable roadmap authority.
-- This file must remain semantically equivalent to `ROADMAP_CURRENT.json`.
+- `docs/governance/ROADMAP_CANONICAL.md` defines canonical roadmap intent, release policy, and roadmap authority.
+- `docs/governance/ROADMAP_MANIFEST.json` defines generator and enforcement relationships for roadmap artifacts.
+- `docs/governance/ROADMAP_CURRENT.json` is a generated machine-readable projection and must remain semantically equivalent to this file.
 - Any drift, shadow authority, invalid schema, BOM, CRLF/CR line ending, or unregistered governance asset is release-blocking.
 
 ## Mandatory execution order
@@ -150,3 +151,49 @@ Allowed governance work includes only delivery-critical controls such as:
 - authority enforcement
 
 Governance expansion that does not directly support active MCP delivery is out of scope for this phase.
+
+## 6. Successor Governance Target
+
+The immediate successor authority target after `MCP-02` is `MCP-03: Formalized Successor Governance`.
+
+`MCP-03` exists to formalize how roadmap authority advances after protected completion of an active MCP slice without introducing shadow authority, ambiguous successor selection, or generated-file-first governance.
+
+### MCP-03 Scope
+
+`MCP-03` is limited to the following governance outcomes:
+
+1. Define an explicit canonical successor-selection rule for roadmap advancement.
+2. Require that successor authority transitions are declared first in `docs/governance/ROADMAP_CANONICAL.md`.
+3. Require that generated roadmap artifacts remain projections and never become independent authority during handoff.
+4. Define the minimum evidence required to mark a roadmap item governed-complete and activate its successor.
+5. Preserve protected-PR approval, auditability, deterministic validation, and fail-closed governance behavior.
+
+### MCP-03 Non-Scope
+
+`MCP-03` does not authorize:
+
+- domain lock changes for `MCP-02`
+- product-scope expansion unrelated to active delivery protection
+- generated-file-only roadmap edits
+- successor inference from local notes, issue threads, or other non-canonical artifacts
+
+### Successor Activation Rule
+
+A successor roadmap authority target may become active only when all of the following are true:
+
+1. The predecessor state and closeout evidence are declared in canonical form.
+2. The successor is named explicitly in `docs/governance/ROADMAP_CANONICAL.md`.
+3. The transition is approved in a protected PR.
+4. Generated roadmap artifacts are regenerated after the canonical update.
+5. Validation confirms semantic alignment between canonical and generated roadmap artifacts.
+
+### MCP-02 Closeout Requirement For Successor Activation
+
+`MCP-02` must not hand off roadmap authority to `MCP-03` unless the protected PR record includes, at minimum:
+
+- closeout timestamp
+- governing PR reference
+- validation result
+- evidence pack reference
+- explicit successor declaration
+- rollback or reopen criteria if closeout assumptions later fail
