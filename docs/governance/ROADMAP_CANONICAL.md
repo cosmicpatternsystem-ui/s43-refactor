@@ -197,3 +197,49 @@ A successor roadmap authority target may become active only when all of the foll
 - evidence pack reference
 - explicit successor declaration
 - rollback or reopen criteria if closeout assumptions later fail
+
+## MCP-03 Successor Governance
+
+`MCP-03` is the formal successor governance slice following `MCP-02`.
+Its purpose is to carry forward the protected, evidence-backed delivery discipline established for `MCP-02` into a durable successor governance model that preserves canonical roadmap authority, formal auditability, CI integrity, and authorized domain control.
+
+`MCP-03` does not replace the canonical authority of this document.
+`ROADMAP_CANONICAL.md` remains the canonical human-governed roadmap authority under protected pull request review.
+Any machine-readable roadmap artifact, including `ROADMAP_CURRENT.json`, remains a generated projection and must not override this document.
+
+The governing rule for `MCP-03` is:
+- successor governance changes must remain repository-tracked, reviewable, and evidence-backed;
+- roadmap-affecting authority must remain protected by pull request approval;
+- generated roadmap projections must remain derivable from canonical governance text and validation rules;
+- no successor governance change may weaken formal auditability, evidence linkage, or truth-enforcement controls.
+
+### MCP-03 Release Constraints
+
+The first release of `MCP-03` must satisfy all of the following:
+1. It must define the successor decision mechanism in canonical governance text.
+2. It must preserve protected pull request authority for roadmap-changing decisions.
+3. It must preserve formal evidence linkage for governance-affecting changes.
+4. It must preserve CI-enforced validation of canonical and generated roadmap artifacts.
+5. It must not expand product or governance scope beyond the currently authorized domain without explicit protected approval.
+
+### MCP-03 Domain Lock
+
+The `MCP-03` governance domain must not be considered fully open for successor expansion until a protected pull request:
+- defines the successor decision mechanism;
+- names the canonical authority artifacts;
+- states how generated projections are derived and validated;
+- records the acceptance criteria for successor governance transition;
+- passes all required governance and roadmap validation checks.
+
+Until those conditions are satisfied, `MCP-03` remains constrained to formalizing successor governance within the already authorized delivery domain.
+
+### MCP-03 Anti-Scope-Drift Rule
+
+During `MCP-03` formalization, governance changes are allowed only when they:
+- clarify successor authority;
+- preserve or strengthen auditability;
+- preserve or strengthen CI and repository truth enforcement;
+- preserve or strengthen evidence-backed decision review;
+- directly support active delivery within the currently authorized domain.
+
+Changes that introduce unbounded scope, weaken protected authority, bypass evidence requirements, or redefine canonical authority through generated artifacts are non-compliant with `MCP-03`.
