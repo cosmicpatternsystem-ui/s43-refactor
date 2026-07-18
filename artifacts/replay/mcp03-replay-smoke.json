@@ -1,0 +1,7 @@
+{
+    "project":  "MCP-03",
+    "generated_at_utc":  "2026-07-18T06:49:00.0615563Z",
+    "status":  "passed",
+    "suite":  "replay-smoke",
+    "target":  "tests/replay"
+}
