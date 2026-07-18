@@ -1,3 +1,4 @@
+<!-- Governance identity: This file is the human-readable canonical roadmap. -->
 # ROADMAP_CANONICAL
 
 This document is the canonical human-governed roadmap authority for ASO-X.

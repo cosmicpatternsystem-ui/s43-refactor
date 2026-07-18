@@ -27,19 +27,12 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Assert legacy roadmap state files exist (Compatibility)
+      - name: Validate canonical roadmap authority exists
         shell: bash
         run: |
-          test -f ROADMAP/ROADMAP_STATE.json
-          test -f ROADMAP/ROADMAP_CANONICAL.md
-          test -f AUDIT/ROADMAP_CURRENT.json
-          test -f AUDIT/ROADMAP_CURRENT.md
+          test -f docs/governance/ROADMAP_CURRENT.json
+          test -f docs/governance/ROADMAP_CANONICAL.md
 
-      - name: Validate legacy roadmap state JSON (Compatibility)
+      - name: Validate canonical roadmap authority
         shell: bash
-        run: python tools/validate_roadmap_state.py
-
-      - name: Assert no stale legacy roadmap state remains (Compatibility)
-        shell: bash
-        run: python tools/assert_no_stale_roadmap.py
-
+        run: python tools/governance/roadmap_truth_check.py
