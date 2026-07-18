@@ -35,32 +35,61 @@ function Require-Command([string]$Name) {
   return $null -ne $cmd
 }
 
-function Get-NormalizedEvidenceText([string]$Text) {
-  if ($null -eq $Text) {
-    return ""
-  }
-
-  $normalized = $Text -replace "`r`n", "`n"
-  $normalized = $normalized -replace '(?m)^\s*"generated_at_utc"\s*:\s*"[^"]+",?\s*$',''
-  $normalized = $normalized -replace "(?m)^\s*$`n?", ""
-  return $normalized.Trim()
-}
-
-function Test-TimestampOnlyEvidenceChange([string]$RelativePath) {
-  if (-not (Test-Path $RelativePath)) {
-    return $false
-  }
-
-  $headText = git show "HEAD:$RelativePath" 2>$null
+function Test-OnlyEvidenceTimestampDiff([string]$RelativePath) {
+  $diffLines = @(git diff --unified=0 -- $RelativePath)
   if ($LASTEXITCODE -ne 0) {
+    throw "git diff failed for $RelativePath"
+  }
+
+  if ($diffLines.Count -eq 0) {
     return $false
   }
 
-  $workText = Get-Content -Path $RelativePath -Raw -Encoding UTF8
-  $headNormalized = Get-NormalizedEvidenceText ($headText | Out-String)
-  $workNormalized = Get-NormalizedEvidenceText $workText
+  $meaningful = @()
 
-  return $headNormalized -eq $workNormalized
+  foreach ($line in $diffLines) {
+    if (
+      $line.StartsWith("diff --git ") -or
+      $line.StartsWith("index ") -or
+      $line.StartsWith("--- ") -or
+      $line.StartsWith("+++ ") -or
+      $line.StartsWith("@@ ")
+    ) {
+      continue
+    }
+
+    if ($line.StartsWith("-") -or $line.StartsWith("+")) {
+      $meaningful += $line
+    }
+  }
+
+  if ($meaningful.Count -ne 2) {
+    return $false
+  }
+
+  $removed = $meaningful[0]
+  $added = $meaningful[1]
+
+  if (-not $removed.StartsWith("-")) {
+    return $false
+  }
+
+  if (-not $added.StartsWith("+")) {
+    return $false
+  }
+
+  $removedBody = $removed.Substring(1).Trim()
+  $addedBody = $added.Substring(1).Trim()
+
+  if ($removedBody -notmatch '^"generated_at_utc"\s*:\s*"[^"]+",?$') {
+    return $false
+  }
+
+  if ($addedBody -notmatch '^"generated_at_utc"\s*:\s*"[^"]+",?$') {
+    return $false
+  }
+
+  return $true
 }
 
 function Resolve-AllowedPostVerifyChanges {
@@ -70,16 +99,13 @@ function Resolve-AllowedPostVerifyChanges {
   }
 
   $allowedEvidencePath = "artifacts/mcp03-evidence.json"
-  $allowedStatusPatterns = @(
-    " M $allowedEvidencePath",
-    "M  $allowedEvidencePath",
-    "MM $allowedEvidencePath"
-  )
+  $statusBody = @($statusLines | ForEach-Object { $_.Trim() })
 
-  if ($statusLines.Count -eq 1 -and ($allowedStatusPatterns -contains $statusLines[0])) {
-    if (Test-TimestampOnlyEvidenceChange $allowedEvidencePath) {
+  if ($statusBody.Count -eq 1) {
+    $entry = $statusBody[0]
+    if ($entry.EndsWith($allowedEvidencePath) -and (Test-OnlyEvidenceTimestampDiff $allowedEvidencePath)) {
       Write-Host ""
-      Write-Host "Only volatile evidence timestamp changed; restoring tracked artifact to keep PR flow deterministic." -ForegroundColor Yellow
+      Write-Host "Only evidence timestamp changed; restoring artifact to keep PR flow deterministic." -ForegroundColor Yellow
       git restore -- $allowedEvidencePath
       if ($LASTEXITCODE -ne 0) {
         throw "git restore failed for $allowedEvidencePath"
