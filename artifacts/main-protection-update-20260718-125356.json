@@ -1,0 +1,28 @@
+{
+    "allow_force_pushes":  false,
+    "allow_fork_syncing":  false,
+    "restrictions":  null,
+    "required_status_checks":  {
+                                   "contexts":  [
+                                                    "policy-smokes",
+                                                    "hardening-tests",
+                                                    "Assert release readiness contract",
+                                                    "Assert operational roadmap contract",
+                                                    "Assert PR hygiene contract",
+                                                    "Roadmap generator and validator smoke test"
+                                                ],
+                                   "strict":  true
+                               },
+    "required_pull_request_reviews":  {
+                                          "required_approving_review_count":  1,
+                                          "require_code_owner_reviews":  true,
+                                          "require_last_push_approval":  false,
+                                          "dismiss_stale_reviews":  false
+                                      },
+    "allow_deletions":  false,
+    "lock_branch":  false,
+    "block_creations":  false,
+    "required_linear_history":  false,
+    "required_conversation_resolution":  true,
+    "enforce_admins":  true
+}
