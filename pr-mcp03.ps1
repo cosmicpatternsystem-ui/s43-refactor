@@ -35,6 +35,71 @@ function Require-Command([string]$Name) {
   return $null -ne $cmd
 }
 
+function Get-NormalizedEvidenceText([string]$Text) {
+  if ($null -eq $Text) {
+    return ""
+  }
+
+  $normalized = $Text -replace "`r`n", "`n"
+  $normalized = $normalized -replace '(?m)^\s*"generated_at_utc"\s*:\s*"[^"]+",?\s*$',''
+  $normalized = $normalized -replace "(?m)^\s*$`n?", ""
+  return $normalized.Trim()
+}
+
+function Test-TimestampOnlyEvidenceChange([string]$RelativePath) {
+  if (-not (Test-Path $RelativePath)) {
+    return $false
+  }
+
+  $headText = git show "HEAD:$RelativePath" 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    return $false
+  }
+
+  $workText = Get-Content -Path $RelativePath -Raw -Encoding UTF8
+  $headNormalized = Get-NormalizedEvidenceText ($headText | Out-String)
+  $workNormalized = Get-NormalizedEvidenceText $workText
+
+  return $headNormalized -eq $workNormalized
+}
+
+function Resolve-AllowedPostVerifyChanges {
+  $statusLines = Get-GitStatusLines
+  if ($statusLines.Count -eq 0) {
+    return
+  }
+
+  $allowedEvidencePath = "artifacts/mcp03-evidence.json"
+  $allowedStatusPatterns = @(
+    " M $allowedEvidencePath",
+    "M  $allowedEvidencePath",
+    "MM $allowedEvidencePath"
+  )
+
+  if ($statusLines.Count -eq 1 -and ($allowedStatusPatterns -contains $statusLines[0])) {
+    if (Test-TimestampOnlyEvidenceChange $allowedEvidencePath) {
+      Write-Host ""
+      Write-Host "Only volatile evidence timestamp changed; restoring tracked artifact to keep PR flow deterministic." -ForegroundColor Yellow
+      git restore -- $allowedEvidencePath
+      if ($LASTEXITCODE -ne 0) {
+        throw "git restore failed for $allowedEvidencePath"
+      }
+      return
+    }
+  }
+
+  Write-Host ""
+  Write-Host "Verification changed tracked files:" -ForegroundColor Yellow
+  $statusLines | ForEach-Object { Write-Host $_ }
+  Write-Host ""
+  Write-Host "Most likely refreshed artifacts need review and commit." -ForegroundColor Yellow
+  Write-Host "Suggested next commands:" -ForegroundColor Yellow
+  Write-Host "  git add artifacts out/pr"
+  Write-Host '  git commit -m "refresh MCP-03 evidence artifacts"'
+  Write-Host "  git push"
+  throw "Verification produced uncommitted changes. PR flow stopped to avoid publishing stale evidence."
+}
+
 if ($PSCommandPath) {
   $scriptRoot = Split-Path -Parent $PSCommandPath
 } else {
@@ -73,19 +138,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Step "Checking working tree after verification"
-$statusAfterVerify = Get-GitStatusLines
-if ($statusAfterVerify.Count -gt 0) {
-  Write-Host ""
-  Write-Host "Verification changed tracked files:" -ForegroundColor Yellow
-  $statusAfterVerify | ForEach-Object { Write-Host $_ }
-  Write-Host ""
-  Write-Host "Most likely refreshed artifacts need review and commit." -ForegroundColor Yellow
-  Write-Host "Suggested next commands:" -ForegroundColor Yellow
-  Write-Host "  git add artifacts out/pr"
-  Write-Host '  git commit -m "refresh MCP-03 evidence artifacts"'
-  Write-Host "  git push"
-  throw "Verification produced uncommitted changes. PR flow stopped to avoid publishing stale evidence."
-}
+Resolve-AllowedPostVerifyChanges
+Require-CleanWorktree "Working tree is not clean after verification."
 
 Step "Building PR body"
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
