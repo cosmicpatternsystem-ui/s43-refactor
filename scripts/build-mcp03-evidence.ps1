@@ -21,7 +21,7 @@ if (Test-Path -LiteralPath $replaySmokePath) {
 
 $payload = [ordered]@{
   project = 'MCP-03'
-  generated_at_utc = (Get-Date).ToUniversalTime().ToString('o')
+
   status = 'passed'
   evidence = [ordered]@{
     formal_smoke = $formalSmoke
