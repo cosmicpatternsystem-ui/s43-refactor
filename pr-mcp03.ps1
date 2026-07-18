@@ -12,13 +12,21 @@ function Step([string]$Message) {
   Write-Host "==> $Message" -ForegroundColor Cyan
 }
 
-function Require-CleanWorktree {
-  $status = git status --porcelain
+function Get-GitStatusLines {
+  $lines = @(git status --porcelain)
   if ($LASTEXITCODE -ne 0) {
     throw "git status failed."
   }
-  if ($status) {
-    throw "Working tree is not clean. Commit or stash changes first."
+  return $lines
+}
+
+function Require-CleanWorktree([string]$ContextMessage = "Working tree is not clean.") {
+  $statusLines = Get-GitStatusLines
+  if ($statusLines.Count -gt 0) {
+    Write-Host ""
+    Write-Host "Git status:" -ForegroundColor Yellow
+    $statusLines | ForEach-Object { Write-Host $_ }
+    throw "$ContextMessage Commit, stash, or discard changes first."
   }
 }
 
@@ -40,7 +48,7 @@ if ($LASTEXITCODE -ne 0) {
   throw "Unable to determine current git branch."
 }
 
-$commit = git rev-parse --short HEAD
+$commitBeforeVerify = git rev-parse --short HEAD
 if ($LASTEXITCODE -ne 0) {
   throw "Unable to determine current commit."
 }
@@ -50,8 +58,8 @@ $outDir = Join-Path $scriptRoot "out\pr"
 $prBodyPath = Join-Path $outDir "mcp03-pr-body.md"
 $bootstrapScript = Join-Path $scriptRoot "scripts\build-mcp03-evidence.ps1"
 
-Step "Checking working tree"
-Require-CleanWorktree
+Step "Checking working tree before verification"
+Require-CleanWorktree "Working tree is not clean before verification."
 
 Step "Locating bootstrap script"
 if (-not (Test-Path $bootstrapScript)) {
@@ -64,8 +72,28 @@ if ($LASTEXITCODE -ne 0) {
   throw "build-mcp03-evidence.ps1 failed."
 }
 
+Step "Checking working tree after verification"
+$statusAfterVerify = Get-GitStatusLines
+if ($statusAfterVerify.Count -gt 0) {
+  Write-Host ""
+  Write-Host "Verification changed tracked files:" -ForegroundColor Yellow
+  $statusAfterVerify | ForEach-Object { Write-Host $_ }
+  Write-Host ""
+  Write-Host "Most likely refreshed artifacts need review and commit." -ForegroundColor Yellow
+  Write-Host "Suggested next commands:" -ForegroundColor Yellow
+  Write-Host "  git add artifacts out/pr"
+  Write-Host '  git commit -m "refresh MCP-03 evidence artifacts"'
+  Write-Host "  git push"
+  throw "Verification produced uncommitted changes. PR flow stopped to avoid publishing stale evidence."
+}
+
 Step "Building PR body"
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+
+$commitAfterVerify = git rev-parse --short HEAD
+if ($LASTEXITCODE -ne 0) {
+  throw "Unable to determine current commit after verification."
+}
 
 $lines = @(
   "## Summary",
@@ -78,7 +106,7 @@ $lines = @(
   "",
   "- bootstrap script: ``scripts/build-mcp03-evidence.ps1``",
   "- branch: ``$branch``",
-  "- commit: ``$commit``",
+  "- commit: ``$commitAfterVerify``",
   "",
   "## Notes",
   "",
@@ -87,6 +115,15 @@ $lines = @(
 )
 
 Set-Content -Path $prBodyPath -Value $lines -Encoding UTF8
+
+Step "Checking working tree after PR body generation"
+$statusAfterPrBody = Get-GitStatusLines
+if ($statusAfterPrBody.Count -gt 0) {
+  Write-Host ""
+  Write-Host "PR body generation changed tracked files:" -ForegroundColor Yellow
+  $statusAfterPrBody | ForEach-Object { Write-Host $_ }
+  throw "PR flow stopped because generating the PR body left uncommitted changes."
+}
 
 Write-Host ""
 Write-Host "PR body written to: $prBodyPath" -ForegroundColor Green
