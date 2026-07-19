@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import hashlib
 import json
@@ -8,8 +8,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-CANONICAL_MACHINE = REPO_ROOT / "ROADMAP_CURRENT.json"
-CANONICAL_HUMAN = REPO_ROOT / "ROADMAP_CANONICAL.md"
+CANONICAL_MACHINE = REPO_ROOT / "docs" / "governance" / "ROADMAP_CURRENT.json"
+CANONICAL_HUMAN = REPO_ROOT / "docs" / "governance" / "ROADMAP_CANONICAL.md"
 
 AUTHORITY_DOCS = [
     REPO_ROOT / "docs" / "governance" / "REPOSITORY_TRUTH.md",

@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - "docs/governance/**"
-      - "docs/roadmap/**"
       - "tests/test_global_governance_locks.py"
       - ".github/workflows/global-governance-locks-gate.yml"
   push:
@@ -12,7 +11,6 @@ on:
       - main
     paths:
       - "docs/governance/**"
-      - "docs/roadmap/**"
       - "tests/test_global_governance_locks.py"
       - ".github/workflows/global-governance-locks-gate.yml"
 
