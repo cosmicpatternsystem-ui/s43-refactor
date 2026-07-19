@@ -1,4 +1,4 @@
-﻿name: Operational Roadmap Enforcement
+name: Operational Roadmap Enforcement
 
 on:
   pull_request:

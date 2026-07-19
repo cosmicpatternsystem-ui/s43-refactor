@@ -1,4 +1,4 @@
-﻿name: Operational Roadmap
+name: Operational Roadmap
 
 on:
   pull_request:
