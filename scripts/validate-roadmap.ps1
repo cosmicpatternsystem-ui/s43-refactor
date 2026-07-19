@@ -123,7 +123,7 @@ $required = @(
 )
 
 foreach ($field in $required) {
-  Assert-Property -Object $json -Name $field -Scope "ROADMAP_CURRENT.json"
+  Assert-Property -Object $json -Name $field -Scope "docs/governance/ROADMAP_CURRENT.json"
 }
 
 if ([string]$json.schema_version -ne "2.0") {
