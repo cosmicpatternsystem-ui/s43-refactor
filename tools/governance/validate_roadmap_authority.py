@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import hashlib
 import json
@@ -41,7 +41,7 @@ FORBIDDEN_AUTHORITY_CLAIMS = {
     "ROADMAP.md": [r"canonical", r"authoritative", r"source of truth"],
     "docs/roadmap/aso-x-integrated-mandatory-roadmap.md": [r"canonical", r"authoritative", r"source of truth"],
     "docs/roadmap/roadmap.index.json": [r"canonical", r"authoritative", r"source of truth"],
-    "ROADMAP/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
+    "docs/governance/ROADMAP_STATE.json": [r"canonical", r"authoritative", r"source of truth"],
     "repo/roadmap/roadmap.yaml": [r"canonical", r"authoritative", r"source of truth"],
 }
 

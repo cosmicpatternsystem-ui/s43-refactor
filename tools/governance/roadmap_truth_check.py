@@ -1,48 +1,31 @@
-﻿import os
-import sys
-import json
+﻿import os, sys, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-
+CANONICAL_DIR = ROOT / "docs" / "governance"
 REQUIRED_FILES = [
-    ROOT / "docs" / "governance" / "ROADMAP_CURRENT.json",
-    ROOT / "docs" / "governance" / "ROADMAP_CANONICAL.md"
+    CANONICAL_DIR / "ROADMAP_CURRENT.json",
+    CANONICAL_DIR / "ROADMAP_CANONICAL.md"
 ]
-
-def fail(msg):
-    print(f"[FAIL] {msg}", file=sys.stderr)
-
-def read_text(path):
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
 
 def main():
     rc = 0
     for f in REQUIRED_FILES:
         if not f.exists():
-            fail(f"missing required file: {f.relative_to(ROOT)}")
+            print(f"[FAIL] Missing canonical authority: {f.relative_to(ROOT)}", file=sys.stderr)
             rc = 1
-            continue
-
-    if rc:
-        return rc
-
-    try:
-        roadmap_path = ROOT / "docs" / "governance" / "ROADMAP_CURRENT.json"
-        roadmap_json = json.loads(read_text(roadmap_path))
-        
-        if roadmap_json.get("canonical_roadmap") != "ROADMAP_CANONICAL.md":
-            fail("ROADMAP_CURRENT.json canonical_roadmap must equal ROADMAP_CANONICAL.md")
-            rc = 1
-            
-    except Exception as e:
-        fail(f"failed to parse or validate roadmap json: {str(e)}")
-        rc = 1
-
+    
     if rc == 0:
-        print("[OK] Roadmap Repository Truth Gate validation successful.")
+        try:
+            data = json.loads((CANONICAL_DIR / "ROADMAP_CURRENT.json").read_text(encoding="utf-8"))
+            if "ROADMAP_CANONICAL.md" not in data.get("canonical_roadmap", ""):
+                print("[FAIL] ROADMAP_CURRENT.json integrity violation.", file=sys.stderr)
+                rc = 1
+        except Exception as e:
+            print(f"[FAIL] Parse error: {e}", file=sys.stderr)
+            rc = 1
+
+    if rc == 0: print("[OK] Governance Repository Truth Gate Passed.")
     return rc
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == "__main__": sys.exit(main())

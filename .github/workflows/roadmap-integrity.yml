@@ -1,10 +1,10 @@
-name: Roadmap Integrity Check
+﻿name: Roadmap Integrity Check
 
 on:
   pull_request:
     paths:
       - "docs/governance/ROADMAP_CURRENT.json"
-      - "ROADMAP/phases/**"
+      - "docs/governance/phases/**"
       - "scripts/roadmap_guard.py"
       - ".github/workflows/roadmap-integrity.yml"
   push:
