@@ -1,4 +1,4 @@
-name: Operational Roadmap Gate
+﻿name: Operational Roadmap
 
 on:
   pull_request:
@@ -9,29 +9,18 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pull-requests: read
-
 jobs:
-  assert-operational-roadmap-contract:
-    name: Assert operational roadmap contract
+  roadmap:
+    name: Canonical roadmap validation
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Validate canonical roadmap authority exists
+      - name: Setup PowerShell
         shell: bash
-        run: |
-          test -f docs/governance/ROADMAP_CURRENT.json
-          test -f docs/governance/ROADMAP_CANONICAL.md
+        run: pwsh -v
 
       - name: Validate canonical roadmap authority
         shell: pwsh

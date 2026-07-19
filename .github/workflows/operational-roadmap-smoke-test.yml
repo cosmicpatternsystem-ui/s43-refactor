@@ -1,4 +1,4 @@
-name: Operational Roadmap Smoke Test
+﻿name: Operational Roadmap Smoke Test
 
 on:
   pull_request:
