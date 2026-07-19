@@ -30,12 +30,24 @@ if ($branch) {
 }
 
 Write-Host "`n[2/5] Critical Files" -ForegroundColor Yellow
+if ($PSScriptRoot) {
+    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+} else {
+    $repoRoot = (Get-Location).Path
+}
+
+$handoffPath = Join-Path $repoRoot "HANDOFF.md"
+$phaseChecklistPath = Join-Path $repoRoot "docs/PHASE_B1_CHECKLIST.md"
+$onboardingPath = Join-Path $repoRoot "docs/AI_ONBOARDING.md"
+$canonicalRoadmapCurrent = Join-Path $repoRoot "docs/governance/ROADMAP_CURRENT.json"
+$validateRoadmapScript = Join-Path $repoRoot "scripts/validate-roadmap.ps1"
+
 $criticalFiles = @(
-    "HANDOFF.md",
-    "docs/PHASE_B1_CHECKLIST.md",
-    "docs/AI_ONBOARDING.md",
-    "ROADMAP_CURRENT.json",
-    "scripts/validate-roadmap.ps1"
+    $handoffPath,
+    $phaseChecklistPath,
+    $onboardingPath,
+    $canonicalRoadmapCurrent,
+    $validateRoadmapScript
 )
 
 foreach ($file in $criticalFiles) {
@@ -52,8 +64,8 @@ if (Test-Path "HANDOFF.md") {
 }
 
 Write-Host "`n[4/5] Standards Check" -ForegroundColor Yellow
-if (Test-Path "ROADMAP_CURRENT.json") {
-    $bytes = [System.IO.File]::ReadAllBytes("ROADMAP_CURRENT.json")
+if (Test-Path $canonicalRoadmapCurrent) {
+    $bytes = [System.IO.File]::ReadAllBytes($canonicalRoadmapCurrent)
     if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
         Write-Host "   BOM detected" -ForegroundColor Red
     } else {
