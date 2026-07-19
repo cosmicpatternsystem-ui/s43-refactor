@@ -79,14 +79,14 @@ def main() -> int:
     try:
         roadmap_json = json.loads(read_text(ROOT / "docs/governance/ROADMAP_CURRENT.json"))
     except Exception as e:
-        fail(f"invalid ROADMAP_CURRENT.json: {e}")
+        fail(f"invalid docs/governance/ROADMAP_CURRENT.json: {e}")
         return 1
 
     if roadmap_json.get("canonical_roadmap") != "docs/governance/ROADMAP_CANONICAL.md":
         fail("docs/governance/ROADMAP_CURRENT.json canonical_roadmap must equal docs/governance/ROADMAP_CANONICAL.md")
         rc = 1
     else:
-        ok("ROADMAP_CURRENT.json canonical_roadmap aligned")
+        ok("docs/governance/ROADMAP_CURRENT.json canonical_roadmap aligned")
 
     repo_truth = read_text(ROOT / "docs/governance/REPOSITORY_TRUTH.md")
     for phrase, label in [
@@ -160,10 +160,10 @@ def main() -> int:
 
     canonical_md = read_text(ROOT / "docs/governance/ROADMAP_CANONICAL.md")
     if "human-readable canonical roadmap" not in canonical_md.lower():
-        fail("ROADMAP_CANONICAL.md missing canonical identity declaration")
+        fail("docs/governance/ROADMAP_CANONICAL.md missing canonical identity declaration")
         rc = 1
     else:
-        ok("ROADMAP_CANONICAL.md identity declaration present")
+        ok("docs/governance/ROADMAP_CANONICAL.md identity declaration present")
 
     derived_md = read_text(ROOT / "ROADMAP.md")
     if "non-prevailing" not in derived_md.lower():

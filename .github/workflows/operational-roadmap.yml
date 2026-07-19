@@ -34,5 +34,13 @@ jobs:
           test -f docs/governance/ROADMAP_CANONICAL.md
 
       - name: Validate canonical roadmap authority
+        shell: pwsh
+        run: ./scripts/validate-roadmap-authority.ps1
+
+      - name: Validate canonical roadmap schema
+        shell: pwsh
+        run: ./scripts/validate-roadmap.ps1
+
+      - name: Validate canonical roadmap truth
         shell: bash
         run: python tools/governance/roadmap_truth_check.py
