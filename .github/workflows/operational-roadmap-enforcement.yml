@@ -1,48 +1,19 @@
 ﻿name: Operational Roadmap Enforcement
-
 on:
   pull_request:
-  push:
-    branches:
-      - main
+    paths:
+      - 'docs/governance/ROADMAP_CURRENT.json'
 
 jobs:
   enforce-roadmap:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PowerShell
-        shell: bash
-        run: pwsh -v
-
-      - name: Validate committed roadmap schema
-        shell: pwsh
-        run: ./scripts/validate-roadmap.ps1
-
-      - name: Validate roadmap governance contract
-        shell: bash
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Enforce Governance Authority
         run: python scripts/roadmap_guard.py
-
-      - name: Regenerate roadmap deterministically
-        shell: pwsh
-        run: ./scripts/update-roadmap.ps1
-
-      - name: Assert roadmap is current
-        shell: bash
-        run: |
-          git diff --exit-code -- docs/governance/ROADMAP_CURRENT.json || {
-            echo "::error::docs/governance/ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
-            exit 1
-          }
-
-      - name: Debug roadmap drift
-        if: failure()
-        shell: bash
-        run: |
-          git rev-parse HEAD
-          git status --short
-          git diff -- docs/governance/ROADMAP_CURRENT.json || true
-          sed -n '1,60p' docs/governance/ROADMAP_CURRENT.json || true

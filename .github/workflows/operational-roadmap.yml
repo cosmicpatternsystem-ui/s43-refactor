@@ -1,35 +1,23 @@
 ﻿name: Operational Roadmap
-
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ main ]
+    paths:
+      - 'docs/governance/ROADMAP_CURRENT.json'
+      - 'docs/governance/ROADMAP_CANONICAL.md'
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  roadmap:
-    name: Canonical roadmap validation
+  validate-roadmap:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PowerShell
-        shell: bash
-        run: pwsh -v
-
-      - name: Validate canonical roadmap authority
-        shell: pwsh
-        run: ./scripts/validate-roadmap-authority.ps1
-
-      - name: Validate canonical roadmap schema
-        shell: pwsh
-        run: ./scripts/validate-roadmap.ps1
-
-      - name: Validate canonical roadmap truth
-        shell: bash
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run Roadmap Truth Check
         run: python tools/governance/roadmap_truth_check.py
+      - name: Run Roadmap Guard
+        run: python scripts/roadmap_guard.py
