@@ -1,3 +1,0 @@
-RETIRED 20260629_231425
-reason : legacy A-schema baseline_commit 0ad415a
-archive: G:\s43_work\s43_g11_work\.roadmap_archive\20260629_231425\ROADMAP\ROADMAP_STATE.json

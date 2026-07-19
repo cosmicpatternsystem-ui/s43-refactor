@@ -1,3 +1,0 @@
-﻿===== ALL HISTORY GREP RESULTS =====
-Total commits: 46
-Commits scanned: 46
