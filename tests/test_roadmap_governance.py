@@ -1,4 +1,4 @@
-import json
+﻿import json
 import pathlib
 import re
 
@@ -19,8 +19,8 @@ def test_roadmap_index_exists_and_is_valid_json():
     assert INDEX_PATH.exists()
     assert_utf8_no_bom_lf(INDEX_PATH)
     payload = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
-    assert payload["canonical_source"] == "ROADMAP_CANONICAL.md"
-    assert payload["machine_readable_state"] == "ROADMAP_CURRENT.json"
+    assert payload["canonical_source"] == "docs/governance/ROADMAP_CANONICAL.md"
+    assert payload["machine_readable_state"] == "docs/governance/ROADMAP_CURRENT.json"
     assert payload["role"] == "traceability_index"
     assert payload["authority"] == "non-prevailing"
     assert payload["horizon_years"] >= 50
@@ -68,3 +68,4 @@ def test_requirement_ids_are_unique_and_valid():
     assert len(ids) == len(set(ids))
     for rid in ids:
         assert REQ_ID_RE.match(rid)
+
