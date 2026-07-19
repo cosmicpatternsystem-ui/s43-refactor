@@ -1,4 +1,4 @@
-﻿import json
+import json
 import pathlib
 import re
 
@@ -68,4 +68,3 @@ def test_requirement_ids_are_unique_and_valid():
     assert len(ids) == len(set(ids))
     for rid in ids:
         assert REQ_ID_RE.match(rid)
-
