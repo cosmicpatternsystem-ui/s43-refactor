@@ -68,8 +68,6 @@ def write_roadmap_files(roadmap):
     
     repo_root = Path(__file__).parent.parent
     targets = [
-        repo_root / "ROADMAP_CURRENT.json",
-        repo_root / "AUDIT" / "ROADMAP_CURRENT.json",
         repo_root / "docs" / "governance" / "ROADMAP_CURRENT.json"
     ]
     
