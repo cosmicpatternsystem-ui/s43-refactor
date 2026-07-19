@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "docs/ROADMAP.md"
-      - "docs/roadmap/**"
       - "docs/governance/**"
       - "docs/value/**"
       - "tests/test_roadmap_governance.py"

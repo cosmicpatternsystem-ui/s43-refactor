@@ -1,4 +1,4 @@
-﻿import os, sys, json
+import os, sys, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -18,8 +18,8 @@ def main():
     if rc == 0:
         try:
             data = json.loads((CANONICAL_DIR / "ROADMAP_CURRENT.json").read_text(encoding="utf-8"))
-            if "ROADMAP_CANONICAL.md" not in data.get("canonical_roadmap", ""):
-                print("[FAIL] ROADMAP_CURRENT.json integrity violation.", file=sys.stderr)
+            if "docs/governance/ROADMAP_CANONICAL.md" not in data.get("canonical_roadmap", ""):
+                print("[FAIL] docs/governance/ROADMAP_CURRENT.json integrity violation.", file=sys.stderr)
                 rc = 1
         except Exception as e:
             print(f"[FAIL] Parse error: {e}", file=sys.stderr)
