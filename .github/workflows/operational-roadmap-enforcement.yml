@@ -24,7 +24,7 @@ jobs:
 
       - name: Validate roadmap governance contract
         shell: bash
-        run: python scripts/roadmap_guard.py ROADMAP_CURRENT.json
+        run: python scripts/roadmap_guard.py
 
       - name: Regenerate roadmap deterministically
         shell: pwsh
@@ -33,8 +33,8 @@ jobs:
       - name: Assert roadmap is current
         shell: bash
         run: |
-          git diff --exit-code -- ROADMAP_CURRENT.json || {
-            echo "::error::ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
+          git diff --exit-code -- docs/governance/ROADMAP_CURRENT.json || {
+            echo "::error::docs/governance/ROADMAP_CURRENT.json is stale. Run ./scripts/update-roadmap.ps1 and commit the result."
             exit 1
           }
 
@@ -44,5 +44,5 @@ jobs:
         run: |
           git rev-parse HEAD
           git status --short
-          git diff -- ROADMAP_CURRENT.json || true
-          sed -n '1,60p' ROADMAP_CURRENT.json || true
+          git diff -- docs/governance/ROADMAP_CURRENT.json || true
+          sed -n '1,60p' docs/governance/ROADMAP_CURRENT.json || true

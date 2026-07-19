@@ -15,8 +15,8 @@ REQUIRED_FILES = [
     ROOT / "docs/ai/AI_HANDOFF.md",
     ROOT / "docs/governance/GOAL_CONSTITUTION.md",
     ROOT / "docs/governance/ROADMAP_CONSTITUTION.md",
-    ROOT / "ROADMAP_CURRENT.json",
-    ROOT / "ROADMAP_CANONICAL.md",
+    ROOT / "docs/governance/ROADMAP_CURRENT.json",
+    ROOT / "docs/governance/ROADMAP_CANONICAL.md",
     ROOT / "PROJECT_STATE.md",
     ROOT / "POLICY_MATRIX.md",
     ROOT / "ROADMAP.md",
@@ -77,13 +77,13 @@ def main() -> int:
         return rc
 
     try:
-        roadmap_json = json.loads(read_text(ROOT / "ROADMAP_CURRENT.json"))
+        roadmap_json = json.loads(read_text(ROOT / "docs/governance/ROADMAP_CURRENT.json"))
     except Exception as e:
         fail(f"invalid ROADMAP_CURRENT.json: {e}")
         return 1
 
-    if roadmap_json.get("canonical_roadmap") != "ROADMAP_CANONICAL.md":
-        fail("ROADMAP_CURRENT.json canonical_roadmap must equal ROADMAP_CANONICAL.md")
+    if roadmap_json.get("canonical_roadmap") != "docs/governance/ROADMAP_CANONICAL.md":
+        fail("docs/governance/ROADMAP_CURRENT.json canonical_roadmap must equal docs/governance/ROADMAP_CANONICAL.md")
         rc = 1
     else:
         ok("ROADMAP_CURRENT.json canonical_roadmap aligned")
@@ -158,7 +158,7 @@ def main() -> int:
     if rc == 0:
         ok("AI handoff mandatory read order present")
 
-    canonical_md = read_text(ROOT / "ROADMAP_CANONICAL.md")
+    canonical_md = read_text(ROOT / "docs/governance/ROADMAP_CANONICAL.md")
     if "human-readable canonical roadmap" not in canonical_md.lower():
         fail("ROADMAP_CANONICAL.md missing canonical identity declaration")
         rc = 1
@@ -221,7 +221,7 @@ def main() -> int:
         ok("no retention artifacts detected")
 
     canonical_count = sum(
-        1 for p in [ROOT / "ROADMAP_CANONICAL.md", ROOT / "CANONICAL_ROADMAP.md"]
+        1 for p in [ROOT / "docs/governance/ROADMAP_CANONICAL.md", ROOT / "CANONICAL_ROADMAP.md"]
         if p.exists()
     )
     if canonical_count > 1:
