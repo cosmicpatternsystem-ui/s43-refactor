@@ -1,35 +1,32 @@
-name: Operational Roadmap
+﻿name: Assert operational roadmap contract
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  roadmap:
-    name: Canonical roadmap validation
+  assert-contract:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        shell: bash
-        run: pwsh -v
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
 
-      - name: Validate canonical roadmap authority
+      - name: Validate Canonical Roadmap Files Existence
+        run: |
+          test -f docs/governance/ROADMAP_CURRENT.json
+          test -f docs/governance/ROADMAP_CANONICAL.md
+
+      - name: Run Roadmap Governance Checkers
         shell: pwsh
-        run: ./scripts/validate-roadmap-authority.ps1
-
-      - name: Validate canonical roadmap schema
-        shell: pwsh
-        run: ./scripts/validate-roadmap.ps1
-
-      - name: Validate canonical roadmap truth
-        shell: bash
-        run: python tools/governance/roadmap_truth_check.py
+        run: |
+          ./scripts/validate-roadmap-authority.ps1
+          ./scripts/validate-roadmap.ps1
+          python tools/governance/roadmap_truth_check.py
+          ./scripts/reject-roadmap-shadow-authorities.ps1
