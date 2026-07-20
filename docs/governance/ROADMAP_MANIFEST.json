@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 1,
   "status": "migration-baseline",
   "generated_by": "manual-governance-repair",
@@ -11,5 +11,16 @@
     "scripts/verify-roadmap-smoke.ps1",
     "scripts/roadmap_guard.py",
     "tools/governance.ps1"
-  ]
+  ],
+  "resolver": {
+    "name": "scripts/resolve_next_action.py",
+    "version": 1,
+    "algorithm": "status-dependency-priority-id",
+    "output": {
+      "current_phase": "Operational Intelligence Runtime",
+      "current_task": "MCP03 Invariants Formalization",
+      "current_next_action": "Formalize MCP03_INVARIANTS.md and implement validation logic.",
+      "blocked_by": []
+    }
+  }
 }

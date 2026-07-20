@@ -1,4 +1,4 @@
-ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
+﻿ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
 `$json_sha = 25a7ce8f45fbc51269cfddb9f6223e7f427f015c6296a860def85f4e3073b4aa`
@@ -17,7 +17,7 @@ Canonical machine source: `ROADMAP_CURRENT.json`
 This document is the canonical human-governed roadmap authority for ASO-X.
 
 ## Binding rules
-
+## Binding rules
 - Repo + GitHub are the operational source of truth.
 - `docs/governance/ROADMAP_CANONICAL.md` defines canonical roadmap intent, release policy, and roadmap authority.
 - `docs/governance/ROADMAP_MANIFEST.json` defines generator and enforcement relationships for roadmap artifacts.
@@ -25,7 +25,7 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 - Any drift, shadow authority, invalid schema, BOM, CRLF/CR line ending, or unregistered governance asset is release-blocking.
 
 ## Mandatory execution order
-
+## Mandatory execution order
 1. P0-ROADMAP-AUTHORITY
 2. P0-POLICY-TRIAD
 3. P0-EVIDENCE-INTEGRITY
@@ -33,7 +33,7 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 5. P2-COMMERCIAL-VALIDATION
 
 ## Status model
-
+## Status model
 - PROPOSED
 - APPROVED
 - IMPLEMENTED
@@ -43,4 +43,9 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 - REJECTED
 
 ## Decision rule
-
+## Decision rule
+## Current Phase
+- Phase: Operational Intelligence Runtime
+- Task: MCP03 Invariants Formalization
+## Current Next Action
+Formalize MCP03_INVARIANTS.md and implement validation logic.
