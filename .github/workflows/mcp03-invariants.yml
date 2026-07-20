@@ -3,10 +3,6 @@ name: MCP-03 Invariants Gate
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'docs/governance/**'
-      - 'scripts/**'
-      - '.github/workflows/mcp03-invariants.yml'
   push:
     branches: [main]
   workflow_dispatch:
