@@ -1,7 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import inspect
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, Callable
@@ -256,6 +257,8 @@ def sync_roadmap(trigger: str = "manual") -> dict[str, Any]:
         status="SUCCESS",
         source="tools/roadmap_sync.py",
         payload=ledger_payload,
+        phase_id=os.environ.get("GOVERNANCE_PHASE_ID"),
+        run_id=os.environ.get("GITHUB_RUN_ID"),
     )
 
     result = dict(payload)

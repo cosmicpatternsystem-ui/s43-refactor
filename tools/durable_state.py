@@ -137,8 +137,14 @@ def append_audit_event(
     status: Optional[str] = None,
     source: Optional[str] = None,
     payload: Optional[dict[str, Any]] = None,
+    phase_id: Optional[str] = None,
+    run_id: Optional[str] = None,
 ) -> int:
     payload = payload or {}
+    if phase_id:
+        payload["phase_id"] = phase_id
+    if run_id:
+        payload["run_id"] = run_id
     payload_json = canonical_json(payload)
     payload_hash = sha256_text(payload_json)
 
