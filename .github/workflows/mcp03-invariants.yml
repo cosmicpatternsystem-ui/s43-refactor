@@ -1,0 +1,41 @@
+name: MCP-03 Invariants Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/governance/**'
+      - 'scripts/**'
+      - '.github/workflows/mcp03-invariants.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mcp03-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-invariants:
+    name: Validate INV-MCP03-000..004
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (full history for atomicity checks)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip jsonschema==4.26.0
+
+      - name: Run MCP-03 invariant validator
+        run: python scripts/validate_mcp03_invariants.py
