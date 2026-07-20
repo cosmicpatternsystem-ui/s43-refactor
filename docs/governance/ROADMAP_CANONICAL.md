@@ -1,4 +1,4 @@
-﻿ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
+ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
 `$json_sha = 25a7ce8f45fbc51269cfddb9f6223e7f427f015c6296a860def85f4e3073b4aa`
