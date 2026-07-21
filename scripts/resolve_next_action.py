@@ -8,9 +8,24 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-DEFAULT_ROADMAP = Path("docs/governance/ROADMAP_CURRENT.json")
-DEFAULT_CANONICAL = Path("docs/governance/ROADMAP_CANONICAL.md")
-DEFAULT_MANIFEST = Path("docs/governance/ROADMAP_MANIFEST.json")
+_DEFAULT_ROADMAP   = "docs/governance/ROADMAP_CURRENT.json"
+_DEFAULT_CANONICAL = "docs/governance/ROADMAP_CANONICAL.md"
+_DEFAULT_MANIFEST  = "docs/governance/ROADMAP_MANIFEST.json"
+
+def _load_durable_state():
+    try:
+        from tools.durable_state import load_state
+        return load_state() or {}
+    except Exception:
+        return {}
+
+def _get_paths(args_roadmap="", args_canonical="", args_manifest=""):
+    p = _load_durable_state().get("paths", {})
+    return (
+        Path(args_roadmap   or p.get("roadmap",   _DEFAULT_ROADMAP)),
+        Path(args_canonical or p.get("canonical", _DEFAULT_CANONICAL)),
+        Path(args_manifest  or p.get("manifest",  _DEFAULT_MANIFEST)),
+    )
 PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
 def norm_scalar(value: Any) -> str:
@@ -30,11 +45,11 @@ def priority_rank(value: Any) -> int:
 def load_json(path: Path) -> Dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Missing roadmap file: {path}")
-    return json.loads(path.read_text(encoding="utf-8-sig"))
+    return json.loads(path.read_text(encoding="utf-8"))
 
 def write_text_atomic(path: Path, text: str) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(text, encoding="utf-8-sig", newline="\n")
+    tmp.write_text(text, encoding="utf-8", newline="\n")
     tmp.replace(path)
 
 def as_list(value: Any) -> List[Any]:
@@ -63,7 +78,7 @@ def entry_depends_on(item: Dict[str, Any]) -> List[str]:
     return deps
 
 def entry_complete(item: Dict[str, Any]) -> bool:
-    return entry_status(item) == "complete"
+    return entry_status(item) == "complete" or entry_status(item) == "done"
 
 def eligible(items: List[Dict[str, Any]], completed_ids: set[str]) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
@@ -119,14 +134,25 @@ def select_current(data: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     phase_title = entry_title(phase)
-    tasks = phase.get("tasks") or phase.get("entries") or []
-    if not isinstance(tasks, list):
-        tasks = []
+    tasks_raw = phase.get("tasks") if "tasks" in phase else phase.get("entries")
+    if tasks_raw is None and "tasks" not in phase and "entries" not in phase:
+        tasks_raw = []
+    if not isinstance(tasks_raw, list):
+        return {
+            "status": "INSUFFICIENT_DATA",
+            "current_phase": phase_title,
+            "current_task": "",
+            "current_next_action": f"Phase {phase_title} has invalid tasks field.",
+            "blocked_by": [],
+            "selection_reason": "missing_tasks",
+            "resolver_version": 1,
+        }
+    tasks = tasks_raw
 
     completed_tasks = {entry_title(t) for t in tasks if entry_complete(t) and entry_title(t)}
     task_candidates = eligible(tasks, completed_tasks)
 
-    open_tasks = [t for t in task_candidates if not t.get("_unresolved")]
+    open_tasks = [t for t in task_candidates if not t.get("_unresolved") and not entry_complete(t)]
     blocked_tasks = [t for t in task_candidates if t.get("_unresolved")]
 
     task = pick(open_tasks) or pick(blocked_tasks)
@@ -138,7 +164,7 @@ def select_current(data: Dict[str, Any]) -> Dict[str, Any]:
             "current_task": "",
             "current_next_action": f"Mark phase {phase_title} complete.",
             "blocked_by": phase.get("_unresolved", []),
-            "selection_reason": "phase_has_no_tasks",
+            "selection_reason": "all_tasks_done" if tasks else "phase_has_no_tasks",
             "resolver_version": 1,
         }
 
@@ -223,17 +249,16 @@ def render_markdown(existing: str, res: Dict[str, Any]) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--roadmap", default=str(DEFAULT_ROADMAP))
-    ap.add_argument("--canonical", default=str(DEFAULT_CANONICAL))
-    ap.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    ap.add_argument("--roadmap", default="")
+    ap.add_argument("--canonical", default="")
+    ap.add_argument("--manifest", default="")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-
-    roadmap_path = Path(args.roadmap)
-    canonical_path = Path(args.canonical)
-    manifest_path = Path(args.manifest)
+    roadmap_path, canonical_path, manifest_path = _get_paths(
+        args.roadmap, args.canonical, args.manifest
+    )
 
     data = load_json(roadmap_path)
     result = select_current(data)
@@ -244,7 +269,7 @@ def main() -> int:
 
     if args.write:
         if canonical_path.exists():
-            existing = canonical_path.read_text(encoding="utf-8-sig")
+            existing = canonical_path.read_text(encoding="utf-8")
         else:
             existing = ""
         if existing:
@@ -261,7 +286,7 @@ def main() -> int:
         write_text_atomic(canonical_path, updated)
 
         if manifest_path.exists():
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             manifest.setdefault("resolver", {})
             manifest["resolver"].update({
                 "name": "scripts/resolve_next_action.py",
@@ -282,7 +307,7 @@ def main() -> int:
         if not canonical_path.exists():
             print(f"Missing canonical roadmap: {canonical_path}", file=sys.stderr)
             return 1
-        found = extract_current_markdown(canonical_path.read_text(encoding="utf-8-sig"))
+        found = extract_current_markdown(canonical_path.read_text(encoding="utf-8"))
         expected = {
             "current_phase": norm_scalar(result.get("current_phase")),
             "current_task": norm_scalar(result.get("current_task")),
@@ -300,5 +325,8 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main())
+
+
+
 

@@ -25,7 +25,7 @@
                                         "last_verified_at":  "ISO-8601 UTC string|null"
                                     },
     "updated_at_utc":  "2026-07-16T04:46:54Z",
-    "phase_count":  87,
+    "phase_count":  88,
     "phases":  [
                    {
                        "id":  "P0-PHASE-25-RC-READINESS-VERDICT",
@@ -824,31 +824,11 @@
                        "last_verified_at":  "2026-06-23T00:00:00Z"
                    },
                    {
-                       "id":  "P0-PHASE-32-01-OPERATIONAL-INTELLIGENCE-RUNTIME-ESTABLISHMENT",
-                       "legacy_id":  "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT",
-                       "title":  "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT",
-                       "file":  "PHASE_32_01_OPERATIONAL_INTELLIGENCE_RUNTIME_ESTABLISHMENT.md",
-                       "status":  "recorded",
-                       "documentation_only":  false,
-                       "owner":  "governance",
-                       "priority":  "High",
-                       "depends_on":  [
-
-                                      ],
-                       "acceptance_criteria":  [
-
-                                               ],
-                       "evidence":  [
-
-                                    ],
-                       "last_verified_at":  "2026-06-23T00:00:00Z"
-                   },
-                   {
                        "id":  "P0-PHASE-32-02-OPERATIONAL-INTELLIGENCE-RUNTIME-CONTRACT",
                        "legacy_id":  "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT",
                        "title":  "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT",
                        "file":  "PHASE_32_02_OPERATIONAL_INTELLIGENCE_RUNTIME_CONTRACT.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -908,7 +888,7 @@
                        "legacy_id":  "PHASE_33_01_AI_DECISION_ENGINE_ARCHITECTURE",
                        "title":  "PHASE_33_01_AI_DECISION_ENGINE_ARCHITECTURE",
                        "file":  "PHASE_33_01_AI_DECISION_ENGINE_ARCHITECTURE.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -928,7 +908,7 @@
                        "legacy_id":  "PHASE_33_02_INFERENCE_TO_ACTION_MAPPING",
                        "title":  "PHASE_33_02_INFERENCE_TO_ACTION_MAPPING",
                        "file":  "PHASE_33_02_INFERENCE_TO_ACTION_MAPPING.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -948,7 +928,7 @@
                        "legacy_id":  "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS",
                        "title":  "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS",
                        "file":  "PHASE_33_03_DECISION_CONFIDENCE_RISK_THRESHOLDS.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -968,7 +948,7 @@
                        "legacy_id":  "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP",
                        "title":  "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP",
                        "file":  "PHASE_33_04_SELF_CORRECTION_FEEDBACK_LOOP.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -988,7 +968,7 @@
                        "legacy_id":  "PHASE_34_01_EXECUTION_CONTROLLER_ARCHITECTURE",
                        "title":  "PHASE_34_01_EXECUTION_CONTROLLER_ARCHITECTURE",
                        "file":  "PHASE_34_01_EXECUTION_CONTROLLER_ARCHITECTURE.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1008,7 +988,7 @@
                        "legacy_id":  "PHASE_34_02_PRE_EXECUTION_SAFETY_CHECKS",
                        "title":  "PHASE_34_02_PRE_EXECUTION_SAFETY_CHECKS",
                        "file":  "PHASE_34_02_PRE_EXECUTION_SAFETY_CHECKS.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1048,7 +1028,7 @@
                        "legacy_id":  "PHASE_34_04_REALTIME_ENFORCEMENT_TELEMETRY_AND_INTERVENTION_CONTRACT",
                        "title":  "PHASE_34_04_REALTIME_ENFORCEMENT_TELEMETRY_AND_INTERVENTION_CONTRACT",
                        "file":  "PHASE_34_04_REALTIME_ENFORCEMENT_TELEMETRY_AND_INTERVENTION_CONTRACT.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1068,7 +1048,7 @@
                        "legacy_id":  "PHASE_35_01_AUTONOMOUS_RECOVERY_FAILURE_CONTAINMENT_ARCHITECTURE",
                        "title":  "PHASE_35_01_AUTONOMOUS_RECOVERY_FAILURE_CONTAINMENT_ARCHITECTURE",
                        "file":  "PHASE_35_01_AUTONOMOUS_RECOVERY_FAILURE_CONTAINMENT_ARCHITECTURE.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1088,7 +1068,7 @@
                        "legacy_id":  "PHASE_35_02_RECOVERY_POLICY_STRATEGY_BLAST_RADIUS_CONTROL",
                        "title":  "PHASE_35_02_RECOVERY_POLICY_STRATEGY_BLAST_RADIUS_CONTROL",
                        "file":  "PHASE_35_02_RECOVERY_POLICY_STRATEGY_BLAST_RADIUS_CONTROL.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1108,7 +1088,7 @@
                        "legacy_id":  "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT",
                        "title":  "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT",
                        "file":  "PHASE_35_03_RECOVERY_ORCHESTRATION_EVIDENCE_VERIFICATION_CONTRACT.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1128,7 +1108,7 @@
                        "legacy_id":  "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW",
                        "title":  "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW",
                        "file":  "PHASE_35_04_DEGRADATION_MODES_GRACEFUL_FAILURE_ESCALATION_FLOW.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1148,7 +1128,7 @@
                        "legacy_id":  "PHASE_36_01_ADAPTIVE_LEARNING_LOOP_ARCHITECTURE_GOVERNANCE_BOUNDARY",
                        "title":  "PHASE_36_01_ADAPTIVE_LEARNING_LOOP_ARCHITECTURE_GOVERNANCE_BOUNDARY",
                        "file":  "PHASE_36_01_ADAPTIVE_LEARNING_LOOP_ARCHITECTURE_GOVERNANCE_BOUNDARY.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1168,7 +1148,7 @@
                        "legacy_id":  "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING",
                        "title":  "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING",
                        "file":  "PHASE_36_02_LEARNING_SIGNAL_NORMALIZATION_QUALITY_SCORING.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1548,7 +1528,7 @@
                        "legacy_id":  "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE",
                        "title":  "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE",
                        "file":  "PHASE_41_01_OPERATIONAL_GOVERNANCE_MATURITY_AND_LIFECYCLE_CONTROL_ARCHITECTURE.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1568,7 +1548,7 @@
                        "legacy_id":  "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS",
                        "title":  "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS",
                        "file":  "PHASE_41_02_GOVERNANCE_REVIEW_CADENCE_TRIGGERING_CONDITIONS_AND_COMPLIANCE_CHECKPOINTS.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1588,7 +1568,7 @@
                        "legacy_id":  "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT",
                        "title":  "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT",
                        "file":  "PHASE_41_03_GOVERNANCE_EXCEPTION_HANDLING_WAIVER_CONTROL_AND_EXPIRY_ENFORCEMENT.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1608,7 +1588,7 @@
                        "legacy_id":  "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY",
                        "title":  "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY",
                        "file":  "PHASE_41_04_GOVERNANCE_STATE_REPORTING_ATTESTATION_AND_AUDIT_TRACEABILITY.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1628,7 +1608,7 @@
                        "legacy_id":  "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY",
                        "title":  "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY",
                        "file":  "PHASE_42_01_GOVERNANCE_METRICS_BASELINE_TREND_ANALYSIS_AND_OPERATIONAL_SIGNAL_QUALITY.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1648,7 +1628,7 @@
                        "legacy_id":  "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT",
                        "title":  "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT",
                        "file":  "PHASE_42_02_GOVERNANCE_METRICS_COLLECTION_NORMALIZATION_AND_REPORTING_PIPELINE_CONTRACT.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1668,7 +1648,7 @@
                        "legacy_id":  "PHASE_42_03",
                        "title":  "Roadmap Metadata Completeness and Enterprise Readiness Hardening",
                        "file":  "PHASE_42_03_ROADMAP_METADATA_COMPLETENESS_AND_ENTERPRISE_READINESS_HARDENING.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1688,7 +1668,7 @@
                        "legacy_id":  "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD",
                        "title":  "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD",
                        "file":  "PHASE_42_04_ROADMAP_METADATA_REGRESSION_GUARD.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1708,7 +1688,7 @@
                        "legacy_id":  "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING",
                        "title":  "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING",
                        "file":  "PHASE_42_05_DEPENDS_ON_HEADER_PARSING_HARDENING.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  "Operations / Governance",
                        "priority":  "High",
@@ -1728,7 +1708,7 @@
                        "legacy_id":  "PHASE_B1_CHECKLIST",
                        "title":  "PHASE_B1_CHECKLIST",
                        "file":  "PHASE_B1_CHECKLIST.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1748,7 +1728,7 @@
                        "legacy_id":  "PHASE_STATUS",
                        "title":  "PHASE_STATUS",
                        "file":  "PHASE_STATUS.md",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  false,
                        "owner":  null,
                        "priority":  null,
@@ -1768,7 +1748,7 @@
                        "legacy_id":  "P0-ROADMAP-AUTHORITY",
                        "title":  "P0-ROADMAP-AUTHORITY",
                        "file":  "docs/governance/ROADMAP_CANONICAL.md#P0-ROADMAP-AUTHORITY",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  null,
                        "priority":  null,
@@ -1788,7 +1768,7 @@
                        "legacy_id":  "P0-POLICY-TRIAD",
                        "title":  "P0-POLICY-TRIAD",
                        "file":  "docs/governance/ROADMAP_CANONICAL.md#P0-POLICY-TRIAD",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  null,
                        "priority":  null,
@@ -1808,7 +1788,7 @@
                        "legacy_id":  "P0-EVIDENCE-INTEGRITY",
                        "title":  "P0-EVIDENCE-INTEGRITY",
                        "file":  "docs/governance/ROADMAP_CANONICAL.md#P0-EVIDENCE-INTEGRITY",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  null,
                        "priority":  null,
@@ -1828,7 +1808,7 @@
                        "legacy_id":  "P1-OPS-REMEDIATION",
                        "title":  "P1-OPS-REMEDIATION",
                        "file":  "docs/governance/ROADMAP_CANONICAL.md#P1-OPS-REMEDIATION",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  null,
                        "priority":  null,
@@ -1848,7 +1828,7 @@
                        "legacy_id":  "P2-COMMERCIAL-VALIDATION",
                        "title":  "P2-COMMERCIAL-VALIDATION",
                        "file":  "docs/governance/ROADMAP_CANONICAL.md#P2-COMMERCIAL-VALIDATION",
-                       "status":  "recorded",
+                       "status":  "complete",
                        "documentation_only":  true,
                        "owner":  null,
                        "priority":  null,
@@ -1864,28 +1844,61 @@
                        "last_verified_at":  null
                    },
                    {
-                       "id":  "PHASE_32_01",
+                       "id":  "P32-01",
+                       "legacy_id":  "PHASE_32_01",
                        "title":  "Operational Intelligence Runtime",
-                       "status":  "in_progress",
-                       "priority":  "critical",
-                       "description":  "Establishment of high-integrity runtime invariants and property-based testing.",
+                       "file":  "docs/governance/ROADMAP_CANONICAL.md#PHASE_32_01",
+                       "status":  "complete",
+                       "documentation_only":  true,
+                       "owner":  null,
+                       "priority":  null,
+                       "depends_on":  [
+
+                                      ],
+                       "acceptance_criteria":  [
+
+                                               ],
+                       "evidence":  [
+
+                                    ],
+                       "last_verified_at":  null,
                        "tasks":  [
                                      {
                                          "id":  "TASK_32_01_01",
-                                         "title":  "MCP03 Invariants Formalization",
-                                         "status":  "in_progress",
-                                         "priority":  "critical",
-                                         "next_action":  "Formalize MCP03_INVARIANTS.md and implement validation logic."
+                                         "title":  "Formal Invariants",
+                                         "status":  "done",
+                                         "next_action":  "MCP03_INVARIANTS.md validated"
                                      },
                                      {
                                          "id":  "TASK_32_01_02",
-                                         "title":  "PBT Suite Implementation",
+                                         "title":  "Gate 2 passage confirmation",
+                                         "status":  "done",
+                                         "next_action":  "Run full validator suite in pwsh 7"
+                                     }
+                                 ]
+                   },
+                   {
+                       "id":  "P33-01",
+                       "title":  "Post-Completion Hardening",
+                       "status":  "in_progress",
+                       "tasks":  [
+                                     {
+                                         "id":  "TASK_33_01_01",
+                                         "priority":  "critical",
                                          "status":  "pending",
+                                         "next_action":  "CI gate hardening"
+                                     },
+                                     {
+                                         "id":  "TASK_33_01_02",
                                          "priority":  "high",
-                                         "depends_on":  [
-                                                            "TASK_32_01_01"
-                                                        ],
-                                         "next_action":  "Implement Hypothesis-based testing for roadmap transitions."
+                                         "status":  "pending",
+                                         "next_action":  "Ledger schema migration"
+                                     },
+                                     {
+                                         "id":  "TASK_33_01_03",
+                                         "priority":  "medium",
+                                         "status":  "pending",
+                                         "next_action": "Roadmap sync"
                                      }
                                  ]
                    }
