@@ -134,7 +134,7 @@
       "title": "PHASE_26_RC_PACKAGING_DRY_RUN",
       "file": "PHASE_26_RC_PACKAGING_DRY_RUN.md",
       "status": "complete",
-      "documentation_only": true,
+      "documentation_only": false,
       "owner": "release-ops",
       "priority": "Medium",
       "depends_on": [
@@ -216,7 +216,7 @@
       "title": "Post-Phase-28 Mainline Verification Evidence",
       "file": "PHASE_29_02_POST_PHASE_28_MAINLINE_VERIFICATION_EVIDENCE.md",
       "status": "complete",
-      "documentation_only": true,
+      "documentation_only": false,
       "owner": "release-ops",
       "priority": "Medium",
       "depends_on": [
@@ -285,7 +285,7 @@
       "title": "PHASE_30_04_AUDIT_CORRECTION",
       "file": "PHASE_30_04_AUDIT_CORRECTION.md",
       "status": "complete",
-      "documentation_only": true,
+      "documentation_only": false,
       "owner": "quality-ops",
       "priority": "High",
       "depends_on": [
@@ -718,15 +718,16 @@
     {
       "id": "P0-PHASE-31-CLOSURE-REVIEW",
       "legacy_id": "PHASE_31_CLOSURE_REVIEW",
-      "title": "PHASE_31_CLOSURE_REVIEW",
+      "title": "Phase 31 Closure Review",
       "file": "PHASE_31_CLOSURE_REVIEW.md",
       "status": "in_progress",
-      "documentation_only": false,
+      "documentation_only": true,
       "owner": "governance",
       "priority": "High",
       "depends_on": [],
       "acceptance_criteria": [],
       "evidence": [],
+      "tasks": [],
       "last_verified_at": "2026-06-23T00:00:00Z"
     },
     {

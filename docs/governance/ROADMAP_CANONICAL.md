@@ -1,63 +1,7 @@
-ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
-Canonical human source: `ROADMAP_CANONICAL.md`
-Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = 25a7ce8f45fbc51269cfddb9f6223e7f427f015c6296a860def85f4e3073b4aa`
-Authority: canonical human
-Independent authority: true
+# ROADMAP CANONICAL
 
-
-<!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
-Canonical human source: `ROADMAP_CANONICAL.md`
-Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = 25a7ce8f45fbc51269cfddb9f6223e7f427f015c6296a860def85f4e3073b4aa`
-<!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
-<!-- Governance identity: This file is the human-readable canonical roadmap. -->
-# ROADMAP_CANONICAL
-
-This document is the canonical human-governed roadmap authority for ASO-X.
-
-## Binding rules
-## Binding rules
-- Repo + GitHub are the operational source of truth.
-- `docs/governance/ROADMAP_CANONICAL.md` defines canonical roadmap intent, release policy, and roadmap authority.
-- `docs/governance/ROADMAP_MANIFEST.json` defines generator and enforcement relationships for roadmap artifacts.
-- `docs/governance/ROADMAP_CURRENT.json` is the canonical machine-readable roadmap authority for operational consumption, but it is generated from this file and must remain a semantically equivalent machine-readable projection of this canonical authority.
-- Any drift, shadow authority, invalid schema, BOM, CRLF/CR line ending, or unregistered governance asset is release-blocking.
-
-## Mandatory execution order
-## Mandatory execution order
-1. P0-ROADMAP-AUTHORITY
-2. P0-POLICY-TRIAD
-3. P0-EVIDENCE-INTEGRITY
-4. P1-OPS-REMEDIATION
-5. P2-COMMERCIAL-VALIDATION
-
-## Status model
-## Status model
-- PROPOSED
-- APPROVED
-- IMPLEMENTED
-- VERIFIED
-- INDEPENDENTLY_VERIFIED
-- COMMERCIALLY_VALIDATED
-- REJECTED
-
-## Decision rule
-## Decision rule
-## P32-01
-- id: PHASE_32_01
-- title: Operational Intelligence Runtime
-- status: in_progress
-- priority: critical
-- description: Establishment of high-integrity runtime invariants and property-based testing.
-
-### Tasks
-1. TASK_32_01_01 - MCP03 Invariants Formalization (status: in_progress, priority: critical)
-   - next_action: Formalize MCP03_INVARIANTS.md and implement validation logic.
-2. TASK_32_01_02 - PBT Suite Implementation (status: pending, priority: high, depends_on: TASK_32_01_01)
-   - next_action: Implement Hypothesis-based testing for roadmap transitions.
 ## Current Phase
-- Phase: Operational Intelligence Runtime
+- Phase: Phase 31 Closure Review
 - Task: 
 ## Current Next Action
-Mark phase Operational Intelligence Runtime complete.
+Mark phase Phase 31 Closure Review complete.
