@@ -35,3 +35,6 @@ jobs:
 
       - name: Run MCP-03 invariant validator
         run: python scripts/validate_mcp03_invariants.py
+
+      - name: check-evidence-gate
+        run: python scripts/check_evidence_gate.py
