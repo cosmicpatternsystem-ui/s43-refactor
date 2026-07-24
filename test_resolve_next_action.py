@@ -72,3 +72,20 @@ def test_task_order_preserved(mock_roadmap):
     ])]))
     result = run_resolver(mock_roadmap)
     assert result["current_task"] == "TASK_33_01_01"
+
+def test_missing_tasks_key_returns_insufficient_data():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("resolve_next_action", Path(__file__).parent / "resolve_next_action.py")
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    result = mod.select_current({"phases": [{"id": "p1", "status": "in_progress"}]})
+    assert result["status"] == "INSUFFICIENT_DATA"
+    assert result["selection_reason"] == "tasks_key_invalid"
+
+
+def test_tasks_not_a_list_returns_insufficient_data():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("resolve_next_action", Path(__file__).parent / "resolve_next_action.py")
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    result = mod.select_current({"phases": [{"id": "p1", "status": "in_progress", "tasks": "bad"}]})
+    assert result["status"] == "INSUFFICIENT_DATA"
+    assert result["selection_reason"] == "tasks_key_invalid"
