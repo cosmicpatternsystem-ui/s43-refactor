@@ -8,25 +8,36 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-_DEFAULT_ROADMAP   = "docs/governance/ROADMAP_CURRENT.json"
-_DEFAULT_CANONICAL = "docs/governance/ROADMAP_CANONICAL.md"
-_DEFAULT_MANIFEST  = "docs/governance/ROADMAP_MANIFEST.json"
+DEFAULT_ROADMAP = Path("docs/governance/ROADMAP_CURRENT.json")
+DEFAULT_CANONICAL = Path("docs/governance/ROADMAP_CANONICAL.md")
+DEFAULT_MANIFEST = Path("docs/governance/ROADMAP_MANIFEST.json")
 
-def _load_durable_state():
+def _get_paths(roadmap: Optional[str] = None,
+               canonical: Optional[str] = None,
+               manifest: Optional[str] = None) -> Tuple[Path, Path, Path]:
+    """Resolve effective paths, falling back to module DEFAULT_* constants."""
+    return (
+        Path(roadmap)   if roadmap   else DEFAULT_ROADMAP,
+        Path(canonical) if canonical else DEFAULT_CANONICAL,
+        Path(manifest)  if manifest  else DEFAULT_MANIFEST,
+    )
+
+
+def _load_durable_state() -> Dict[str, Any]:
+    """Load durable state defensively; inert until tools.durable_state
+    exposes load_state(). Returns {} on any import/attribute failure."""
     try:
         from tools.durable_state import load_state
-        return load_state() or {}
-    except Exception:
+        return load_state()
+    except (ImportError, AttributeError):
         return {}
-
-def _get_paths(args_roadmap="", args_canonical="", args_manifest=""):
-    p = _load_durable_state().get("paths", {})
-    return (
-        Path(args_roadmap   or p.get("roadmap",   _DEFAULT_ROADMAP)),
-        Path(args_canonical or p.get("canonical", _DEFAULT_CANONICAL)),
-        Path(args_manifest  or p.get("manifest",  _DEFAULT_MANIFEST)),
-    )
 PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+ROADMAP_PATH = DEFAULT_ROADMAP
+
+
+def resolve(roadmap_path=None):
+    path = Path(roadmap_path) if roadmap_path else Path(ROADMAP_PATH)
+    return select_current(load_json(path))
 
 def norm_scalar(value: Any) -> str:
     if value is None:
@@ -134,9 +145,7 @@ def select_current(data: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     phase_title = entry_title(phase)
-    tasks_raw = phase.get("tasks") if "tasks" in phase else phase.get("entries")
-    if tasks_raw is None and "tasks" not in phase and "entries" not in phase:
-        tasks_raw = []
+    tasks_raw = phase.get("tasks")
     if not isinstance(tasks_raw, list):
         return {
             "status": "INSUFFICIENT_DATA",
@@ -144,7 +153,7 @@ def select_current(data: Dict[str, Any]) -> Dict[str, Any]:
             "current_task": "",
             "current_next_action": f"Phase {phase_title} has invalid tasks field.",
             "blocked_by": [],
-            "selection_reason": "missing_tasks",
+            "selection_reason": "tasks_key_invalid",
             "resolver_version": 1,
         }
     tasks = tasks_raw
@@ -249,9 +258,9 @@ def render_markdown(existing: str, res: Dict[str, Any]) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--roadmap", default="")
-    ap.add_argument("--canonical", default="")
-    ap.add_argument("--manifest", default="")
+    ap.add_argument("--roadmap", default=str(DEFAULT_ROADMAP))
+    ap.add_argument("--canonical", default=str(DEFAULT_CANONICAL))
+    ap.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--write", action="store_true")
@@ -326,7 +335,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
 
 
