@@ -25,7 +25,7 @@
     "last_verified_at": "ISO-8601 UTC string|null"
   },
   "updated_at_utc": "2026-07-22T12:32:11Z",
-  "phase_count": 88,
+  "phase_count": 87,
   "phases": [
     {
       "id": "P0-PHASE-25-RC-READINESS-VERDICT",
@@ -1485,31 +1485,6 @@
           "title": "Gate 2 passage confirmation",
           "status": "done",
           "next_action": "Run full validator suite in pwsh 7"
-        }
-      ]
-    },
-    {
-      "id": "P33-01",
-      "title": "Post-Completion Hardening",
-      "status": "in_progress",
-      "tasks": [
-        {
-          "id": "TASK_33_01_01",
-          "priority": "critical",
-          "status": "pending",
-          "next_action": "CI gate hardening"
-        },
-        {
-          "id": "TASK_33_01_02",
-          "priority": "high",
-          "status": "pending",
-          "next_action": "Ledger schema migration"
-        },
-        {
-          "id": "TASK_33_01_03",
-          "priority": "medium",
-          "status": "pending",
-          "next_action": "Roadmap sync"
         }
       ]
     }
