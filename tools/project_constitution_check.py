@@ -71,7 +71,7 @@ REQUIRED_PHRASES = {
     ],
     "docs/governance/ROADMAP_CANONICAL.md": [
         "P0-ROADMAP-AUTHORITY",
-        "P2-COMMERCIAL-VALIDATION",
+        "P0-PHASE-02-COMMERCIAL-VALIDATION",
         "canonical machine-readable roadmap authority",
     ],
     "repo/contracts/PROJECT_CONSTITUTION.yaml": [
