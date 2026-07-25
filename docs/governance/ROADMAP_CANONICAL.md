@@ -1,7 +1,7 @@
 ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = cdde2a5b7c7520f81c503abb61ef617636774c3e098c9445390611c65ffce016`
+`$json_sha = 6fb5ec69fdd8e6793f6bef10a5c0289832941ca9d4969e69c84304acb0db55a8`
 Authority: canonical human
 Independent authority: true
 
@@ -9,7 +9,7 @@ Independent authority: true
 <!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = cdde2a5b7c7520f81c503abb61ef617636774c3e098c9445390611c65ffce016`
+`$json_sha = 6fb5ec69fdd8e6793f6bef10a5c0289832941ca9d4969e69c84304acb0db55a8`
 <!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
 <!-- Governance identity: This file is the human-readable canonical roadmap. -->
 # ROADMAP_CANONICAL
@@ -29,8 +29,8 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 1. P0-ROADMAP-AUTHORITY
 2. P0-POLICY-TRIAD
 3. P0-EVIDENCE-INTEGRITY
-4. P1-OPS-REMEDIATION
-5. P2-COMMERCIAL-VALIDATION
+4. P0-PHASE-01-OPS-REMEDIATION
+5. P0-PHASE-02-COMMERCIAL-VALIDATION
 
 ## Status model
 ## Status model
