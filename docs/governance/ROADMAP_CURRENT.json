@@ -1394,7 +1394,7 @@
       "id": "P0-ROADMAP-AUTHORITY",
       "legacy_id": "P0-ROADMAP-AUTHORITY",
       "title": "P0-ROADMAP-AUTHORITY",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#P0-ROADMAP-AUTHORITY",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "complete",
       "documentation_only": true,
       "owner": null,
@@ -1408,7 +1408,7 @@
       "id": "P0-POLICY-TRIAD",
       "legacy_id": "P0-POLICY-TRIAD",
       "title": "P0-POLICY-TRIAD",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#P0-POLICY-TRIAD",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "complete",
       "documentation_only": true,
       "owner": null,
@@ -1422,7 +1422,7 @@
       "id": "P0-EVIDENCE-INTEGRITY",
       "legacy_id": "P0-EVIDENCE-INTEGRITY",
       "title": "P0-EVIDENCE-INTEGRITY",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#P0-EVIDENCE-INTEGRITY",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "complete",
       "documentation_only": true,
       "owner": null,
@@ -1433,10 +1433,10 @@
       "last_verified_at": null
     },
     {
-      "id": "P1-OPS-REMEDIATION",
-      "legacy_id": "P1-OPS-REMEDIATION",
-      "title": "P1-OPS-REMEDIATION",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#P1-OPS-REMEDIATION",
+      "id": "P0-PHASE-01-OPS-REMEDIATION",
+      "legacy_id": "P0-PHASE-01-OPS-REMEDIATION",
+      "title": "P0-PHASE-01-OPS-REMEDIATION",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "complete",
       "documentation_only": true,
       "owner": null,
@@ -1447,10 +1447,10 @@
       "last_verified_at": null
     },
     {
-      "id": "P2-COMMERCIAL-VALIDATION",
-      "legacy_id": "P2-COMMERCIAL-VALIDATION",
-      "title": "P2-COMMERCIAL-VALIDATION",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#P2-COMMERCIAL-VALIDATION",
+      "id": "P0-PHASE-02-COMMERCIAL-VALIDATION",
+      "legacy_id": "P0-PHASE-02-COMMERCIAL-VALIDATION",
+      "title": "P0-PHASE-02-COMMERCIAL-VALIDATION",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "complete",
       "documentation_only": true,
       "owner": null,
@@ -1461,10 +1461,10 @@
       "last_verified_at": null
     },
     {
-      "id": "P32-01",
+      "id": "P0-PHASE-32-01-OPERATIONAL-INTELLIGENCE-RUNTIME",
       "legacy_id": "PHASE_32_01",
       "title": "Operational Intelligence Runtime",
-      "file": "docs/governance/ROADMAP_CANONICAL.md#PHASE_32_01",
+      "file": "docs/governance/ROADMAP_CANONICAL.md",
       "status": "recorded",
       "documentation_only": true,
       "owner": null,
@@ -1490,3 +1490,4 @@
     }
   ]
 }
+
