@@ -43,3 +43,45 @@ def validate():
 
 if __name__ == "__main__":
     validate()
+
+
+# INVARIANT-ID-001 — canonical phase-id grammar.
+# Accepts: P0-PHASE-32-GOVERNANCE, P0-PHASE-33-01-AI-DECISION
+# Rejects: shadow short forms (P33-01), embedded newlines, prefix-only matches.
+CANONICAL_ID_PATTERN = re.compile(r"P0-PHASE-\d{2}(-\d{2})?(-[A-Z0-9]+)+")
+
+ALLOWED_PHASE_STATUS = {
+    "complete", "in_progress", "recorded", "pending",
+    "deferred", "abandoned", "blocked", "not_applicable",
+    "info", "approved",
+}
+
+
+def _fail_invariant(violations):
+    for msg in violations:
+        print(msg, file=sys.stderr)
+    raise SystemExit(1)
+
+
+def check_invariant_id_001(roadmap):
+    violations = []
+    phases = roadmap.get("phases") if isinstance(roadmap, dict) else None
+    if not isinstance(phases, list):
+        _fail_invariant(["INVARIANT-ID-001: missing or invalid 'phases' registry"])
+    seen = set()
+    for idx, member in enumerate(phases):
+        if not isinstance(member, dict):
+            violations.append(f"INVARIANT-ID-001: phase[{idx}] is not an object")
+            continue
+        pid = member.get("id")
+        if not isinstance(pid, str) or not CANONICAL_ID_PATTERN.fullmatch(pid):
+            violations.append(f"INVARIANT-ID-001: illegal id {pid!r}")
+        else:
+            if pid in seen:
+                violations.append(f"INVARIANT-ID-001: duplicate id {pid!r}")
+            seen.add(pid)
+        status = member.get("status")
+        if status is not None and status not in ALLOWED_PHASE_STATUS:
+            violations.append(f"INVARIANT-ID-001: illegal status {status!r}")
+    if violations:
+        _fail_invariant(violations)
