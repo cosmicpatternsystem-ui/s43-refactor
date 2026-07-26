@@ -89,3 +89,65 @@ def test_tasks_not_a_list_returns_insufficient_data():
     result = mod.select_current({"phases": [{"id": "p1", "status": "in_progress", "tasks": "bad"}]})
     assert result["status"] == "INSUFFICIENT_DATA"
     assert result["selection_reason"] == "tasks_key_invalid"
+
+
+# --- PR #327: resolver coverage (legacy_id, pick tie-break, next_action chain, norm_scalar edges) ---
+import importlib.util as _il, sys as _sys
+
+def _load_resolver():
+    spec = _il.spec_from_file_location(
+        "scripts.resolve_next_action", "scripts/resolve_next_action.py"
+    )
+    mod = _il.module_from_spec(spec)
+    _sys.modules["scripts.resolve_next_action"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+R = _load_resolver()
+
+
+def test_entry_title_legacy_id_fallback():
+    # legacy_id only wins when higher-priority keys are absent
+    assert R.entry_title({"legacy_id": "P31-07"}) == "P31-07"
+    # precedence: title/name/id before legacy_id
+    assert R.entry_title({"id": "ID1", "legacy_id": "L1"}) == "ID1"
+    # final fallback = file
+    assert R.entry_title({"file": "x.py"}) == "x.py"
+    # empty input
+    assert R.entry_title({}) == ""
+
+
+def test_pick_priority_and_tiebreak():
+    # empty list -> None
+    assert R.pick([]) is None
+    # alphabetical tie-break on entry_title when other keys are equal
+    same = [{"id": "b", "priority": "high"}, {"id": "a", "priority": "high"}]
+    assert R.pick(same)["id"] == "a"
+    # priority ordering, independent of exact mapping (uses module's own priority_rank)
+    hi, lo = {"id": "hi", "priority": "high"}, {"id": "lo", "priority": "low"}
+    winner = "hi" if R.priority_rank("high") <= R.priority_rank("low") else "lo"
+    assert R.pick([lo, hi])["id"] == winner
+    # items with _unresolved always sort last (first sort key)
+    mixed = [{"id": "blocked", "priority": "high", "_unresolved": ["dep"]},
+             {"id": "open", "priority": "low"}]
+    assert R.pick(mixed)["id"] == "open"
+
+
+def test_next_action_fallback_chain():
+    base = lambda t: {"phases": [{"id": "P1", "status": "pending", "tasks": [t]}]}
+    # explicit next_action wins
+    r1 = R.select_current(base({"id": "T1", "status": "pending",
+                                "next_action": "explicit", "description": "desc"}))
+    assert r1["current_next_action"] == "explicit"
+    # fallback to description
+    r2 = R.select_current(base({"id": "T1", "status": "pending", "description": "do desc"}))
+    assert r2["current_next_action"] == "do desc"
+    # final fallback to task title
+    r3 = R.select_current(base({"title": "Task Title", "status": "pending"}))
+    assert r3["current_next_action"] == "Task Title"
+
+
+def test_norm_scalar_edges():
+    assert R.norm_scalar(None) == ""
+    assert R.norm_scalar("") == ""
+    assert isinstance(R.norm_scalar(123), str)
