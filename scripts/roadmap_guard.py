@@ -9,8 +9,7 @@ PHASE_PAT  = re.compile(r'^P0-PHASE-\d{2}(?:-\d{2})?-[A-Z0-9-]+$')
 TASK_PAT   = re.compile(r'^TASK_\d{2}_\d{2}_\d{2}$')
 ALLOWLIST  = {
     'P0-ROADMAP-AUTHORITY', 'P0-POLICY-TRIAD',
-    'P0-EVIDENCE-INTEGRITY', 'P0-PHASE-B1-CHECKLIST', 'P0-PHASE-STATUS',
-}
+    'P0-EVIDENCE-INTEGRITY', 'P0-PHASE-B1-CHECKLIST', 'P0-PHASE-STATUS', }
 
 def validate():
     if not ROADMAP_PATH.exists():
