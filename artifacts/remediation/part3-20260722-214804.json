@@ -1,0 +1,207 @@
+[
+  {
+    "id": "P0-PHASE-26-02-PACKAGING-COMMAND-DISCOVERY",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-31-CLOSURE-REVIEW",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-32-02-OPERATIONAL-INTELLIGENCE-RUNTIME-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-32-03-OPERATIONAL-INTELLIGENCE-EVIDENCE-AND-ESCALATION-FLOW",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-32-04-OPERATIONAL-INTELLIGENCE-VERIFICATION-AND-REPLAY-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-33-01-AI-DECISION-ENGINE-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-33-02-INFERENCE-TO-ACTION-MAPPING",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-33-03-DECISION-CONFIDENCE-RISK-THRESHOLDS",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-33-04-SELF-CORRECTION-FEEDBACK-LOOP",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-34-01-EXECUTION-CONTROLLER-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-34-02-PRE-EXECUTION-SAFETY-CHECKS",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-34-03-EXECUTION-EVIDENCE-ACK-NACK-RUNTIME-RESULT-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-34-04-REALTIME-ENFORCEMENT-TELEMETRY-AND-INTERVENTION-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-35-01-AUTONOMOUS-RECOVERY-FAILURE-CONTAINMENT-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-35-02-RECOVERY-POLICY-STRATEGY-BLAST-RADIUS-CONTROL",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-35-03-RECOVERY-ORCHESTRATION-EVIDENCE-VERIFICATION-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-35-04-DEGRADATION-MODES-GRACEFUL-FAILURE-ESCALATION-FLOW",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-36-01-ADAPTIVE-LEARNING-LOOP-ARCHITECTURE-GOVERNANCE-BOUNDARY",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-36-02-LEARNING-SIGNAL-NORMALIZATION-QUALITY-SCORING",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-36-03-MODEL-AND-STRATEGY-UPDATE-GOVERNANCE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-36-04-LEARNING-DEPLOYMENT-SAFEGUARDS-AND-CONTINUOUS-IMPROVEMENT-AUDITABILITY",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-37-01-SIMULATION-AND-PREPRODUCTION-VALIDATION-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-37-02-SCENARIO-LIBRARY-REPLAY-DATASET-CONTRACT-COVERAGE-CRITERIA",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-37-03-SIMULATION-EVALUATION-METRICS-PASS-FAIL-PROMOTION-RECOMMENDATION-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-37-04-SIMULATION-GOVERNANCE-EXCEPTION-HANDLING-PREPRODUCTION-APPROVAL-HANDOFF",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-38-01-RELEASE-GOVERNANCE-AND-PRODUCTION-ACTIVATION-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-38-02-ACTIVATION-READINESS-GATES-AND-RELEASE-CRITERIA",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-38-03-PROGRESSIVE-ROLLOUT-CHECKPOINTS-AND-INTERVENTION-RULES",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-38-04-RELEASE-OVERSIGHT-ESCALATION-AND-PRODUCTION-HANDOFF",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-39-01-POST-RELEASE-OBSERVABILITY-AND-STABILIZATION-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-39-02-STABILIZATION-SIGNAL-EVALUATION-AND-ALERT-TRIAGE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-39-03-STABILIZATION-REVIEW-THRESHOLDS-AND-RECOVERY-DECISION-POLICY",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-39-04-STABILIZATION-EXIT-CRITERIA-AND-STEADY-STATE-HANDOFF",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-40-01-CONTINUOUS-IMPROVEMENT-AND-OPERATIONAL-LEARNING-ARCHITECTURE",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-40-02-OPERATIONAL-LEARNING-INTAKE-CLASSIFICATION-AND-EVIDENCE-CONTRACT",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-40-03-RECOMMENDATION-EVALUATION-PRIORITIZATION-AND-GOVERNANCE-ROUTING",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-40-04-IMPROVEMENT-DECISION-CLOSURE-AND-FEEDBACK-LOOP-HANDOFF",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-42-03-ROADMAP-METADATA-COMPLETENESS-AND-ENTERPRISE-READINESS-HARDENING",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-42-04-ROADMAP-METADATA-REGRESSION-GUARD",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-B1-CHECKLIST",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  },
+  {
+    "id": "P0-PHASE-STATUS",
+    "action": "reverted_in_progress",
+    "doc_exists": false
+  }
+]

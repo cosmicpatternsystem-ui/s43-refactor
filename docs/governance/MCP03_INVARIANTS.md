@@ -37,3 +37,13 @@ Any commit touching `docs/governance/ROADMAP_CANONICAL.md` MUST also update
 **Statement:** No merge to `main` is permitted with a failing CI gate (Formal Audit).
 **Enforcement:** MUST
 **CI Gate:** `.github/scripts/governance-guard.ps1`
+
+<!-- MCP03-DOC-ONLY-WAIVER v1 -->
+## Documentation-Only Evidence Waiver
+
+- Status: ACTIVE
+- Scope: phases where documentation_only == true AND status == "complete" AND evidence == []
+- Count at issuance: 27 phases
+- Expiry: 2026-08-01T00:00:00Z
+- Enforcement: gate logs each pass as GATE_WAIVED (no silent pass); after Expiry the same phases become GATE_FAIL and trigger Budget Freeze.
+- Renewal: requires explicit review plus update of this clause and the gate constant.

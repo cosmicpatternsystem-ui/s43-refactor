@@ -1,0 +1,29 @@
+name: Autopilot Roadmap
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  update-roadmap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      - run: pip install jsonschema
+      - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --check --write
+      - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --lookahead 33 --write
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/governance/ROADMAP_CURRENT.json docs/governance/NEXT_ACTIONS.json
+          git diff --cached --quiet || git commit -m "chore(autopilot): update current & lookahead steps"
+          git push
+      - shell: pwsh
+        run: .github/scripts/governance-guard.ps1

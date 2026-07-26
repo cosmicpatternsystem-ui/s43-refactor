@@ -77,7 +77,7 @@ def test_roadmap_source_and_view_are_synchronized_by_ids() -> None:
     missing_ids = [item for item in view_unique if item not in roadmap_ids]
     assert missing_ids == []
     assert "P0-ROADMAP-AUTHORITY" in roadmap_ids
-    assert "P2-COMMERCIAL-VALIDATION" in roadmap_ids
+    assert "P0-PHASE-02-COMMERCIAL-VALIDATION" in roadmap_ids
 
 
 def test_constitution_declares_commercial_and_durability_posture() -> None:

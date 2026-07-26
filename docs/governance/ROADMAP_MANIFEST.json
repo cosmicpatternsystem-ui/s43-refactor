@@ -17,9 +17,9 @@
     "version": 1,
     "algorithm": "status-dependency-priority-id",
     "output": {
-      "current_phase": "Operational Intelligence Runtime",
-      "current_task": "MCP03 Invariants Formalization",
-      "current_next_action": "Formalize MCP03_INVARIANTS.md and implement validation logic.",
+      "current_phase": "Phase 31 Closure Review",
+      "current_task": "",
+      "current_next_action": "Mark phase Phase 31 Closure Review complete.",
       "blocked_by": []
     }
   }
