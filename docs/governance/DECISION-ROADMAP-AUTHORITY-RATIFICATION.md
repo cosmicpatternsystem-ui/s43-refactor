@@ -1,6 +1,6 @@
 ---
 title: Roadmap Authority Ratification Decision
-status: proposed
+status: ratified
 decision_id: DR-33-01-01-AUTHORITY
 owner: S.Saead Lajevardy
 phase: T33-01-01
@@ -210,3 +210,23 @@ Current evidence and repository state include, but are not limited to:
 This record is intentionally decision-first, not implementation-first.
 
 Its purpose is to force selection of exactly one roadmap authority contract before any authority-sensitive repository mutation is committed.
+
+## Ratification Outcome
+
+- ratification_status: RATIFIED
+- selected_option: Option A
+- selected_authority_path: scripts/update-roadmap.ps1
+- execution_authorization: NOT GRANTED
+- effective_disposition: KEEP-PRESENT / BLOCKED-BY-CONTRACT-MISMATCH
+- migration_to_resolve_next_action_py: DEFERRED
+- rationale: Retain current authority contract under HOLD while contract mismatch remains unresolved and authority-sensitive drift is preserved for controlled resolution.
+- ratified_on: 2026-07-28
+- ratified_by: S.Saead Lajevardy
+
+## Operational Interpretation
+
+This ratification selects the retained authority path only.
+
+It does not authorize immediate implementation mutation.
+
+Any subsequent execution must proceed separately under explicit scope control, validation discipline, rollback readiness, and evidence preservation requirements already defined by governance.
