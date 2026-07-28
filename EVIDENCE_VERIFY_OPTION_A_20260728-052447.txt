@@ -1,0 +1,38 @@
+verify_snapshot_id: VERIFY-OPTION-A-20260728-052447
+verify_snapshot_date_utc: 2026-07-28
+operator: S.Saead Lajevardy
+repo_root: G:/s43_work/s43_g11_work
+branch: task/33-01-01-ci-gate-hardening
+head_full: aa5a6053ddcee3378fc3aefa01ee41d7fff370c8
+head_short: aa5a6053
+hold_status: ACTIVE
+governance_mode: CONTROLLED_BLOCKED
+ratified_option: A
+retained_authority_path: scripts/update-roadmap.ps1
+latest_restore_runbook: docs/governance/RUNBOOK-OPTION-A-RESTORE-20260728-051917.md
+
+[restore_target_verification]
+result: PASS
+residual_modification_on_restore_targets: NO
+target: docs/governance/ROADMAP_CURRENT.json | residual_modified: NO
+target: scripts/check_evidence_gate.py | residual_modified: NO
+target: scripts/roadmap_generator.py | residual_modified: NO
+target: scripts/validate-roadmap.ps1 | residual_modified: NO
+
+[git_status_short]
+?? EVIDENCE_20260727-181214.txt
+?? EVIDENCE_CONTRACT_MISMATCH_20260727-174118.txt
+?? EVIDENCE_CONTRACT_MISMATCH_20260727-175124.txt
+?? _evidence/
+?? closure_signoff.ps1
+
+[git_diff_name_only]
+(none)
+
+[git_diff_cached_name_only]
+(none)
+
+[assessment]
+verify_phase_status: PASS
+summary: Approved restore targets remain clean after documented Option A restore execution.
+next_phase: RE-RUN_PLUS_ARCHIVE_WHEN_CONTRACT_MISMATCH_RESOLVED
