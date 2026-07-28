@@ -1,0 +1,147 @@
+CLEAN RUNTIME AUTHORITY EVIDENCE SUMMARY
+====================================================================================================
+GeneratedUtc: 2026-07-28T16:52:29Z
+RepoRoot: G:\s43_work\s43_g11_work
+OutDir: G:\s43_work\s43_g11_work\docs\governance\evidence\clean-runtime-authority\20260728-202227
+EvidenceExcluded: docs\governance\evidence
+FilesScanned: 211
+TotalTokenHits: 250
+GitHead: 13d44b2e0a13b9db39f025af28e502e44e39698a
+
+FILE_COUNT_BY_AUTHORITY_TIER:
+CANONICAL_HUMAN_ROADMAP: 1
+CANONICAL_MACHINE_ROADMAP: 1
+CI: 35
+CORE_GUARD: 1
+CORE_RUNTIME_RESOLVER: 1
+GOVERNANCE_DOC: 66
+GOVERNANCE_VALIDATOR: 2
+SCRIPT_SUPPORT: 33
+TEST: 71
+
+TOKEN_DECISION_MATRIX:
+Token | TotalHits | CorePathHits | DocsOnly | Decision
+----- | --------- | ------------ | -------- | --------
+CONTROLLED_BLOCKED | 6 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+CONTRACT_MISMATCH | 7 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+ALLOWED_PHASE_STATUS | 2 | 2 | false | CODE_ENFORCED_GUARD_PRESENT
+ROADMAP_CURRENT | 151 | 55 | false | CORE_PATH_PRESENT_REVIEW_REQUIRED
+STATUS_CLASSIFICATION | 1 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+forbidden_actions | 1 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+allowed_actions | 1 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+NEXT_ACTION | 40 | 30 | false | CORE_PATH_PRESENT_REVIEW_REQUIRED
+BLOCKED | 40 | 19 | false | CORE_PATH_PRESENT_REVIEW_REQUIRED
+HOLD_ACTIVE | 1 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY
+
+CORE_PATH_HITS_DETAIL:
+ALLOWED_PHASE_STATUS: scripts\roadmap_guard.py:53: [CORE_GUARD] ALLOWED_PHASE_STATUS = {
+ALLOWED_PHASE_STATUS: scripts\roadmap_guard.py:84: [CORE_GUARD] if status is not None and status not in ALLOWED_PHASE_STATUS:
+BLOCKED: scripts\roadmap_guard.py:55: [CORE_GUARD] "deferred", "abandoned", "blocked", "not_applicable",
+BLOCKED: scripts\resolve_next_action.py:124: [CORE_RUNTIME_RESOLVER] "blocked_by": [],
+BLOCKED: scripts\resolve_next_action.py:133: [CORE_RUNTIME_RESOLVER] blocked_phases = [p for p in phase_candidates if p.get("_unresolved")]
+BLOCKED: scripts\resolve_next_action.py:135: [CORE_RUNTIME_RESOLVER] phase = pick(open_phases) or pick(blocked_phases)
+BLOCKED: scripts\resolve_next_action.py:142: [CORE_RUNTIME_RESOLVER] "blocked_by": [],
+BLOCKED: scripts\resolve_next_action.py:155: [CORE_RUNTIME_RESOLVER] "blocked_by": [],
+BLOCKED: scripts\resolve_next_action.py:165: [CORE_RUNTIME_RESOLVER] blocked_tasks = [t for t in task_candidates if t.get("_unresolved")]
+BLOCKED: scripts\resolve_next_action.py:167: [CORE_RUNTIME_RESOLVER] task = pick(open_tasks) or pick(blocked_tasks)
+BLOCKED: scripts\resolve_next_action.py:175: [CORE_RUNTIME_RESOLVER] "blocked_by": phase.get("_unresolved", []),
+BLOCKED: scripts\resolve_next_action.py:181: [CORE_RUNTIME_RESOLVER] blocked_by = task.get("_unresolved", [])
+BLOCKED: scripts\resolve_next_action.py:182: [CORE_RUNTIME_RESOLVER] if blocked_by:
+BLOCKED: scripts\resolve_next_action.py:183: [CORE_RUNTIME_RESOLVER] status = "BLOCKED"
+BLOCKED: scripts\resolve_next_action.py:185: [CORE_RUNTIME_RESOLVER] action = f"Resolve dependencies for {task_title}: {', '.join(blocked_by)}"
+BLOCKED: scripts\resolve_next_action.py:196: [CORE_RUNTIME_RESOLVER] "blocked_by": blocked_by,
+BLOCKED: scripts\resolve_next_action.py:308: [CORE_RUNTIME_RESOLVER] "blocked_by": result.get("blocked_by", []),
+BLOCKED: tests\test_auto_pilot.py:63: [TEST] assert result["decision_status"] == "blocked"
+BLOCKED: tests\test_auto_pilot.py:64: [TEST] assert result["reason_codes"] == ["enforce_blocked_invalid_signal"]
+BLOCKED: tests\test_auto_pilot.py:76: [TEST] assert result["decision_status"] == "blocked"
+BLOCKED: tests\test_commercial_controls_enforcement_pack_contract.py:53: [TEST] "Commercially unsafe = blocked.",
+NEXT_ACTION: docs\governance\ROADMAP_CURRENT.json:1873: [CANONICAL_MACHINE_ROADMAP] "next_action":  "MCP03_INVARIANTS.md validated"
+NEXT_ACTION: docs\governance\ROADMAP_CURRENT.json:1879: [CANONICAL_MACHINE_ROADMAP] "next_action":  "Run full validator suite in pwsh 7"
+NEXT_ACTION: .github\scripts\governance-guard.ps1:36: [CI] 'scripts/resolve_next_action.py',
+NEXT_ACTION: .github\scripts\governance-guard.ps1:55: [CI] & python scripts/resolve_next_action.py --help *> $null
+NEXT_ACTION: .github\workflows\autopilot-roadmap.yml:20: [CI] - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --check --write
+NEXT_ACTION: .github\workflows\autopilot-roadmap.yml:21: [CI] - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --lookahead 33 --write
+NEXT_ACTION: .github\workflows\autopilot-roadmap.yml:25: [CI] git add docs/governance/ROADMAP_CURRENT.json docs/governance/NEXT_ACTIONS.json
+NEXT_ACTION: .github\workflows\governance-enforcement.yml:29: [CI] test -f docs/NEXT_ACTIONS.md
+NEXT_ACTION: scripts\resolve_next_action.py:123: [CORE_RUNTIME_RESOLVER] "current_next_action": "Missing or invalid phases array.",
+NEXT_ACTION: scripts\resolve_next_action.py:141: [CORE_RUNTIME_RESOLVER] "current_next_action": "No remaining roadmap actions.",
+NEXT_ACTION: scripts\resolve_next_action.py:154: [CORE_RUNTIME_RESOLVER] "current_next_action": f"Phase {phase_title} has invalid tasks field.",
+NEXT_ACTION: scripts\resolve_next_action.py:174: [CORE_RUNTIME_RESOLVER] "current_next_action": f"Mark phase {phase_title} complete.",
+NEXT_ACTION: scripts\resolve_next_action.py:189: [CORE_RUNTIME_RESOLVER] action = norm_scalar(task.get("next_action") or task.get("description") or task_title)
+NEXT_ACTION: scripts\resolve_next_action.py:195: [CORE_RUNTIME_RESOLVER] "current_next_action": action,
+NEXT_ACTION: scripts\resolve_next_action.py:229: [CORE_RUNTIME_RESOLVER] return {"current_phase": phase, "current_task": task, "current_next_action": action}
+NEXT_ACTION: scripts\resolve_next_action.py:248: [CORE_RUNTIME_RESOLVER] out.append(str(res.get("current_next_action","")))
+NEXT_ACTION: scripts\resolve_next_action.py:293: [CORE_RUNTIME_RESOLVER] f"{result.get('current_next_action','')}\n"
+NEXT_ACTION: scripts\resolve_next_action.py:301: [CORE_RUNTIME_RESOLVER] "name": "scripts/resolve_next_action.py",
+NEXT_ACTION: scripts\resolve_next_action.py:307: [CORE_RUNTIME_RESOLVER] "current_next_action": result.get("current_next_action", ""),
+NEXT_ACTION: scripts\resolve_next_action.py:323: [CORE_RUNTIME_RESOLVER] "current_next_action": norm_scalar(result.get("current_next_action")),
+NEXT_ACTION: tests\test_governance_32_canonical.py:22: [TEST] "NEXT_ACTIONS.md",
+NEXT_ACTION: tests\test_governance_32_canonical.py:29: [TEST] "tools/generate_next_actions.py",
+NEXT_ACTION: tests\test_governance_bootstrap.py:11: [TEST] "docs/NEXT_ACTIONS.md",
+NEXT_ACTION: tests\test_governance_bootstrap.py:43: [TEST] def test_roadmap_and_next_actions_exist_with_expected_markers():
+NEXT_ACTION: tests\test_governance_bootstrap.py:45: [TEST] nxt = read_text("docs/NEXT_ACTIONS.md")
+NEXT_ACTION: tests\test_resolve_next_action.py:10: [TEST] SCRIPT_PATH / "scripts" / "resolve_next_action.py",
+NEXT_ACTION: tests\test_resolve_next_action.py:11: [TEST] SCRIPT_PATH.parent / "scripts" / "resolve_next_action.py",
+NEXT_ACTION: tests\test_resolve_next_action.py:19: [TEST] "scripts.resolve_next_action", str(candidate)
+NEXT_ACTION: tests\test_resolve_next_action.py:22: [TEST] sys.modules["scripts.resolve_next_action"] = mod
+NEXT_ACTION: tests\test_resolve_next_action.py:25: [TEST] raise FileNotFoundError("scripts/resolve_next_action.py not found")
+ROADMAP_CURRENT: docs\governance\ROADMAP_CANONICAL.md:3: [CANONICAL_HUMAN_ROADMAP] Canonical machine source: `ROADMAP_CURRENT.json`
+ROADMAP_CURRENT: docs\governance\ROADMAP_CANONICAL.md:11: [CANONICAL_HUMAN_ROADMAP] Canonical machine source: `ROADMAP_CURRENT.json`
+ROADMAP_CURRENT: docs\governance\ROADMAP_CANONICAL.md:24: [CANONICAL_HUMAN_ROADMAP] - `docs/governance/ROADMAP_CURRENT.json` is the canonical machine-readable roadmap authority for operational consumption, but it is generated from this file and must remain a semantically equivalent machine-readable projection of this canonical authority.
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:49: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json",
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:283: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json",
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:413: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json is regenerated and validates successfully"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:444: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:470: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:496: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:522: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:548: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:574: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:600: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:626: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: docs\governance\ROADMAP_CURRENT.json:652: [CANONICAL_MACHINE_ROADMAP] "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:44: [CI] 'docs[\\/]governance[\\/]ROADMAP_CURRENT\.json'
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:45: [CI] 'repo_root\s*/\s*["'']docs["'']\s*/\s*["'']governance["'']\s*/\s*["'']ROADMAP_CURRENT\.json["'']'
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:49: [CI] 'Join-Path\s+[^`r`n]+["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:50: [CI] 'Test-Path\s+["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:51: [CI] 'ReadAllBytes\(\s*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']\s*\)',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:52: [CI] 'Get-Content\s+[^`r`n]*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:53: [CI] 'Set-Content\s+[^`r`n]*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:54: [CI] 'WriteAllText\(\s*[^`r`n]*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:55: [CI] 'open\(\s*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:56: [CI] 'repo_root\s*\/\s*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:57: [CI] 'Path\(\s*["''](?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']\s*\)',
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:58: [CI] '["''][^"'']*(?:AUDIT[\\/])?ROADMAP_CURRENT\.json["'']'
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:110: [CI] if ($Line -notmatch 'ROADMAP_CURRENT\.json') {
+ROADMAP_CURRENT: .github\scripts\enforce-roadmap-authority.ps1:167: [CI] Write-Host "   docs/governance/ROADMAP_CURRENT.json" -ForegroundColor Green
+ROADMAP_CURRENT: .github\scripts\governance-guard.ps1:40: [CI] 'docs/governance/ROADMAP_CURRENT.json',
+ROADMAP_CURRENT: .github\workflows\autopilot-roadmap.yml:20: [CI] - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --check --write
+ROADMAP_CURRENT: .github\workflows\autopilot-roadmap.yml:21: [CI] - run: python scripts/resolve_next_action.py --manifest docs/governance/ROADMAP_CURRENT.json --lookahead 33 --write
+ROADMAP_CURRENT: .github\workflows\autopilot-roadmap.yml:25: [CI] git add docs/governance/ROADMAP_CURRENT.json docs/governance/NEXT_ACTIONS.json
+ROADMAP_CURRENT: .github\workflows\operational-roadmap.yml:6: [CI] - 'docs/governance/ROADMAP_CURRENT.json'
+ROADMAP_CURRENT: .github\workflows\operational-roadmap-enforcement.yml:5: [CI] - 'docs/governance/ROADMAP_CURRENT.json'
+ROADMAP_CURRENT: .github\workflows\roadmap-integrity.yml:6: [CI] - "docs/governance/ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: .github\workflows\roadmap-integrity.yml:13: [CI] - "docs/governance/ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: .github\workflows\roadmap-integrity.yml:40: [CI] python -c "import json,sys; d=json.load(open('docs/governance/ROADMAP_CURRENT.json',encoding='utf-8')); v=d.get('authority',{}).get('source') or d.get('source_of_truth'); print('source_of_truth =', v); sys.exit(0 if v=='repository_files_only' else 1)"
+ROADMAP_CURRENT: scripts\roadmap_guard.py:6: [CORE_GUARD] ROADMAP_PATH = Path("docs/governance/ROADMAP_CURRENT.json")
+ROADMAP_CURRENT: scripts\resolve_next_action.py:11: [CORE_RUNTIME_RESOLVER] DEFAULT_ROADMAP = Path("docs/governance/ROADMAP_CURRENT.json")
+ROADMAP_CURRENT: tools\governance\roadmap_truth_check.py:7: [GOVERNANCE_VALIDATOR] CANONICAL_DIR / "ROADMAP_CURRENT.json",
+ROADMAP_CURRENT: tools\governance\roadmap_truth_check.py:20: [GOVERNANCE_VALIDATOR] data = json.loads((CANONICAL_DIR / "ROADMAP_CURRENT.json").read_text(encoding="utf-8"))
+ROADMAP_CURRENT: tools\governance\roadmap_truth_check.py:22: [GOVERNANCE_VALIDATOR] print("[FAIL] docs/governance/ROADMAP_CURRENT.json integrity violation.", file=sys.stderr)
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:11: [GOVERNANCE_VALIDATOR] CANONICAL_MACHINE = REPO_ROOT / "docs" / "governance" / "ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:83: [GOVERNANCE_VALIDATOR] if "Canonical machine source: `ROADMAP_CURRENT.json`" not in human_text:
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:84: [GOVERNANCE_VALIDATOR] errors.append("canonical human metadata does not reference ROADMAP_CURRENT.json")
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:86: [GOVERNANCE_VALIDATOR] errors.append("canonical human metadata SHA256 does not match ROADMAP_CURRENT.json")
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:93: [GOVERNANCE_VALIDATOR] if "ROADMAP_CURRENT.json" not in text:
+ROADMAP_CURRENT: tools\governance\validate_roadmap_authority.py:94: [GOVERNANCE_VALIDATOR] errors.append(f"authority doc missing ROADMAP_CURRENT.json reference: {path.relative_to(REPO_ROOT)}")
+ROADMAP_CURRENT: tests\test_project_constitution_pack.py:62: [TEST] (ROOT / "docs/governance/ROADMAP_CURRENT.json").read_text(encoding="utf-8")
+ROADMAP_CURRENT: tests\test_roadmap_governance.py:23: [TEST] assert payload["machine_readable_state"] == "docs/governance/ROADMAP_CURRENT.json"
+ROADMAP_CURRENT: tests\test_roadmap_governance.py:46: [TEST] "`ROADMAP_CURRENT.json`",
+ROADMAP_CURRENT: tests\test_roadmap_integrity.py:4: [TEST] CANONICAL_ROADMAP = os.path.join("docs", "governance", "ROADMAP_CURRENT.json")
+ROADMAP_CURRENT: tests\test_roadmap_integrity.py:16: [TEST] if "ROADMAP_CURRENT.json" in files:
+ROADMAP_CURRENT: tests\test_roadmap_integrity.py:17: [TEST] current_path = os.path.join(root, "ROADMAP_CURRENT.json")
+
+KEY_INTERPRETATION_RULES:
+- Hits under docs\governance are declaration/documentation evidence, not runtime enforcement by themselves.
+- Runtime authority requires presence in resolver, guard, governance validator, canonical machine roadmap, tests, or CI wiring.
+- Evidence artifacts under docs\governance\evidence are excluded to avoid recursive echo chamber contamination.
