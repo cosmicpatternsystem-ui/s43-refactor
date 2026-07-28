@@ -1,0 +1,61 @@
+{
+  "determination_title": "Executive Authority Final Determination",
+  "repo_root": "G:\\s43_work\\s43_g11_work",
+  "evidence_directory": "G:\\s43_work\\s43_g11_work\\docs\\governance\\evidence\\clean-runtime-authority\\20260728-202227",
+  "summary_source": "G:\\s43_work\\s43_g11_work\\docs\\governance\\evidence\\clean-runtime-authority\\20260728-202227\\SUMMARY.txt",
+  "generated_utc": "2026-07-28T17:26:38Z",
+  "evidence_scan_generated_utc": "2026-07-28T16:52:29Z",
+  "git_head": "13d44b2e0a13b9db39f025af28e502e44e39698a",
+  "files_scanned": "211",
+  "total_token_hits": "250",
+  "evidence_excluded": "docs\\governance\\evidence",
+  "final_classification": {
+    "ALLOWED_PHASE_STATUS": "Runtime-Enforced",
+    "CONTROLLED_BLOCKED": "Governance-Declared Label",
+    "CONTRACT_MISMATCH": "Governance-Declared Label"
+  },
+  "findings": [
+    "ALLOWED_PHASE_STATUS is proven as machine-enforced in scripts/roadmap_guard.py.",
+    "CONTROLLED_BLOCKED is not proven in the core runtime authority path.",
+    "CONTRACT_MISMATCH is not proven in the core runtime authority path."
+  ],
+  "supporting_evidence": {
+    "allowed_phase_status_decision": [
+      [
+        [
+          "ALLOWED_PHASE_STATUS | 2 | 2 | false | CODE_ENFORCED_GUARD_PRESENT"
+        ]
+      ]
+    ],
+    "controlled_blocked_decision": [
+      [
+        [
+          "CONTROLLED_BLOCKED | 6 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY"
+        ]
+      ]
+    ],
+    "contract_mismatch_decision": [
+      [
+        [
+          "CONTRACT_MISMATCH | 7 | 0 | true | MENTION_ONLY_NO_CORE_AUTHORITY"
+        ]
+      ]
+    ],
+    "guard_declaration": [
+      [
+        [
+          "ALLOWED_PHASE_STATUS: scripts\\roadmap_guard.py:53: [CORE_GUARD] ALLOWED_PHASE_STATUS = {",
+          "ALLOWED_PHASE_STATUS: scripts\\roadmap_guard.py:84: [CORE_GUARD] if status is not None and status not in ALLOWED_PHASE_STATUS:"
+        ]
+      ]
+    ],
+    "guard_enforcement": [
+      [
+        [
+          "ALLOWED_PHASE_STATUS: scripts\\roadmap_guard.py:84: [CORE_GUARD] if status is not None and status not in ALLOWED_PHASE_STATUS:"
+        ]
+      ]
+    ]
+  },
+  "non_overclaim_statement": "Mandatory end-to-end runtime enforcement is not proven for CONTROLLED_BLOCKED and CONTRACT_MISMATCH by current repository evidence."
+}
