@@ -1,0 +1,36 @@
+Executive Authority Final Determination
+
+A clean bounded evidence scan was executed against repository state
+Git HEAD 13d44b2e0a13b9db39f025af28e502e44e39698a, with
+docs\governance\evidence explicitly excluded to prevent recursive
+artifact contamination.
+
+The resulting evidence proves that ALLOWED_PHASE_STATUS is implemented
+as a machine-enforced governance control in scripts/roadmap_guard.py,
+where the allowed status set is declared and invalid status values are
+rejected by executable guard logic.
+
+By contrast, CONTROLLED_BLOCKED and CONTRACT_MISMATCH were not found in
+the proven core runtime authority path, including the resolver,
+governance guard, governance validators, canonical machine roadmap,
+tests, or CI enforcement wiring. Their observed presence is limited to
+governance documentation and evidence-support references.
+
+Accordingly, ALLOWED_PHASE_STATUS is classified as Runtime-Enforced.
+CONTROLLED_BLOCKED and CONTRACT_MISMATCH are classified as
+Governance-Declared Labels, with mandatory end-to-end runtime
+enforcement not proven by current repository evidence.
+
+Final Classification
+--------------------
+ALLOWED_PHASE_STATUS -> Runtime-Enforced
+CONTROLLED_BLOCKED   -> Governance-Declared Label
+CONTRACT_MISMATCH    -> Governance-Declared Label
+
+Evidence Summary
+----------------
+GeneratedUtc: 2026-07-28T16:52:29Z
+GitHead: 13d44b2e0a13b9db39f025af28e502e44e39698a
+FilesScanned: 211
+TotalTokenHits: 250
+SummarySource: G:\s43_work\s43_g11_work\docs\governance\evidence\clean-runtime-authority\20260728-202227\SUMMARY.txt
