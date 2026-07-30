@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "repo_allowed_patterns": [
+    "artifacts/authority-proof/*.md",
+    "artifacts/authority-proof/*.txt",
+    "artifacts/authority-proof/*.json"
+  ],
+  "repo_disallowed_patterns": [
+    "artifacts/authority-proof/junit.xml",
+    "artifacts/authority-proof/environment.txt",
+    "artifacts/authority-proof/pytest-output.txt",
+    "artifacts/authority-proof/summary.tmp.json"
+  ],
+  "ci_only_patterns": [
+    "artifacts/authority-proof/junit.xml",
+    "artifacts/authority-proof/environment.txt",
+    "artifacts/authority-proof/pytest-output.txt"
+  ],
+  "required_files": [
+    "artifacts/authority-proof/summary.json"
+  ]
+}
