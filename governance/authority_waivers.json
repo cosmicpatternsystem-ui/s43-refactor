@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "waivers": [
+    {
+      "id": "HOLD-33-01-01-A.1",
+      "title": "Governance temporary waiver",
+      "scope": "authority-proof",
+      "owner": "S.Saead Lajevardy",
+      "reason": "Temporary governance hold during closure hardening",
+      "status": "active",
+      "created_on": "2026-07-29",
+      "expires_on": "2026-08-01",
+      "action_on_expiry": "block",
+      "notes": "Must fail closed after expiry."
+    }
+  ]
+}

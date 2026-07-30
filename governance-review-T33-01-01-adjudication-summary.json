@@ -1,0 +1,48 @@
+﻿{
+    "Timestamp":  "2026-07-30 10:37:04",
+    "TaskId":  "T33-01-01",
+    "WaiverId":  "HOLD-33-01-01-A.1",
+    "WaiverExpiry":  "2026-08-01",
+    "FinalDisposition":  "Authority Not Established",
+    "RepositoryPosture":  "CONTROLLED_BLOCKED",
+    "HandlingMode":  "review-only",
+    "EnforcementMode":  "fail-closed",
+    "MutationAuthority":  "Not Established",
+    "HoldRelief":  "Not Established",
+    "FinalStatement":  "C1 established, C2 not found, C3 established; therefore final disposition remains Authority Not Established, and repository posture remains CONTROLLED_BLOCKED with review-only / fail-closed handling.",
+    "DryRun":  false,
+    "CreateBackup":  false,
+    "BackupPath":  null,
+    "ReviewFile":  "governance-review-T33-01-01-provisional.md",
+    "SummaryFile":  "governance-review-T33-01-01-adjudication-summary.json",
+    "WaiverFile":  "governance/authority_waivers.json",
+    "RoadmapFile":  "docs/governance/ROADMAP_CURRENT.json",
+    "ExpectedReviewVerdict":  "Authority Not Established",
+    "MarkerKey":  "ADJUDICATION:T33-01-01|HOLD-33-01-01-A.1|2026-08-01|Authority Not Established",
+    "AppendChanged":  false,
+    "AppendReason":  "MarkerAlreadyPresent",
+    "ConflictingDispositionCount":  0,
+    "ConflictingDispositions":  [
+
+                                ],
+    "Claims":  [
+                   {
+                       "Claim":  "C1",
+                       "Status":  "ESTABLISHED",
+                       "File":  "governance/authority_waivers.json",
+                       "Line":  "5"
+                   },
+                   {
+                       "Claim":  "C2",
+                       "Status":  "NOT FOUND",
+                       "File":  "docs/governance/ROADMAP_CURRENT.json",
+                       "Line":  "not found"
+                   },
+                   {
+                       "Claim":  "C3",
+                       "Status":  "ESTABLISHED",
+                       "File":  "governance-review-T33-01-01-provisional.md",
+                       "Line":  "3"
+                   }
+               ]
+}
