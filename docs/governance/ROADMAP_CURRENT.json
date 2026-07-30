@@ -808,7 +808,7 @@
                        "legacy_id":  "PHASE_31",
                        "title":  "Phase 31 Closure Review",
                        "file":  "PHASE_31_CLOSURE_REVIEW.md",
-                       "status":  "in_progress",
+                       "status":  "completed",
                        "documentation_only":  true,
                        "owner":  "governance",
                        "priority":  "High",
