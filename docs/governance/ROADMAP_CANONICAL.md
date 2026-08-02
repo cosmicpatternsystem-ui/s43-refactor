@@ -1,7 +1,7 @@
 ROADMAP_CANONICAL.md is the human-readable canonical roadmap.
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = 6fb5ec69fdd8e6793f6bef10a5c0289832941ca9d4969e69c84304acb0db55a8`
+`$json_sha = df1c5dc2472ad6852d316f9fd8e163210fa7c948a981f2c2cff0b2875a2e332c`
 Authority: canonical human
 Independent authority: true
 
@@ -9,7 +9,7 @@ Independent authority: true
 <!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = 6fb5ec69fdd8e6793f6bef10a5c0289832941ca9d4969e69c84304acb0db55a8`
+`$json_sha = df1c5dc2472ad6852d316f9fd8e163210fa7c948a981f2c2cff0b2875a2e332c`
 <!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
 <!-- Governance identity: This file is the human-readable canonical roadmap. -->
 # ROADMAP_CANONICAL
