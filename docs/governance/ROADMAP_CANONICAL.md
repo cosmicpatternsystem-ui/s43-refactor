@@ -9,7 +9,7 @@ Independent authority: true
 <!-- ASOX:CANONICAL_HUMAN_METADATA:START -->
 Canonical human source: `ROADMAP_CANONICAL.md`
 Canonical machine source: `ROADMAP_CURRENT.json`
-`$json_sha = 6fb5ec69fdd8e6793f6bef10a5c0289832941ca9d4969e69c84304acb0db55a8`
+`$json_sha = 5762332d81bf5e40f17248c2338e715fe789fbbd33cd0b2ac548e830c5a38afb`
 <!-- ASOX:CANONICAL_HUMAN_METADATA:END -->
 <!-- Governance identity: This file is the human-readable canonical roadmap. -->
 # ROADMAP_CANONICAL
