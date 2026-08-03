@@ -1,0 +1,36 @@
+name: PR333 Governance Guard
+
+on:
+  pull_request:
+    paths:
+      - "docs/governance/ROADMAP_CURRENT.json"
+      - "docs/governance/ROADMAP_CANONICAL.md"
+      - "scripts/validate_mcp03_invariants.py"
+      - "tools/governance/validate_roadmap_authority.py"
+      - "scripts/guard_pr333_governance_atomicity.py"
+      - ".github/workflows/pr333-governance-guard.yml"
+  push:
+    paths:
+      - "docs/governance/ROADMAP_CURRENT.json"
+      - "docs/governance/ROADMAP_CANONICAL.md"
+      - "scripts/validate_mcp03_invariants.py"
+      - "tools/governance/validate_roadmap_authority.py"
+      - "scripts/guard_pr333_governance_atomicity.py"
+      - ".github/workflows/pr333-governance-guard.yml"
+
+jobs:
+  pr333-governance-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: PR333 governance atomicity guard
+        run: python scripts/guard_pr333_governance_atomicity.py
+      - name: MCP03 invariant validator
+        run: python scripts/validate_mcp03_invariants.py
+      - name: Roadmap authority validator
+        run: python tools/governance/validate_roadmap_authority.py

@@ -181,7 +181,7 @@ foreach ($field in $metadataFields) {
   Assert-Property -Object $json.operational_metadata_schema -Name $field -Scope "operational_metadata_schema"
 }
 
-$allowedStatuses = @("recorded", "complete")
+$allowedStatuses = @("recorded", "complete", "failed")
 $allowedPriorities = @("critical", "high", "medium", "low")
 $idPattern = '^P\d+[A-Z0-9-]*-[A-Z0-9-]+$'
 
