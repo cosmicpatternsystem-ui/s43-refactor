@@ -43,9 +43,45 @@ This document is the canonical human-governed roadmap authority for ASO-X.
 - REJECTED
 
 ## Decision rule
-## Decision rule
+- No expansion of scope beyond authority-approved roadmap intent.
+- No phase-jump: phases must not be claimed complete out of mandatory execution order.
+- No "DONE" claim without verifiable evidence.
+- Chat estimates, narrative percentages, or aspirational statements are not roadmap authority.
+- Runtime gate outputs do not become static roadmap authority unless explicitly codified by approved governance change.
+
+## Current Operational Posture (Binding)
+- Governance remains restrictive unless explicit evidence authorizes a less restrictive state.
+- No waiver-clearance, commercial-ready, or DONE-state claim is authorized by this section alone.
+
+## Commercial Gate Control (v1)
+- Commercial progression is authority-gated and evidence-gated.
+- No commercial-ready claim is valid without explicit governance approval and verifiable supporting evidence.
+- Report-only or runtime gate artifacts are not, by themselves, commercial adjudication.
+
+## Current Operational Posture
+- Operational posture: CONTROLLED
+- Governing blocker: none active from current validated comparator evidence
+- Drift status: NON_SIGNIFICANT
+- Comparator posture note: validated comparator evidence shows EVALUATED / NON_SIGNIFICANT
+
+## Execution Restriction
+Execution is restricted to the following paths only:
+1. Continue under controlled governance posture
+2. Maintain evidence-backed execution against active roadmap requirements
+
+The following actions are not authorized:
+1. Scope expansion without authority
+2. Phase-jump or roadmap re-baselining without authority
+3. DONE-state claims without verifiable evidence
+
+## Commercial Gate Constraint
+Commercial Gate Control v1 remains evidence-governed and authority-bound; execution may proceed only under validated controlled posture.
+
+
 ## Current Phase
 - Phase: Operational Intelligence Runtime
 - Task: MCP03 Invariants Formalization
 ## Current Next Action
 Formalize MCP03_INVARIANTS.md and implement validation logic.
+
+
